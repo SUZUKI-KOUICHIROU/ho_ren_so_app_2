@@ -1,12 +1,18 @@
-FROM ruby:2.6.3
+FROM ruby:2.6.3-alpine
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
+ENV LANG="C.UTF-8" \
+    PACKAGES="curl-dev build-base alpine-sdk tzdata sqlite-dev less ruby-dev nodejs"
 
-RUN mkdir /myapp
-WORKDIR /myapp
+RUN apk update && \
+    apk add --no-cache --update $PACKAGES
 
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
+WORKDIR /var/www
 
-RUN bundle install
-COPY . /myapp
+COPY ./ ./
+
+RUN gem install bundler && \
+    bundle install -j4
+
+EXPOSE 3000
+
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
