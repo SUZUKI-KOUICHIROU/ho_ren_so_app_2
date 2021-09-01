@@ -1,0 +1,50 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+# 標準の規約 + Railsの規約
+Rails:
+  Enabled: true
+
+AllCops:
+  # ルールをバージョンアップと同時に有効化
+  NewCops: enable
+  # Rubyのバージョンを指定
+  TargetRubyVersion: 2.6.3p62
+  # 除外するファイル
+  Exclude:
+    - vendor/**/*
+    - bin/*
+    - db/**/*
+    - config/**/*
+
+# Missing magic comment # frozen_string_literal: true. を無視
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Use nested module/class definitions instead of compact style. を無視
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Use only ascii symbols in comments. を無視
+Style/AsciiComments:
+  Enabled: false
+
+# Unused method argument. を無視
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+# Missing top-level class documentation comment. を無視
+Style/Documentation:
+  Enabled: false
+
+# hadowing outer local variable.  を無視
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
+
+# Do not use block comments. を無視
+Style/BlockComments:
+  Enabled: false
