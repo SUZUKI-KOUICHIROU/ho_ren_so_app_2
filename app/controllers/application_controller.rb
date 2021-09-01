@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # このアクションを追加
   def after_sign_in_path_for(resource)
-    "/user/#{current_user.id}"
+    user_path(resource)
   end
 
   protected

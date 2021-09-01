@@ -21,7 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # アカウント登録後
   def after_sign_up_path_for(resource)
-    user_path(resource)
+    users_path(resource)
   end
 
   # GET /resource/sign_up
@@ -77,4 +77,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  protected
+
+  def after_update_path_for(resource)
+    user_path(id: current_user.id)
+  end
+
+  def current_user_is_admin?
+    user_signed_in? && current_user.admin
+  end
+
+  def sign_up(resource_name, resource)
+      if !current_user_is_admin?
+        sign_in(resource_name, resource)
+      end
+  end
 end
