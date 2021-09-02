@@ -10,7 +10,108 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_29_121739) do
+ActiveRecord::Schema.define(version: 2021_09_01_095822) do
+
+  create_table "counseling_confirmers", force: :cascade do |t|
+    t.integer "counseling_confirmer_id", null: false
+    t.boolean "counseling_confirmation_flag", default: false, null: false
+    t.integer "counseling_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["counseling_id"], name: "index_counseling_confirmers_on_counseling_id"
+  end
+
+  create_table "counselings", force: :cascade do |t|
+    t.text "counseling_detail", default: "", null: false
+    t.date "counseling_reply_deadline"
+    t.text "counseling_reply_detail"
+    t.boolean "counseling_reply_flag", default: false, null: false
+    t.integer "projegt_id"
+    t.integer "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["projegt_id"], name: "index_counselings_on_projegt_id"
+    t.index ["task_id"], name: "index_counselings_on_task_id"
+  end
+
+  create_table "message_confirmers", force: :cascade do |t|
+    t.integer "message_confirmer_id", null: false
+    t.boolean "message_confirmation_flag", default: false, null: false
+    t.integer "message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_message_confirmers_on_message_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "message_detail", default: "", null: false
+    t.integer "projegt_id"
+    t.integer "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["projegt_id"], name: "index_messages_on_projegt_id"
+    t.index ["task_id"], name: "index_messages_on_task_id"
+  end
+
+  create_table "pdcas", force: :cascade do |t|
+    t.text "pdca_plan", default: "", null: false
+    t.text "pdca_do", default: "", null: false
+    t.text "pdca_check", default: "", null: false
+    t.text "pdca_action", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "project_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_users_on_project_id"
+    t.index ["user_id"], name: "index_project_users_on_user_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "project_name", default: "", null: false
+    t.integer "project_leader_id", null: false
+    t.integer "project_report_frequency", default: 1, null: false
+    t.date "project_next_report_date", null: false
+    t.boolean "project_reported_lag", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "report_confirmers", force: :cascade do |t|
+    t.integer "report_confirmer_id", null: false
+    t.boolean "report_confirmation_flag", default: false, null: false
+    t.integer "report_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_report_confirmers_on_report_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.text "report_detail", default: "", null: false
+    t.text "problem_detail"
+    t.integer "projegt_id"
+    t.integer "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["projegt_id"], name: "index_reports_on_projegt_id"
+    t.index ["task_id"], name: "index_reports_on_task_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "task_name", default: "", null: false
+    t.integer "task_rep_id", null: false
+    t.integer "task_report_frequency", null: false
+    t.date "task_next_report_date", null: false
+    t.boolean "task_reported_flag", default: false, null: false
+    t.integer "projegt_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["projegt_id"], name: "index_tasks_on_projegt_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -20,8 +121,8 @@ ActiveRecord::Schema.define(version: 2021_08_29_121739) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
-    t.boolean "admin"
+    t.string "user_name", default: "", null: false
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
