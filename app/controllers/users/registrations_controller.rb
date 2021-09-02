@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   prepend_before_action :require_no_authentication, only: [:cancel]
   prepend_before_action :authenticate_scope!, only: [:update, :destroy, :edit]
   prepend_before_action :set_minimum_password_length, only: [:new, :edit]
-  #before_action :creatable?, only: [:new, :create]
+  # before_action :creatable?, only: [:new, :create]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
