@@ -1,8 +1,24 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  prepend_before_action :require_no_authentication, only: [:cancel]
+  prepend_before_action :authenticate_scope!, only: [:update, :destroy, :edit]
+  prepend_before_action :set_minimum_password_length, only: [:new, :edit]
+  # before_action :creatable?, only: [:new, :create]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+
+  def create
+    @user = User.new(sign_up_params)
+    pp @user
+    render :new and return if params[:back]
+    super
+  end
+
+  # アカウント登録後
+  def after_sign_up_path_for(resource)
+    users_user_path(resource)
+  end
 
   # GET /resource/sign_up
   # def new
@@ -38,8 +54,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
-
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
   #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
@@ -59,4 +73,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  protected
+
+  def after_update_path_for(resource)
+    user_path(id: current_user.id)
+  end
+
+  def current_user_is_admin?
+    user_signed_in? && current_user.admin
+  end
+
+  def sign_up(resource_name, resource)
+      if !current_user_is_admin?
+        sign_in(resource_name, resource)
+      end
+  end
 end

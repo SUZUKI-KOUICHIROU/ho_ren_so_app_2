@@ -1,6 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <%= link_to "Ho_Ren_So App", root_path, id: "logo" %>
+<<<<<<< HEAD
     <%# if user_signed_in? %>
       <nav>
         <ul class="nav navbar-nav navbar-right">
@@ -16,5 +17,14 @@
         </ul>
       </nav>
     <%# end %>
+=======
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "Top", root_path %></li>
+        <li><%= link_to "Log in", user_session_path %></li>
+        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+      </ul>
+    </nav>
+>>>>>>> 8d7b6c3ffba21fe75149bc288758527089441853
   </div>
 </header>

@@ -4,17 +4,23 @@ Rails.application.routes.draw do
   scope module: :static_pages do
     root 'static_pages#new'
   end
-
-  devise_for :users, :controllers => {
-    :registrations => 'users/registrations',
-    :sessions => 'users/sessions'
+  
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    passwords: 'users/passwords',
+    registrations: 'users/registrations'
   }
 
+  #devise_for :users, :controllers => {
+    #:registrations => 'users/registrations',
+    #:sessions => 'users/sessions'
+  #}
+
   devise_scope :user do
-    get "user/:id", :to => "users/registrations#detail"
-    get "signup", :to => "users/registrations#new"
-    get "login", :to => "users/sessions#new"
-    get "logout", :to => "users/sessions#destroy"
+    get 'users/signup', to: 'users/registrations#new'
+    get 'users/login', to: 'users/sessions#new'
+    delete 'users/logout', to: 'users/sessions#destroy'
+    resources :users
   end
 
   namespace :users do
@@ -22,4 +28,8 @@ Rails.application.routes.draw do
       resources :projects
     end
   end
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8d7b6c3ffba21fe75149bc288758527089441853
 end

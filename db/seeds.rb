@@ -6,6 +6,7 @@ User.create!( user_name: 'Admin User',
               password_confirmation: 'password',
               admin: true )
 
+<<<<<<< HEAD
 # 一般ユーザーを5人作成
 (0..4).each do |n|
   user_name = Faker::Name.name
@@ -46,3 +47,16 @@ project = Project.find(1)
 users.each do |user|
   user.projects << project
 end
+=======
+User.create!(user_name: 'Admin User',
+             email: 'admin@email.com',
+             password: 'password',
+             password_confirmation: 'password',
+             admin: true)
+
+User.create!(user_name: 'Sample User',
+             email: 'sample@email.com',
+             password: 'password',
+             password_confirmation: 'password',
+             admin: false)
+>>>>>>> 8d7b6c3ffba21fe75149bc288758527089441853
