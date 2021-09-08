@@ -2,7 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   prepend_before_action :require_no_authentication, only: [:cancel]
-  prepend_before_action :authenticate_scope!, only: [:update, :destroy, :edit]
+  #prepend_before_action :authenticate_scope!, only: [:update, :destroy, :edit]
   prepend_before_action :set_minimum_password_length, only: [:new, :edit]
   # before_action :creatable?, only: [:new, :create]
   # before_action :configure_sign_up_params, only: [:create]
@@ -70,7 +70,7 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_update_path_for(resource)
-    user_path(id: current_user.id)
+    users_user_path(id: current_user.id)
   end
 
   def current_user_is_admin?

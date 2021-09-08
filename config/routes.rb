@@ -5,8 +5,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     passwords: 'users/passwords',
-    registrations: 'users/registrations',
-    users: 'users/users'
+    registrations: 'users/registrations'
   }
   
   # :moduleオプションを使用して「コントローラ#アクション」のみにstatic_pages名前空間を追加
@@ -24,6 +23,12 @@ Rails.application.routes.draw do
     get 'users/login', to: 'users/sessions#new'
     delete 'users/logout', to: 'users/sessions#destroy'
     resources :users
+  end
+
+  namespace :users do
+    resources :users, only: %i[index show] do
+      resources :projects
+    end
   end
 
 end

@@ -17,7 +17,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # アカウント登録後
   def after_sign_up_path_for(resource)
-    user_path(resource)
+    users_user_path(resource)
   end
 
   # GET /resource/sign_up
