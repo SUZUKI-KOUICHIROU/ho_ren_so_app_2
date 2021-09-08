@@ -8,8 +8,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-  
-
   def create
     @user = User.new(sign_up_params)
     pp @user

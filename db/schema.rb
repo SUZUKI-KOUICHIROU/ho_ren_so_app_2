@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.boolean "project_reported_lag", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["project_name"], name: "index_projects_on_project_name", unique: true
   end
 
   create_table "report_confirmers", force: :cascade do |t|
