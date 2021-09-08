@@ -1,3 +1,6 @@
 class StaticPages::StaticPagesController < ApplicationController
-  def new; end
+  
+  def new
+  end
+
 end
