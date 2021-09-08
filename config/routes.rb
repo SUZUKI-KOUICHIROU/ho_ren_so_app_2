@@ -16,4 +16,10 @@ Rails.application.routes.draw do
     get "login", :to => "users/sessions#new"
     get "logout", :to => "users/sessions#destroy"
   end
+
+  namespace :users do
+    resources :users, only: %i[index show] do
+      resources :projects
+    end
+  end
 end
