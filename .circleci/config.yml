@@ -1,62 +1,118 @@
-# Ruby CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
-version: 2
-# jobsの中にタスクを定義。一番下のworkflowのjobsのなかで定義したタスクを使う。
-jobs:
-  # buildという名前のタスク定義
-  build:
+version: 2.1
+orbs:
+  ruby-orbs: sue445/ruby-orbs@1.6.0
+  heroku: circleci/heroku@1.0.1
 
-    docker:
-      # specify the version you desire here
-      - image: circleci/ruby:2.6.3-node-browsers 
+workflows:
+  build_test_and_deploy:
+    jobs:
+      - build
+      - rubocop:
+          requires: 
+            - build
+      - rspec:
+          requires:
+            - build
+            - rubocop
+      - deploy_prd:
+          requires:
+            - build
+            - rspec
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_stg:
+          requires:
+            - build
+            - rspec
+          filters:
+            branches:
+              only:
+                - staging
 
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
+executors:
+  default:
     working_directory: ~/repo
+    docker:
+      - image: ruby:2.5.0-stretch
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
 
-    # 実際の処理内容
+jobs:
+  build:
+    executor: default
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      # runのたびに実行
+      - bundle-install
+  rubocop:
+    executor: default
+    steps:
+      - preparate
       - run:
-          name: install dependencies
-          command: |
-            gem install bundler -v 2.2.6
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-      # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
-
-      # run tests
+          name: Rubocop
+          command: bundle exec rubocop
+  rspec:
+    executor: default
+    steps:
+      - preparate
+      - run: bundle exec rails db:create
+      - run: bundle exec rails db:schema:load
       - run:
-          name: Parallel RSpec
-          command: |
-            bundle exec rspec --format RspecJunitFormatter \
-            --out test_results/rspec.xml \
-            --format documentation
+          name: Rspec
+          command: bundle exec rspec
+  deploy_prd:
+    executor: heroku/default
+    parameters:
+      app-name: 
+        default: $HEROKU_APP_NAME_PRD
+        type: string
+      post-deploy:
+        default:
+          - run:
+              command: heroku run rails db:migrate --app $HEROKU_APP_NAME_PRD
+        type: steps
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: << parameters.app-name >>
+      - steps: << parameters.post-deploy >>
+  deploy_stg:
+    executor: heroku/default
+    parameters:
+      app-name: 
+        default: $HEROKU_APP_NAME_STG
+        type: string
+      post-deploy:
+        default:
+          - run:
+              command: heroku run rails db:migrate --app $HEROKU_APP_NAME_STG
+        type: steps
+      force:
+        default: true
+        type: boolean
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: << parameters.app-name >>
+      - steps: << parameters.post-deploy >>
 
-      # collect reports
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
+commands:
+  bundle-install:
+    steps:
+      - ruby-orbs/bundle-install:
+          bundle_clean: true
+          bundle_extra_args: ''
+          bundle_gemfile: Gemfile
+          bundle_jobs: 4
+          bundle_path: vendor/bundle
+          bundle_retry: 3
+          cache_key_prefix: v1-bundle-dependencies
+          restore_bundled_with: true
+  preparate:
+    steps:
+      - checkout
+      - bundle-install
