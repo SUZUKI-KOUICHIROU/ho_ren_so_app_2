@@ -1,118 +1,59 @@
 version: 2.1
+
 orbs:
-  ruby-orbs: sue445/ruby-orbs@1.6.0
-  heroku: circleci/heroku@1.0.1
+  ruby: circleci/ruby@1.1.2
+  node: circleci/node@2
 
-workflows:
-  build_test_and_deploy:
-    jobs:
-      - build
-      - rubocop:
-          requires: 
-            - build
-      - rspec:
-          requires:
-            - build
-            - rubocop
-      - deploy_prd:
-          requires:
-            - build
-            - rspec
-          filters:
-            branches:
-              only:
-                - master
-      - deploy_stg:
-          requires:
-            - build
-            - rspec
-          filters:
-            branches:
-              only:
-                - staging
-
-executors:
-  default:
-    working_directory: ~/repo
-    docker:
-      - image: ruby:2.5.0-stretch
-        environment:
-          BUNDLE_PATH: vendor/bundle
-          RAILS_ENV: test
+# setup
+commands:
+  setup:
+    steps:
+      - checkout
+      - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: "yarn.lock"
 
 jobs:
   build:
-    executor: default
+    docker:
+      - image: circleci/ruby:2.7-node
     steps:
-      - checkout
-      - bundle-install
-  rubocop:
-    executor: default
+      - setup
+  test:
+    docker:
+      - image: circleci/ruby:2.7-node
+      - image: circleci/postgres:11.6-alpine
+        name: "db"
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: myapp_test
+          POSTGRES_PASSWORD: ""
+    environment:
+      BUNDLE_JOBS: "4"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
     steps:
-      - preparate
+      - setup
       - run:
-          name: Rubocop
-          command: bundle exec rubocop
-  rspec:
-    executor: default
-    steps:
-      - preparate
-      - run: bundle exec rails db:create
-      - run: bundle exec rails db:schema:load
+          name: rails db:migrate
+          command: bundle exec rails db:migrate
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
       - run:
           name: Rspec
           command: bundle exec rspec
-  deploy_prd:
-    executor: heroku/default
-    parameters:
-      app-name: 
-        default: $HEROKU_APP_NAME_PRD
-        type: string
-      post-deploy:
-        default:
-          - run:
-              command: heroku run rails db:migrate --app $HEROKU_APP_NAME_PRD
-        type: steps
-    steps:
-      - checkout
-      - heroku/install
-      - heroku/deploy-via-git:
-          app-name: << parameters.app-name >>
-      - steps: << parameters.post-deploy >>
-  deploy_stg:
-    executor: heroku/default
-    parameters:
-      app-name: 
-        default: $HEROKU_APP_NAME_STG
-        type: string
-      post-deploy:
-        default:
-          - run:
-              command: heroku run rails db:migrate --app $HEROKU_APP_NAME_STG
-        type: steps
-      force:
-        default: true
-        type: boolean
-    steps:
-      - checkout
-      - heroku/install
-      - heroku/deploy-via-git:
-          app-name: << parameters.app-name >>
-      - steps: << parameters.post-deploy >>
 
-commands:
-  bundle-install:
-    steps:
-      - ruby-orbs/bundle-install:
-          bundle_clean: true
-          bundle_extra_args: ''
-          bundle_gemfile: Gemfile
-          bundle_jobs: 4
-          bundle_path: vendor/bundle
-          bundle_retry: 3
-          cache_key_prefix: v1-bundle-dependencies
-          restore_bundled_with: true
-  preparate:
-    steps:
-      - checkout
-      - bundle-install
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+            
