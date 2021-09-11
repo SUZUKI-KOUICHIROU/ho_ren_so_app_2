@@ -19,7 +19,8 @@ default: &default
 
 development:
   <<: *default
-  database: myapp_development
+  database: circleci_parctice_test
+  host:  <%= ENV['DATABASE_HOST'] } %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
