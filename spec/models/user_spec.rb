@@ -84,15 +84,15 @@ describe User, type: :model  do
       end
     end
 
-    describe "【name】" do
-      it "nameがない場合NG" do
-        user = build(:user, name: "")
+    describe "【user_name】" do
+      it "user_nameがない場合NG" do
+        user = build(:user, user_name: "")
         user.valid?
-        expect(user.errors[:name]).to include("を入力してください")
+        expect(user.errors[:user_name]).to include("を入力してください")
       end
 
-      it "nameがあればOK" do
-        user = build(:user, name: "サンプル")
+      it "user_nameがあればOK" do
+        user = build(:user, user_name: "サンプル")
         expect(user).to be_valid
       end
     end
