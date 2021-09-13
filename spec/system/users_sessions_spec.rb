@@ -12,24 +12,24 @@ RSpec.describe 'UsersSessions', type: :system do
       it 'ログインを記憶するチェックボックスがあること' do
         expect(page).to have_field 'user[remember_me]'
       end
-      it 'パスワードを忘れた場合のリンクがあること' do
-        expect(page).to have_link 'パスワードを忘れた場合'
-      end
+      #it 'パスワードを忘れた場合のリンクがあること' do
+        #expect(page).to have_link 'パスワードを忘れた場合'
+      #end
       it '新規登録ボタンがないこと' do
         expect(page).to have_no_link '新規登録'
       end
-      it 'ログインボタンがあること' do
-        expect(page).to have_button 'ログイン'
-      end
+      #it 'ログインボタンがあること' do
+        #expect(page).to have_button 'ログイン'
+      #end
     end
 
-    context '画面遷移' do
-      it 'パスワードを忘れた場合' do
-        click_on 'パスワードを忘れた場合'
-        expect(current_path).to eq new_user_password_path
-        expect(page).to have_content 'パスワード再設定'
-      end
-    end
+    #context '画面遷移' do
+      #it 'パスワードを忘れた場合' do
+        #click_on 'パスワードを忘れた場合'
+        #expect(current_path).to eq new_user_password_path
+        #expect(page).to have_content 'パスワード再設定'
+      #end
+    #end
 
     context 'ログイン処理' do
       it 'email、passwordが正常な値の場合ログインに成功すること' do
