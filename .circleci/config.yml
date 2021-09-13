@@ -13,6 +13,9 @@ commands:
       - node/install-packages:
           pkg-manager: yarn
           cache-key: "yarn.lock"
+      - run:
+          name: yarn Install
+          command: yarn install
 
 jobs:
   build:
