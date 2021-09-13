@@ -1,5 +1,4 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-Selenium::WebDriver::Chrome::Service.driver_path = '/usr/bin/chromedriver'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
@@ -29,8 +28,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before do
-    DatabaseCleaner.start
+  config.before(:each, type: :system, js: true) do
+    if ENV["SELENIUM_DRIVER_URL"].present?
+      driven_by :selenium, using: :chrome, options: {
+        browser: :remote,
+        url: ENV.fetch("SELENIUM_DRIVER_URL"),
+        desired_capabilities: :chrome
+      }
+    else
+      driven_by :selenium_chrome_headless
+    end
   end
 
   config.after do
