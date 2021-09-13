@@ -11,3 +11,11 @@ services:
     tty: true
     stdin_open: true
     restart: always
+
+# selenium_chrome を使うために以下の行を追加
+    environment:
+    - "SELENIUM_DRIVER_URL=http://selenium_chrome:4444/wd/hub"
+  selenium_chrome:
+    image: selenium/standalone-chrome-debug
+    logging:
+      driver: none
