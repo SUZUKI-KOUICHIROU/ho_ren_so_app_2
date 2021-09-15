@@ -8,4 +8,10 @@ module ApplicationHelper
       "#{page_name} | #{base_title}" # 文字列を連結して返す
     end
   end
+
+  class << self
+    attr_accessor :weeks
+  end
+
+  ApplicationHelper.weeks = %w[日 月 火 水 木 金 土]
 end

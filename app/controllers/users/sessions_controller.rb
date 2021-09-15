@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  prepend_before_action :require_no_authentication, only: [:cancel]
-  #prepend_before_action :authenticate_scope!, only: [:update, :destroy, :edit]
-  prepend_before_action :set_minimum_password_length, only: [:new, :edit]
+  prepend_before_action :require_no_authentication, only: %i[new create]
+  prepend_before_action :set_minimum_password_length, only: %i[new edit]
   # before_action :creatable?, only: [:new, :create]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  
-
-  def new
-    @user = User.new
-  end
-
 
   # GET /resource/sign_up
   # def new
@@ -69,17 +62,8 @@ class Users::SessionsController < Devise::SessionsController
   # end
   protected
 
-  def after_update_path_for(resource)
-    users_user_path(id: current_user.id)
-  end
-
-  def current_user_is_admin?
-    user_signed_in? && current_user.admin
-  end
-
-  def sign_up(resource_name, resource)
-      if !current_user_is_admin?
-        sign_in(resource_name, resource)
-      end
+  # ログイン後のリダイレクト先をユーザー詳細ページに変更
+  def after_sign_in_path_for(resource)
+    users_user_path(resource)
   end
 end
