@@ -1,12 +1,11 @@
 <% provide(:title, (@user.user_name)) %>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
+<p class="subject"><h1>ログイン情報</h1></p>
+<div class="container">
+  <div class="row">
     <div class="titlebar">
-       <p class="subject"><h1>ログイン情報</h1></p>
-       <p class="date"><%= link_to "編集", edit_user_registration_path, class: "btn btn-lg btn1" %></p>
+      <p class="date"><%= link_to "編集", edit_user_registration_path, class: "btn btn-lg btn1" %></p>
     </div>
-    <h2></h2>
     <table class="table table-bordered" id="table-user-description">
       <tbody>
         <tr>
@@ -17,8 +16,7 @@
           <th class="active col-md-2"><%= User.human_attribute_name :メールアドレス %></th>
           <td><%= @user.email %></td>
         </tr>
-  </tr>
-  </tbody>
-</table>
-</div>
+      </tbody>
+    </table>
+  </div>
 </div>
