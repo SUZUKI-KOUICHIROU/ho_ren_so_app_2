@@ -20,6 +20,11 @@ class Users::UserBaseController < BaseController
 
   # ログイン済みユーザーを許可
   def correct_user
+    @user = if params[:user_id].present?
+              User.find(params[:user_id])
+            else
+              User.find(params[:id])
+            end
     return if current_user?(@user)
 
     flash[:danger] = '権限がありません。'

@@ -5,11 +5,11 @@
     <td><%= project.users.all.count %></td>
     <td><%= l(project.project_next_report_date, format: :long) %></td>
     <td>
-      <%# if project.project_leader_id == current_user.id %>
+      <% if project.project_leader_id == current_user.id %>
         <%= link_to "編集", "#", remote: true, class: "btn btn-primary btn-sm" %>
         <%= link_to "報告", "#", remote: true, class: "btn btn-primary btn-sm" %>
         <%= link_to "削除", "#", method: :delete,data: { confirm: "#{project.project_name}を削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
-      <%# end %>
+      <% end %>
     </td>
   </tr>
 </tbody>

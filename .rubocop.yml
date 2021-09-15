@@ -14,6 +14,10 @@ AllCops:
   NewCops: enable
   # Rubyのバージョンを指定
   TargetRubyVersion: 2.6.3p62
+  # 指摘に対応するスタイルガイドのリンクを表示
+  DisplayStyleGuide: true
+  # スタイルガイドのリンクを日本語版に変換
+  StyleGuideBaseURL: https://github.com/fortissimo1997/ruby-style-guide/blob/japanese/README.ja.md
   # 除外するファイル
   Exclude:
     - vendor/**/*
@@ -47,4 +51,43 @@ Lint/ShadowingOuterLocalVariable:
 
 # Do not use block comments. を無視
 Style/BlockComments:
+  Enabled: false
+
+# is not explicitly defined on the class. を無視
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+# Do not write to stdout. Use Rails's logger if you want to log. を無視
+Rails/Output:
+  Enabled: false
+
+# Block has too many lines. を無視
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Maximum example group nesting exceeded. を無視
+RSpec/NestedGroups:
+  Enabled: false
+
+# Do not use expect() without .to or .not_to. Chain the methods or remove it. を無視
+RSpec/VoidExpect:
+  Enabled: false
+
+# Useless assignment to variable - user. Did you mean user2? を無視
+Lint/UselessAssignment:
+  Exclude:
+  - 'spec/**/*'
+
+# Start context description with 'when', 'with', or 'without'. を無視
+RSpec/ContextWording:
+  Exclude:
+  - 'spec/**/*'
+
+# Example has too many lines. を無視
+RSpec/ExampleLength:
+  Enabled: false
+
+# Example has too many expectations
+RSpec/MultipleExpectations:
   Enabled: false

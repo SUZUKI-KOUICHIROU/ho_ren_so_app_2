@@ -6,43 +6,49 @@
   <h1>プロジェクト一覧</h1>
 <% end %>
 
+<div>
+  <a>プロジェクト名検索：</a>
+  <%= form_with url: users_user_projects_path, method: :get, local: true do |form| %>
+    <%= form.text_field :search, id: "search-box", placeholder: "キーワードを入力" %>
+    <%= form.submit "検索", id: "search-btn", class: "btn btn-primary" %>
+  <% end %>
+</div>
+<div>
+  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary" %>
+</div>
+<div>
+  <a>表示切替：</a>
+  <%= link_to "全てのプロジェクト", users_user_projects_path(@user), class: "btn btn-primary" %>
+  <%= link_to "参画中のプロジェクト", users_user_projects_path(@user, button_attribute: 'in_joining'), class: "btn btn-primary" %>
+</div>
+
 <div class="container">
   <div class="row">
-    <p>プロジェクト名検索</p>
-    <%= form_with url: users_user_projects_path, method: :get, local: true do |form| %>
-      <%= form.text_field :search, id: "search-box", placeholder: "キーワードを入力" %>
-      <%= form.submit "検索", id: "search-btn", class: "btn btn-primary" %>
-    <% end %>
-    <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
-    <P>表示切替</P>
-    <%= link_to "全てのプロジェクト", users_user_projects_path(@user), class: "btn btn-primary btn-sm" %>
-    <%= link_to "参画中のプロジェクト", users_user_projects_path(@user, button_attribute: 'in_joining'), class: "btn btn-primary btn-sm" %>
-      <table class="table table-condensed table-hover" id="table-users">
-        <thead>
-          <tr>
-            <th>プロジェクト</th>
-            <th>リーダー</th>
-            <th>メンバー数</th>
-            <th>次回報告日</th>
-            <th></th>
-          </tr>
-        </thead>
-        <% if @projects.present? %>
-          <%= render partial: 'project_list_detail', collection: @projects, as: :project %>
-        <% end %>
-        <% if @projects.blank?%>
-          <P>該当のプロジェクトはありません。</P>
-        <% end %>
-        <% if @projects.present?%>
-          <div class="paginate">
-            <P>ページネーション実装予定。</P>
-          </div>
-        <% end %>
-      </table>
+    <table class="table table-condensed table-hover" id="table-users">
+      <thead>
+        <tr>
+          <th>プロジェクト</th>
+          <th>リーダー</th>
+          <th>メンバー数</th>
+          <th>次回報告日</th>
+          <th></th>
+        </tr>
+      </thead>
+      <% if @projects.present? %>
+        <%= render partial: 'project_list_detail', collection: @projects, as: :project %>
+      <% end %>
+      <% if @projects.blank?%>
+        <P>該当のプロジェクトはありません。</P>
+      <% end %>
+      <% if @projects.present?%>
+        <div class="paginate">
+          <P>ページネーション実装予定。</P>
+        </div>
+      <% end %>
+    </table>
   </div>
 </div>
 <!--プロジェクト新規登録用モーダルウインドウ表示-->
-<div id="product-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="project-new" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
 <!--プロジェクト内容編集モーダルウインドウ表示-->
 <div class="modal fade" id="project-edit" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
