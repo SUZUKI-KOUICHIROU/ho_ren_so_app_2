@@ -7,13 +7,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-<<<<<<< HEAD
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
 
-
-=======
->>>>>>> b54074f88fb4f795dd404804070e240d96f15310
   before_save { self.email = email.downcase }
 
   validates :user_name, presence: true, length: { maximum: 50 }
