@@ -5,7 +5,7 @@ ruby '2.6.3'
 
 gem 'bcrypt'
 gem 'bootsnap', require: false
-gem 'bootstrap-sass'
+gem 'bootstrap', '~> 4.1.1'
 gem 'bootstrap-will_paginate'
 gem 'cancancan'
 gem 'clipboard-rails'
