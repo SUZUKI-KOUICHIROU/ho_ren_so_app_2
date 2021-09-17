@@ -25,7 +25,7 @@
           </a>
         </div>
       </div>
-
+      <%= f.hidden_field :project_leader_id, :value => current_user.id %>
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">
           キャンセル
