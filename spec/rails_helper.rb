@@ -15,12 +15,9 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  config.use_transactional_fixtures = false
-  config.infer_spec_type_from_file_location!
-  config.filter_rails_from_backtrace!
-  config.include FactoryBot::Syntax::Methods
-
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
   Capybara.javascript_driver = :poltergeist
   require 'database_cleaner'
   config.before(:suite) do
@@ -28,8 +25,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before do
-    DatabaseCleaner.start
+  config.before(:each, type: :system, js: true) do
+    if ENV["SELENIUM_DRIVER_URL"].present?
+      driven_by :selenium, using: :chrome, options: {
+        browser: :remote,
+        url: ENV.fetch("SELENIUM_DRIVER_URL"),
+        desired_capabilities: :chrome
+      }
+    else
+      driven_by :selenium_chrome_headless
+    end
   end
 
   config.after do
