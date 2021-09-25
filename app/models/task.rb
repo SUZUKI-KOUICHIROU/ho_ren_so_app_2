@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
-  belongs_to :projegt
+  belongs_to :project
   has_many :reports, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :counselings, dependent: :destroy

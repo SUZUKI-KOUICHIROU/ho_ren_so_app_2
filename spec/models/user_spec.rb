@@ -92,7 +92,7 @@ describe User, type: :model do
       end
 
       it 'nameがあればOK' do
-        user = build(:user, name: 'サンプル')
+        user = build(:user, user_name: 'サンプル')
         expect(user).to be_valid
       end
     end

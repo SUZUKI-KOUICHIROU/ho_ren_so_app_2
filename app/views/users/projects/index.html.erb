@@ -14,7 +14,7 @@
   <% end %>
 </div>
 <div>
-  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary" %>
+  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
 </div>
 
 <div class="container">
@@ -34,11 +34,6 @@
       <% end %>
       <% if @projects.blank?%>
         <P>該当のプロジェクトはありません。</P>
-      <% end %>
-      <% if @projects.present?%>
-        <div class="paginate">
-          <P>ページネーション実装予定。</P>
-        </div>
       <% end %>
     </table>
     <% if @projects.present?%>
