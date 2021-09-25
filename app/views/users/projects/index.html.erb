@@ -14,12 +14,7 @@
   <% end %>
 </div>
 <div>
-  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary" %>
-</div>
-<div>
-  <a>表示切替：</a>
-  <%= link_to "全てのプロジェクト", users_user_projects_path(@user), class: "btn btn-primary" %>
-  <%= link_to "参画中のプロジェクト", users_user_projects_path(@user, button_attribute: 'in_joining'), class: "btn btn-primary" %>
+  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
 </div>
 
 <div class="container">
@@ -40,12 +35,12 @@
       <% if @projects.blank?%>
         <P>該当のプロジェクトはありません。</P>
       <% end %>
-      <% if @projects.present?%>
-        <div class="paginate">
-          <P>ページネーション実装予定。</P>
-        </div>
-      <% end %>
     </table>
+    <% if @projects.present?%>
+      <div class="paginate">
+        <P>ページネーション実装予定。</P>
+      </div>
+    <% end %>
   </div>
 </div>
 <!--プロジェクト新規登録用モーダルウインドウ表示-->

@@ -6,7 +6,7 @@ class CreateTasks < ActiveRecord::Migration[5.2]
       t.integer :task_report_frequency, null: false, default: '' # 報告頻度(x日に1回のx)
       t.date :task_next_report_date, null: false, default: '' # 次回報告日
       t.boolean :task_reported_flag, null: false, default: false # 報告フラグ
-      t.references :projegt, foreign_key: true
+      t.references :project, foreign_key: true
 
       t.timestamps
     end

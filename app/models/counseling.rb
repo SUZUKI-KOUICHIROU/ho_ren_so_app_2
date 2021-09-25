@@ -1,5 +1,5 @@
 class Counseling < ApplicationRecord
-  belongs_to :projegt
+  belongs_to :project
   belongs_to :task
   has_many :counselingconfirmers, dependent: :destroy
 
