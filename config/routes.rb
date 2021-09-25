@@ -19,9 +19,9 @@ Rails.application.routes.draw do
 
   namespace :users do
     resources :users, only: %i[index show] do
-      resources :projects
+      resources :projects do
+        resources :messages
+      end
     end
   end
-
-
 end

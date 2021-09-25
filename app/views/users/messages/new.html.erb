@@ -1,0 +1,23 @@
+<% provide(:title, "#{@project.project_name}_報告") %>
+
+<div>
+  <div>
+    <div>
+      <h5>報告する</h5>
+    <%= form_with(model: @message, url: users_user_project_messages_path(@user,@project), local: true, method: :post) do |f| %>
+      <div>
+        <div>
+          <%= f.label :message_detail, "報告詳細" %>
+          <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "form-control",rows: "10", required: true %>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-default btn-cancel">
+          キャンセル
+        </button>
+          <%= f.submit "報告", class: "btn btn-primary btn-new" %>
+      </div>
+    <% end %>
+  </div>
+</div>

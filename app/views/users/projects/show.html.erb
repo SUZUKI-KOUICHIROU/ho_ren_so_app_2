@@ -14,6 +14,6 @@
 
 <div class="container" style="padding: 20px;border: solid;">
   <%= link_to "報告する", "#", class: "btn btn-primary" %>
-  <%= link_to "連絡する", "#", class: "btn btn-secondary" %>
+  <%= link_to "連絡する", new_users_user_project_message_path(@user,@project), class: "btn btn-secondary" %>
   <%= link_to "相談する", "#", class: "btn btn-success" %>
 </div>
