@@ -6,9 +6,9 @@
     <td><%= l(project.project_next_report_date, format: :long) %></td>
     <td>
       <% if project.project_leader_id == current_user.id %>
-        <%= link_to "詳細", users_user_project_path(@user,project.id), class: "btn btn-primary btn-sm" %>
+        <%= link_to "詳細", user_projects_project_path(@user, project.id), class: "btn btn-primary btn-sm" %>
         <%= link_to "編集", "#", remote: true, class: "btn btn-primary btn-sm" %>
-        <%= link_to "削除", "#", method: :delete,data: { confirm: "#{project.project_name}を削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+        <%= link_to "削除", user_projects_project_path(@user, project.id), method: :delete, data: { confirm: "#{project.project_name}を削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
       <% end %>
     </td>
   </tr>
