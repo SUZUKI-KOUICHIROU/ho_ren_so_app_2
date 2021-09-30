@@ -8,13 +8,13 @@
 
 <div>
   <a>プロジェクト名検索：</a>
-  <%= form_with url: users_user_projects_path, method: :get, local: true do |form| %>
+  <%= form_with url: user_projects_projects_path, method: :get, local: true do |form| %>
     <%= form.text_field :search, id: "search-box", placeholder: "キーワードを入力" %>
     <%= form.submit "検索", id: "search-btn", class: "btn btn-primary" %>
   <% end %>
 </div>
 <div>
-  <%= link_to "プロジェクト新規登録", new_users_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
+  <%= link_to "プロジェクト新規登録", new_user_projects_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
 </div>
 
 <div class="container">
