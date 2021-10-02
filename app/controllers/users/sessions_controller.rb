@@ -64,6 +64,6 @@ class Users::SessionsController < Devise::SessionsController
 
   # ログイン後のリダイレクト先をユーザー詳細ページに変更
   def after_sign_in_path_for(resource)
-    users_user_path(resource)
+    user_path(resource)
   end
 end

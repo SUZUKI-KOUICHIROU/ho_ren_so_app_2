@@ -74,12 +74,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # ユーザー新規登録後のリダイレクト先をユーザー詳細ページに変更
   def after_sign_up_path_for(resource)
-    users_user_path(resource)
+    user_path(resource)
   end
 
   # ユーザー編集後のリダイレクト先をユーザー詳細ページに変更
   def after_update_path_for(resource)
-    users_user_path(resource)
+    user_path(resource)
   end
 
   # ユーザー新規登録の際にパラメーターを追加(user_nameを追加)
