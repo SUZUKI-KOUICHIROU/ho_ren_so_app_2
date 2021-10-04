@@ -6,7 +6,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @projects =
       if params[:search].present?
-        @user.Project.where('project_name LIKE ?', "%#{params[:search]}%")
+        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%")
       else
         @user.projects.all
       end
@@ -24,7 +24,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
                                      project_report_frequency: project_report_frequency,
                                      project_next_report_date: project_next_report_date)
     flash[:success] = 'プロジェクトを新規登録しました。'
-    redirect_to user_projects_projects_path(@user.id)
+    redirect_to user_projects_path(@user.id)
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -57,7 +57,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find(params[:id])
     @project.destroy
     flash[:success] = "#{@project.project_name}を削除しました。"
-    redirect_to user_projects_projects_path(@user.id)
+    redirect_to user_projects_path(@user.id)
   end
 
   private

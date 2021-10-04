@@ -17,12 +17,12 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  namespace :users do
+  scope module: :users do
     resources :users, only: %i[index show]
   end
 
   resources :users do
-    namespace :projects do
+    scope module: :projects do
       resources :projects
       resources :messages
     end
