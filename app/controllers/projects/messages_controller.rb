@@ -1,4 +1,4 @@
-class Projects::MessagesController < Projects::BaseProjectController
+class Projects::MessagesController < BaseController
   
   def new
     @project = Project.find(params[:project_id])
