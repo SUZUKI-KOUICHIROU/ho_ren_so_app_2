@@ -1,4 +1,4 @@
-class Users::UserBaseController < BaseController
+class Users::BaseUserController < BaseController
   before_action :correct_user
 
   private

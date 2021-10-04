@@ -7,7 +7,6 @@ require 'rspec/rails'
 require 'support/factory_bot'
 require 'capybara/poltergeist'
 Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
-
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -19,6 +18,7 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
   Capybara.javascript_driver = :poltergeist
+  config.use_transactional_fixtures = false
   require 'database_cleaner'
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
@@ -47,6 +47,7 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+  config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :system
 end

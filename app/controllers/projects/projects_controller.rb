@@ -1,4 +1,4 @@
-class Users::ProjectsController < Users::UserBaseController
+class Projects::ProjectsController < Projects::BaseProjectController
   before_action :project_reader_user, only: %i[edit update destroy]
 
   # プロジェクト一覧ページ表示アクション
@@ -6,18 +6,25 @@ class Users::ProjectsController < Users::UserBaseController
     @user = User.find(params[:user_id])
     @projects =
       if params[:search].present?
-        Project.where('project_name LIKE ?', "%#{params[:search]}%")
-      elsif params[:button_attribute] == 'in_joining'
-        @user.projects.all
+        @user.Project.where('project_name LIKE ?', "%#{params[:search]}%")
       else
-        Project.all
+        @user.projects.all
       end
   end
 
   # プロジェクト新規登録アクション
   def create
-    @project = Project.create(project_params)
-    @projects = Project.all
+    @user = User.find(params[:user_id])
+    project_name = project_params[:project_name]
+    project_leader_id = project_params[:project_leader_id]
+    project_report_frequency = project_params[:project_report_frequency]
+    project_next_report_date = Date.current.since(project_params[:project_report_frequency].to_i.days)
+    @project = @user.projects.create(project_name: project_name,
+                                     project_leader_id: project_leader_id,
+                                     project_report_frequency: project_report_frequency,
+                                     project_next_report_date: project_next_report_date)
+    flash[:success] = 'プロジェクトを新規登録しました。'
+    redirect_to user_projects_projects_path(@user.id)
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -33,6 +40,7 @@ class Users::ProjectsController < Users::UserBaseController
 
   # プロジェクト詳細確認用モーダルウインドウ表示アクション
   def show
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
   end
 
@@ -47,16 +55,15 @@ class Users::ProjectsController < Users::UserBaseController
   def destroy
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
-    @product.destroy
+    @project.destroy
     flash[:success] = "#{@project.project_name}を削除しました。"
-    redirect_to users_user_projects_path(@user.id)
+    redirect_to user_projects_projects_path(@user.id)
   end
 
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency,
-                                    :project_next_report_date)
+    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency)
   end
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓

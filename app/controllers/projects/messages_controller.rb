@@ -1,12 +1,13 @@
-class Users::MessagesController < Users::ProjectsController
+class Projects::MessagesController < Projects::BaseProjectController
   
   def new
     @project = Project.find(params[:project_id])
-    @message = Message.new()
+    @message = @project.messages.new()
   end
 
   def create
-    @message = Message.new(message_params)
+    @project = Project.find(params[:project_id])
+    @message = @project.messages.new(message_params)
     @message.projegt_id = "1"
     @message.save
     redirect_to users_user_project_path params[:user_id],params[:project_id]

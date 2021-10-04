@@ -1,4 +1,4 @@
-class Users::UsersController < Users::UserBaseController
+class Users::UsersController < Users::BaseUserController
   # ユーザー詳細ページ表示アクション
   def show
     @user = User.find(params[:id])

@@ -18,10 +18,13 @@ Rails.application.routes.draw do
   }
 
   namespace :users do
-    resources :users, only: %i[index show] do
-      resources :projects do
-        resources :messages
-      end
+    resources :users, only: %i[index show]
+  end
+
+  resources :users do
+    namespace :projects do
+      resources :projects
+      resources :messages
     end
   end
 end

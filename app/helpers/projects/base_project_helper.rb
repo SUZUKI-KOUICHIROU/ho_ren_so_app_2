@@ -1,0 +1,2 @@
+module Projects::BaseProjectHelper
+end

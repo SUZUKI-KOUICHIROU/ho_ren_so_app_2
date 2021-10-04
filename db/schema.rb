@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.date "counseling_reply_deadline"
     t.text "counseling_reply_detail"
     t.boolean "counseling_reply_flag", default: false, null: false
-    t.integer "projegt_id"
+    t.integer "project_id"
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projegt_id"], name: "index_counselings_on_projegt_id"
+    t.index ["project_id"], name: "index_counselings_on_project_id"
     t.index ["task_id"], name: "index_counselings_on_task_id"
   end
 
@@ -45,11 +45,11 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
 
   create_table "messages", force: :cascade do |t|
     t.text "message_detail", default: "", null: false
-    t.integer "projegt_id"
+    t.integer "project_id"
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projegt_id"], name: "index_messages_on_projegt_id"
+    t.index ["project_id"], name: "index_messages_on_project_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
   end
 
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.boolean "project_reported_flag", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_name"], name: "index_projects_on_project_name", unique: true
   end
 
   create_table "report_confirmers", force: :cascade do |t|
@@ -94,11 +93,11 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
   create_table "reports", force: :cascade do |t|
     t.text "report_detail", default: "", null: false
     t.text "problem_detail"
-    t.integer "projegt_id"
+    t.integer "project_id"
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projegt_id"], name: "index_reports_on_projegt_id"
+    t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["task_id"], name: "index_reports_on_task_id"
   end
 
@@ -108,10 +107,10 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.integer "task_report_frequency", null: false
     t.date "task_next_report_date", null: false
     t.boolean "task_reported_flag", default: false, null: false
-    t.integer "projegt_id"
+    t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projegt_id"], name: "index_tasks_on_projegt_id"
+    t.index ["project_id"], name: "index_tasks_on_project_id"
   end
 
   create_table "users", force: :cascade do |t|

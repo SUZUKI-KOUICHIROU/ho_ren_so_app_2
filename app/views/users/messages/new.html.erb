@@ -4,7 +4,7 @@
   <div>
     <div>
       <h5>報告する</h5>
-    <%= form_with(model: @message, url: users_user_project_messages_path(@user,@project), local: true, method: :post) do |f| %>
+    <%= form_with(model: @message, url: user_projects_messages_path(@user,@project), local: true, method: :post) do |f| %>
       <div>
         <div>
           <%= f.label :message_detail, "報告詳細" %>
