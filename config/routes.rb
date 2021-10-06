@@ -23,9 +23,9 @@ Rails.application.routes.draw do
 
   resources :users do
     scope module: :projects do
-      resources :projects
+      resources :projects do
+        resources :messages  
+      end
     end
   end
-
-
 end
