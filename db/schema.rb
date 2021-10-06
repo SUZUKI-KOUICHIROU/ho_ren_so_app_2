@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_01_095822) do
+ActiveRecord::Schema.define(version: 2021_10_05_120212) do
 
   create_table "counseling_confirmers", force: :cascade do |t|
     t.integer "counseling_confirmer_id", null: false
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sender_id"
+    t.string "title"
     t.index ["project_id"], name: "index_messages_on_project_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
   end
@@ -79,6 +81,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.boolean "project_reported_flag", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "report_confirmers", force: :cascade do |t|

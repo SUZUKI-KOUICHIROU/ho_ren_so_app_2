@@ -42,6 +42,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def show
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
+    @messages = @project.messages.all
   end
 
   # プロジェクト内容編集アクション

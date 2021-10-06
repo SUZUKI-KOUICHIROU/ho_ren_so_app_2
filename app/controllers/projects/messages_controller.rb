@@ -1,6 +1,7 @@
 class Projects::MessagesController < BaseController
   
   def new
+    @user = current_user
     @project = Project.find(params[:project_id])
     @message = @project.messages.new()
   end
@@ -8,14 +9,14 @@ class Projects::MessagesController < BaseController
   def create
     @project = Project.find(params[:project_id])
     @message = @project.messages.new(message_params)
-    @message.projegt_id = "1"
+    @message.sender_id = current_user.id
     @message.save
-    redirect_to users_user_project_path params[:user_id],params[:project_id]
+    redirect_to user_project_path params[:user_id],params[:project_id]
   end
 
 
   private
   def message_params
-    params.require(:message).permit(:message_detail)
+    params.require(:message).permit(:message_detail, :title)
   end
 end
