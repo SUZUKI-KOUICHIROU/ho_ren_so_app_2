@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_01_095822) do
+ActiveRecord::Schema.define(version: 2021_10_09_042822) do
+
+  create_table "check_box_contents", force: :cascade do |t|
+    t.string "check_box_value", default: "", null: false
+    t.integer "check_box_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["check_box_id"], name: "index_check_box_contents_on_check_box_id"
+  end
+
+  create_table "check_boxes", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "check_box", null: false
+    t.string "option_string", default: "", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_check_boxes_on_form_display_order_id"
+  end
 
   create_table "counseling_confirmers", force: :cascade do |t|
     t.integer "counseling_confirmer_id", null: false
+    t.text "counseling_reply_detail"
+    t.boolean "counseling_reply_flag", default: false, null: false
     t.boolean "counseling_confirmation_flag", default: false, null: false
     t.integer "counseling_id"
     t.datetime "created_at", null: false
@@ -24,14 +44,21 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
   create_table "counselings", force: :cascade do |t|
     t.text "counseling_detail", default: "", null: false
     t.date "counseling_reply_deadline"
-    t.text "counseling_reply_detail"
-    t.boolean "counseling_reply_flag", default: false, null: false
     t.integer "project_id"
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_counselings_on_project_id"
     t.index ["task_id"], name: "index_counselings_on_task_id"
+  end
+
+  create_table "form_display_orders", force: :cascade do |t|
+    t.integer "position"
+    t.string "form_table_type", default: "", null: false
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_form_display_orders_on_project_id"
   end
 
   create_table "message_confirmers", force: :cascade do |t|
@@ -81,6 +108,24 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "radio_button_contents", force: :cascade do |t|
+    t.string "radio_button_value", default: "", null: false
+    t.integer "radio_button_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["radio_button_id"], name: "index_radio_button_contents_on_radio_button_id"
+  end
+
+  create_table "radio_buttons", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "radio_button", null: false
+    t.string "option_string", default: "", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_radio_buttons_on_form_display_order_id"
+  end
+
   create_table "report_confirmers", force: :cascade do |t|
     t.integer "report_confirmer_id", null: false
     t.boolean "report_confirmation_flag", default: false, null: false
@@ -91,14 +136,37 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
   end
 
   create_table "reports", force: :cascade do |t|
-    t.text "report_detail", default: "", null: false
-    t.text "problem_detail"
     t.integer "project_id"
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["task_id"], name: "index_reports_on_task_id"
+  end
+
+  create_table "select_contents", force: :cascade do |t|
+    t.string "select_value", default: "", null: false
+    t.integer "select_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["select_id"], name: "index_select_contents_on_select_id"
+  end
+
+  create_table "select_option_strings", force: :cascade do |t|
+    t.string "option_string", default: "", null: false
+    t.integer "select_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["select_id"], name: "index_select_option_strings_on_select_id"
+  end
+
+  create_table "selects", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "select", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_selects_on_form_display_order_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -111,6 +179,40 @@ ActiveRecord::Schema.define(version: 2021_09_01_095822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_tasks_on_project_id"
+  end
+
+  create_table "text_area_contents", force: :cascade do |t|
+    t.string "text_area_value", default: "", null: false
+    t.integer "text_area_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["text_area_id"], name: "index_text_area_contents_on_text_area_id"
+  end
+
+  create_table "text_areas", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "text_area", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_text_areas_on_form_display_order_id"
+  end
+
+  create_table "text_field_contents", force: :cascade do |t|
+    t.string "text_field_value", default: "", null: false
+    t.integer "text_field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["text_field_id"], name: "index_text_field_contents_on_text_field_id"
+  end
+
+  create_table "text_fields", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "text_field", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_text_fields_on_form_display_order_id"
   end
 
   create_table "users", force: :cascade do |t|
