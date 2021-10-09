@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2021_10_09_042822) do
 
   create_table "check_box_contents", force: :cascade do |t|
@@ -29,6 +30,9 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.datetime "updated_at", null: false
     t.index ["form_display_order_id"], name: "index_check_boxes_on_form_display_order_id"
   end
+=======
+ActiveRecord::Schema.define(version: 2021_10_05_120212) do
+>>>>>>> 1e2f80a3b4d5eb091cf38fb76b2b6a3d85bf70c3
 
   create_table "counseling_confirmers", force: :cascade do |t|
     t.integer "counseling_confirmer_id", null: false
@@ -76,6 +80,8 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sender_id"
+    t.string "title"
     t.index ["project_id"], name: "index_messages_on_project_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
   end
@@ -106,6 +112,7 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.boolean "project_reported_flag", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "radio_button_contents", force: :cascade do |t|

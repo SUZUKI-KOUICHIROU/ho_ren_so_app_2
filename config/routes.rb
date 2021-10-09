@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   resources :users, only: %i[index show], module: 'users'
 
   resources :users, only: %i[edit] do
-    resources :projects, module: 'projects'
+    scope module: :projects do
+      resources :projects do
+        resources :messages
+      end
+    end
   end
-
 end
