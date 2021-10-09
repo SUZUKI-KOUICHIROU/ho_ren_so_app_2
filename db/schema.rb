@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2021_10_09_042822) do
 
   create_table "check_box_contents", force: :cascade do |t|
@@ -30,9 +29,6 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.datetime "updated_at", null: false
     t.index ["form_display_order_id"], name: "index_check_boxes_on_form_display_order_id"
   end
-=======
-ActiveRecord::Schema.define(version: 2021_10_05_120212) do
->>>>>>> 1e2f80a3b4d5eb091cf38fb76b2b6a3d85bf70c3
 
   create_table "counseling_confirmers", force: :cascade do |t|
     t.integer "counseling_confirmer_id", null: false

@@ -1,8 +1,8 @@
 class CreateSelects < ActiveRecord::Migration[5.2]
   def change
     create_table :selects do |t|
-      t.string :label_name, null: false, default: ''
-      t.string :field_type, null: false, default: 'select'
+      t.string :label_name, null: false, default: '' # ラベル名
+      t.string :field_type, null: false, default: 'select' # 入力フィールドのタイプ
       t.references :form_display_order, foreign_key: true
 
       t.timestamps
