@@ -17,14 +17,12 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  scope module: :users do
-    resources :users, only: %i[index show]
-  end
+  resources :users, only: %i[index show], module: 'users'
 
-  resources :users do
+  resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
-        resources :messages  
+        resources :messages
       end
     end
   end

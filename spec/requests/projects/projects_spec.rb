@@ -10,13 +10,27 @@ RSpec.describe 'Users::Projects', type: :request do
       end
 
       it 'GET /indexリクエストが成功すること' do
-        get users_user_projects_path user
+        get user_projects_path user
         expect(response).to be_successful
         expect(response).to have_http_status '200'
       end
 
       it 'GET /newリクエストが成功すること', js: true do
-        get new_users_user_project_path user, xhr: true
+        get new_user_project_path(user), xhr: true
+        expect(response).to be_successful
+        expect(response).to have_http_status '200'
+      end
+    end
+
+    context '未ログインユーザーの場合' do
+      it 'GET /indexリクエストでログインページにリダイレクトされること' do
+        get user_projects_path user
+        expect(response).to be_successful
+        expect(response).to have_http_status '200'
+      end
+
+      it 'GET /newリクエストが失敗', js: true do
+        get new_user_project_path(user), xhr: true
         expect(response).to be_successful
         expect(response).to have_http_status '200'
       end
