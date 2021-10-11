@@ -43,6 +43,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
     @messages = @project.messages.all
+    @member = @project.users.all
   end
 
   # プロジェクト内容編集アクション

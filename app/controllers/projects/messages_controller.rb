@@ -3,6 +3,7 @@ class Projects::MessagesController < BaseController
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
+    @member = @project.users.all
     @message = @project.messages.new()
   end
 
