@@ -12,19 +12,27 @@
   <div style="padding: 20px; border-right: solid; width: 20%;">
     <%= link_to "報告する", "#", class: "btn btn-primary button-p10", style: "margin: 10px;" %>
     <br>
-    <%= link_to "連絡する", new_user_project_message_path(@user,@project), class: "btn btn-secondary", style: "margin: 10px;" %>
+    <%= link_to "連絡する", new_project_message_path(@project), class: "btn btn-secondary", style: "margin: 10px;" %>
     <br>
-    <%= link_to "相談する", "#", class: "btn btn-success", style: "margin: 10px;" %>
+    <%= link_to "相談する", new_project_counseling_path(@project), class: "btn btn-success", style: "margin: 10px;" %>
   </div>
 
   <div style="margin: 10px;">
     <div>
-      <h2 style="text-align: left;">▼新着情報▼</h2>
+
+
+ <%
+=begin%>
+ <h2 style="text-align: left;">▼新着情報▼</h2>
       <p><%= "<ここにプロジェクトに関する通知を入れてみるとか。>"%></p>
       <p><%= "<例）○月○日分が未報告です。>"%></p>
-      <p><%= "<例）あなたの報告へリアクションがありました。>"%></p>
+      <p><%= "<例）あなたの報告へリアクションがありました。>"%></p>  
+<%
+=end%>
+
     </div>
 
+    <span><%= "▼あなた宛の連絡(最新の#{@messages.count}件)▼" %></span>
     <table>
       <thead>
         <th>概要</th>
@@ -35,14 +43,38 @@
         <% @messages.each do |message| %>
           <tr>
             <td>
-              <%= message.title %>
+              <%= link_to message.title, project_message_path(@project,message) %>
             </td>
             <td>
-              <%= User.find(message.sender_id).user_name %>
+              <%= @member.find(message.sender_id).user_name %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <%= link_to "連絡一覧", project_messages_path(@project,current_user) %>
+
+    <br>
+    <span><%= "▼あなた宛の連絡(最新の#{@counselings.count}件)▼" %></span>
+    <table>
+      <thead>
+        <th>概要</th>
+        <th>相談者</th>
+      </thead>
+
+      <tbody>
+        <% @counselings.each do |counseling| %>
+          <tr>
+            <td>
+              <%= link_to counseling.title, project_counseling_path(@project,counseling) %>
+            </td>
+            <td>
+              <%= @member.find(counseling.sender_id).user_name %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to "相談一覧", project_counselings_path(@project,current_user) %>
   </div>
 </div>

@@ -1,0 +1,2 @@
+<% buf = @counseling_c.counseling_confirmation_flag == true ? 'hand-thumbs-up-fill.svg' : 'hand-thumbs-up.svg' %>
+<%= link_to embedded_svg(buf), read_project_counseling_path(@project,@counseling), method: :patch,  remote: true %>

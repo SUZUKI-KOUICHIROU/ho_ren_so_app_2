@@ -21,8 +21,19 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[edit] do
     scope module: :projects do
-      resources :projects do
-        resources :messages
+      resources :projects  
+    end
+  end
+
+  resources :projects, module: 'projects' do
+    resources :messages do
+      member do
+        patch 'read'
+      end
+    end
+    resources :counselings do
+      member do
+        patch 'read'
       end
     end
   end

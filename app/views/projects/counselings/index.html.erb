@@ -1,4 +1,4 @@
-<span>▼あなた宛の連絡一覧▼</span>
+<span>▼あなた宛の相談一覧▼</span>
     <table>
       <thead>
         <th>概要</th>
@@ -6,13 +6,13 @@
       </thead>
 
       <tbody>
-        <% @messages.each do |message| %>
+        <% @counselings.each do |counseling| %>
           <tr>
             <td>
-              <%= link_to message.title, project_message_path(@project,message) %>
+              <%= link_to counseling.title, project_counseling_path(@project,counseling) %>
             </td>
             <td>
-              <%= @member.find(message.sender_id).user_name %>
+              <%= @member.find(counseling.sender_id).user_name %>
             </td>
           </tr>
         <% end %>

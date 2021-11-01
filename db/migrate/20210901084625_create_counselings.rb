@@ -5,7 +5,8 @@ class CreateCounselings < ActiveRecord::Migration[5.2]
       t.date :counseling_reply_deadline # 返信期日
       t.references :project, foreign_key: true
       t.references :task, foreign_key: true
-
+      t.integer :sender_id #送信者のID
+      t.string :title #件名
       t.timestamps
     end
   end
