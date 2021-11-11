@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_09_042822) do
+ActiveRecord::Schema.define(version: 2021_11_08_110550) do
 
   create_table "check_box_contents", force: :cascade do |t|
     t.string "check_box_value", default: "", null: false
@@ -228,6 +228,9 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.datetime "updated_at", null: false
     t.string "user_name", default: "", null: false
     t.boolean "admin", default: false, null: false
+    t.string "invite_digest"
+    t.integer "invited_by"
+    t.datetime "invite_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
