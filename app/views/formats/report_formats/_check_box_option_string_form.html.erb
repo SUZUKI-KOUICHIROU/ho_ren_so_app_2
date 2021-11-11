@@ -1,0 +1,9 @@
+<%= cbf.fields_for "check_box_option_string[]", @option_string do |cbosf| %>
+  <div class="check-box-option">
+    <div class="ballot-box-with-check">&#x2611;</div>
+    <%= cbosf.text_field :option_string, class: 'form-control'%>
+    <a class="cross-mark">
+      <%= link_to_remove_field( "✖︎", cbf, {} ) %>
+    </a>
+  </div>
+<% end %>

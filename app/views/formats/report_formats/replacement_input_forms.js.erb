@@ -1,0 +1,12 @@
+<% case params[:form_type] %>
+<% when 'text_field' %>
+  $('.form-content').html('<%= escape_javascript(render 'text_field_form', { form_display_order: @form_display_order, project: @project, text_field: @text_field } ) %>')
+<% when 'text_area' %>
+  $('.form-content').html('<%= escape_javascript(render 'text_area_form', { form_display_order: @form_display_order, project: @project, text_area: @text_area } ) %>')
+<% when 'check_box' %>
+  $('.form-content').html('<%= escape_javascript(render 'check_box_form', { form_display_order: @form_display_order, project: @project, form: @check_box, option_string: @option_string } ) %>')
+<% when 'radio_button' %>
+  $('.form-content').html('<%= escape_javascript(render 'radio_button_form', { form_display_order: @form_display_order, project: @project, radio_button: @radio_button, radio_button_option_string: @radio_button_option_string } ) %>')
+<% when 'text_area' %>
+  $('.form-content').html('<%= escape_javascript(render 'select_form', { form_display_order: @form_display_order, project: @project, select: @select, select_option_string: @select_option_string } ) %>')
+<% end %>

@@ -1,0 +1,102 @@
+// Place all the styles related to the formats::format controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.edit-report-formats-header, .edit-report-formats-footer {
+  margin: 1% auto;
+  padding: 1%;
+  width: 50%;
+}
+
+.edit-report-formats-header {
+  display: flex;
+}
+
+.project-name {
+  margin-top: 1%;
+}
+
+.form-addition {
+  margin-top: 1%;
+  text-align: right;
+  margin-left: auto;
+}
+
+.form {
+  background-color: rgb(245, 245, 245);
+  border-radius: 10px;
+  margin: 1% auto;
+  padding: 1%;
+  width: 50%;
+}
+
+.form-option {
+  display: flex;
+}
+
+.label-name {
+  margin-right: 1%;
+  width: 50%;
+}
+
+.field-type{
+  margin-left: 1%;
+  width: 50%;
+}
+
+.form-view-text-field {
+  border-bottom: thin dotted;
+  margin-top: 1em;
+  width: 50%;
+}
+
+.form-view-text-area {
+  border-bottom: thin dotted;
+  margin-top: 1em;
+}
+
+.label-box {
+  margin-top: 2%;
+}
+
+.check-box-option {
+  display: flex;
+  width: 50%;
+  margin-bottom: 2%;
+}
+
+.radio-button-option, .check-box-option, .select-option {
+  // margin-top: 1%;
+  // display: flex;
+}
+
+.ballot-box-with-check, .janome, .white-down-pointing-small-triangle, .remove_field {
+  font-size: 120%;
+  line-height: 200%;
+  width: 10%;
+}
+
+.remove_field:hover {
+  text-decoration: none;
+}
+
+.form-view {
+  border-bottom: thin dotted;
+  margin-top: 1em;
+}
+
+.form-button {
+  display: flex;
+}
+
+.option-addition{
+  margin-top: 1%;
+}
+
+.form-delete {
+  margin-top: 1%;
+  text-align: right;
+  margin-left: auto;
+}
+
+// border: thin solid;
