@@ -10,11 +10,8 @@ module ApplicationHelper
   end
 
   class << self
-    attr_accessor :weeks, :form_option
+    attr_accessor :weeks
   end
 
   ApplicationHelper.weeks = %w[日 月 火 水 木 金 土]
-
-  ApplicationHelper.form_option = { '記述式' => 'text_field', '段落式' => 'text_area', 'ラジオボタン' => 'radio_button',
-                                    'チェックボックス' => 'check_box', 'プルダウン' => 'select' }
 end

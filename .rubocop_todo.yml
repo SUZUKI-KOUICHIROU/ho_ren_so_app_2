@@ -275,14 +275,3 @@ Style/StringLiterals:
 Style/SymbolArray:
   EnforcedStyle: percent
   MinSize: 4
-
-# Metrics/MethodLength: Method has too many lines.
-# Metrics/MethodLength:
-#   Enabled: false
-#   CountComments: false  # count full line comments?
-#   Max: 200
-
-# Metrics/LineLength:
-#   Enabled: false
-#   CountComments: false  # count full line comments?
-#   Max: 200

@@ -1,2 +1,0 @@
-module Formats::BaseFormatHelper
-end
