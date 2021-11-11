@@ -40,9 +40,12 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト詳細確認用モーダルウインドウ表示アクション
   def show
-    @user = User.find(params[:user_id])
+    @user = current_user
     @project = Project.find(params[:id])
-    @messages = @project.messages.all
+    # @messages = @project.my_messages(current_user)
+    @counselings = @project.counselings.my_counselings(current_user)
+    @messages = @project.messages.my_recent_messages(current_user)
+    @member = @project.users.all
   end
 
   # プロジェクト内容編集アクション

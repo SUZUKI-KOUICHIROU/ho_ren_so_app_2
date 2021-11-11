@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.date "counseling_reply_deadline"
     t.integer "project_id"
     t.integer "task_id"
+    t.integer "sender_id"
+    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_counselings_on_project_id"
@@ -74,10 +76,10 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.text "message_detail", default: "", null: false
     t.integer "project_id"
     t.integer "task_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "sender_id"
     t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_messages_on_project_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
   end
@@ -106,9 +108,9 @@ ActiveRecord::Schema.define(version: 2021_10_09_042822) do
     t.integer "project_report_frequency", default: 1, null: false
     t.date "project_next_report_date", null: false
     t.boolean "project_reported_flag", default: false, null: false
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "description"
   end
 
   create_table "radio_button_contents", force: :cascade do |t|
