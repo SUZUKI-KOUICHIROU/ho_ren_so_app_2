@@ -25,14 +25,20 @@ Rails.application.routes.draw do
         get 'invitations'
         resources :messages
       end
+      resources :projects  
     end
   end
 
-  scope module: :formats do
-    get 'projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
-    get 'projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format
-    post 'project/:project_id/report_formats/create', to: 'report_formats#create', as: :create_project_report_format
-    patch 'projects/:project_id/report_formats', to: 'report_formats#update', as: :update_project_report_format
-    get 'input_forms/replacement_input_forms', to: 'report_formats#replacement_input_forms', as: :replacement_input_forms
+  resources :projects, module: 'projects' do
+    resources :messages do
+      member do
+        patch 'read'
+      end
+    end
+    resources :counselings do
+      member do
+        patch 'read'
+      end
+    end
   end
 end

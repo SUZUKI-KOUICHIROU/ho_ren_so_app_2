@@ -3,11 +3,11 @@
 <div>
   <div>
     <div>
-      <h1>連絡を作成</h1>
-    <%= form_with(model: @message, url: project_messages_path(@project), local: true, method: :post) do |f| %>
+      <h1>相談を作成</h1>
+    <%= form_with(model: @counseling, url: project_counselings_path(@project), local: true, method: :post) do |f| %>
       <div>
         <div>
-          <%= f.label :aaa, "送信対象" %>
+          <%= f.label :send_to, "送信対象" %>
           <br>
           <%= f.collection_check_boxes :send_to, @member, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
         </div>
@@ -18,8 +18,8 @@
         </div>
 
         <div>
-          <%= f.label :message_detail, "連絡内容" %>
-          <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "form-control",rows: "10", required: true %>
+          <%= f.label :counseling_detail, "相談内容" %>
+          <%= f.text_area :counseling_detail, min: 1, placeholder: "最大500文字", class: "form-control",rows: "10", required: true %>
         </div>
       </div>
 
