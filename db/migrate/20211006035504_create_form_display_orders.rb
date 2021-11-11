@@ -7,6 +7,5 @@ class CreateFormDisplayOrders < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    add_index :form_display_orders, [:position, :project_id], unique: true
   end
 end

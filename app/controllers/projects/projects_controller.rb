@@ -25,7 +25,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
                                      project_next_report_date: project_next_report_date)
     flash[:success] = 'プロジェクトを新規登録しました。'
     redirect_to user_projects_path(@user.id)
-    report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -39,7 +38,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find(params[:id])
   end
 
-  # プロジェクト詳細ページ表示アクション
+  # プロジェクト詳細確認用モーダルウインドウ表示アクション
   def show
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
