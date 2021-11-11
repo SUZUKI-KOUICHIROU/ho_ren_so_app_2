@@ -20,10 +20,17 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.index ["check_box_id"], name: "index_check_box_contents_on_check_box_id"
   end
 
+  create_table "check_box_option_strings", force: :cascade do |t|
+    t.string "option_string", default: "", null: false
+    t.integer "check_box_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["check_box_id"], name: "index_check_box_option_strings_on_check_box_id"
+  end
+
   create_table "check_boxes", force: :cascade do |t|
     t.string "label_name", default: "", null: false
     t.string "field_type", default: "check_box", null: false
-    t.string "option_string", default: "", null: false
     t.integer "form_display_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -58,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["position", "project_id"], name: "index_form_display_orders_on_position_and_project_id", unique: true
     t.index ["project_id"], name: "index_form_display_orders_on_project_id"
   end
 
@@ -76,8 +84,8 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.integer "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sender_id"
-    t.string "title"
+    t.integer "sender_id", null: false
+    t.string "title", default: "", null: false
     t.index ["project_id"], name: "index_messages_on_project_id"
     t.index ["task_id"], name: "index_messages_on_task_id"
   end
@@ -108,7 +116,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.boolean "project_reported_flag", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "description"
+    t.string "description", default: "", null: false
   end
 
   create_table "radio_button_contents", force: :cascade do |t|
@@ -119,10 +127,17 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.index ["radio_button_id"], name: "index_radio_button_contents_on_radio_button_id"
   end
 
+  create_table "radio_button_option_strings", force: :cascade do |t|
+    t.string "option_string", default: "", null: false
+    t.integer "radio_button_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["radio_button_id"], name: "index_radio_button_option_strings_on_radio_button_id"
+  end
+
   create_table "radio_buttons", force: :cascade do |t|
     t.string "label_name", default: "", null: false
     t.string "field_type", default: "radio_button", null: false
-    t.string "option_string", default: "", null: false
     t.integer "form_display_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

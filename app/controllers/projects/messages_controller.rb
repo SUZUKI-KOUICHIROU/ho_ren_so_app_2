@@ -1,5 +1,5 @@
 class Projects::MessagesController < BaseController
-  
+
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -13,7 +13,6 @@ class Projects::MessagesController < BaseController
     @message.save
     redirect_to user_project_path params[:user_id],params[:project_id]
   end
-
 
   private
   def message_params
