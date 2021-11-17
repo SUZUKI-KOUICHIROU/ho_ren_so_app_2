@@ -1,0 +1,11 @@
+<% @qlist.each do |q| %>
+<%= q.form_table_type %>
+  <% case q.form_table_type %>
+    <% when 'text_field' %>
+      <%= render partial: 'text_short', locals: { pattern: q } %>
+    <% when 'text_area' %>
+      <%= render 'text_long', locals: { pattern: q }  %>
+    <% when 'radio_button' %>
+      <%= render 'choice', locals: { pattern: q }  %>
+  <% end %>
+<% end %>
