@@ -1,4 +1,4 @@
-class Projects::MessagesController < Projects::BaseProjectController
+class Projects::MessagesController < BaseController
 
   def create
     @project = Project.find(params[:project_id])
@@ -17,7 +17,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @member = @project.users.all
     @messages = @project.messages.my_messages(current_user)
   end
-
+  
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
