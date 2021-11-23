@@ -14,7 +14,7 @@
     <br>
     <%= link_to "連絡する", new_project_message_path(@project), class: "btn btn-secondary", style: "margin: 10px;" %>
     <br>
-    <%= link_to "相談する", new_project_counseling_path(@project), class: "btn btn-success", style: "margin: 10px;" %>
+    <%= link_to "相談する", new_user_project_counseling_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
   </div>
 
   <div style="margin: 10px;">
@@ -75,10 +75,10 @@
         <% end %>
       </tbody>
     </table>
-    <%= link_to "相談一覧", project_counselings_path(@project,current_user) %>
+    <%= link_to "相談一覧", user_project_counselings_path(@user, @project) %>
   </div>
 </div>
 
-<%= link_to "招待する", user_project_invitations_path(@user,@project), class: "btn btn-secondary", style: "margin: 10px;" %>
+<!--<%#= link_to "招待する", user_project_invitations_path(@user,@project), class: "btn btn-secondary", style: "margin: 10px;" %> -->
 <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
 </div>

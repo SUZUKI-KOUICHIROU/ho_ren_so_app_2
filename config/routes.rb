@@ -17,27 +17,22 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  resources :users, only: %i[index show], module: 'users'
+  resources :users, only: %i[index  show], module: 'users'
 
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
-        get 'invitations'
-        resources :messages
-      end
-      resources :projects  
-    end
-  end
-
-  resources :projects, module: 'projects' do
-    resources :messages do
-      member do
-        patch 'read'
-      end
-    end
-    resources :counselings do
-      member do
-        patch 'read'
+        #get 'invitations'
+        resources :messages do
+          member do
+            patch 'read'
+          end
+        end
+        resources :counselings do
+          member do
+            patch 'read'
+          end
+        end
       end
     end
   end
