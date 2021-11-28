@@ -76,6 +76,10 @@
       </tbody>
     </table>
     <%= link_to "相談一覧", project_counselings_path(@project,current_user) %>
+    <br>
+    <span><%= "▼報告の一覧▼" %></span>
+    <%= link_to "報告一覧", project_reports_path(@project,current_user) %>
+
   </div>
 </div>
 <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>

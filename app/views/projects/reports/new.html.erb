@@ -1,11 +1,31 @@
-<% @qlist.each do |q| %>
-<%= q.form_table_type %>
-  <% case q.form_table_type %>
-    <% when 'text_field' %>
-      <%= render partial: 'text_short', locals: { pattern: q } %>
-    <% when 'text_area' %>
-      <%= render 'text_long', locals: { pattern: q }  %>
-    <% when 'radio_button' %>
-      <%= render 'choice', locals: { pattern: q }  %>
-  <% end %>
+<h2><%= @project.project_name %></h2>
+<%= form_with url: project_reports_path(@project), method: :post do |f| %>
+  <% @qlist.each do |qt| %>
+  <% puts qt %>
+    <% case qt.form_table_type %>
+      <% when 'text_field' %>
+        <% buf = qt.text_field.text_field_contents.new() %>
+        <% q_type = 'text_field' %>
+
+      <% when 'text_area' %>
+        <% buf = qt.text_area.text_area_contents.new() %>
+        <% q_type = 'text_area' %>
+
+      <% when 'radio_button' %>
+        <% buf = qt.radio_button.radio_button_contents.new() %>
+        <% q_type = 'radio_button' %>
+        
+      <% when 'select' %>
+        <% buf = qt.select.select_contents.new() %>
+        <% q_type = 'select' %>
+
+      <% when 'check_box' %>
+        <% buf = qt.check_box.check_box_contents.new() %>
+        <% q_type = 'check_box' %>
+
+      <% end %>
+      <%= render partial: q_type, locals: { pattern: qt ,mo: buf, f: f} %> 
+    <% end %>
+  <%# レンダリング %>
+  <%= f.submit '更新', class: "btn btn-primary" %>
 <% end %>
