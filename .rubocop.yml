@@ -88,6 +88,6 @@ RSpec/ContextWording:
 RSpec/ExampleLength:
   Enabled: false
 
-# Example has too many expectations
+# Example has too many expectations. を無視
 RSpec/MultipleExpectations:
   Enabled: false

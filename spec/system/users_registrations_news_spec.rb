@@ -31,7 +31,7 @@ RSpec.describe 'UsersRegistrationsNews', type: :system do
       fill_in 'user_password', with: '111111111'
       fill_in 'user_password_confirmation', with: '111111111'
       click_button '新規作成'
-      #expect(current_path).to eq new_user_registration_path
+      # expect(current_path).to eq new_user_registration_path
       # expect(page).to have_current_path new_user_registration_path, ignore_query: true
     end
   end
