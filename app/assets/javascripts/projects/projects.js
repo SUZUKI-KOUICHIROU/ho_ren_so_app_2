@@ -1,6 +1,8 @@
 
 /*global $*/
 
+$(document).on('turbolinks:load', function(){
+  
 // プロジェクト新規作成モーダルウインドウ(報告頻度の入力フォールドが変化したら、次回報告日を動的に算出する処理)
 $(function($) {
   // モーダルウインドウは追加される元のhtmlのに追加される処理なので、親となる要素にonメソッド繋げる形で記述
@@ -59,4 +61,5 @@ $(function($) {
     console.log( "次回報告日は、", jpDateStr );
     document.getElementById("project_next_report_date").innerText = `次回報告日：${jpDateStr}`;
   });
+});
 });

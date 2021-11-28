@@ -1,0 +1,7 @@
+<div class="container">
+<%= pattern.select.label_name %>
+<br>
+<%= f.fields_for "answer[]", mo do |m| %>
+  <%= m.collection_select(:answer, pattern.select.select_option_strings.all, :option_string, :option_string) %>
+<% end %>
+</div>

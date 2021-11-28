@@ -1,0 +1,15 @@
+<% @qlist.each do |buf| %>
+  <% case buf.form_table_type %>
+    <% when 'text_field' %>
+      <% caption = buf.text_field.label_name %>  
+    <% when 'text_area' %>  
+      <% caption = buf.text_area.label_name %> 
+    <% when 'radio_button' %>  
+      <% caption = buf.radio_button.label_name %>
+    <% when 'select' %>  
+      <% caption = buf.select.label_name %>
+    <% when 'check_box' %>  
+      <% caption = buf.check_box.label_name %>
+  <% end %>
+  <%= link_to caption, project_report_path(@project,buf) %>の一覧
+<% end %>

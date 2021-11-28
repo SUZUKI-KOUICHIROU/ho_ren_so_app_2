@@ -84,20 +84,20 @@ projects.each do |project|
 
   # 以下テスト用
   # label_nameがテストチェックボックスのcheck_boxを生成
-  # check_box = CheckBox.new(label_name: 'テストチェックボックス')
-  # check_box.build_form_display_order(position: 5,
-  #                                       form_table_type: check_box.field_type,
-  #                                       project_id: project.id)
-  # check_box.save
-  # check_box.check_box_option_strings.create!(option_string: 'チェック１')
-  # check_box.check_box_option_strings.create!(option_string: 'チェック２')
+  check_box = CheckBox.new(label_name: 'テストチェックボックス')
+  check_box.build_form_display_order(position: 5,
+                                        form_table_type: check_box.field_type,
+                                        project_id: project.id)
+  check_box.save
+  check_box.check_box_option_strings.create!(option_string: 'チェック１')
+  check_box.check_box_option_strings.create!(option_string: 'チェック２')
 
   # # label_nameがテストセレクトボックスのselect_boxを生成
-  # select_box = Select.new(label_name: 'テストセレクトボックス')
-  # select_box.build_form_display_order(position: 6,
-  #                                       form_table_type: select_box.field_type,
-  #                                       project_id: project.id)
-  # select_box.save
-  # select_box.select_option_strings.create!(option_string: 'セレクト１')
-  # select_box.select_option_strings.create!(option_string: 'セレクト２')
+  select_box = Select.new(label_name: 'テストセレクトボックス')
+  select_box.build_form_display_order(position: 6,
+                                        form_table_type: select_box.field_type,
+                                        project_id: project.id)
+  select_box.save
+  select_box.select_option_strings.create!(option_string: 'セレクト１')
+  select_box.select_option_strings.create!(option_string: 'セレクト２')
 end
