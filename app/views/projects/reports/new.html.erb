@@ -1,5 +1,5 @@
 <h2><%= @project.project_name %></h2>
-<%= form_with url: project_reports_path(@project), method: :post do |f| %>
+<%= form_with url: user_project_reports_path(current_user,@project), method: :post do |f| %>
   <% @qlist.each do |qt| %>
   <% puts qt %>
     <% case qt.form_table_type %>

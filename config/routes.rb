@@ -32,9 +32,8 @@ Rails.application.routes.draw do
             patch 'read'
           end
         end
+        resources :reports
       end
-    end
-    resources :reports do
     end
   end
 
