@@ -4,7 +4,7 @@
   <div>
     <div>
       <h1>連絡を作成</h1>
-    <%= form_with(model: @message, url: project_messages_path(@project), local: true, method: :post) do |f| %>
+    <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
       <div>
         <div>
           <%= f.label :aaa, "送信対象" %>

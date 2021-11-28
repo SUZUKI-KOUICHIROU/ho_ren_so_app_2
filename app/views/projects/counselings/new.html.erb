@@ -4,7 +4,7 @@
   <div>
     <div>
       <h1>相談を作成</h1>
-    <%= form_with(model: @counseling, url: project_counselings_path(@project), local: true, method: :post) do |f| %>
+    <%= form_with(model: @counseling, url: user_project_counselings_path(current_user,@project), local: true, method: :post) do |f| %>
       <div>
         <div>
           <%= f.label :send_to, "送信対象" %>
