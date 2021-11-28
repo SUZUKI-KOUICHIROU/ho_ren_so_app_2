@@ -9,7 +9,7 @@
         <% @messages.each do |message| %>
           <tr>
             <td>
-              <%= link_to message.title, project_message_path(@project,message) %>
+              <%= link_to message.title, user_project_message_path(current_user,@project,message) %>
             </td>
             <td>
               <%= @member.find(message.sender_id).user_name %>

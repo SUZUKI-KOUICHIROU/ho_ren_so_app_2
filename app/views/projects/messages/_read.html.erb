@@ -1,2 +1,2 @@
 <% buf = @message_c.message_confirmation_flag == true ? 'hand-thumbs-up-fill.svg' : 'hand-thumbs-up.svg' %>
-<%= link_to embedded_svg(buf), read_project_message_path(@project,@message), method: :patch,  remote: true %>
+<%= link_to embedded_svg(buf), read_user_project_message_path(current_user,@project,@message), method: :patch,  remote: true %>

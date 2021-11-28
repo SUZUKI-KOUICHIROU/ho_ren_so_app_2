@@ -9,7 +9,7 @@
         <% @counselings.each do |counseling| %>
           <tr>
             <td>
-              <%= link_to counseling.title, project_counseling_path(@project,counseling) %>
+              <%= link_to counseling.title, user_project_counseling_path(current_user,@project,counseling) %>
             </td>
             <td>
               <%= @member.find(counseling.sender_id).user_name %>
