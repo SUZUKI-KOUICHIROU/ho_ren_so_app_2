@@ -35,6 +35,8 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :reports do
+    end
   end
 
   scope module: :formats do

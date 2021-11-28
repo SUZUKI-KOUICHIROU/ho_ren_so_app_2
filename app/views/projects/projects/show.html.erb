@@ -10,7 +10,8 @@
 
 <div style="display:flex">
   <div style="padding: 20px; border-right: solid; width: 20%;">
-    <%= link_to "報告する", "#", class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+    <%#= link_to "報告する", new_project_report_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+    <%= link_to "報告する", new_user_report_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
     <br>
     <%= link_to "連絡する", new_user_project_message_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
     <br>
@@ -75,7 +76,12 @@
         <% end %>
       </tbody>
     </table>
-    <%= link_to "相談一覧", user_project_counselings_path(@user, @project) %>
+
+    <%= link_to "相談一覧", project_counselings_path(@project,current_user) %> 
+    <br>
+    <span><%= "▼報告の一覧▼" %></span>
+    <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %>
+
   </div>
 </div>
 
