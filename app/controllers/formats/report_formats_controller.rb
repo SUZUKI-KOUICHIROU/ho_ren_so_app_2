@@ -30,7 +30,6 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム編集アクション
   def update
-    debugger
   end
 
   # 入力フォーム削除アクション
