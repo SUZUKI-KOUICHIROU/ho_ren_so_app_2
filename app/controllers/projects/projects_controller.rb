@@ -20,9 +20,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
     project_report_frequency = project_params[:project_report_frequency]
     project_next_report_date = Date.current.since(project_params[:project_report_frequency].to_i.days)
     @project = @user.projects.create(project_name: project_name,
-                                     project_leader_id: project_leader_id,
-                                     project_report_frequency: project_report_frequency,
-                                     project_next_report_date: project_next_report_date)
+                                    project_leader_id: project_leader_id,
+                                    project_report_frequency: project_report_frequency,
+                                    project_next_report_date: project_next_report_date)
     flash[:success] = 'プロジェクトを新規登録しました。'
     redirect_to user_projects_path(@user.id)
     report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
@@ -51,9 +51,16 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト内容編集アクション
   def update
+    user = User.find(params[:user_id])
     @project = Project.find(params[:id])
     @project.update(project_params)
     @projects = Project.all
+    if @project.update_attributes(project_params)
+      flash[:success] = "#{@project.project_name}の内容を更新しました。"
+    else
+      flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
+    end
+    redirect_to user_projects_path(user)  
   end
 
   # プロジェクト削除アクション

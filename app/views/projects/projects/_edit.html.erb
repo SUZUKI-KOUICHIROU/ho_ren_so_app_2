@@ -6,7 +6,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <%= form_with(model: @project, url: user_projects_path(@project), local: true, method: :post, id: "project-form") do |f| %>
+    <%= form_with(model: @project, url: user_project_path(@project), local: true, method: :patch, id: "project-form") do |f| %>
       <div class="modal-body">
         <div class="box-project_name">
           <%= f.label :project_name, "プロジェクト名", class: "form-control-label" %>
@@ -30,7 +30,7 @@
         <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">
           キャンセル
         </button>
-          <%= f.submit "編集内容登録", class: "btn btn-primary btn-new", id: "project-create" %>
+          <%= f.submit "編集内容登録", class: "btn btn-primary btn-edit", id: "project-edit" %>
       </div>
     <% end %>
   </div>
