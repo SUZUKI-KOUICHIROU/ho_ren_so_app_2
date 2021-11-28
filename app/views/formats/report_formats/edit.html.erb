@@ -11,178 +11,21 @@
   </div>
 </div>
 
-  <%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
-    <% @form_number = 0 %>
-    <% @form_display_orders.each do |form_display_order|%>
-      <% @form_number += 1 %>
-      <% if form_display_order.form_table_type == 'text_field' %>
-        <!-- textield form generation logic-->
-        <% text_field = form_display_order.text_field %>
-        <div class="form" id=<%= "form-#{@form_number}" %>>
-          <div class="form-option">
-            <%= f.fields_for "text_field[]", text_field do |ftf| %>
-              <div class="label-name">
-                <%= ftf.label :label_name, "項目名" %>
-                <%= ftf.text_field :label_name, class: 'form-control'%>
-              </div>
-              <div class="field-type">
-                <%= ftf.label :field_type, "フォームの種類" %>
-                <%= ftf.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-view-text-field">
-            <a>記述式テキスト（短文回答）</a>
-          </div>
-          <div class="form-view">
-            <a>　</a>
-          </div>
-          <div class="form-delete">
-            <%= link_to "削除", "#", method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-          </div>
-        </div>
-      <% elsif form_display_order.form_table_type == 'text_area' %>
-        <!-- textarea form generation logic-->
-        <% text_area = form_display_order.text_area %>
-        <div class="form" id=<%= "form-#{@form_number}" %>>
-          <div class=form-option>
-            <%= f.fields_for "text_area[]", text_area do |fta| %>
-              <div class="label-name">
-                <%= fta.label :label_name, "項目名" %>
-                <%= fta.text_field :label_name, class: 'form-control'%>
-              </div>
-              <div class="field-type">
-                <%= fta.label :field_type, "フォームの種類" %>
-                <%= fta.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-view-text-area">
-            <a>記述式テキスト（長文回答）</a>
-          </div>
-          <div class="form-view">
-            <a>　</a>
-          </div>
-          <div class="form-delete">
-            <%= link_to "削除", "#", method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-          </div>
-        </div>
-      <% elsif form_display_order.form_table_type == 'check_box' %>
-        <!-- checkbox form generation logic-->
-        <% check_box = form_display_order.check_box %>
-        <% check_box_option_strings = check_box.check_box_option_strings.all %>
-        <div class="form" id=<%= "form-#{@form_number}" %>>
-          <div class=form-option>
-            <%= f.fields_for "check_box[]", check_box do |fcb| %>
-              <div class="label-name">
-                <%= fcb.label :label_name, "項目名" %>
-                <%= fcb.text_field :label_name, class: 'form-control'%>
-              </div>
-              <div class="field-type">
-                <%= fcb.label :field_type, "フォームの種類" %>
-                <%= fcb.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-view-check-box">
-            <%= f.label :option_string, "選択肢" %>
-            <% check_box_option_strings.each do |check_box_option_string|%>
-              <%= f.fields_for "check_box_option_strings[]", check_box_option_string do |fcbos| %>
-                <div class="check-box-option">
-                  <div class="ballot-box-with-check">&#x2611;</div><%= fcbos.text_field :option_string, class: 'form-control'%><a class="cross-mark">&#10005;</a>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="form-button">
-            <div class="option-addition">
-              <input type="button" value="選択肢追加" onclick="clickBtn1()" class="btn btn-primary btn-sm" />
-            </div>
-            <div class="form-delete">
-              <%= link_to "削除", "#", method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-            </div>
-          </div>
-        </div>
-      <% elsif form_display_order.form_table_type == 'radio_button' %>
-        <!-- radiobutton form generation logic-->
-        <% radio_button = form_display_order.radio_button %>
-        <% radio_button_option_strings = radio_button.radio_button_option_strings.all %>
-        <div class="form" id=<%= "form-#{@form_number}" %>>
-          <div class=form-option>
-            <%= f.fields_for "radio_button[]", radio_button do |frb| %>
-              <div class="label-name">
-                <%= frb.label :label_name, "項目名" %>
-                <%= frb.text_field :label_name, class: 'form-control'%>
-              </div>
-              <div class="field-type">
-                <%= frb.label :field_type, "フォームの種類" %>
-                <%= frb.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-view-radio-button">
-            <%= f.label :option_string, "選択肢" %>
-            <% radio_button_option_strings.each do |radio_button_option_string|%>
-              <%= f.fields_for "radio_button_option_strings[]", radio_button_option_string do |frbos| %>
-                <div class="radio-button-option">
-                  <div class="janome">&#x25C9;</div><%= frbos.text_field :option_string, class: 'form-control'%><a class="cross-mark">&#10005;</a>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="form-button">
-            <div class="option-addition">
-              <input type="button" value="選択肢追加" onclick="clicAddRadioButton()" class="btn btn-primary btn-sm" />
-            </div>
-            <div class="form-delete">
-              <%= link_to "削除", "#", method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-            </div>
-          </div>
-        </div>
-      <% elsif form_display_order.form_table_type == 'select' %>
-        <!-- select form generation logic-->
-        <% select_box = form_display_order.select %>
-        <% select_option_strings = select_box.select_option_strings.all %>
-        <div class="form" id=<%= "form-#{@form_number}" %>>
-          <div class=form-option>
-            <%= f.fields_for "select[]", select_box do |fs| %>
-              <div class="label-name">
-                <%= fs.label :label_name, "項目名" %>
-                <%= fs.text_field :label_name, class: 'form-control'%>
-              </div>
-              <div class="field-type">
-                <%= fs.label :field_type, "フォームの種類" %>
-                <%= fs.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-view-select">
-            <%= f.label :option_string, "選択肢" %>
-            <% select_option_strings.each do |select_option_string|%>
-              <%= f.fields_for "select_option_strings[]", select_option_string do |fsos| %>
-                <div class="select-option">
-                  <div class="white-down-pointing-small-triangle">&#x25BF;</div><%= fsos.text_field :option_string, class: 'form-control'%><a class="cross-mark">&#10005;</a>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="form-button">
-            <div class="option-addition">
-              <input type="button" value="選択肢追加" onclick="clickBtn1()" class="btn btn-primary btn-sm" />
-            </div>
-            <div class="form-delete">
-              <%= link_to "削除", "#", method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
+<%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
+  <% @form_number = 0 %>
+  <% @form_display_orders.each do |form_display_order|%>
+    <% @form_number += 1 %>
+    <% case form_display_order.form_table_type %>
+    <% when 'text_field', 'text_area'%>
+      <%= render partial: "edit_description_type_form", locals: { form_display_order: form_display_order, form_number: @form_number, f: f } %>
+    <% when 'radio_button', 'check_box', 'select' %>
+      <%= render partial: "edit_selection_type_form", locals: { form_display_order: form_display_order, form_number: @form_number, f: f } %>
     <% end %>
-    <div class="edit-report-formats-footer">
-      <%= f.submit "変更", class: "btn btn-primary btn-sm" %>
-    </div>
   <% end %>
+  <div class="edit-report-formats-footer">
+    <%= f.submit "変更", class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>
 
 <!--入力フォーム新規登録用モーダルウインドウ表示-->
 <div class="modal fade" id="form-new" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
-<!--入力フォーム編集モーダルウインドウ表示-->
-<div class="modal fade" id="form-edit" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>

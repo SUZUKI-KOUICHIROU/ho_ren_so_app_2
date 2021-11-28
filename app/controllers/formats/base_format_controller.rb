@@ -6,6 +6,7 @@ class Formats::BaseFormatController < BaseController
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   # プロジェクトリーダーを許可
   def project_reader_user
+    # debugger
     @project = Project.find(params[:project_id])
     return if current_user.id == @project.project_leader_id
 
