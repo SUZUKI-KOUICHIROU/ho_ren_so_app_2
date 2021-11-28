@@ -11,7 +11,7 @@
 <div style="display:flex">
   <div style="padding: 20px; border-right: solid; width: 20%;">
     <%#= link_to "報告する", new_project_report_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
-    <%= link_to "報告する", new_user_report_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+    <%= link_to "報告する", new_user_project_report_path(@user, @project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
     <br>
     <%= link_to "連絡する", new_user_project_message_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
     <br>
@@ -44,7 +44,7 @@
         <% @messages.each do |message| %>
           <tr>
             <td>
-              <%= link_to message.title, project_message_path(@project,message) %>
+              <%= link_to message.title, user_project_message_path(current_user,@project,message) %>
             </td>
             <td>
               <%= @member.find(message.sender_id).user_name %>
@@ -53,8 +53,9 @@
         <% end %>
       </tbody>
     </table>
-    <%= link_to "連絡一覧", user_project_messages_path(@project,current_user) %>
+    <%= link_to "連絡一覧", user_project_messages_path(current_user,@project) %>
 
+    <br>
     <br>
     <span><%= "▼あなた宛の連絡(最新の#{@counselings.count}件)▼" %></span>
     <table>
@@ -67,7 +68,7 @@
         <% @counselings.each do |counseling| %>
           <tr>
             <td>
-              <%= link_to counseling.title, project_counseling_path(@project,counseling) %>
+              <%= link_to counseling.title, user_project_counseling_path(current_user,@project,counseling) %>
             </td>
             <td>
               <%= @member.find(counseling.sender_id).user_name %>
@@ -77,10 +78,14 @@
       </tbody>
     </table>
 
-    <%= link_to "相談一覧", user_project_counselings_path(@project,current_user) %>
+    <%= link_to "相談一覧", user_project_counselings_path(current_user,@project) %>
     <br>
-    <span><%= "▼報告の一覧▼" %></span>
-    <%= link_to "報告一覧", user_reports_path(@project,current_user) %>
+    <%
+=begin%>
+ <span><%= "▼報告の一覧▼" %></span>
+    <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %>
+<%
+=end%>
 
   </div>
 </div>
