@@ -65,6 +65,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
     redirect_to user_projects_path(@user.id)
   end
 
+  def invitations
+  end
+
   private
 
   def project_params
@@ -80,4 +83,5 @@ class Projects::ProjectsController < Projects::BaseProjectController
     flash[:danger] = 'リーダーではない為、権限がありません。'
     redirect_to users_user_projects_path(params[:id])
   end
+
 end

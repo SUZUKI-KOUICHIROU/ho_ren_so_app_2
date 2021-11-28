@@ -78,4 +78,7 @@
     <%= link_to "相談一覧", project_counselings_path(@project,current_user) %>
   </div>
 </div>
+
+<%= link_to "招待する", user_project_invitations_path(@user,@project), class: "btn btn-secondary", style: "margin: 10px;" %>
 <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+</div>

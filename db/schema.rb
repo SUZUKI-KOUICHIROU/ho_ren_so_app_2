@@ -245,6 +245,9 @@ ActiveRecord::Schema.define(version: 2021_10_10_165125) do
     t.datetime "updated_at", null: false
     t.string "user_name", default: "", null: false
     t.boolean "admin", default: false, null: false
+    t.string "invite_digest"
+    t.integer "invited_by"
+    t.datetime "invite_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

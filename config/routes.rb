@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[edit] do
     scope module: :projects do
+      resources :projects do
+        get 'invitations'
+        resources :messages
+      end
       resources :projects
     end
   end
