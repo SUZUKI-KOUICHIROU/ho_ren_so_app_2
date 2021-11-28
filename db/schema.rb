@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_10_165125) do
+ActiveRecord::Schema.define(version: 2021_11_08_110550) do
 
   create_table "check_box_contents", force: :cascade do |t|
     t.string "check_box_value", default: "", null: false
