@@ -27,7 +27,7 @@
  <h2 style="text-align: left;">▼新着情報▼</h2>
       <p><%= "<ここにプロジェクトに関する通知を入れてみるとか。>"%></p>
       <p><%= "<例）○月○日分が未報告です。>"%></p>
-      <p><%= "<例）あなたの報告へリアクションがありました。>"%></p>  
+      <p><%= "<例）あなたの報告へリアクションがありました。>"%></p>
 <%
 =end%>
 
@@ -77,10 +77,10 @@
       </tbody>
     </table>
 
-    <%= link_to "相談一覧", project_counselings_path(@project,current_user) %> 
+    <%= link_to "相談一覧", user_project_counselings_path(@project,current_user) %>
     <br>
     <span><%= "▼報告の一覧▼" %></span>
-    <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %>
+    <%= link_to "報告一覧", user_reports_path(@project,current_user) %>
 
   </div>
 </div>
