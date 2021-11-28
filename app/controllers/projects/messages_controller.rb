@@ -1,5 +1,4 @@
 class Projects::MessagesController < BaseController
-
   def create
     @project = Project.find(params[:project_id])
     @message = @project.messages.new(message_params)
@@ -17,12 +16,12 @@ class Projects::MessagesController < BaseController
     @member = @project.users.all
     @messages = @project.messages.my_messages(current_user)
   end
-  
+
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
     @member = @project.users.all
-    @message = @project.messages.new()
+    @message = @project.messages.new
   end
 
   def show
@@ -42,6 +41,7 @@ class Projects::MessagesController < BaseController
   end
 
   private
+
   def message_params
     params.require(:message).permit(:message_detail, :title, { send_to: [] })
   end

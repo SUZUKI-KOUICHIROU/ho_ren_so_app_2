@@ -1,5 +1,4 @@
 class Projects::CounselingsController < BaseController
-  
   def create
     @project = Project.find(params[:project_id])
     @counseling = @project.counselings.new(counseling_params)
@@ -16,7 +15,7 @@ class Projects::CounselingsController < BaseController
     @user = current_user
     @project = Project.find(params[:project_id])
     @member = @project.users.all
-    @counseling = @project.counselings.new()
+    @counseling = @project.counselings.new
   end
 
   def show
@@ -36,6 +35,7 @@ class Projects::CounselingsController < BaseController
   end
 
   private
+
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] })
   end

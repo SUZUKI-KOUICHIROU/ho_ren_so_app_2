@@ -17,23 +17,22 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  resources :users, only: %i[index show], module: 'users'
+  resources :users, only: %i[index  show], module: 'users'
 
   resources :users, only: %i[edit] do
     scope module: :projects do
-      resources :projects  
-    end
-  end
-
-  resources :projects, module: 'projects' do
-    resources :messages do
-      member do
-        patch 'read'
-      end
-    end
-    resources :counselings do
-      member do
-        patch 'read'
+      resources :projects do
+        get 'invitations'
+        resources :messages do
+          member do
+            patch 'read'
+          end
+        end
+        resources :counselings do
+          member do
+            patch 'read'
+          end
+        end
       end
     end
     resources :reports do
@@ -44,7 +43,8 @@ Rails.application.routes.draw do
     get 'projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
     get 'projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format
     post 'project/:project_id/report_formats/create', to: 'report_formats#create', as: :create_project_report_format
-    patch 'projects/:project_id/report_formats', to: 'report_formats#update', as: :update_project_report_format
+    patch 'projects/:project_id/report_formats/update', to: 'report_formats#update', as: :update_project_report_format
     get 'input_forms/replacement_input_forms', to: 'report_formats#replacement_input_forms', as: :replacement_input_forms
+    delete 'projects/:project_id/form_display_order/:form_display_order_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
 end

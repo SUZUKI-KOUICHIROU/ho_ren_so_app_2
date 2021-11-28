@@ -1,0 +1,37 @@
+<%= form_with(model: @form_display_order, url: create_project_report_format_path(@project), local: true, method: :post) do |fdof| %>
+  <%= fdof.hidden_field :position, :value => @form_display_order.position %>
+  <%= fdof.hidden_field :form_table_type, :value => @form_table_value, class: 'form_table_type' %>
+  <div class="modal-body">
+    <%= fdof.fields_for @form_type do |ftf|%>
+      <div class="label-select-form">
+        <div class="label-box">
+          <%= ftf.label :label_name, "項目名", class: "form-control-label" %>
+          <%= ftf.text_field :label_name, class: "form-control", required: true %>
+        </div>
+        <div class="field-type-box">
+          <%= ftf.label :field_type, "フォームの種類" %>
+          <%= ftf.select(:field_type, ApplicationHelper.form_option, {}, class: 'form-control select-form', data: { project_id: "#{@project.id}"}) %>
+        </div>
+      </div>
+
+      <div class="label-box">
+        <%= ftf.label :option_string, "選択肢" %>
+      </div>
+
+      <div class="new-option-form">
+        <%= render partial: "option_form", locals: { ftf: ftf } %>
+      </div>
+      <div class="option-addition-button">
+        <%= link_to_add_field( "選択肢追加", ftf, @association_symbol, {} ) %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">
+      キャンセル
+    </button>
+      <%= fdof.submit "新規登録", class: "btn btn-primary btn-new", id: "project-create" %>
+  </div>
+<% end %>

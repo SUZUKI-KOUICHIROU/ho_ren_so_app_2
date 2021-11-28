@@ -1,0 +1,14 @@
+<%= ftf.fields_for @association_symbol do |osf| %>
+  <div class='option-box'>
+    <% case params[:form_type] %>
+    <% when 'radio_button' %>
+      <a class='option_symbol'>&#x25C9;</a>
+    <% when 'check_box' %>
+      <a class='option_symbol'>&#x2611;</a>
+    <% when 'select' %>
+      <a class='option_symbol'>&#x25BF;</a>
+    <% end %>
+    <%= osf.text_field :option_string, class: 'form-control', required: true %>
+    <%= link_to_remove_field( '✖︎', osf, {} ) %>
+  </div>
+<% end %>

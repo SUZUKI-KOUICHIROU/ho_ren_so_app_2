@@ -1,0 +1,38 @@
+<% case form_display_order.form_table_type %>
+<% when 'text_field'%>
+  <% form_object = form_display_order.text_field %>
+  <% form_array = "text_field[]" %>
+<% when 'text_area'%>
+  <% form_object = form_display_order.text_area %>
+  <% form_array = "text_area[]" %>
+<% end %>
+<div class="form" id = <%= "form-#{form_number}" %>>
+  <div class="label-select-form">
+    <%= f.fields_for form_array, form_object do |fof| %>
+      <div class="label-box">
+        <%= fof.label :label_name, "項目名" %>
+        <%= fof.text_field :label_name, class: 'form-control'%>
+      </div>
+      <div class="field-type-box">
+        <%= fof.label :field_type, "フォームの種類" %>
+        <%= fof.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
+      </div>
+    <% end %>
+  </div>
+  <% case form_display_order.form_table_type %>
+  <% when 'text_field'%>
+    <div class="form-view-text-field">
+      <a>記述式テキスト（短文回答）</a>
+    </div>
+  <% when 'text_area'%>
+    <div class="form-view-text-area">
+      <a>記述式テキスト（長文回答）</a>
+    </div>
+  <% end %>
+  <div class="form-view">
+    <a>　</a>
+  </div>
+  <div class="form-delete-button">
+    <%= link_to "このフォームを削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
+  </div>
+</div>
