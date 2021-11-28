@@ -7,7 +7,6 @@ class Projects::ReportsController < BaseController
   end
 
   def create
-    debugger
     @user = current_user
     @project = Project.find(params[:project_id])
     @qlist = @project.form_display_orders
@@ -30,6 +29,7 @@ class Projects::ReportsController < BaseController
       cnt += 1
       buf.save
     end
+    flash[:seccess] = "報告を登録しました。"
     redirect_to user_project_path(@user, @project)
   end
 
