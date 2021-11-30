@@ -8,7 +8,6 @@ class Projects::InvitationsController < BaseController
   end
 
   def create
-
     if params[:invitee][:email].blank?
       flash[:danger] = "メールアドレスを入力してください。"
       render 'new'
@@ -16,7 +15,7 @@ class Projects::InvitationsController < BaseController
       flash.now[:danger] = "そのメールアドレスはすでに招待済みです。"
       render 'new'
     else
-      @user = User.create(name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
+      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
       @user.create_invite_digest
       @user.send_invite_email
       flash[:info] = "招待メールを送信しました！"
@@ -25,7 +24,7 @@ class Projects::InvitationsController < BaseController
   end
 
   def edit
-    @user.name = nil if @user
+    @user.user_name = nil if @user
   end
 
   def update
@@ -68,7 +67,7 @@ class Projects::InvitationsController < BaseController
   private
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation)
+    params.require(:user).permit(:user_name, :password, :password_confirmation)
   end
 
 
