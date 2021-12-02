@@ -4,10 +4,12 @@ class Projects::InvitationsController < BaseController
   before_action :check_expiration, only: [:edit, :update]
 
   def new
-
+    @user = current_user
+    @project = Project.find(params[:project_id])
   end
 
   def create
+    debugger
     if params[:invitee][:email].blank?
       flash[:danger] = "メールアドレスを入力してください。"
       render 'new'

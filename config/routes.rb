@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
   scope module: :projects do
     get 'projects/:project_id/users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
+    post 'projects/:project_id/users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
 end
