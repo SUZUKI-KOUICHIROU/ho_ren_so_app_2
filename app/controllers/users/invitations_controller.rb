@@ -10,8 +10,7 @@ class Users::InvitationsController < BaseController
       render 'new'
     else
       @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
-      @user.create_invite_digest
-      @user.send_invite_email
+      
       flash[:info] = "招待メールを送信しました！"
       redirect_to root_url
     end
