@@ -33,12 +33,6 @@ attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
     UserMailer.invitation(self).deliver_now
   end
 
-  #ユーザー招待の属性（トークンとダイジェストと、招待したユーザーのid）を作成する。
-  def create_invite_digest
-    self.invite_token = User.new_token
-    update_attributes(invite_digest: User.digest(invite_token), invite_sent_at: Time.zone.now)
-  end
-
   #招待の期限が切れている場合はtrueを返す
   def invitation_expired?
     self.invite_sent_at < 24.hours.ago
