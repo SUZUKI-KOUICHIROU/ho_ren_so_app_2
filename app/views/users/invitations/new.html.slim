@@ -1,0 +1,10 @@
+h1 Invitations#new
+p Find me in app/views/invitations/new.html.erb
+
+= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f|
+  = devise_error_messages!
+
+  = f.label :email
+  = f.text_field :email
+
+  = f.submit
