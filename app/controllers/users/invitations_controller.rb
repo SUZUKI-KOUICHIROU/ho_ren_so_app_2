@@ -10,6 +10,7 @@ class Users::InvitationsController < BaseController
       render 'new'
     else
       @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
+      @user.create_invite_digest
       @user.send_invite_email
       flash[:info] = "招待メールを送信しました！"
       redirect_to root_url
@@ -36,25 +37,6 @@ class Users::InvitationsController < BaseController
       render "edit"
     end
 
-  end
-
-  #:invite_tokenを追加。
-  attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
-
-  #招待メールを送信する
-  def send_invite_email
-    UserMailer.invitation(self).deliver_now
-  end
-
-  #ユーザー招待の属性（トークンとダイジェストと、招待したユーザーのid）を作成する。
-  def create_invite_digest
-    self.invite_token = User.new_token
-    update_attributes(invite_digest: User.digest(invite_token), invite_sent_at: Time.zone.now)
-  end
-
-  #招待の期限が切れている場合はtrueを返す
-  def invitation_expired?
-    self.invite_sent_at < 24.hours.ago
   end
 
   private
@@ -86,4 +68,5 @@ class Users::InvitationsController < BaseController
       redirect_to root_url
     end
   end
+
 end

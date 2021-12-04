@@ -1,0 +1,13 @@
+<h1>01Books</h1>
+
+<p><%= "#{@inviter.user_name}さんがあなたを01Booksに招待しています。" %></p>
+<p>01Booksは、心理学的に正しい本の学習ツールです。</p>
+<p>01Booksに参加するには、下のリンクをクリックしてください。</p>
+<p>　</p>
+<%= link_to "01Booksのメンバーになる", create_invitation_url(@user.invite_token,
+                                                        email: @user.email) %>
+<p>　</p>
+<p>このリンクは24時間で有効期限が切れます。</p>
+<p>
+  意図せずリンクが切れてしまった場合には、友人にもう一度招待メールを送ってもらうか、お手数ですがTwitterで@kawanji01まで直接DMをください。
+</p>
