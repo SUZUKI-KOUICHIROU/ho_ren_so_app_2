@@ -1,9 +1,27 @@
-<%
-=begin%>
- <% @answers.each do |answer| %>
-  <% case answer.class %>
-  <% when '' %>
-  <% end %> 
-<% end %> 
-<%
-=end%>
+<h1><%= @user.user_name %>さんの報告</h1>
+<ol>
+  <% @answers.each do |answer| %>
+  <li>
+    <% case answer.question_type %>
+    <% when 'text_field' %>
+      <%= TextField.find(answer.question_id).label_name %>
+    <% when 'text_area' %>
+      <%= TextArea.find(answer.question_id).label_name %>
+    <% when 'radio_button' %>
+      <%= RadioButton.find(answer.question_id).label_name %>
+    <% when 'check_box' %>
+      <%= CheckBox.find(answer.question_id).label_name %>
+      <br>
+      <%# 配列で保存した項目をeachで回し、値が０だったら排除している。これだと"0"というチェックボックス項目が使えないため、いずれなんとかしたい %>
+      <% answer.array_value.each do |buf| %>
+        <% if buf != '0' %>
+        <%= buf %><br>
+        <% end %>
+      <% end %>
+    <% when 'select' %>
+      <%= Select.find(answer.question_id).label_name %>
+    <% end %>
+    </li>
+    <%= answer.value %>
+  <% end %>
+</ol>
