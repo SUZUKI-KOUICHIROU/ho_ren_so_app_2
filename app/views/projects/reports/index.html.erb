@@ -1,15 +1,45 @@
-<% @qlist.each do |buf| %>
-  <% case buf.form_table_type %>
-    <% when 'text_field' %>
-      <% caption = buf.text_field.label_name %>  
-    <% when 'text_area' %>  
-      <% caption = buf.text_area.label_name %> 
-    <% when 'radio_button' %>  
-      <% caption = buf.radio_button.label_name %>
-    <% when 'select' %>  
-      <% caption = buf.select.label_name %>
-    <% when 'check_box' %>  
-      <% caption = buf.check_box.label_name %>
+<h1>報告一覧</h1>
+<%
+=begin%>
+ <ol>
+  <% @qlist.each do |buf| %>
+  <li>
+    <% case buf.form_table_type %>
+      <% when 'text_field' %>
+        <% caption = buf.text_field.label_name %>  
+      <% when 'text_area' %>  
+        <% caption = buf.text_area.label_name %> 
+      <% when 'radio_button' %>  
+        <% caption = buf.radio_button.label_name %>
+      <% when 'select' %>  
+        <% caption = buf.select.label_name %>
+      <% when 'check_box' %>  
+        <% caption = buf.check_box.label_name %>
+    <% end %>
+    <%= link_to caption, user_project_reports_path(@project,buf) %>の一覧
+    </li>
   <% end %>
-  <%= link_to caption, project_report_path(@project,buf) %>の一覧
-<% end %>
+</ol> 
+<%
+=end%>
+
+<table>
+  <thead>
+    <tr>
+      <th width="200px">報告者</th>
+      <th>報告日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reports.each do |report| %>
+      <tr>
+        <td>
+          <%= link_to User.find(report.user_id).user_name, user_project_report_path(@user, @project, report) %>
+        </td>
+        <td>
+          <%= report.created_at %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>  
+</table>
