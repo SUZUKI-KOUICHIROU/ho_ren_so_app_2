@@ -2,7 +2,7 @@
 <%= pattern.radio_button.label_name %>
 <br>
 <% pattern.radio_button.radio_button_option_strings.each do |item| %>
-  <%= f.fields_for "answer[]", mo do |m| %>
+  <%= f.fields_for "answer[#{c}]", mo do |m| %>
     <%= m.radio_button :answer, item.option_string, required: true %>
     <%= item.option_string %>
     <br>

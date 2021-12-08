@@ -1,4 +1,5 @@
 <h2><%= @project.project_name %></h2>
+<% cnt = 1 %>
 <%= form_with url: user_project_reports_path(current_user,@project), method: :post do |f| %>
   <% @qlist.each do |qt| %>
   <% puts qt %>
@@ -24,7 +25,8 @@
         <% q_type = 'check_box' %>
 
       <% end %>
-      <%= render partial: q_type, locals: { pattern: qt ,mo: buf, f: f} %> 
+      <%= render partial: q_type, locals: { pattern: qt ,mo: buf, f: f, c: cnt} %>
+      <% cnt += 1 %> 
     <% end %>
   <%# レンダリング %>
   <%= f.submit '更新', class: "btn btn-primary" %>
