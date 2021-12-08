@@ -14,8 +14,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     passwords: 'users/passwords',
-    registrations: 'users/registrations',
-    invitations: 'users/invitations'
+    registrations: 'users/registrations'
   }
 
   resources :users, only: %i[index  show], module: 'users'
@@ -47,14 +46,9 @@ Rails.application.routes.draw do
     delete 'projects/:project_id/form_display_order/:form_display_order_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
 
-  #scope module: :users do
-   # get 'users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
-    #post 'users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
-  #end
-
-  #scope module: :projects do
-    #get 'projects/:project_id/users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
-    #post 'projects/:project_id/users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
-  #end
+  scope module: :users do
+    get 'users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
+    post 'users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
+  end
 
 end
