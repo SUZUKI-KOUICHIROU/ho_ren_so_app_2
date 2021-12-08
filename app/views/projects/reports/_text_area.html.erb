@@ -1,6 +1,6 @@
 <div class="container">
   <%= pattern.text_area.label_name %>
-  <%= f.fields_for "answer[]", mo do |m| %>
+  <%= f.fields_for "answer[#{c}]", mo do |m| %>
   <br>
   <%= m.text_area :answer %>
   <% end %>
