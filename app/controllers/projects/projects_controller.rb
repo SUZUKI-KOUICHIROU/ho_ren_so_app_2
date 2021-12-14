@@ -75,6 +75,22 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def invitations
   end
 
+  def join
+    @user = User.find(params[:user_id])
+    @project = Project.find_by(id: params[:id])
+    @project.users << current_user
+    redirect_to root_path
+  end 
+
+  # 全ユーザーを全てのプロジェクトに参画
+  #users = User.all
+    #projects = Project.all
+      #users.each do |user|
+        #projects.each do |project|
+        #user.projects << project
+      #end
+  #end
+
   private
 
   def project_params
