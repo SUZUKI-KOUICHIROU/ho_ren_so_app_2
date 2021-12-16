@@ -75,6 +75,8 @@ class Projects::ReportsController < BaseController
   end
 
   def show
+    @user = current_user
+    @project = Project.find(params[:project_id])
     @report = Report.find(params[:id])
     @user = User.find(@report.user_id)
     @answers = @report.answers
