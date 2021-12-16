@@ -1,6 +1,7 @@
 <h1><%= @user.user_name %>さんの報告</h1>
 <ol>
   <% @answers.each do |answer| %>
+  <div class="container" style="padding: 5px">
   <li>
     <% case answer.question_type %>
     <% when 'text_field' %>
@@ -12,16 +13,20 @@
     <% when 'check_box' %>
       <%= CheckBox.find(answer.question_id).label_name %>
       <br>
-      <%# 配列で保存した項目をeachで回し、値が０だったら排除している。これだと"0"というチェックボックス項目が使えないため、いずれなんとかしたい %>
-      <% answer.array_value.each do |buf| %>
-        <% if buf != '0' %>
-        <%= buf %><br>
-        <% end %>
+      <% if answer.array_value.count != 0 %>
+        <ul>
+          <% answer.array_value.each do |buf| %>
+            <li><%= buf %></li>
+          <% end %>
+        </ul>
+      <% elsif %>
+        <%= '回答なし' %>
       <% end %>
     <% when 'select' %>
       <%= Select.find(answer.question_id).label_name %>
     <% end %>
     </li>
-    <%= answer.value %>
+    <%= answer.value != '' ? answer.value : '回答なし' %>
+  </div>
   <% end %>
 </ol>
