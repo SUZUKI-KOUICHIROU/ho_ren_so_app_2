@@ -1,11 +1,22 @@
 class User < ApplicationRecord
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
+  attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
+
+  #招待メールを送信する
+  def send_invite_email
+    UserMailer.invitation(self).deliver_now
+  end
+
+  #招待の期限が切れている場合はtrueを返す
+  def invitation_expired?
+    self.invite_sent_at < 24.hours.ago
+  end
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+        :recoverable, :rememberable, :validatable
 
   before_save { self.email = email.downcase }
 
@@ -18,29 +29,12 @@ class User < ApplicationRecord
 
   VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze
   validates :password, presence: true, length: { maximum: 50, minimum: 6 },
-                       format: { with: VALID_PASSWORD_REGEX,
-                                 message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
-                       allow_blank: true
+                      format: { with: VALID_PASSWORD_REGEX,
+                      message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
+                      allow_blank: true
   validates :password_confirmation, presence: true, length: { maximum: 50, minimum: 6 },
                                     format: { with: VALID_PASSWORD_REGEX,
                                               message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
                                     allow_blank: true
 
-attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
-
-  #招待メールを送信する
-  def send_invite_email
-    UserMailer.invitation(self).deliver_now
-  end
-
-  #ユーザー招待の属性（トークンとダイジェストと、招待したユーザーのid）を作成する。
-  def create_invite_digest
-    self.invite_token = User.new_token
-    update_attributes(invite_digest: User.digest(invite_token), invite_sent_at: Time.zone.now)
-  end
-
-  #招待の期限が切れている場合はtrueを返す
-  def invitation_expired?
-    self.invite_sent_at < 24.hours.ago
-  end
 end
