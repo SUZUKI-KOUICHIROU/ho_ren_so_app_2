@@ -4,7 +4,7 @@
 <div class="row box invite">
   <h3 class="center">友人を招待する</h3>
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:invitee, url:invitations_path) do |f| %>
+    <%= form_for(:invitee, url:create_invitation_path) do |f| %>
       <%= f.label :email %>
       <%= f.email_field :email, class: 'form-control' %>
 
