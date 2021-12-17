@@ -1,7 +1,6 @@
 <div class="container">
 <%= pattern.text_field.label_name %>
   <%= f.fields_for "answer[#{c}]", mo do |m| %>
-  <br>
-  <%= m.text_field :answer %>
+  <p style="padding-top: 5px;"><%= m.text_field :answer %></p>
   <% end %>
 </div>
