@@ -6,7 +6,7 @@ class User < ApplicationRecord
   #招待メールを送信する
   def send_invite_email
     UserMailer.invitation(self).deliver_now
-  end
+  end 
 
   #招待の期限が切れている場合はtrueを返す
   def invitation_expired?

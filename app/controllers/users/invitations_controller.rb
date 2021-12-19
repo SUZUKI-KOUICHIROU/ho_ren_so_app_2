@@ -4,7 +4,9 @@ class Users::InvitationsController < BaseController
   #before_action :check_expiration, only: [:edit, :update]
 
   def new
-
+    @project = Project.find_by(id: params[:id])
+    #@project.users << current_user
+    #redirect_to root_path
   end
 
   def create
@@ -12,7 +14,7 @@ class Users::InvitationsController < BaseController
       flash[:danger] = "メールアドレスを入力してください。"
       render 'new'
     else
-      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email], invited_by: current_user.id)
+      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, invited_by: current_user.id)
       #@user.create_invite_digest
       #user.projects << project
       @user.send_invite_email
