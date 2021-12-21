@@ -1,7 +1,7 @@
-class InvitationsController < ApplicationController
-  before_action :get_user,         only: %i[edit update]
-  before_action :valid_user,       only: %i[edit update]
-  before_action :check_expiration, only: %i[edit update]
+class Users::InvitationsController < BaseController
+  #before_action :get_user,         only: [:edit, :update]
+  #before_action :valid_user,       only: [:edit, :update]
+  #before_action :check_expiration, only: [:edit, :update]
 
   def new; end
 
@@ -9,13 +9,9 @@ class InvitationsController < ApplicationController
     if params[:invitee][:email].blank?
       flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'
-    elsif User.find_by(email: params[:invitee][:email])
-      flash.now[:danger] = 'そのメールアドレスはすでに招待済みです。'
-      render 'new'
     else
-      @user = User.create(name: '名無しの招待者', email: params[:invitee][:email].downcase, password: 'foobar',
-                          invited_by: current_user.id)
-      @user.create_invite_digest
+      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
+      #@user.create_invite_digest
       @user.send_invite_email
       flash[:info] = '招待メールを送信しました！'
       redirect_to root_url
@@ -41,25 +37,6 @@ class InvitationsController < ApplicationController
     else
       render 'edit'
     end
-  end
-
-  # :invite_tokenを追加。
-  attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
-
-  # 招待メールを送信する
-  def send_invite_email
-    UserMailer.invitation(self).deliver_now
-  end
-
-  # ユーザー招待の属性（トークンとダイジェストと、招待したユーザーのid）を作成する。
-  def create_invite_digest
-    self.invite_token = User.new_token
-    update_attributes(invite_digest: User.digest(invite_token), invite_sent_at: Time.zone.now)
-  end
-
-  # 招待の期限が切れている場合はtrueを返す
-  def invitation_expired?
-    invite_sent_at < 24.hours.ago
   end
 
   private

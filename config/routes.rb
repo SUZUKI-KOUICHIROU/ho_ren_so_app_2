@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
-        get 'invitations'
         resources :messages do
           member do
             patch 'read'
@@ -46,4 +45,10 @@ Rails.application.routes.draw do
     get 'input_forms/replacement_input_forms', to: 'report_formats#replacement_input_forms', as: :replacement_input_forms
     delete 'projects/:project_id/form_display_order/:form_display_order_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
+
+  scope module: :users do
+    get 'users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
+    post 'users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
+  end
+
 end

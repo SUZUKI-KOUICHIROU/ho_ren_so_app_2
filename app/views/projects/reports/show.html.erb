@@ -1,9 +1,34 @@
-<%
-=begin%>
- <% @answers.each do |answer| %>
-  <% case answer.class %>
-  <% when '' %>
-  <% end %> 
-<% end %> 
-<%
-=end%>
+<h1><%= @user.user_name %>さんの報告</h1>
+<ol>
+  <% @answers.each do |answer| %>
+  <div class="container" style="padding: 5px">
+  <li>
+    <% case answer.question_type %>
+    <% when 'text_field' %>
+      <%= TextField.find(answer.question_id).label_name %>
+    <% when 'text_area' %>
+      <%= TextArea.find(answer.question_id).label_name %>
+    <% when 'radio_button' %>
+      <%= RadioButton.find(answer.question_id).label_name %>
+    <% when 'check_box' %>
+      <%= CheckBox.find(answer.question_id).label_name %>
+      <br>
+      <% if answer.array_value.count != 0 %>
+        <ul>
+          <% answer.array_value.each do |buf| %>
+            <li><%= buf %></li>
+          <% end %>
+        </ul>
+      <% elsif %>
+        <%= '回答なし' %>
+      <% end %>
+    <% when 'select' %>
+      <%= Select.find(answer.question_id).label_name %>
+    <% end %>
+    </li>
+    <%= answer.value != '' ? answer.value : '回答なし' %>
+  </div>
+  <% end %>
+</ol>
+
+<p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>

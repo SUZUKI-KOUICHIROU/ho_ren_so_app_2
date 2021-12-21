@@ -12,6 +12,7 @@ class Projects::MessagesController < BaseController
   end
 
   def index
+    @user = current_user
     @project = Project.find(params[:project_id])
     @member = @project.users.all
     @messages = @project.messages.my_messages(current_user)
@@ -25,6 +26,7 @@ class Projects::MessagesController < BaseController
   end
 
   def show
+    @user = current_user
     @project = Project.find(params[:project_id])
     @members = @project.users.all
     @message = Message.find(params[:id])

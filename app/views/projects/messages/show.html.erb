@@ -1,8 +1,8 @@
-
+<p>■件名■</p>
 <%= @message.title %>
-<br>
+<p>■内容■</p>
 <%= @message.message_detail %>
-
+<br>
 <div id="read_button">
   <%= render partial: 'read' %>
 </div>  
@@ -10,3 +10,5 @@
 <div id="checkers">
   <%= render partial: 'checker' %>
 </div>  
+
+<p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_messages_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>

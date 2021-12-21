@@ -12,6 +12,7 @@ class Projects::CounselingsController < BaseController
   end
 
   def index
+    @user = current_user
     @project = Project.find(params[:project_id])
     @member = @project.users.all
     @counselings = @project.counselings.my_counselings(current_user)
@@ -25,6 +26,7 @@ class Projects::CounselingsController < BaseController
   end
 
   def show
+    @user = current_user
     @project = Project.find(params[:project_id])
     # @member = @project.users.all
     @counseling = Counseling.find(params[:id])

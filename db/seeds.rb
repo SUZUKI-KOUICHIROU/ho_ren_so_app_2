@@ -96,47 +96,53 @@ projects.each do |project|
 
   # 以下テスト用
   # label_nameがテストチェックボックスのcheck_boxを生成
-  # check_box = CheckBox.new(label_name: 'テストチェックボックス0')
+  # check_box = CheckBox.new(label_name: '担当している範囲はなんですか')
   # check_box.build_form_display_order(position: position_val,
   #                                       form_table_type: check_box.field_type,
   #                                       project_id: project.id)
   # check_box.save
-  # check_box.check_box_option_strings.create!(option_string: 'チェック0')
-  # check_box.check_box_option_strings.create!(option_string: 'チェック1')
+  # check_box.check_box_option_strings.create!(option_string: 'フロントエンド')
+  # check_box.check_box_option_strings.create!(option_string: 'バックエンド')
   # position_val += 1
 
-  # check_box = CheckBox.new(label_name: 'テストチェックボックス1')
+  # # # label_nameがテストセレクトボックスのselect_boxを生成
+  # select_box = Select.new(label_name: '現在のお住まいの地域はどこですか')
+  # select_box.build_form_display_order(position: position_val,
+  #                                       form_table_type: select_box.field_type,
+  #                                       project_id: project.id)
+  # select_box.save
+  # select_box.select_option_strings.create!(option_string: '東日本')
+  # select_box.select_option_strings.create!(option_string: '西日本')
+  # position_val += 1
+
+  # #サンプル７問目
+  # check_box = CheckBox.new(label_name: '好きな食べ物はなんですか')
   # check_box.build_form_display_order(position: position_val,
   #                                       form_table_type: check_box.field_type,
   #                                       project_id: project.id)
   # check_box.save
-  # check_box.check_box_option_strings.create!(option_string: 'チェック0')
-  # check_box.check_box_option_strings.create!(option_string: 'チェック1')
+  # check_box.check_box_option_strings.create!(option_string: 'ラーメン')
+  # check_box.check_box_option_strings.create!(option_string: 'カレーライス')
   # position_val += 1
 
-  # # label_nameがテストセレクトボックスのselect_boxを生成
-  # select_box = Select.new(label_name: 'テストセレクトボックス0')
+  # #サンプル８問目
+  # radio_button = RadioButton.new(label_name: '体調に問題はありますか？')
+  # radio_button.build_form_display_order(position: position_val,
+  #                                       form_table_type: radio_button.field_type,
+  #                                       project_id: project.id)
+  # radio_button.save
+  # radio_button.radio_button_option_strings.create!(option_string: 'あり')
+  # radio_button.radio_button_option_strings.create!(option_string: 'なし')
+  # position_val += 1
+
+  # #サンプル９問目
+  # select_box = Select.new(label_name: '体調が悪い場合、どんな問題がありますか？')
   # select_box.build_form_display_order(position: position_val,
   #                                       form_table_type: select_box.field_type,
   #                                       project_id: project.id)
   # select_box.save
-  # select_box.select_option_strings.create!(option_string: 'セレクト0')
-  # select_box.select_option_strings.create!(option_string: 'セレクト1')
-  # position_val += 1
-
-  # select_box = Select.new(label_name: 'テストセレクトボックス1')
-  # select_box.build_form_display_order(position: position_val,
-  #                                       form_table_type: select_box.field_type,
-  #                                       project_id: project.id)
-  # select_box.save
-  # select_box.select_option_strings.create!(option_string: 'セレクト0')
-  # select_box.select_option_strings.create!(option_string: 'セレクト1')
-  # position_val += 1
-
-  # date_field = DateField.new(label_name: '期日1')
-  # date_field.build_form_display_order(position: position_val,
-  #                                       form_table_type: date_field.field_type,
-  #                                       project_id: project.id)
-  # date_field.save
-  # position_val += 1
+  # select_box.select_option_strings.create!(option_string: 'なし')
+  # select_box.select_option_strings.create!(option_string: '肉体的なもの（風邪など）')
+  # select_box.select_option_strings.create!(option_string: '精神的なもの（うつなど）')
+  select_box.select_option_strings.create!(option_string: '両方')
 end

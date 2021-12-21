@@ -10,14 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2021_12_20_134017) do
+=======
+ActiveRecord::Schema.define(version: 2021_12_05_124509) do
+
+  create_table "answers", force: :cascade do |t|
+    t.integer "report_id"
+    t.string "question_type"
+    t.integer "question_id"
+    t.string "value"
+    t.text "array_value"
+    t.index ["report_id"], name: "index_answers_on_report_id"
+  end
+>>>>>>> dd958e1490dfa3432041a0b9be839fb4f06d5352
 
   create_table "check_box_contents", force: :cascade do |t|
     t.string "check_box_value", default: "", null: false
     t.integer "check_box_id"
+    t.integer "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["check_box_id"], name: "index_check_box_contents_on_check_box_id"
+    t.index ["report_id"], name: "index_check_box_contents_on_report_id"
   end
 
   create_table "check_box_option_strings", force: :cascade do |t|
@@ -142,9 +157,11 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
   create_table "radio_button_contents", force: :cascade do |t|
     t.string "radio_button_value", default: "", null: false
     t.integer "radio_button_id"
+    t.integer "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["radio_button_id"], name: "index_radio_button_contents_on_radio_button_id"
+    t.index ["report_id"], name: "index_radio_button_contents_on_report_id"
   end
 
   create_table "radio_button_option_strings", force: :cascade do |t|
@@ -173,20 +190,34 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
     t.index ["report_id"], name: "index_report_confirmers_on_report_id"
   end
 
+  create_table "report_histories", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+    t.boolean "done", default: false
+    t.boolean "reminded", default: false
+    t.date "deadline"
+    t.index ["project_id"], name: "index_report_histories_on_project_id"
+  end
+
   create_table "reports", force: :cascade do |t|
     t.integer "project_id"
     t.integer "task_id"
+    t.integer "user_id"
+    t.boolean "remanded"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["task_id"], name: "index_reports_on_task_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
   create_table "select_contents", force: :cascade do |t|
     t.string "select_value", default: "", null: false
     t.integer "select_id"
+    t.integer "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_select_contents_on_report_id"
     t.index ["select_id"], name: "index_select_contents_on_select_id"
   end
 
@@ -222,8 +253,10 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
   create_table "text_area_contents", force: :cascade do |t|
     t.string "text_area_value", default: "", null: false
     t.integer "text_area_id"
+    t.integer "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_text_area_contents_on_report_id"
     t.index ["text_area_id"], name: "index_text_area_contents_on_text_area_id"
   end
 
@@ -239,8 +272,10 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
   create_table "text_field_contents", force: :cascade do |t|
     t.string "text_field_value", default: "", null: false
     t.integer "text_field_id"
+    t.integer "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_text_field_contents_on_report_id"
     t.index ["text_field_id"], name: "index_text_field_contents_on_text_field_id"
   end
 
