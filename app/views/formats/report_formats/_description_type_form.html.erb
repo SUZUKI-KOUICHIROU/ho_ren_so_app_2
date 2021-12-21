@@ -1,29 +1,35 @@
-<%= form_with(model: @form_display_order, url: create_project_report_format_path(@project), local: true, method: :post) do |fdof| %>
-  <%= fdof.hidden_field :position, :value => @form_display_order.position %>
-  <%= fdof.hidden_field :form_table_type, :value => @form_table_value, class: 'form_table_type' %>
+<%= form_with(model: @form_display_orders_build_object, url: create_project_report_format_path(@project), local: true, method: :post) do |fdof| %>
+  <%= fdof.hidden_field :id %>
+  <%= fdof.hidden_field :form_table_type, :value => @form_table_type_value %>
+  <%= fdof.hidden_field :position, :value => @position_value %>
   <div class="modal-body">
-    <%= fdof.fields_for @form_type do |ftf|%>
-      <div class="label-select-form">
+    <%= fdof.fields_for @form_type_symbol do |ftf|%>
+      <%= ftf.hidden_field :id %>
+      <div class="label-select-box">
         <div class="label-box">
           <%= ftf.label :label_name, "項目名", class: "form-control-label" %>
           <%= ftf.text_field :label_name, class: "form-control", required: true %>
         </div>
-        <div class="field-type-box">
+        <div class="select-box">
           <%= ftf.label :field_type, "フォームの種類" %>
           <%= ftf.select(:field_type, ApplicationHelper.form_option, {}, class: 'form-control select-form', data: { project_id: "#{@project.id}"}) %>
         </div>
       </div>
-      <% case @form_table_value %>
+      <% case @form_table_type_value %>
       <% when 'text_field'%>
-        <div class="form-view-text-field">
+        <div class="text-field-box">
           <a>記述式テキスト（短文回答）</a>
         </div>
       <% when 'text_area'%>
-        <div class="form-view-text-area">
+        <div class="text-area-box">
           <a>記述式テキスト（長文回答）</a>
         </div>
+      <% when 'date_field'%>
+        <div class="date-field-box">
+          <a>年/月/日（カレンダー）</a>
+        </div>
       <% end %>
-      <div class="form-view">
+      <div class="text-common-box">
         <a>　</a>
       </div>
     <% end %>

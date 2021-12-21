@@ -1,47 +1,53 @@
-<% case form_type = form_display_order.form_table_type %>
-<% when 'radio_button'%>
-  <% form_object = form_display_order.radio_button %>
-  <% form_object_option_strings = form_object.radio_button_option_strings.all %>
-  <% form_array = "radio_button[]" %>
-  <% form_options_array = "radio_button_option_strings[]" %>
-  <%# association_symbol = :radio_button_option_strings %>
-<% when 'check_box'%>
-  <% form_object = form_display_order.check_box %>
-  <% form_object_option_strings = form_object.check_box_option_strings.all %>
-  <% form_array = "check_box[]" %>
-  <% form_options_array = "check_box_option_strings[]" %>
-  <%# association_symbol = :check_box_option_strings %>
-<% when 'select'%>
-  <% form_object = form_display_order.select %>
-  <% form_object_option_strings = form_object.select_option_strings.all %>
-  <% form_array = "select[]" %>
-  <% form_options_array = "select_option_strings[]" %>
-  <%# association_symbol = :select_option_strings %>
+<% case form_display_order.form_table_type %>
+<% when 'radio_button' %>
+  <% form_type_symbol = :radio_button %>
+  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_option_symbol = :radio_button_option_strings %>
+<% when 'check_box' %>
+  <% form_type_symbol = :check_box %>
+  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_option_symbol = :check_box_option_strings %>
+<% when 'select' %>
+  <% form_type_symbol = :select %>
+  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_option_symbol = :select_option_strings %>
 <% end %>
-<div class="form" id=<%= "form-#{form_number}" %>>
-  <%= f.fields_for form_array, form_object do |fof| %>
-    <div class="label-select-form">
-      <div class="label-box">
-        <%= fof.label :label_name, "項目名" %>
-        <%= fof.text_field :label_name, class: 'form-control'%>
-      </div>
-      <div class="field-type-box">
-        <%= fof.label :field_type, "フォームの種類" %>
-        <%= fof.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
-      </div>
-    </div>
-    <div class="label-box">
-      <%= f.label :option_string, "選択肢" %>
-    </div>
-    <div class="edit-option-form">
-      <%= render partial: 'edit_option_form', collection: form_object_option_strings, as: :form_object_option_string, locals: { fof: fof, form_options_array: form_options_array, form_type: form_type, form_object: form_object} %>
-      <div class="option-addition-button">
-         <%= link_to('選択肢追加', '#', class: 'edit-add-field btn btn-primary btn-sm') %>
-      </div>
-    </div>
 
+<div id="form-<%= @form_number %>", draggable="true", class="form">
+  <%= f.fields_for 'form_display_order_attributes[]', form_display_order do |fdof| %>
+    <%= fdof.hidden_field :id %>
+    <%= fdof.hidden_field :form_table_type %>
+    <%= fdof.hidden_field :position, class: "position" %>
+    <div class="check-box">
+      <%= fdof.check_box :using_flag %>
+      <%= fdof.label :using_flag, "有効にする。" %>
+    </div>
+    <%= fdof.fields_for form_type_symbol do |ftf| %>
+      <%= ftf.hidden_field :id %>
+      <div class="label-select-box">
+        <div class="label-box">
+          <%= ftf.label :label_name, "項目名" %>
+          <%= ftf.text_field :label_name, class: 'form-control', required: true %>
+        </div>
+        <div class="select-box">
+          <%= ftf.label :field_type, "フォームの種類" %>
+          <%= ftf.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control', disabled: true } %>
+          <%= ftf.hidden_field :field_type %>
+        </div>
+      </div>
+      <div class="label-box">
+        <%= ftf.label :option_string, "選択肢" %>
+      </div>
+      <div class="option-form-edit">
+        <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, form_display_order_id: form_display_order.id} %>
+        <div class="option-add-btn-box">
+          <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-primary btn-sm' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="form-delete-button">
+      <%= link_to "削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+    </div>
   <% end %>
-  <div class="form-delete-button">
-    <%= link_to "このフォームを削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-  </div>
 </div>

@@ -36,5 +36,4 @@ class User < ApplicationRecord
                                     format: { with: VALID_PASSWORD_REGEX,
                                               message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
                                     allow_blank: true
-
 end

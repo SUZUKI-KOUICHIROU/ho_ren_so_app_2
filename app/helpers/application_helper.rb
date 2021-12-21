@@ -16,5 +16,5 @@ module ApplicationHelper
   ApplicationHelper.weeks = %w[日 月 火 水 木 金 土]
 
   ApplicationHelper.form_option = { '記述式' => 'text_field', '段落式' => 'text_area', 'ラジオボタン' => 'radio_button',
-                                    'チェックボックス' => 'check_box', 'プルダウン' => 'select' }
+                                    'チェックボックス' => 'check_box', 'プルダウン' => 'select', '日付' => 'date_field' }
 end

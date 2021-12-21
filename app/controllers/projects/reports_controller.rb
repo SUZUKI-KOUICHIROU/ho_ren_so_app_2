@@ -1,5 +1,4 @@
 class Projects::ReportsController < BaseController
-  
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -44,7 +43,7 @@ class Projects::ReportsController < BaseController
     @qlist = @project.form_display_orders
     cnt = 1
     @qlist.each do |qt|
-      cnt_num = "#{cnt}" 
+      cnt_num = "#{cnt}"
       if params[:answer]
         case qt.form_table_type
         when 'text_field'
