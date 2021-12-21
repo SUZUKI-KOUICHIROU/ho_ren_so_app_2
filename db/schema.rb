@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2021_12_20_134017) do
-=======
-ActiveRecord::Schema.define(version: 2021_12_05_124509) do
 
   create_table "answers", force: :cascade do |t|
     t.integer "report_id"
@@ -23,7 +20,6 @@ ActiveRecord::Schema.define(version: 2021_12_05_124509) do
     t.text "array_value"
     t.index ["report_id"], name: "index_answers_on_report_id"
   end
->>>>>>> dd958e1490dfa3432041a0b9be839fb4f06d5352
 
   create_table "check_box_contents", force: :cascade do |t|
     t.string "check_box_value", default: "", null: false
