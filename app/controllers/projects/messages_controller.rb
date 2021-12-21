@@ -8,7 +8,7 @@ class Projects::MessagesController < BaseController
       @send = @message.message_confirmers.new(message_confirmer_id: t)
       @send.save
     end
-    redirect_to user_project_path current_user,params[:project_id]
+    redirect_to user_project_path current_user, params[:project_id]
   end
 
   def index

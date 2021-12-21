@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_08_110550) do
+ActiveRecord::Schema.define(version: 2021_12_20_134017) do
 
   create_table "check_box_contents", force: :cascade do |t|
     t.string "check_box_value", default: "", null: false
@@ -61,13 +61,31 @@ ActiveRecord::Schema.define(version: 2021_11_08_110550) do
     t.index ["task_id"], name: "index_counselings_on_task_id"
   end
 
+  create_table "date_field_contents", force: :cascade do |t|
+    t.date "date_field_value", null: false
+    t.integer "date_field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date_field_id"], name: "index_date_field_contents_on_date_field_id"
+  end
+
+  create_table "date_fields", force: :cascade do |t|
+    t.string "label_name", default: "", null: false
+    t.string "field_type", default: "date_field", null: false
+    t.integer "form_display_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_display_order_id"], name: "index_date_fields_on_form_display_order_id"
+  end
+
   create_table "form_display_orders", force: :cascade do |t|
     t.integer "position"
     t.string "form_table_type", default: "", null: false
     t.integer "project_id"
+    t.boolean "using_flag", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["position", "project_id"], name: "index_form_display_orders_on_position_and_project_id", unique: true
+    t.index ["position"], name: "index_form_display_orders_on_position"
     t.index ["project_id"], name: "index_form_display_orders_on_project_id"
   end
 

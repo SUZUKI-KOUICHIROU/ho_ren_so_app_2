@@ -52,52 +52,91 @@ end
 # 報告フォーマット作成
 projects = Project.all
 projects.each do |project|
+  position_val = 1
   # label_nameが件名のtext_fieldを生成
   text_field = TextField.new(label_name: '件名')
-  text_field.build_form_display_order(position: 1,
+  text_field.build_form_display_order(position: position_val,
                                       form_table_type: text_field.field_type,
                                       project_id: project.id)
   text_field.save
+  position_val += 1
+
+  date_field = DateField.new(label_name: '期日')
+  date_field.build_form_display_order(position: position_val,
+                                      form_table_type: date_field.field_type,
+                                      project_id: project.id)
+  date_field.save
+  position_val += 1
 
   # label_nameが報告内容のtext_areaを生成
   text_area = TextArea.new(label_name: '報告内容')
-  text_area.build_form_display_order(position: 2,
-                                    form_table_type: text_area.field_type,
-                                    project_id: project.id)
+  text_area.build_form_display_order(position: position_val,
+                                     form_table_type: text_area.field_type,
+                                     project_id: project.id)
   text_area.save
+  position_val += 1
 
   # label_nameが発生している問題のradio_buttonを生成
   radio_button = RadioButton.new(label_name: '発生している問題')
-  radio_button.build_form_display_order(position: 3,
+  radio_button.build_form_display_order(position: position_val,
                                         form_table_type: radio_button.field_type,
                                         project_id: project.id)
   radio_button.save
-  radio_button.radio_button_option_strings.create!(option_string: 'あり')
-  radio_button.radio_button_option_strings.create!(option_string: 'なし')
+  radio_button.radio_button_option_strings.create!(option_string: 'あり0')
+  radio_button.radio_button_option_strings.create!(option_string: 'なし0')
+  position_val += 1
 
   # label_nameが問題内容のtext_areaを生成
   text_area = TextArea.new(label_name: '問題内容')
-  text_area.build_form_display_order(position: 4,
-                                    form_table_type: text_area.field_type,
-                                    project_id: project.id)
+  text_area.build_form_display_order(position: position_val,
+                                     form_table_type: text_area.field_type,
+                                     project_id: project.id)
   text_area.save
+  position_val += 1
 
   # 以下テスト用
   # label_nameがテストチェックボックスのcheck_boxを生成
-  check_box = CheckBox.new(label_name: 'テストチェックボックス')
-  check_box.build_form_display_order(position: 5,
-                                        form_table_type: check_box.field_type,
-                                        project_id: project.id)
-  check_box.save
-  check_box.check_box_option_strings.create!(option_string: 'チェック１')
-  check_box.check_box_option_strings.create!(option_string: 'チェック２')
+  # check_box = CheckBox.new(label_name: 'テストチェックボックス0')
+  # check_box.build_form_display_order(position: position_val,
+  #                                       form_table_type: check_box.field_type,
+  #                                       project_id: project.id)
+  # check_box.save
+  # check_box.check_box_option_strings.create!(option_string: 'チェック0')
+  # check_box.check_box_option_strings.create!(option_string: 'チェック1')
+  # position_val += 1
+
+  # check_box = CheckBox.new(label_name: 'テストチェックボックス1')
+  # check_box.build_form_display_order(position: position_val,
+  #                                       form_table_type: check_box.field_type,
+  #                                       project_id: project.id)
+  # check_box.save
+  # check_box.check_box_option_strings.create!(option_string: 'チェック0')
+  # check_box.check_box_option_strings.create!(option_string: 'チェック1')
+  # position_val += 1
 
   # # label_nameがテストセレクトボックスのselect_boxを生成
-  select_box = Select.new(label_name: 'テストセレクトボックス')
-  select_box.build_form_display_order(position: 6,
-                                        form_table_type: select_box.field_type,
-                                        project_id: project.id)
-  select_box.save
-  select_box.select_option_strings.create!(option_string: 'セレクト１')
-  select_box.select_option_strings.create!(option_string: 'セレクト２')
+  # select_box = Select.new(label_name: 'テストセレクトボックス0')
+  # select_box.build_form_display_order(position: position_val,
+  #                                       form_table_type: select_box.field_type,
+  #                                       project_id: project.id)
+  # select_box.save
+  # select_box.select_option_strings.create!(option_string: 'セレクト0')
+  # select_box.select_option_strings.create!(option_string: 'セレクト1')
+  # position_val += 1
+
+  # select_box = Select.new(label_name: 'テストセレクトボックス1')
+  # select_box.build_form_display_order(position: position_val,
+  #                                       form_table_type: select_box.field_type,
+  #                                       project_id: project.id)
+  # select_box.save
+  # select_box.select_option_strings.create!(option_string: 'セレクト0')
+  # select_box.select_option_strings.create!(option_string: 'セレクト1')
+  # position_val += 1
+
+  # date_field = DateField.new(label_name: '期日1')
+  # date_field.build_form_display_order(position: position_val,
+  #                                       form_table_type: date_field.field_type,
+  #                                       project_id: project.id)
+  # date_field.save
+  # position_val += 1
 end

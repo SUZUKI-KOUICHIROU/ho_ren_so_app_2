@@ -2,16 +2,38 @@
 
 // Rails4では Turbolinks が動作していて、この書き方でないと ready イベントが発火しない
 $(document).on('turbolinks:load', function(){
+  // フォーマット編集ページがロードされた時、各項目のoption-boxの表示を切り替える関数
+  function optionDisplaySwitch(){
+    // document内のclass属性の値がoption-form-editの要素を全て取得
+    var edit_option_form = document.getElementsByClassName('option-form-edit');
+    console.log(edit_option_form);
+    // edit_option_formの数だげ以下をループ処理
+    for (var i = edit_option_form.length - 1; i >= 0; i--) {
+      // option-form-edit内のclass属性の値がoption-boxの要素を全て取得
+      var option_box = edit_option_form[i].querySelectorAll("div[class='option-box']")
+      console.log(option_box)
+      // class属性の値がoption-boxの要素数をカウント
+      var option_box_count = option_box.length;
+      console.log(option_box_count)
+      // 削除ボタンの表示を切り替え
+      // 要素数が1以下の場合以下を実行
+      if (option_box_count <= 1) {
+        // option_box内のclass属性の値がremove-fieldの要素を取得した後、非表示に
+        option_box[0].querySelector("a[class='remove-field']").style.display = 'none';
+      }
+    }
+  }
+  // フォーマット編集ページがロードされた時、optionDisplaySwitch(関数)をを実行
+  window.addEventListener('load', optionDisplaySwitch);
+
   // フォーム新規登録用モーダルウインドウ(selectboxの入力フォールドが変化したら、パーシャルファイルを変更する処理)
   $(function($) {
     // モーダルウインドウは元のhtmlに追加される要素なので、親となる要素にonメソッド繋げる形で記述
     $('#form-new').on('change', '.select-form', function(){
       // selectboxの値を取得しfrequencyに代入
       var form_type = $(this).val();
-      console.log(form_type);
 
       var project_id = $(this).data('projectId');
-      console.log(project_id);
 
       $.ajax({
         url: '/input_forms/replacement_input_forms',
@@ -25,20 +47,83 @@ $(document).on('turbolinks:load', function(){
   $(function($) {
     //選択肢追加ボタンが押された時option入力フィールドを追加する処理
     // モーダルウインドウは元のhtmlに追加される要素なので、親となる要素にonメソッド繋げる形で記述
-    $('#form-new').on('click', '.new-add-field', function(event){
-      // 現在時刻をミリ秒形式で取得
-      var time = new Date().getTime()
-      // ヘルパーで作ったインデックス値を↑と置換
-      var regexp = new RegExp($(this).data('id'), 'g')
-      // ヘルパーから渡した fields(HTML) を挿入
-      $('.new-option-form').append($(this).data('fields').replace(regexp, time))
+    $('#form-new').on('click', '.add-field-new', function(event){
+      // index差し替え用のinput要素(hidden_field)を生成する関数(id用)
+      function buildIdHiddenField(form_table_type_value, option_index) {
+        const id_hidden_html =
+        `<input type="hidden"
+        name="form_display_order[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
+        id="form_display_order_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
+        return id_hidden_html;
+      }
+
+      // index差し替え用のinput要素(text_field)を生成する関数(text_field用)
+      function buildOptionTextField(form_table_type_value, option_index) {
+        const option_input_html =
+        `<input class="form-control required="required" "type="text" value=""
+        name="form_display_order[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
+        id="form_display_order_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
+        return option_input_html;
+      }
+
+      // クリックされたボタンの親のを取得
+      // thisは、クリックされたオブジェクト
+      var option_add_btn_box = this.parentNode;
+      console.log(option_add_btn_box)
+      // クリックされたボタンの親の親を取得
+      var option_form_new = option_add_btn_box.parentNode;
+      console.log(option_form_new)
+      // クリックされたボタンの親の親の最初の子を取得してクローン
+      var clone_option_box = option_form_new.firstElementChild.cloneNode(true);
+      console.log(clone_option_box)
+      // 差し替え用のinput要素を生成するのに必要な変数を定義(この変数達は関数であるbuildOptionTextField並びにbuildDestroyHiddenField内で使用)
+      // data-form-table-type-valueの値を取得
+      var form_table_type_value = clone_option_box.dataset.formTableTypeValue;
+      console.log(form_table_type_value)
+      // option-boxの要素数を取得(インデックス値は0から始まるため取得値をそのまま使用)
+      var option_index = option_form_new.querySelectorAll("div[class='option-box']").length;
+      console.log(option_index)
+      // クローンしたDMOのtype属性が'hidden'のinput要素を取得
+      var id_input_field = clone_option_box.querySelector("input[type='hidden']");
+      console.log(id_input_field)
+      // 取得したinput要素を生成した差し替え用のinput要素に変更
+      id_input_field.outerHTML = buildIdHiddenField(form_table_type_value, option_index);
+      // クローンしたDMOのtype属性が'text'のinput要素を取得
+      var option_input_field = clone_option_box.querySelector("input[type='text']");
+      console.log(option_input_field)
+      // 取得したinput要素を生成した差し替え用のinput要素に変更
+      option_input_field.outerHTML = buildOptionTextField(form_table_type_value, option_index);
+      // data-form-indexの値を変更
+      clone_option_box.dataset.formIndex = `${option_index}`;
+      // 追加する要素を最終確認
+      console.log(clone_option_box)
+      // 編集したDOM(clone_option_box)を追加
+      $(option_add_btn_box).before(clone_option_box);
+      $(clone_option_box).closest('div').show()
+      // 削除ボタンの表示を切り替え
+      if ($('.option-box').length >= 2) {
+        $('.delete-btn-new').show();  // class属性の値が2つ以上あるときに削除ボタンを表示
+      }
+      // フォームが持つデフォルトの動作をキャンセル
       event.preventDefault()
     });
 
     // 削除ボタンが押された時option入力フィールドを削除する処理
-    $('#form-new').on('click', '.new-remove-field', function(event){
+    $('#form-new').on('click', '.remove-field', function(event){
+      // 押された削除ボタンのclass属性の値がoption-form-newの要素を取得
+      var option_form_new = $(this).parent().parent();
+      console.log(option_form_new)
       // 削除ボタンが押されたフィールドを消す
       $(this).closest('div').remove()
+      // option-form-new内のcclass属性の値がoption-boxの要素を全て取得しカウント
+      var option_box_count = option_form_new.children('.option-box').length;
+      console.log(option_box_count)
+      // 削除ボタンの表示を切り替え
+      if (option_box_count >= 2) {
+        $('.delete-btn-new').show(); // class属性の値がoption-boxの要素が2つ以上あるときに削除ボタンを表示
+      } else {
+        $('.delete-btn-new').hide(); // それ以外は削除ボタンを非表示
+      }
       event.preventDefault()
     });
   });
@@ -46,72 +131,150 @@ $(document).on('turbolinks:load', function(){
   // フォーマット編集用ページ
   $(function($) {
     //選択肢追加ボタンが押された時option入力フィールドを追加する処理
-    // ボタンのDOM要素を取得
-    var btn = document.getElementsByClassName('edit-add-field');
+    // ボタンのDOM要素を全て取得
+    var btn = document.getElementsByClassName('add-field-edit');
     // ボタンの個数分ループさせる。変数「i」に現在のループ回数がを代入
     for (var i = btn.length - 1; i >= 0; i--) {
-      // 各ボタンをイベントリスナーに登録
+      // 各ボタンをイベントリスナーに登録(どの項目のボタンが押されたのか特定する為に必要)
       btn[i].addEventListener("click", function(event){
-        // 差し替え用のinput要素(text_field)を生成する関数
-        function buildOptionTextField(form_type, form_object_id, option_id) {
-          const option_html = `<input class="form-control required="required" "type="text" value="" name="[${form_type}][${form_object_id}][${form_type}_option_strings][${option_id}][option_string]" id="_${form_type}_${form_object_id}_${form_type}_option_strings_${option_id}_option_string">`;
-          return option_html;
+        // index差し替え用のinput要素(hidden_field)を生成する関数(id用)
+        function buildIdHiddenField(form_table_type_value, option_index, form_display_order_id) {
+          const id_hidden_html =
+          `<input type="hidden" value=""
+          name="[form_display_order_attributes][${form_display_order_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
+          id="_form_display_order_attributes_${form_display_order_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
+          return id_hidden_html;
         }
-        // 差し替え用のinput要素(hidden_field)を生成する関数
-        function buildDestroyHiddenField(form_type, form_object_id, option_id) {
-          const destroy_hidden_html = `<input class="form-destroy-flag "type="hidden" value="false" name="[${form_type}][${form_object_id}][${form_type}_option_strings][${option_id}][_destroy]" id="_${form_type}_${form_object_id}_${form_type}_option_strings_${option_id}__destroy">`;
-          return destroy_hidden_html;
+
+        // index差し替え用のinput要素(text_field)を生成する関数(text_field用)
+        function buildOptionTextField(form_table_type_value, option_index, form_display_order_id) {
+          const option_input_html =
+          `<input class="form-control required="required" "type="text" value=""
+          name="[form_display_order_attributes][${form_display_order_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
+          id="_form_display_order_attributes_${form_display_order_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
+          return option_input_html;
         }
+
         // クリックされたボタンの親のを取得
         // thisは、クリックされたオブジェクト
-        var btn_parent = this.parentNode;
+        var option_add_btn_box = this.parentNode;
+        console.log(option_add_btn_box)
         // クリックされたボタンの親の親を取得
-        var btn_parent_parent = btn_parent.parentNode;
+        var option_form_edit = option_add_btn_box.parentNode;
+        console.log(option_form_edit)
         // クリックされたボタンの親の親の最初の子を取得してクローン
-        var clone_option_box = btn_parent_parent.firstElementChild.cloneNode(true);
+        var clone_option_box = option_form_edit.firstElementChild.cloneNode(true);
+        console.log(clone_option_box)
         // 差し替え用のinput要素を生成するのに必要な変数を定義(この変数達は関数であるbuildOptionTextField並びにbuildDestroyHiddenField内で使用)
-        // data-form-typeのの値を取得
-        form_type = clone_option_box.dataset.formType;
-        // data-form-object-idのの値を取得
-        form_object_id = clone_option_box.dataset.formObjectId;
-        // 現在時刻をミリ秒形式で取得(これをoption_stringのidとして使用)
-        option_id = new Date().getTime()
+        // クローンしたDMO内のdata-form-table-type-valueの値を取得
+        var form_table_type_value = clone_option_box.dataset.formTableTypeValue;
+        console.log(form_table_type_value)
+        // クローンしたDMO内のclass属性の値がoption-boxの要素数を取得(インデックス値は0から始まるため取得値をそのまま使用)
+        var option_index = option_form_edit.querySelectorAll("div[class='option-box']").length;
+        console.log(option_index)
+        // クローンしたDMO内のdata-form-display-order-idの値を取得
+        var form_display_order_id = clone_option_box.dataset.formDisplayOrderId;
+        console.log(form_display_order_id)
+        // クローンしたDMOのtype属性が'hidden'のinput要素を取得
+        var id_input_field = clone_option_box.querySelector("input[type='hidden']");
+        console.log(id_input_field)
+        // 取得したinput要素を生成した差し替え用のinput要素に変更
+        id_input_field.outerHTML = buildIdHiddenField(form_table_type_value, option_index, form_display_order_id);
         // クローンしたDMOのtype属性が'text'のinput要素を取得
         var option_input_field = clone_option_box.querySelector("input[type='text']");
+        console.log(option_input_field)
         // 取得したinput要素を生成した差し替え用のinput要素に変更
-        option_input_field.outerHTML = buildOptionTextField(form_type, form_object_id, option_id);
-        // クローンしたDMOのclass属性が'create-flag'のinput要素を取得する
-        var create_hidden_field = clone_option_box.querySelector("input[class='create-flag']");
-        // 取得したinput要素のvalue値をtrueにする
-        create_hidden_field.setAttribute("value", true);
-        // クローンしたDMOのclass属性が'destroy-flag'のinputを取得する
-        var hidden_destroy_field = clone_option_box.querySelector("input[class='destroy-flag']");
-        // 取得したinput要素を生成した差し替え用のinput要素に変更
-        hidden_destroy_field.outerHTML = buildDestroyHiddenField(form_type, form_object_id, option_id);
+        option_input_field.outerHTML = buildOptionTextField(form_table_type_value, option_index, form_display_order_id);
+        // data-form-indexの値を変更
+        clone_option_box.dataset.formIndex = `${option_index}`;
+        // 追加する要素を最終確認
+        console.log(clone_option_box)
         // 編集したDOMを追加
-        $(btn_parent).before(clone_option_box);
+        $(option_add_btn_box).before(clone_option_box);
         $(clone_option_box).closest('div').show()
+
+        // 削除ボタンの表示を切り替え
+        var option_form_edit = $(this).parent().parent();
+        console.log(option_form_edit)
+        var option_box = option_form_edit.children('.option-box').filter(':visible');
+        console.log(option_box)
+        option_box_count = option_box.length;
+        console.log(option_box_count)
+        if (option_box_count >= 2) {
+          console.log(true)
+          for (var i = option_box_count - 1; i >= 0; i--) {
+            var a = option_box[i].querySelector("a[class='remove-field']").style.display = 'inline';
+            console.log(a)
+            // option_box[i].querySelector("a[class='remove-field']").visibility = 'visible';
+          }
+        }
+
         // フォームが持つデフォルトの動作をキャンセル
         event.preventDefault()
       });
     }
-
     // 削除ボタンが押された時option入力フィールドを削除する処理(name属性がcreateのinput要素のvalue値がによって処理を分岐)
-    $('.edit-option-form').on('click', '.edit-remove-field', function(event){
-      create_hidden_field_value = $(this).prevAll('input[name*=create]').val()
-      console.log(create_hidden_field_value);
-      if (create_hidden_field_value == "true")
-      {
+    $('.option-form-edit').on('click', '.remove-field', function(event){
+      // 押された削除ボタンのclass属性の値がoption-form-editの要素を取得
+      var option_form_edit = $(this).parent().parent();
+      console.log(option_form_edit)
+      // 押された削除ボタンの全ての兄弟要素内でinput要素内のname属性の値にidを含む要素のvalue値を取得
+      id_hidden_field_value = $(this).prevAll('input[name*=id]').val()
+      console.log(id_hidden_field_value);
+      if (id_hidden_field_value) {
+        // 押された削除ボタンの前にある要素でinput要素内のname属性の値に_destroyを含む要素のalue値をtrueに
+        $(this).prev('input[name*=_destroy]').val('true')
+        // 押された削除ボタンの親のdiv要素を非表示
+        $(this).closest('div').hide()
+        event.preventDefault()
+      } else {
+        // 押された削除ボタンの親のdiv要素を削除
         $(this).closest('div').remove()
         event.preventDefault()
       }
-      else if (create_hidden_field_value == "false")
-      {
-        $(this).prev('input[name*=_destroy]').val('true')
-        $(this).closest('div').hide()
-        event.preventDefault()
+
+      var option_box = option_form_edit.children('.option-box');
+      console.log(option_box)
+      option_box_count = option_box.filter(':visible').length;
+      console.log(option_box_count)
+      if (option_box_count <= 1) {
+        option_box[0].querySelector("a[class='remove-field']").style.display = 'none';
+      event.preventDefault()
       }
     });
+  });
+
+  // ドラッグアンドドロップに関する処理
+  document.querySelectorAll('.form').forEach (element => {
+    element.ondragstart = function (event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    };
+
+    element.ondragover = function (event) {
+      event.preventDefault();
+      this.style.borderTop = '3px solid';
+    };
+
+    element.ondragleave = function () {
+    this.style.borderTop = "";
+    };
+
+    element.ondrop = function (event) {
+      var position_num = 0
+      event.preventDefault();
+      let id = event.dataTransfer.getData('text');
+      console.log(id);
+      let element_drag = document.getElementById(id);
+      console.log(element_drag);
+      console.log(this);
+      this.parentNode.insertBefore(element_drag, this);
+      this.style.borderTop = '';
+      document.querySelectorAll('.position').forEach (element => {
+        position_num = ++position_num;
+        console.log(position_num)
+        element.value = position_num;
+      });
+    };
   });
 });
 
