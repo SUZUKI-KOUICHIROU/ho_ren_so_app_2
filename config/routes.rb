@@ -50,8 +50,8 @@ Rails.application.routes.draw do
   end
 
   scope module: :users do
-    get 'users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
-    post 'users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
+    get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation
+    post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
 end
