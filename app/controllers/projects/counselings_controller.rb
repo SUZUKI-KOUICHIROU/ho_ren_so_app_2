@@ -8,10 +8,11 @@ class Projects::CounselingsController < BaseController
       @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
       @send.save
     end
-    redirect_to user_project_path current_user,params[:project_id]
+    redirect_to user_project_path current_user, params[:project_id]
   end
 
   def index
+    @user = current_user
     @project = Project.find(params[:project_id])
     @member = @project.users.all
     @counselings = @project.counselings.my_counselings(current_user)
@@ -25,6 +26,7 @@ class Projects::CounselingsController < BaseController
   end
 
   def show
+    @user = current_user
     @project = Project.find(params[:project_id])
     # @member = @project.users.all
     @counseling = Counseling.find(params[:id])

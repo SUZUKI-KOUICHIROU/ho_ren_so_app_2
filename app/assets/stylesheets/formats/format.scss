@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+//報告フォーマット編集画面関連
 .edit-report-formats-header, .edit-report-formats-footer {
   margin: 1% auto;
   padding: 1%;
@@ -12,11 +13,11 @@
   display: flex;
 }
 
-.project-name {
+.project-name-box {
   margin-top: 1%;
 }
 
-.form-addition {
+.form-add {
   margin-top: 1%;
   text-align: right;
   margin-left: auto;
@@ -28,9 +29,10 @@
   margin: 1% auto;
   padding: 1%;
   width: 50%;
+  cursor: pointer;
 }
 
-.label-select-form {
+.label-select-box {
   display: flex;
   margin-bottom: 2%;
 }
@@ -40,47 +42,42 @@
   width: 50%;
 }
 
-.field-type-box {
+.select-box {
   margin-left: 1%;
   width: 50%;
 }
 
-.form-view-text-field {
+.text-field-box, .date-field-box {
   border-bottom: thin dotted;
   margin-top: 1em;
   width: 50%;
 }
 
-.form-view-text-area {
+.text-area-box {
   border-bottom: thin dotted;
   margin-top: 1em;
 }
 
-.label-box {
-  margin-right: 1%;
-  width: 50%;
-}
-
-.option-box-radio_button, .option-box-check_box, .option-box-select, .option-box {
+.option-box {
   display: flex;
   width: 50%;
   margin-bottom: 2%;
 }
 
-.option_symbol, .new-remove-field {
+.option-symbol, .remove-field {
   line-height: 250%;
   width: 11%;
 }
 
-.new-remove-field {
+.remove-field {
   margin-left: 2%;
 }
 
-.new-remove-field:hover {
+.remove-field:hover {
   text-decoration: none;
 }
 
-.form-view {
+.text-common-box {
   border-bottom: thin dotted;
   margin-top: 1em;
 }
@@ -89,7 +86,7 @@
   display: flex;
 }
 
-.option-addition{
+.option-add-btn-box{
   margin-top: 1%;
 }
 
@@ -97,6 +94,15 @@
   margin-top: 1%;
   text-align: right;
   margin-left: auto;
+}
+
+.delete-btn-new {
+  display: none;
+}
+
+// 報告フォーマット編集画面チェックボックスのスタイル
+.check-box input[type=checkbox]{
+	transform: scale(1.4);
 }
 
 // border: thin solid;

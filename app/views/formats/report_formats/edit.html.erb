@@ -3,29 +3,29 @@
 <h1>報告フォーマット編集</h1>
 
 <div class="edit-report-formats-header">
-  <div class="project-name">
+  <div class="project-name-box">
     <a>プロジェクト名：<%= @project.project_name %></a>
   </div>
-  <div class="form-addition">
-    <%= link_to "フォーム追加", new_project_report_format_path(@project), remote: true, class: "btn btn-primary btn-sm" %>
+  <div class="form-add">
+    <%= link_to "項目を追加", new_project_report_format_path(@project), remote: true, class: "btn btn-success btn-sm" %>
   </div>
 </div>
 
 <%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
-  <% @form_number = 0 %>
   <% @form_display_orders.each do |form_display_order|%>
     <% @form_number += 1 %>
     <% case form_display_order.form_table_type %>
-    <% when 'text_field', 'text_area'%>
-      <%= render partial: "edit_description_type_form", locals: { form_display_order: form_display_order, form_number: @form_number, f: f } %>
+    <% when 'text_field', 'text_area', 'date_field'%>
+      <%= render partial: "edit_description_type_form", locals: { form_display_order: form_display_order, f: f } %>
     <% when 'radio_button', 'check_box', 'select' %>
-      <%= render partial: "edit_selection_type_form", locals: { form_display_order: form_display_order, form_number: @form_number, f: f } %>
+      <%= render partial: "edit_selection_type_form", locals: { form_display_order: form_display_order, f: f } %>
     <% end %>
   <% end %>
   <div class="edit-report-formats-footer">
-    <%= f.submit "変更", class: "btn btn-primary btn-sm" %>
+    <%= f.submit "変更", class: "btn btn-success btn-sm" %>
   </div>
 <% end %>
+
 
 <!--入力フォーム新規登録用モーダルウインドウ表示-->
 <div class="modal fade" id="form-new" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>

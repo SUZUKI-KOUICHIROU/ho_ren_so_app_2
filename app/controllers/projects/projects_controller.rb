@@ -20,9 +20,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
     project_report_frequency = project_params[:project_report_frequency]
     project_next_report_date = Date.current.since(project_params[:project_report_frequency].to_i.days)
     @project = @user.projects.create(project_name: project_name,
-                                    project_leader_id: project_leader_id,
-                                    project_report_frequency: project_report_frequency,
-                                    project_next_report_date: project_next_report_date)
+                                     project_leader_id: project_leader_id,
+                                     project_report_frequency: project_report_frequency,
+                                     project_next_report_date: project_next_report_date)
     flash[:success] = 'プロジェクトを新規登録しました。'
     redirect_to user_projects_path(@user.id)
     report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
@@ -60,7 +60,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     else
       flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
     end
-    redirect_to user_projects_path(user)  
+    redirect_to user_projects_path(user)
   end
 
   # プロジェクト削除アクション
@@ -72,8 +72,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     redirect_to user_projects_path(@user.id)
   end
 
-  def invitations
-  end
+  def invitations; end
 
   def join
     @user = User.find(params[:user_id])
@@ -106,5 +105,4 @@ class Projects::ProjectsController < Projects::BaseProjectController
     flash[:danger] = 'リーダーではない為、権限がありません。'
     redirect_to users_user_projects_path(params[:id])
   end
-
 end

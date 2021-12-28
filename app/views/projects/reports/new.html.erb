@@ -1,8 +1,13 @@
-<h2><%= @project.project_name %></h2>
+<h1><%= @project.project_name %></h1>
+<h2>報告の登録</h2>
 <% cnt = 1 %>
+<div class="container col-6">
 <%= form_with url: user_project_reports_path(current_user,@project), method: :post do |f| %>
+  <ol>
+  
   <% @qlist.each do |qt| %>
-  <% puts qt %>
+  <div class="container" style="padding: 5px">
+    <li>
     <% case qt.form_table_type %>
       <% when 'text_field' %>
         <% buf = qt.text_field.text_field_contents.new() %>
@@ -26,8 +31,14 @@
 
       <% end %>
       <%= render partial: q_type, locals: { pattern: qt ,mo: buf, f: f, c: cnt} %>
-      <% cnt += 1 %> 
+      <% cnt += 1 %>
+      </li> 
+    </div>
     <% end %>
+    
+  </ol>
   <%# レンダリング %>
-  <%= f.submit '更新', class: "btn btn-primary" %>
+  <p class="center" style="padding-top: 30px;"><%= f.submit '投稿', class: "btn btn-primary col-6" %></p>
+  <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-6" %></p>
 <% end %>
+</div>

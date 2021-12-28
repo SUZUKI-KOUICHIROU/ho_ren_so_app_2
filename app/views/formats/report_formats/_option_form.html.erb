@@ -1,14 +1,16 @@
-<%= ftf.fields_for @association_symbol do |osf| %>
-  <div class='option-box'>
-    <% case params[:form_type] %>
+<%= ftf.fields_for @form_option_symbol do |osf| %>
+  <div class='option-box', data-form-table-type-value="<%="#{form_table_type_value}"%>", data-form-index="<%="#{osf.index}"%>">
+    <% case @form_table_type_value %>
     <% when 'radio_button' %>
-      <a class='option_symbol'>&#x25C9;</a>
+      <a class='option-symbol'>&#x25C9;</a>
     <% when 'check_box' %>
-      <a class='option_symbol'>&#x2611;</a>
+      <a class='option-symbol'>&#x2611;</a>
     <% when 'select' %>
-      <a class='option_symbol'>&#x25BF;</a>
+      <a class='option-symbol'>&#x25BF;</a>
     <% end %>
+    <%= osf.hidden_field :id %>
     <%= osf.text_field :option_string, class: 'form-control', required: true %>
-    <%= link_to_remove_field( '✖︎', osf, {} ) %>
+    <%# <%= osf.hidden_field :_destroy, :value => false %>
+    <%= link_to '✖︎', "#", class: 'remove-field delete-btn-new' %>
   </div>
 <% end %>
