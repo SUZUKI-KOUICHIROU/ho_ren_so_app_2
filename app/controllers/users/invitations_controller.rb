@@ -3,9 +3,12 @@ class Users::InvitationsController < BaseController
   #before_action :valid_user,       only: [:edit, :update]
   #before_action :check_expiration, only: [:edit, :update]
 
-  def new; end
+  def new
+    @project = Project.find(params[:project_id])
+  end
 
   def create
+    @project = Project.find(params[:project_id])
     if params[:invitee][:email].blank?
       flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'

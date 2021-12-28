@@ -1,4 +1,7 @@
 /* universal */
+#logo {
+  margin-left: 5%;
+}
 section {
   overflow: auto;
 }
@@ -32,6 +35,15 @@ h2 {
 p {
   font-size: 1.1em;
   line-height: 1.7em;
+}
+
+// ハンバーガーアイコン
+.drawer-hamburger {
+  // margin-top: 7.5%;
+}
+
+.drawer--left.drawer-open .drawer-hamburger {
+  margin-top: 0%;
 }
 
 .debug_dump {

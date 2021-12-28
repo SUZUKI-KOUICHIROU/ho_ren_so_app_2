@@ -36,12 +36,13 @@
         <P>該当のプロジェクトはありません。</P>
       <% end %>
     </table>
-    <% if @projects.present?%>
-      <div class="paginate">
-        <P>ページネーション実装予定。</P>
-      </div>
-    <% end %>
   </div>
+  <% if @projects.present?%>
+  <div class="paginate">
+    <P>ページネーション実装予定。</P>
+  </div>
+    <% end %>
+  <%= link_to "戻る", :back, class: "btn btn-light btn-outline-dark" %>
 </div>
 <!--プロジェクト新規登録用モーダルウインドウ表示-->
 <div id="project-new" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
