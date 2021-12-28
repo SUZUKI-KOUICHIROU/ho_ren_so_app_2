@@ -70,6 +70,6 @@
   </div>
 </div>
 
-<%= link_to "招待する", new_invitation_path(@project, @user), class: "btn btn-secondary", style: "margin: 10px;" %>
+<%= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
 <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
 </div>

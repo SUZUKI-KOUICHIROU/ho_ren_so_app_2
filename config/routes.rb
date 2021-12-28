@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
+        member do
+          get :join
+        end
         resources :messages do
           member do
             patch 'read'
@@ -47,8 +50,8 @@ Rails.application.routes.draw do
   end
 
   scope module: :users do
-    get 'users/:user_id/invitations/new', to: 'invitations#new', as: :new_invitation
-    post 'users/:user_id/invitations/create', to: 'invitations#create', as: :create_invitation
+    get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation
+    post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
 end
