@@ -144,5 +144,5 @@ projects.each do |project|
   # select_box.select_option_strings.create!(option_string: 'なし')
   # select_box.select_option_strings.create!(option_string: '肉体的なもの（風邪など）')
   # select_box.select_option_strings.create!(option_string: '精神的なもの（うつなど）')
-  select_box.select_option_strings.create!(option_string: '両方')
+  #select_box.select_option_strings.create!(option_string: '両方')
 end
