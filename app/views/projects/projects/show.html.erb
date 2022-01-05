@@ -22,6 +22,16 @@
 
   <div style="margin: 10px;">
 
+    <% if @remanded_reports.count > 0 %>
+      <div class="block_contents">
+        <p><%= "▼報告内容の手直し依頼が来ています。▼" %></p>
+        <% @remanded_reports.each do |report| %>
+            <%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, @project, report) %> 
+            <span><%= report.remanded_reason %></span>
+          <% end %> 
+      </div>
+    <% end %>
+
     <div class="block_contents">
       <p><%= "▼報告の一覧▼" %></p>
       <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %> 

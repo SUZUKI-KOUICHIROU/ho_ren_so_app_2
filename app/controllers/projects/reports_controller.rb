@@ -7,36 +7,6 @@ class Projects::ReportsController < BaseController
     @qlist = @project.form_display_orders
   end
 
-  # def create
-  #   @user = current_user
-  #   @project = Project.find(params[:project_id])
-  #   @report = @project.reports.create(user_id: @user)
-  #   @qlist = @project.form_display_orders
-  #   cnt = 0
-  #   cnt_check = 0
-  #   @qlist.each do |qt|
-  #       case qt.form_table_type
-  #       when 'text_field'
-  #         buf = qt.text_field.text_field_contents.new(report_id: @report.id, text_field_value: params[:answer][cnt][:answer])
-  #       when 'text_area'
-  #         buf = qt.text_area.text_area_contents.new(report_id: @report.id, text_area_value: params[:answer][cnt][:answer])
-  #       when 'radio_button'
-  #         buf = qt.radio_button.radio_button_contents.new(report_id: @report.id, radio_button_value: params[:answer][cnt][:answer])
-  #       when 'check_box'
-  #         buf = qt.check_box.check_box_contents.new(report_id: @report.id, check_box_value: params[:answer][cnt][:answer])
-  #       when 'select'
-  #         buf = qt.select.select_contents.new(report_id: @report.id, select_value: params[:":checkbox"][cnt])
-  #         cnt_check += 1
-  #       end
-  #     cnt += 1
-  #     debugger
-  #     buf.save
-  #   end
-  #   @report.save
-  #   flash[:seccess] = "報告を登録しました。"
-  #   redirect_to user_project_path(@user, @project)
-  # end
-
   def create
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -67,6 +37,44 @@ class Projects::ReportsController < BaseController
     redirect_to user_project_path(@user, @project)
   end
 
+  def edit
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @report = Report.find(params[:id])
+    @user = User.find(@report.user_id)
+    @answers = @report.answers
+  end
+
+  def update
+    debugger
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @report = @project.reports.find(params[:id])
+    @answers = @report.answers
+    cnt = 1
+    @answers.each do |answer|
+      cnt_num = "#{cnt}" 
+      if params[:answer]
+        case answer.question_type
+        when 'text_field'
+          answer.update(value: params[:answer][cnt_num][:value])
+        when 'text_area'
+          answer.update(value: params[:answer][cnt_num][:value])
+        when 'radio_button'
+          answer.update(value: params[:answer][cnt_num][:value])
+        when 'check_box'
+          answer.update(array_value: params[:answer][cnt_num])
+        when 'select'
+          answer.update(value: params[:answer][cnt_num][:value])
+        end
+      end
+      cnt += 1
+    end
+    @report.update(remanded: false)
+    flash[:seccess] = "報告を編集しました。"
+    redirect_to user_project_path(@user, @project)
+  end
+  
   def index
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -81,4 +89,12 @@ class Projects::ReportsController < BaseController
     @user = User.find(@report.user_id)
     @answers = @report.answers
   end
+
+  def reject
+    @report = Report.find(params[:id])
+    @report.update!(params.require(:report).permit(:remanded_reason, :remanded)) 
+    @report.save
+    redirect_to action: :show
+  end
+
 end

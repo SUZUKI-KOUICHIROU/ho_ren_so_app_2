@@ -1,3 +1,17 @@
+<script type="text/javascript">
+<!--
+function hideForm(){
+document.getElementById("formblock").style.display = "none";
+}
+function showForm() {
+document.getElementById("formblock").style.display = "block";
+}
+window.onload = function(){
+hideForm();
+};
+//-->
+</script>
+
 <h1><%= @user.user_name %>さんの報告</h1>
 <ol>
   <% @answers.each do |answer| %>
@@ -30,5 +44,10 @@
   </div>
   <% end %>
 </ol>
+<p><input value="手直ししてもらう" onclick="showForm()" class="btn btn-danger"></p>
+<%#= link_to '再提出を求める', "#", class: "btn btn-danger" %>
+<div id="formblock">
+<%= render partial: 'reason', locals: {report: @report} %>
+</div>
 
 <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>

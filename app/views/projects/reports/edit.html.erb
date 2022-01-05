@@ -1,0 +1,37 @@
+<h1><%= @project.project_name %></h1>
+<h2>報告の編集</h2>
+
+<% cnt = 1 %>
+<div class="container col-6">
+<p>コメント</p>
+<%= @report.remanded_reason %>
+<%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
+  <ol>
+  
+  <% @answers.each do |answer| %>
+  <div class="container" style="padding: 5px">
+    <li>
+    <% case answer.question_type %>
+      <% when 'text_field' %>
+        <% q_type = 'edit_text_field' %>
+      <% when 'text_area' %>
+        <% q_type = 'edit_text_area' %>
+      <% when 'radio_button' %>
+        <% q_type = 'edit_radio_button' %>
+      <% when 'select' %>
+        <% q_type = 'edit_select' %>
+      <% when 'check_box' %>
+        <% q_type = 'edit_check_box' %>
+      <% end %>
+      <%= render partial: q_type, locals: { pattern: answer ,mo: answer, f: f, c: cnt} %>
+      <% cnt += 1 %>
+      </li> 
+    </div>
+    <% end %>
+    
+  </ol>
+  <%# レンダリング %>
+  <p class="center" style="padding-top: 30px;"><%= f.submit '投稿', class: "btn btn-primary col-6" %></p>
+  <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-6" %></p>
+<% end %>
+</div>
