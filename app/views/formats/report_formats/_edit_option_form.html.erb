@@ -1,17 +1,16 @@
-<%= fof.fields_for form_options_array, form_object_option_string do |foosf| %>
-  <div class="option-box-<%= "#{form_type}" %>", data-form-type="<%= "#{form_type}" %>",
-  data-form-object-id="<%= "#{form_object.id}" %>", data-option-id="<%= "#{form_object_option_string.id}" %>">
-    <%# debugger %>
-    <% case form_type %>
+<%= ftf.fields_for form_option_symbol do |osf| %>
+  <div class="option-box", data-form-table-type-value="<%="#{form_table_type_value}"%>", data-form-display-order-id="<%="#{form_display_order_id}"%>", data-form-index="<%="#{osf.index}"%>">
+    <% case form_table_type_value %>
     <% when 'radio_button' %>
-      <a class='option_symbol'>&#x25C9;</a>
+      <a class='option-symbol'>&#x25C9;</a>
     <% when 'check_box' %>
-      <a class='option_symbol'>&#x2611;</a>
+      <a class='option-symbol'>&#x2611;</a>
     <% when 'select' %>
-      <a class='option_symbol'>&#x25BF;</a>
+      <a class='option-symbol'>&#x25BF;</a>
     <% end %>
-    <%= foosf.text_field :option_string, class: 'form-control', required: true %>
-    <%= hidden_field_tag :create, false, class: 'create-flag' %>
-    <%= link_to_remove_field( "✖︎", foosf, {} ) %>
+    <%= osf.hidden_field :id %>
+    <%= osf.text_field :option_string, class: 'form-control', required: true %>
+    <%= osf.hidden_field :_destroy, :value => false %>
+    <%= link_to '✖︎', "#", class: 'remove-field' %>
   </div>
 <% end %>

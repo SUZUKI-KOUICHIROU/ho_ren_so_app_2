@@ -1,38 +1,54 @@
 <% case form_display_order.form_table_type %>
-<% when 'text_field'%>
-  <% form_object = form_display_order.text_field %>
-  <% form_array = "text_field[]" %>
-<% when 'text_area'%>
-  <% form_object = form_display_order.text_area %>
-  <% form_array = "text_area[]" %>
+<% when 'text_field' %>
+  <% form_type_symbol = :text_field %>
+<% when 'text_area' %>
+  <% form_type_symbol = :text_area %>
+<% when 'date_field' %>
+  <% form_type_symbol = :date_field %>
 <% end %>
-<div class="form" id = <%= "form-#{form_number}" %>>
-  <div class="label-select-form">
-    <%= f.fields_for form_array, form_object do |fof| %>
-      <div class="label-box">
-        <%= fof.label :label_name, "項目名" %>
-        <%= fof.text_field :label_name, class: 'form-control'%>
+  <div id="form-<%= @form_number %>", draggable="true", class="form"">
+    <%= f.fields_for 'form_display_order_attributes[]', form_display_order do |fdof| %>
+      <%= fdof.hidden_field :id %>
+      <%= fdof.hidden_field :form_table_type %>
+      <%= fdof.hidden_field :position, class: "position" %>
+      <div class="check-box">
+        <%= fdof.check_box :using_flag %>
+        <%= fdof.label :using_flag, "有効にする。" %>
       </div>
-      <div class="field-type-box">
-        <%= fof.label :field_type, "フォームの種類" %>
-        <%= fof.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control' } %>
+
+      <%= fdof.fields_for form_type_symbol do |ftf| %>
+        <%= ftf.hidden_field :id %>
+        <div class="label-select-box">
+          <div class="label-box">
+            <%= ftf.label :label_name, "項目名" %>
+            <%= ftf.text_field :label_name, class: 'form-control', required: true %>
+          </div>
+          <div class="select-box">
+            <%= ftf.label :field_type, "フォームの種類" %>
+            <%= ftf.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control', disabled: true } %>
+            <%= ftf.hidden_field :field_type %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <% case form_display_order.form_table_type %>
+    <% when 'text_field'%>
+      <div class="text-field-box">
+        <a>記述式テキスト（短文回答）</a>
+      </div>
+    <% when 'text_area'%>
+      <div class="text-area-box">
+        <a>記述式テキスト（長文回答）</a>
+      </div>
+    <% when 'date_field'%>
+      <div class="date-field-box">
+        <a>年 / 月 / 日（カレンダー）</a>
       </div>
     <% end %>
-  </div>
-  <% case form_display_order.form_table_type %>
-  <% when 'text_field'%>
-    <div class="form-view-text-field">
-      <a>記述式テキスト（短文回答）</a>
+    <div class="text-common-box">
+      <a>　</a>
     </div>
-  <% when 'text_area'%>
-    <div class="form-view-text-area">
-      <a>記述式テキスト（長文回答）</a>
+    <div class="form-delete-button">
+      <%= link_to "削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
     </div>
-  <% end %>
-  <div class="form-view">
-    <a>　</a>
   </div>
-  <div class="form-delete-button">
-    <%= link_to "このフォームを削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-primary btn-sm" %>
-  </div>
-</div>

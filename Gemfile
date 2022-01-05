@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.1.1'
@@ -23,10 +24,12 @@ gem 'haml-rails'
 gem 'holiday_japan'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'jwt'
 gem 'kaminari'
 gem 'momentjs-rails'
 gem 'payjp'
+gem 'pry-rails'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.6'
 gem 'rails-i18n'
@@ -39,6 +42,7 @@ gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'will_paginate'
+gem 'rinku'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

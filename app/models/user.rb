@@ -6,7 +6,7 @@ class User < ApplicationRecord
   #招待メールを送信する
   def send_invite_email
     UserMailer.invitation(self).deliver_now
-  end
+  end 
 
   #招待の期限が切れている場合はtrueを返す
   def invitation_expired?
@@ -36,5 +36,4 @@ class User < ApplicationRecord
                                     format: { with: VALID_PASSWORD_REGEX,
                                               message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
                                     allow_blank: true
-
 end

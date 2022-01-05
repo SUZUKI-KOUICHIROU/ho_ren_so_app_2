@@ -4,18 +4,21 @@ class Users::InvitationsController < BaseController
   #before_action :check_expiration, only: [:edit, :update]
 
   def new
-
+    @project = Project.find_by(id: params[:id])
+    #@project.users << current_user
+    #redirect_to root_path
   end
 
   def create
     if params[:invitee][:email].blank?
-      flash[:danger] = "メールアドレスを入力してください。"
+      flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'
     else
-      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "foobar", invited_by: current_user.id)
+      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, invited_by: current_user.id)
       #@user.create_invite_digest
+      #user.projects << project
       @user.send_invite_email
-      flash[:info] = "招待メールを送信しました！"
+      flash[:info] = '招待メールを送信しました！'
       redirect_to root_url
     end
   end
@@ -34,12 +37,11 @@ class Users::InvitationsController < BaseController
       inviter = User.find(@user.invited_by)
       @user.follow(inviter)
       inviter.follow(@user)
-      flash[:success] = "ようこそ01Booksへ!"
+      flash[:success] = 'ようこそ01Booksへ!'
       redirect_to @user
     else
-      render "edit"
+      render 'edit'
     end
-
   end
 
   private
@@ -48,26 +50,25 @@ class Users::InvitationsController < BaseController
     params.require(:user).permit(:name, :password, :password_confirmation)
   end
 
-
-  #beforeフィルタ
+  # beforeフィルタ
 
   def get_user
     @user = User.find_by(email: params[:email])
   end
 
-  #正しいユーザーかどうか確認する
+  # 正しいユーザーかどうか確認する
   def valid_user
-    unless (@user && !@user.activated? &&
-        @user.authenticated?(:invite, params[:id])) #params[:id]はメールアドレスに仕込まれたトークン
-      flash[:danger] = "無効なリンクです。"
+    unless @user && !@user.activated? &&
+           @user.authenticated?(:invite, params[:id]) # params[:id]はメールアドレスに仕込まれたトークン
+      flash[:danger] = '無効なリンクです。'
       redirect_to root_url
     end
   end
 
-  #トークンが期限切れかどうか確認する
+  # トークンが期限切れかどうか確認する
   def check_expiration
     if @user.invitation_expired?
-      flash[:danger] = "招待メールの有効期限が切れています。"
+      flash[:danger] = '招待メールの有効期限が切れています。'
       redirect_to root_url
     end
   end
