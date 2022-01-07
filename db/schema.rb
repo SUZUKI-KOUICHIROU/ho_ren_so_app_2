@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
     t.integer "task_id"
     t.integer "user_id"
     t.boolean "remanded"
+    t.string "remanded_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"

@@ -1,27 +1,4 @@
 <h1>報告一覧</h1>
-<%
-=begin%>
- <ol>
-  <% @qlist.each do |buf| %>
-  <li>
-    <% case buf.form_table_type %>
-      <% when 'text_field' %>
-        <% caption = buf.text_field.label_name %>  
-      <% when 'text_area' %>  
-        <% caption = buf.text_area.label_name %> 
-      <% when 'radio_button' %>  
-        <% caption = buf.radio_button.label_name %>
-      <% when 'select' %>  
-        <% caption = buf.select.label_name %>
-      <% when 'check_box' %>  
-        <% caption = buf.check_box.label_name %>
-    <% end %>
-    <%= link_to caption, user_project_reports_path(@project,buf) %>の一覧
-    </li>
-  <% end %>
-</ol> 
-<%
-=end%>
 
 <table>
   <thead>
@@ -37,7 +14,7 @@
           <%= link_to User.find(report.user_id).user_name, user_project_report_path(@user, @project, report) %>
         </td>
         <td>
-          <%= report.created_at %>
+          <%= report.created_at.strftime("%Y年%m月%d日") %>
         </td>
       </tr>
     <% end %>

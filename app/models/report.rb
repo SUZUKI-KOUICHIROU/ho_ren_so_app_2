@@ -5,6 +5,7 @@ class Report < ApplicationRecord
   has_many :text_area_contents
   has_many :radio_button_contents
   has_many :select_contents
+  has_many :date_field_contents
   has_many :answers
   has_many :report_confirmers, dependent: :destroy
 

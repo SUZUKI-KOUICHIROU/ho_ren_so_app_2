@@ -1,0 +1,5 @@
+<%= form_with(model: report, local: true, url: reject_user_project_report_path(@user,@project,@report), method: :post) do |f| %>
+  <%= f.text_area :remanded_reason, placeholder: "再提出理由（要望など）", class: "form-control" %>
+  <%= f.hidden_field :remanded, value: true %>
+  <%= f.submit '更新', class: "btn btn-primary col-2" %>
+<% end %>

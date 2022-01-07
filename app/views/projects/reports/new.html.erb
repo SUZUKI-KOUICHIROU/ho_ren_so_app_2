@@ -28,7 +28,9 @@
       <% when 'check_box' %>
         <% buf = qt.check_box.check_box_contents.new() %>
         <% q_type = 'check_box' %>
-
+      <% when 'date_field' %>
+        <% buf = qt.date_field.date_field_contents.new() %>
+        <% q_type = 'date_field' %>
       <% end %>
       <%= render partial: q_type, locals: { pattern: qt ,mo: buf, f: f, c: cnt} %>
       <% cnt += 1 %>

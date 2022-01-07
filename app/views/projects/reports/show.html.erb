@@ -1,3 +1,17 @@
+
+<script type="text/javascript">
+<!--
+function changeForm() {
+  if ($('#formblock').css('display') == 'none') {
+    document.getElementById("formblock").style.display = "block";
+  } else {
+    document.getElementById("formblock").style.display = "none";
+  }
+}
+-->
+</script>
+
+
 <h1><%= @user.user_name %>さんの報告</h1>
 <ol>
   <% @answers.each do |answer| %>
@@ -30,5 +44,9 @@
   </div>
   <% end %>
 </ol>
+<p><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger"></p>
+<div id="formblock" style="display: none">
+  <%= render partial: 'reason', locals: {report: @report} %>
+</div>
 
 <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>
