@@ -47,6 +47,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
     @member = @project.users.all
+    @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
   # プロジェクト内容編集アクション
