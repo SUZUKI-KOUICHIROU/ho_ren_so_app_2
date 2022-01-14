@@ -6,6 +6,8 @@ class Users::InvitationsController < BaseController
   def new
     @user = User.find(current_user.id)
     @project = Project.find(params[:project_id])
+    #@token = Token.find by(token: params[:token])
+    #@join = Join.create(token: token, project_id: projeçt_id, user_id: user_id)
     #@project.users << current_user
     #redirect_to root_path
   end
@@ -18,6 +20,8 @@ class Users::InvitationsController < BaseController
     else
       @user_id = params[:user_id]
       @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, invited_by: current_user.id)
+      @token = Token.find by(token: params[:token])
+      @join = Join.create(token: token, project_id: projeçt_id, user_id: user_id)
       #@user.create_invite_digest
       #user.projects << project
       @user.send_invite_email
