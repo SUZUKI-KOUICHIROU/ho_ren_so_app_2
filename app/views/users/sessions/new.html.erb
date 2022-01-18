@@ -1,34 +1,70 @@
 <% provide(:title, "Top") %>
-  <div class="center jumbotron">
-    <h1>報連相システム</h1>
-      <p>このアプリケーションでは、登録されたユーザーの報連相を登録することができます。</p>
-        <%= link_to "会員登録", new_user_registration_path, class: "btn btn-lg btn-primary" %>
-  </div>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
-
-  <div class="row">
-  <div class="col-md-6 col-md-offset-3 user-table">
-    <%= form_with(model: @user, local: true) do |f| %>
-
-      <%= f.label :email, class: "label-signup" %>
-      <%= f.email_field :email, class: "form-control" %>
-
-      <%= f.label :password, class: "label-signup" %>
-      <%= f.password_field :password, class: "form-control" %>
-
-      <% if devise_mapping.rememberable? %>
-        <div class="field">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
+<div class="sessions-new-img">
+  <div class="sessions-new-container">
+  <div class="container">
+    <div class="row justify-content-around">
+      <!--div class="app-overview col-6">
+        <div class="report-overview">
+          <p>報告の定義</p>
+          <p>報告とは、任務を受けた者がその状況を告げ知らせることを意味します。</p>
         </div>
-      <% end %>
+        <div class="contact-overview">
+          <p>連絡の定義</p>
+          <p>連絡とは、情報を知らせることを意味します。事実のみを伝えることで自分の意見などは必要ありません。</p>
+        </div>
+        <div class="counseling-overview">
+          <p>相談の定義</p>
+          <p>相談とは、物事を決定する際に他の人に意見を求めたり、話し合いをすることを意味します。</p>
+        </div>
+      </div -->
 
-      <%= f.submit "ログイン", class: "btn btn-primary btn-block btn-signin" %>
-    <% end %>
-    <%= render "users/shared/links" %>
+      <div class="login-box col-md-6">
+        <div class="box">
+          <div class="box-inner">
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <h1>ログイン</h1>
+              <div class="box-email">
+                <%= f.label :email, "Eメール" %><br />
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+              </div>
+              <div class="box-password">
+                <div class="a-row">
+                  <div class="column-left">
+                    <%= f.label :password, "パスワード" %>
+                  </div>
+                  <div class="column-right">
+                    <%= link_to "パスワードを忘れた場合", new_user_password_path %>
+                  </div>
+                </div>
+                <%= f.password_field :password, autocomplete: "current-password" %>
+              </div>
+              <div class="box-login">
+                <%= f.submit "ログイン" %>
+                <div class="legal-text">
+                  続行することで、Horenso_Appの
+                  <%= link_to "利用規約", "#" %>
+                  および
+                  <%= link_to "プライバシー規約", "#" %>
+                  に同意するものとみなされます。
+                </div>
+                <% if devise_mapping.rememberable? %>
+                  <div class="remember">
+                    <%= f.check_box :remember_me %>
+                    <%= f.label :remember, "ログインしたままにする", class: "remember-login"%>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+
+            <div class="box-newusr">
+              <p class="new-gest"><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></p>
+              <%= link_to "Horenso_Appアカウントを作成", new_user_registration_path %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
   </div>
-<% end %>
-
-
+</div>

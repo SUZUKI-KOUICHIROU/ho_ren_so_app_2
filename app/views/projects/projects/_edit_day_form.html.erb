@@ -1,0 +1,37 @@
+<%= form_with(model: @project, url: user_projects_path(@user), local: true, method: :post, id: "project-form") do |f| %>
+  <%= f.hidden_field :project_leader_id, :value => current_user.id %>
+  <div class="modal-body">
+    <div class="box-project-name">
+      <%= f.label :project_name, "プロジェクト名：", class: "project-name-label" %>
+      <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
+    </div>
+
+    <div class='box-project-radio'>
+      <%= f.label :project_report_frequency, "報告頻度：" %>
+      <%= f.radio_button :report_frequency_selection, :edit_day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
+      <%= f.label :report_frequency_selection_edit_day, "日数で設定", class: "project-radio-label" %>
+
+      <%= f.radio_button :report_frequency_selection, :edit_week, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
+      <%= f.label :report_frequency_selection_edit_week, "曜日で設定", class: "project-radio-label" %>
+    </div>
+    <div class="box-project-report-frequency">
+      <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number", required: true %>
+      <div class="once">日に1回</div>
+    </div>
+
+    <div class="box-project-next-report-date">
+      <a id="project-next-report-date">
+        <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
+        次回報告日：<%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
+      </a>
+      <%= f.hidden_field :project_next_report_date, :value => @project.project_next_report_date %>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">
+      キャンセル
+    </button>
+      <%= f.submit "新規登録", class: "btn btn-primary btn-new", id: "project-create" %>
+  </div>
+<% end %>

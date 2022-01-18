@@ -1,6 +1,6 @@
 <% case params[:form_type] %>
 <% when 'text_field', 'text_area', 'date_field' %>
   $('.form-content').html('<%= escape_javascript(render 'description_type_form') %>')
-<% when 'check_box', 'radio_button', 'select'%>
+<% when 'check_box', 'radio_button', 'select' %>
   $('.form-content').html('<%= escape_javascript(render 'selection_type_form') %>')
 <% end %>

@@ -10,6 +10,7 @@ class Users::InvitationsController < BaseController
   end
 
   def create
+    @project = Project.find(params[:project_id])
     if params[:invitee][:email].blank?
       flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'

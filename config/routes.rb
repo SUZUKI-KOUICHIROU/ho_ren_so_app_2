@@ -53,6 +53,10 @@ Rails.application.routes.draw do
     delete 'projects/:project_id/form_display_order/:form_display_order_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
 
+  scope module: :projects do
+    get 'input_forms/frequency_input_form_switching', to: 'projects#frequency_input_form_switching', as: :frequency_input_form_switching
+  end
+
   scope module: :users do
     get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation

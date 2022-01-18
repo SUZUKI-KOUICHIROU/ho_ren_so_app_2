@@ -1,2 +1,5 @@
-$("#project-new").html("<%= escape_javascript(render 'new') %>");
-$("#project-new").modal("show");
+$("#project-new-edit").html("<%= escape_javascript(render 'new') %>");
+$("#project-new-edit").modal("show");
+if (typeof nameText !== 'undefined') {
+  delete nameText
+}

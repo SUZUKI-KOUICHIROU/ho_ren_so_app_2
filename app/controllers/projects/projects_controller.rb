@@ -15,15 +15,12 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト新規登録アクション
   def create
     @user = User.find(params[:user_id])
-    project_name = project_params[:project_name]
-    project_leader_id = project_params[:project_leader_id]
-    project_report_frequency = project_params[:project_report_frequency]
-    project_next_report_date = Date.current.since(project_params[:project_report_frequency].to_i.days)
-    @project = @user.projects.create(project_name: project_name,
-                                     project_leader_id: project_leader_id,
-                                     project_report_frequency: project_report_frequency,
-                                     project_next_report_date: project_next_report_date)
-    flash[:success] = 'プロジェクトを新規登録しました。'
+    if @user.projects.create(project_params).valid?
+      @project = @user.projects.create(project_params)
+      flash[:success] = 'プロジェクトを新規登録しました。'
+    else
+      flash[:success] = 'プロジェクト新規登録に失敗しました。'
+    end
     redirect_to user_projects_path(@user.id)
     report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
   end
@@ -36,7 +33,15 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト編集用モーダルウインドウ表示アクション
   def edit
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
+    if @project.project_report_frequency == 7
+      @report_frequency_type = 'week'
+      project_next_report_date_wday = @project.project_next_report_date.wday?
+      @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+    else
+      @report_frequency_type = 'day'
+    end
   end
 
   # プロジェクト詳細ページ表示アクション
@@ -54,9 +59,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def update
     user = User.find(params[:user_id])
     @project = Project.find(params[:id])
-    @project.update(project_params)
     @projects = Project.all
-    if @project.update_attributes(project_params)
+    if @project.update(project_params)
       flash[:success] = "#{@project.project_name}の内容を更新しました。"
     else
       flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
@@ -80,21 +84,27 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find_by(id: params[:id])
     @project.users << current_user
     redirect_to root_path
-  end 
+  end
 
-  # 全ユーザーを全てのプロジェクトに参画
-  #users = User.all
-    #projects = Project.all
-      #users.each do |user|
-        #projects.each do |project|
-        #user.projects << project
-      #end
-  #end
+  def frequency_input_form_switching
+    @user = User.find(params[:user_id])
+    case params[:form_type]
+    when 'day', 'week'
+      @project = @user.projects.new(project_name: params[:project_name])
+    when 'edit_day', 'edit_week'
+      @project = @user.projects.find(params[:project_id])
+      @project.project_name = params[:project_name]
+      if @project.project_report_frequency == 7
+        project_next_report_date_wday = @project.project_next_report_date.wday?
+        @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+      end
+    end
+  end
 
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency)
+    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date)
   end
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
