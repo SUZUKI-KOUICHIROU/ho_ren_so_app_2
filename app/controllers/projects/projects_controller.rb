@@ -58,7 +58,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def update
     user = User.find(params[:user_id])
     @project = Project.find(params[:id])
-    @project.update(project_params)
     @projects = Project.all
     if @project.update(project_params)
       flash[:success] = "#{@project.project_name}の内容を更新しました。"
