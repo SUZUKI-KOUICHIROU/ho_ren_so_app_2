@@ -1,34 +1,7 @@
 <div class="container">
-<%= pattern.check_box.label_name %>
-<br>
-
-
-
-<%
-=begin%>
- <%= f.fields_for "answer[]", mo do |m| %>
-  <%= m.collection_check_boxes("answer", pattern.check_box.check_box_option_strings.all, :option_string, :option_string, {multiple: true, include_hidden: true}) %>
-<% end %>      
-<%
-=end%>
-
-
-
-
-
-
-<%
-=begin%>
- 
- <% pattern.check_box.check_box_option_strings.each do |box| %>
-   <%= f.check_box ":checkbox[][answer]", {multiple: true, include_hidden: true}, box[:option_string] %><%= box.option_string %>
-  <% end %>     
-<%
-=end%>
-
- <% pattern.check_box.check_box_option_strings.each do |box| %>
+  <%= pattern.check_box.label_name %>
+  <br>
+  <% pattern.check_box.check_box_option_strings.each do |box| %>
    <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false}, box[:option_string] %><%= box.option_string %>
   <% end %> 
-
-
 </div>

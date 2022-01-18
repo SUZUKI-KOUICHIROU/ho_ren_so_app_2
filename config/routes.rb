@@ -35,7 +35,11 @@ Rails.application.routes.draw do
             patch 'read'
           end
         end
-        resources :reports
+        resources :reports do
+          member do
+            post 'reject'
+          end
+        end
       end
     end
   end

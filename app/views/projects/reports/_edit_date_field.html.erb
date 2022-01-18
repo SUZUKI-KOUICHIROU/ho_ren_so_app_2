@@ -1,0 +1,8 @@
+<div class="container">
+<% c -= 1 %>
+<% defalutDate = @answers[c][:value] %>
+<%= DateField.find(pattern.question_id).label_name %>
+  <%= f.fields_for "answer[#{c}]", mo do |m| %>
+  <p style="padding-top: 5px;"><%= m.date_field :value, value: defalutDate %></p>
+  <% end %>
+</div>
