@@ -1,0 +1,56 @@
+// Place all the styles related to the projects::base_project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.box-project-name {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-name-label {
+  display: block;
+  margin-bottom: 0rem
+}
+
+.project-name-text-box {
+  width: 70%;
+}
+
+.box-project-radio {
+  margin-bottom: 1rem;
+  .project-radio-label {
+    white-space: nowrap;
+    margin-right: 5%;
+    margin-bottom: 0rem;
+  }
+}
+
+.box-project-report-frequency {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  label {
+    margin-bottom: 0rem;
+  }
+}
+
+.box-number {
+  width: 15%;
+}
+
+.once {
+  margin-left: 2%;
+}
+
+.box-week {
+  width: 15%;
+}
+
+.weekly {
+  margin-right: 2%;
+}
+
+.weekday {
+  margin-left: 2%;
+}
+//border: thin solid;

@@ -1,4 +1,6 @@
 class Project < ApplicationRecord
+  attr_accessor :report_frequency_selection, :week_select
+
   has_many :project_users, dependent: :destroy
   has_many :users, through: :project_users
   # has_many :tasks, dependent: :destroy
