@@ -2,7 +2,7 @@
   <p>この度は、お問い合わせありがとうございました。<br>
   以下でご質問の回答となっておりますでしょうか。</p>
 
-  <%= link_to join_project_url(token: token) %>
+  <%= link_to "グループ参加", join_url(token: @token) %>
 
   <p><%#= @answer %></p>
   <%#= link_to '参　加', join_user_project_url(project: @project) %>

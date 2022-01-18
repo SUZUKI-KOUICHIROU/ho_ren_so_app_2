@@ -21,25 +21,3 @@
   </div>
 </div>
 <%#= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-
-<h1>グループ一覧</h1>
-<div class="project_list">
-  <% @projects.each do |project| %>
-    <div class="project_index">
-      <% if user_signed_in? %>
-        <% unless ProjectUser.exists?(project_id: project.id, user_id: current_user.id) %>
-          <div class="participation">
-            <%= link_to '参　加', join_user_project_path(@user, project) %>
-          </div>
-        <% else %>
-          <div class="participation">
-            <a href="#">参加中</a>  ##グループの詳細が見れるようにlink_toを用いて実装予定
-          </div>
-        <% end %>
-      <% end %>
-      <div class="project_name" >
-        <%= project.project_name %>
-      </div>
-    </div>
-  <% end %>
-</div>

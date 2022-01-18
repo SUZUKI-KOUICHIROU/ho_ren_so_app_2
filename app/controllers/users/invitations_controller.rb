@@ -7,26 +7,42 @@ class Users::InvitationsController < BaseController
     @user = User.find(current_user.id)
     @project = Project.find(params[:project_id])
     #@token = Token.find by(token: params[:token])
-    #@join = Join.create(token: token, project_id: projeçt_id, user_id: user_id)
+    #@join = Join.create(token: token, project_id: project_id, user_id: user_id)
     #@project.users << current_user
     #redirect_to root_path
   end
 
   def create
-    @project = Project.find(params[:project_id])
+
     if params[:invitee][:email].blank?
       flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'
     else
-      @user_id = params[:user_id]
-      @user = User.create(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, invited_by: current_user.id)
-      @token = Token.find by(token: params[:token])
-      @join = Join.create(token: token, project_id: projeçt_id, user_id: user_id)
+      @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "password", invited_by: current_user.id)
+      @user.save!
+      @join = Join.create(project_id: @project.id, user_id: @user.id)
       #@user.create_invite_digest
       #user.projects << project
-      @user.send_invite_email
+      @user.send_invite_email(@join.token)
       flash[:info] = '招待メールを送信しました！'
-      redirect_to root_url
+      redirect_to user_project_path(current_user, @project)
+    end
+
+    @project = Project.find(params[:project_id])
+    If User.exists?(email: params[:invitee][:email])
+	@user = User.find_by(email: params[:invitee][:email])
+    if params[:invitee][:email].blank?
+      flash[:danger] = 'メールアドレスを入力してください。'
+      render 'new'
+    else
+      @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "password", invited_by: current_user.id)
+      @user.save!
+      @join = Join.create(project_id: @project.id, user_id: @user.id)
+      #@user.create_invite_digest
+      #user.projects << project
+      @user.send_invite_email(@join.token)
+      flash[:info] = '招待メールを送信しました！'
+      redirect_to user_project_path(current_user, @project)
     end
   end
 

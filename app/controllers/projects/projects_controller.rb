@@ -75,9 +75,12 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def invitations; end
 
   def join
-    @user = User.find(params[:user_id])
-    @project = Project.find_by(id: params[:id])
-    @project.users << current_user
+    # ログイン処理を入れる
+    @join = Join.find_by(token: params[:token])
+    @user = User.find(@join.user_id)
+    @project = Project.find_by(id: @join.project_id)
+    @project.users << @user
+    # フラッシュメッセージを入れる
     redirect_to root_path
   end 
 
