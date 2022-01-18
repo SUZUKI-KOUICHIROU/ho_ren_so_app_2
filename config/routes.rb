@@ -22,9 +22,6 @@ Rails.application.routes.draw do
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
-        member do
-          get :join
-        end
         resources :messages do
           member do
             patch 'read'
@@ -44,6 +41,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'join', to: 'projects/projects#join'
+  
   scope module: :formats do
     get 'projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
     get 'projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format

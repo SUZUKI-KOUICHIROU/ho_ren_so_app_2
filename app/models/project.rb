@@ -8,6 +8,8 @@ class Project < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :counselings, dependent: :destroy
   has_many :form_display_orders, dependent: :destroy
+  has_many :joins
+  has_many :tokens, through: :joins
 
   validates :project_name, presence: true, length: { maximum: 20 }
   validates :project_leader_id, presence: true
