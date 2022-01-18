@@ -13,23 +13,7 @@ class Users::InvitationsController < BaseController
   end
 
   def create
-    if params[:invitee][:email].blank?
-      flash[:danger] = 'メールアドレスを入力してください。'
-      render 'new'
-    else
-      @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: "password", invited_by: current_user.id)
-      @user.save!
-      @join = Join.create(project_id: @project.id, user_id: @user.id)
-      #@user.create_invite_digest
-      #user.projects << project
-      @user.send_invite_email(@join.token)
-      flash[:info] = '招待メールを送信しました！'
-      redirect_to user_project_path(current_user, @project)
-    end
-
     @project = Project.find(params[:project_id])
-    If User.exists?(email: params[:invitee][:email])
-	@user = User.find_by(email: params[:invitee][:email])
     if params[:invitee][:email].blank?
       flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'
