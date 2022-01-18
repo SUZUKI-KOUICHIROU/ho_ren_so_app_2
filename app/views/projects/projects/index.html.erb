@@ -1,5 +1,9 @@
 <% provide(:title, 'All projects') %>
 
+<%= content_for :side_menu do %>
+  <%= render 'project_index_sidebar' %>
+<% end %>
+
 <% if params[:search].present? %>
   <h1>検索結果</h1>
 <% else%>
@@ -14,7 +18,7 @@
   <% end %>
 </div>
 <div>
-  <%= link_to "プロジェクト新規登録", new_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm" %>
+  <%= link_to "プロジェクト新規登録", new_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm", id: "modal-but", data: {"turbolinks" => false} %>
 </div>
 
 <div class="container">
@@ -45,6 +49,6 @@
   <%= link_to "戻る", :back, class: "btn btn-light btn-outline-dark" %>
 </div>
 <!--プロジェクト新規登録用モーダルウインドウ表示-->
-<div id="project-new" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
+<div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
 <!--プロジェクト内容編集モーダルウインドウ表示-->
-<div class="modal fade" id="project-edit" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
+<!-- div id="project-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"><div -->

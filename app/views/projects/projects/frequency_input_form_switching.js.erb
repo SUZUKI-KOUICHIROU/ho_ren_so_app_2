@@ -1,0 +1,11 @@
+<%# debugger %>
+<% case params[:form_type] %>
+<% when 'day' %>
+  $('.form-content').html('<%= escape_javascript(render 'day_form') %>')
+<% when 'week' %>
+  $('.form-content').html('<%= escape_javascript(render 'week_form') %>')
+<% when 'edit_day' %>
+  $('.form-content').html('<%= escape_javascript(render 'edit_day_form') %>')
+<% when 'edit_week' %>
+  $('.form-content').html('<%= escape_javascript(render 'edit_week_form') %>')
+<% end %>
