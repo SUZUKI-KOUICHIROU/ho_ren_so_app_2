@@ -94,9 +94,8 @@ Rails.application.configure do
 
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
-  # ここのURLをデプロイ先に変更する。
-  #host = 'www.ouchidegakudou.jp'
-  host = 'ouchide-gakudou.herokuapp.com'
+  
+  host = 'nameless-shelf-86781.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
   config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {
