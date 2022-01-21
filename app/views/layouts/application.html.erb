@@ -12,11 +12,11 @@
   <%= render 'layouts/header' %>
   <body>
       <div class="content-box">
-        <div class="row" style="height: 100%;">
+        <div class="row">
           <% if user_signed_in? %>
               <%= yield(:side_menu) if block_given? %>
           <% end %>
-          <div class="container col-10" style="height: 100%;">
+          <div class="container col-9">
             <%= yield %>
           </div>
         </div>
