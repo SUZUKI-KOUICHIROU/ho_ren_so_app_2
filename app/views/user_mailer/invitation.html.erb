@@ -2,7 +2,15 @@
   <p>この度は、お問い合わせありがとうございました。<br>
   以下でご質問の回答となっておりますでしょうか。</p>
 
-  <p><%= @answer %></p>
-  <%= link_to '参　加', join_user_project_url(@user) %>
+  <%= link_to "グループ参加", join_url(token: @token) %>
+
+  <p><%#= @answer %></p>
+  <%#= link_to '参　加', join_user_project_url(project: @project) %>
+
+  <%#= form_with(model: @project, url: join_user_project_url(@project), local: true, method: :post, id: "project-form") do |f| %>
+      <%#= f.hidden_field :project_leader_id, :value => current_user.id %>
+          <%#= f.submit "参加", class: "btn btn-primary btn-new" %>
+    <%# end %>
+
 <!--<a href="http://localhost:3000/join_user_project_url">こちらからプロジェクトに加入する</a>
   <p>今後とも XXX をよろしくお願いいたします。</p>
