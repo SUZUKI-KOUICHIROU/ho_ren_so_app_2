@@ -61,4 +61,5 @@ Rails.application.routes.draw do
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
+  get 'users/:user_id/page_after_login/new', to: 'page_after_login#new', as: :new_page_after_login
 end
