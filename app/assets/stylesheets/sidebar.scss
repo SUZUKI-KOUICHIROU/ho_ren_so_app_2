@@ -1,6 +1,8 @@
 .listings {
-  min-height: 100vh;
+
+  height: 100%;
   float: left;
+  width: 15%;
   position: fixed;
   left: 0;
   overflow-y: auto;
@@ -43,17 +45,15 @@
 }
 
 .channel {
-  border-top-right-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-  padding-right: 17px;
+  text-align: center;
   margin-bottom: 2%;
-  padding-left: 1rem;
   border-radius: 20px;
   border: 1px solid #fc8022;
   a {
     color: #fc8022;
     text-decoration: none;
     font-weight: bolder;
+    display: block;
   }
 }
 
@@ -63,5 +63,4 @@
   }
   background: #fc8022;
 }
-
 // border: thin solid;
