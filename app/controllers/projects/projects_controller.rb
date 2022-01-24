@@ -15,7 +15,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト新規登録アクション
   def create
     @user = User.find(params[:user_id])
-    if @user.projects.create(project_params).valid?
+    if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
       flash[:success] = 'プロジェクトを新規登録しました。'
     else

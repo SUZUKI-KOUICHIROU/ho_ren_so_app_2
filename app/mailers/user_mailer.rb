@@ -3,6 +3,6 @@ class UserMailer < ApplicationMailer
     @user = user
     @inviter = User.find(@user.invited_by)
     @token = token
-    mail to: @user.email, subject: "#{@inviter.user_name}が01Booksに招待しています。"
+    mail to: @user.email, subject: "#{@inviter.user_name}がグループに招待しています。"
   end
 end
