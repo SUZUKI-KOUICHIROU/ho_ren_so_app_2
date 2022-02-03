@@ -4,7 +4,7 @@
   font-size: 200%;
 }
 
-html, body { height: 100%; }
+// html, body { height: 100%; }
 
 // 横スクロールバーを非表示
 .content-box {
@@ -39,10 +39,6 @@ textarea {
 }
 
 /* typography */
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1;
-}
-
 .row {
   height: 100%;
 }
@@ -81,3 +77,54 @@ h1, h2, h3, h4, h5, h6 {
 input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
 }
+
+// ページネーション全体のデザイン
+.pagination {
+  li {
+    a {
+      color: #fc8022;
+      border-radius: 15px;
+      border-color: #fc8022;
+      margin-right: 5px;
+      line-height: 1;
+    }
+  }
+}
+
+// 一番左のリンクのデザイン
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+// 表示しているページ番号のデザイン
+.page-item.active .page-link {
+  color: #ffffff;
+  border-color: #fc8022;
+  background-color: #fc8022;
+  border-radius: 15px;
+}
+
+// ページ番号のホバー時のデザイン
+.pagination {
+  .page-link:hover {
+    border-radius: 15px;
+    background-color: #fc9749;
+    border-color: #fc8022;
+    color: #ffffff;
+  }
+}
+
+// 表示しているページ番号のホバー時の文字色
+.page-item:hover {
+  color: #ffffff;
+}
+
+// 一番右のリンクのデザイン
+.page-item:last-child .page-link {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+// border: thin solid;

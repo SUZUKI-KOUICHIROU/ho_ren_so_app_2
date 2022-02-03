@@ -3,12 +3,17 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト一覧ページ表示アクション
   def index
-    @user = User.find(params[:user_id])
+    @user = current_user
+    @project = Project.first
+    @counselings = @project.counselings.my_counselings(current_user)
+    # @messages = @project.messages.my_recent_messages(current_user)
+    @member = @project.users.all
+    # @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
     @projects =
       if params[:search].present?
-        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%")
+        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
       else
-        @user.projects.all
+        @user.projects.all.page(params[:page]).per(5)
       end
   end
 
@@ -37,7 +42,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find(params[:id])
     if @project.project_report_frequency == 7
       @report_frequency_type = 'week'
-      project_next_report_date_wday = @project.project_next_report_date.wday?
+      project_next_report_date_wday = @project.project_next_report_date.wday
       @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
     else
       @report_frequency_type = 'day'
@@ -98,7 +103,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
       @project = @user.projects.find(params[:project_id])
       @project.project_name = params[:project_name]
       if @project.project_report_frequency == 7
-        project_next_report_date_wday = @project.project_next_report_date.wday?
+        project_next_report_date_wday = @project.project_next_report_date.wday
         @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
       end
     end
@@ -107,7 +112,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date)
+    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date, :description)
   end
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓

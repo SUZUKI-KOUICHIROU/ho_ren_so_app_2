@@ -7,7 +7,6 @@ gem 'activesupport'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.1.1'
-gem 'bootstrap-will_paginate'
 gem 'cancancan'
 gem 'clipboard-rails'
 gem 'coffee-rails', '~> 4.2'
@@ -41,7 +40,6 @@ gem 'spring-commands-rspec'
 gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
-gem 'will_paginate'
 gem 'rinku'
 
 group :development, :test do

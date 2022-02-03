@@ -17,28 +17,54 @@ User.create!( user_name: 'Admin User',
                 password_confirmation: password )
 end
 
-# プロジェクトを2件作成
-project_name = '報連相アプリ開発'
-project_leader_id = 1
-project_report_frequency =1
-project_next_report_date = Date.current.since(project_report_frequency.days)
-project_reported_flag = false
-Project.create!( project_name: project_name,
-                 project_leader_id: project_leader_id,
-                 project_report_frequency: project_report_frequency,
-                 project_next_report_date: project_next_report_date,
-                 project_reported_flag: project_reported_flag )
+# プロジェクトを11件作成
+(0..10).each do |n|
+  n += 1
+  project_name = "サンプルプロジェクト#{n}"
+  project_leader_id = 1
+  case project_leader_id
+  when project_leader_id <= 4
+    project_leader_id = +1
+  when project_leader_id >= 5
+    project_leader_id = 1
+  end
+  project_report_frequency = 1
+  case project_report_frequency
+  when project_report_frequency == 7
+    project_report_frequency = 1
+  when project_report_frequency = 1
+    project_report_frequency = 7
+  end
+  project_next_report_date = Date.current.since(project_report_frequency.days)
+  project_reported_flag = false
+  Project.create!( project_name: project_name,
+                  project_leader_id: project_leader_id,
+                  project_report_frequency: project_report_frequency,
+                  project_next_report_date: project_next_report_date,
+                  project_reported_flag: project_reported_flag )
+end
 
-project_name = '新規ユーザーを10人獲得'
-project_leader_id = 1
-project_report_frequency =1
-project_next_report_date = Date.current.since(project_report_frequency.days)
-project_reported_flag = false
-Project.create!( project_name: project_name,
-                 project_leader_id: project_leader_id,
-                 project_report_frequency: project_report_frequency,
-                 project_next_report_date: project_next_report_date,
-                 project_reported_flag: project_reported_flag )
+# project_name = '報連相アプリ開発'
+# project_leader_id = 1
+# project_report_frequency =1
+# project_next_report_date = Date.current.since(project_report_frequency.days)
+# project_reported_flag = false
+# Project.create!( project_name: project_name,
+#                  project_leader_id: project_leader_id,
+#                  project_report_frequency: project_report_frequency,
+#                  project_next_report_date: project_next_report_date,
+#                  project_reported_flag: project_reported_flag )
+
+# project_name = '新規ユーザーを10人獲得'
+# project_leader_id = 1
+# project_report_frequency =1
+# project_next_report_date = Date.current.since(project_report_frequency.days)
+# project_reported_flag = false
+# Project.create!( project_name: project_name,
+#                  project_leader_id: project_leader_id,
+#                  project_report_frequency: project_report_frequency,
+#                  project_next_report_date: project_next_report_date,
+#                  project_reported_flag: project_reported_flag )
 
 # 全ユーザーを全てのプロジェクトに参画
 users = User.all

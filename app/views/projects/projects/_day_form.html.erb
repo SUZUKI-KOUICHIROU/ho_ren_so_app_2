@@ -6,6 +6,11 @@
       <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
+    <div class="box-project-description">
+      <%= f.label :description, "概要", class: "project-description-label" %>
+      <%= f.text_area :description, class: "form-control project-description-textarea-box", required: true %>
+    </div>
+
     <div class='box-project-radio'>
       <%= f.label :project_report_frequency, "報告頻度：" %>
       <%= f.radio_button :report_frequency_selection, :day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}"} %>

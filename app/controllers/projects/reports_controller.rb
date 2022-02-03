@@ -3,7 +3,7 @@ class Projects::ReportsController < BaseController
     @user = current_user
     @project = Project.find(params[:project_id])
     @report = @project.reports.new(user_id: @user)
-    @qlist = @project.form_display_orders
+    @form_display_orders = @project.form_display_orders.where(using_flag: true)
   end
 
   def create
@@ -27,7 +27,7 @@ class Projects::ReportsController < BaseController
         when 'select'
           buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.select.id, value: params[:answer][cnt_num][:answer])
         when 'date_field'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.date_field.id, value: params[:answer][cnt_num][:answer])          
+          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.date_field.id, value: params[:answer][cnt_num][:answer])
         end
       end
       cnt += 1
@@ -53,7 +53,7 @@ class Projects::ReportsController < BaseController
     @answers = @report.answers
     cnt = 1
     @answers.each do |answer|
-      cnt_num = "#{cnt}" 
+      cnt_num = "#{cnt}"
       if params[:answer]
         case answer.question_type
         when 'text_field'
@@ -74,7 +74,7 @@ class Projects::ReportsController < BaseController
     flash[:seccess] = "報告を編集しました。"
     redirect_to user_project_path(@user, @project)
   end
-  
+
   def index
     @user = current_user
     @project = Project.find(params[:project_id])
