@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   end
 
   get 'join', to: 'projects/projects#join'
-  
+
   scope module: :formats do
     get 'projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
     get 'projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format

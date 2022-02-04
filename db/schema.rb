@@ -63,13 +63,11 @@ ActiveRecord::Schema.define(version: 2022_01_12_133317) do
     t.text "counseling_detail", default: "", null: false
     t.date "counseling_reply_deadline"
     t.integer "project_id"
-    t.integer "task_id"
     t.integer "sender_id"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_counselings_on_project_id"
-    t.index ["task_id"], name: "index_counselings_on_task_id"
   end
 
   create_table "date_field_contents", force: :cascade do |t|
@@ -120,13 +118,11 @@ ActiveRecord::Schema.define(version: 2022_01_12_133317) do
   create_table "messages", force: :cascade do |t|
     t.text "message_detail", default: "", null: false
     t.integer "project_id"
-    t.integer "task_id"
     t.integer "sender_id"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_messages_on_project_id"
-    t.index ["task_id"], name: "index_messages_on_task_id"
   end
 
   create_table "pdcas", force: :cascade do |t|
@@ -134,8 +130,10 @@ ActiveRecord::Schema.define(version: 2022_01_12_133317) do
     t.text "pdca_do", default: "", null: false
     t.text "pdca_check", default: "", null: false
     t.text "pdca_action", default: "", null: false
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_pdcas_on_user_id"
   end
 
   create_table "project_users", force: :cascade do |t|
@@ -205,14 +203,12 @@ ActiveRecord::Schema.define(version: 2022_01_12_133317) do
 
   create_table "reports", force: :cascade do |t|
     t.integer "project_id"
-    t.integer "task_id"
     t.integer "user_id"
     t.boolean "remanded"
     t.string "remanded_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
-    t.index ["task_id"], name: "index_reports_on_task_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
@@ -241,18 +237,6 @@ ActiveRecord::Schema.define(version: 2022_01_12_133317) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_display_order_id"], name: "index_selects_on_form_display_order_id"
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.string "task_name", default: "", null: false
-    t.integer "task_rep_id", null: false
-    t.integer "task_report_frequency", null: false
-    t.date "task_next_report_date", null: false
-    t.boolean "task_reported_flag", default: false, null: false
-    t.integer "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_tasks_on_project_id"
   end
 
   create_table "text_area_contents", force: :cascade do |t|
