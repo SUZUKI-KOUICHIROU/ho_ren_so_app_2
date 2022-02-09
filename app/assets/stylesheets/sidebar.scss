@@ -1,5 +1,4 @@
 .listings {
-
   height: 100%;
   float: left;
   width: 15%;
@@ -48,9 +47,10 @@
   text-align: center;
   margin-bottom: 2%;
   border-radius: 20px;
-  border: 1px solid #fc8022;
+  border: 2px solid #fc8022;
   a {
     color: #fc8022;
+    border-radius: 20px;
     text-decoration: none;
     font-weight: bolder;
     display: block;
@@ -61,6 +61,7 @@
   a {
   color: #ffffff;
   }
-  background: #fc8022;
+  background: #fc9749;
 }
+
 // border: thin solid;

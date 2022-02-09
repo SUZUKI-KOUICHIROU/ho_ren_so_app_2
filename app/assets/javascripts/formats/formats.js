@@ -52,8 +52,8 @@ $(document).on('turbolinks:load', function(){
       function buildIdHiddenField(form_table_type_value, option_index) {
         const id_hidden_html =
         `<input type="hidden"
-        name="form_display_order[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
-        id="form_display_order_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
+        name="question[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
+        id="question_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
         return id_hidden_html;
       }
 
@@ -61,8 +61,8 @@ $(document).on('turbolinks:load', function(){
       function buildOptionTextField(form_table_type_value, option_index) {
         const option_input_html =
         `<input class="form-control required="required" "type="text" value=""
-        name="form_display_order[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
-        id="form_display_order_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
+        name="question[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
+        id="question_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
         return option_input_html;
       }
 
@@ -138,20 +138,20 @@ $(document).on('turbolinks:load', function(){
       // 各ボタンをイベントリスナーに登録(どの項目のボタンが押されたのか特定する為に必要)
       btn[i].addEventListener("click", function(event){
         // index差し替え用のinput要素(hidden_field)を生成する関数(id用)
-        function buildIdHiddenField(form_table_type_value, option_index, form_display_order_id) {
+        function buildIdHiddenField(form_table_type_value, option_index, question_id) {
           const id_hidden_html =
           `<input type="hidden" value=""
-          name="[form_display_order_attributes][${form_display_order_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
-          id="_form_display_order_attributes_${form_display_order_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
+          name="[question_attributes][${question_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][id]"
+          id="_question_attributes_${question_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_id">`;
           return id_hidden_html;
         }
 
         // index差し替え用のinput要素(text_field)を生成する関数(text_field用)
-        function buildOptionTextField(form_table_type_value, option_index, form_display_order_id) {
+        function buildOptionTextField(form_table_type_value, option_index, question_id) {
           const option_input_html =
           `<input class="form-control required="required" "type="text" value=""
-          name="[form_display_order_attributes][${form_display_order_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
-          id="_form_display_order_attributes_${form_display_order_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
+          name="[question_attributes][${question_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
+          id="_question_attributes_${question_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
           return option_input_html;
         }
 
@@ -172,19 +172,19 @@ $(document).on('turbolinks:load', function(){
         // クローンしたDMO内のclass属性の値がoption-boxの要素数を取得(インデックス値は0から始まるため取得値をそのまま使用)
         var option_index = option_form_edit.querySelectorAll("div[class='option-box']").length;
         console.log(option_index)
-        // クローンしたDMO内のdata-form-display-order-idの値を取得
-        var form_display_order_id = clone_option_box.dataset.formDisplayOrderId;
-        console.log(form_display_order_id)
+        // クローンしたDMO内のdata-question-idの値を取得
+        var question_id = clone_option_box.dataset.questionId;
+        console.log(question_id)
         // クローンしたDMOのtype属性が'hidden'のinput要素を取得
         var id_input_field = clone_option_box.querySelector("input[type='hidden']");
         console.log(id_input_field)
         // 取得したinput要素を生成した差し替え用のinput要素に変更
-        id_input_field.outerHTML = buildIdHiddenField(form_table_type_value, option_index, form_display_order_id);
+        id_input_field.outerHTML = buildIdHiddenField(form_table_type_value, option_index, question_id);
         // クローンしたDMOのtype属性が'text'のinput要素を取得
         var option_input_field = clone_option_box.querySelector("input[type='text']");
         console.log(option_input_field)
         // 取得したinput要素を生成した差し替え用のinput要素に変更
-        option_input_field.outerHTML = buildOptionTextField(form_table_type_value, option_index, form_display_order_id);
+        option_input_field.outerHTML = buildOptionTextField(form_table_type_value, option_index, question_id);
         // data-form-indexの値を変更
         clone_option_box.dataset.formIndex = `${option_index}`;
         // 追加する要素を最終確認

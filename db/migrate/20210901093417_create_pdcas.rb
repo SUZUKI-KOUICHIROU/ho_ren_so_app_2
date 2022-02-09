@@ -5,6 +5,7 @@ class CreatePdcas < ActiveRecord::Migration[5.2]
       t.text :pdca_do, null: false, default: '' # 行動
       t.text :pdca_check, null: false, default: '' # 評価
       t.text :pdca_action, null: false, default: '' # 改善
+      t.references :user, foreign_key: true
 
       t.timestamps
     end

@@ -2,7 +2,6 @@ class Message < ApplicationRecord
   belongs_to :project
   attr_accessor :send_to
 
-  # belongs_to :task
   has_many :message_confirmers, dependent: :destroy
 
   validates :message_detail, presence: true

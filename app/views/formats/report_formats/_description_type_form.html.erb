@@ -1,4 +1,4 @@
-<%= form_with(model: @form_display_orders_build_object, url: create_project_report_format_path(@project), local: true, method: :post) do |fdof| %>
+<%= form_with(model: @questions_build_object, url: create_project_report_format_path(@project), local: true, method: :post) do |fdof| %>
   <%= fdof.hidden_field :id %>
   <%= fdof.hidden_field :form_table_type, :value => @form_table_type_value %>
   <%= fdof.hidden_field :position, :value => @position_value %>
