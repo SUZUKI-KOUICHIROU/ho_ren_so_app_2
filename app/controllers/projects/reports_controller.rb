@@ -1,40 +1,23 @@
 class Projects::ReportsController < BaseController
   def new
-    @user = current_user
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @report = @project.reports.new(user_id: @user)
-    @form_display_orders = @project.form_display_orders.where(using_flag: true)
+    @projects = @user.projects
+    @report = @user.reports.build(project_id: @project.id)
+    @answer = @report.answers.build
+    @questions = @project.questions.where(using_flag: true)
   end
 
   def create
-    @user = current_user
+    debugger
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @report = @project.reports.create(user_id: @user.id)
-    @qlist = @project.form_display_orders
-    cnt = 1
-    @qlist.each do |qt|
-      cnt_num = "#{cnt}"
-      if params[:answer]
-        case qt.form_table_type
-        when 'text_field'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.text_field.id, value: params[:answer][cnt_num][:answer])
-        when 'text_area'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.text_area.id, value: params[:answer][cnt_num][:answer])
-        when 'radio_button'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.radio_button.id, value: params[:answer][cnt_num][:answer])
-        when 'check_box'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.check_box.id, array_value: params[:answer][cnt_num])
-        when 'select'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.select.id, value: params[:answer][cnt_num][:answer])
-        when 'date_field'
-          buf = @report.answers.new(question_type: qt.form_table_type, question_id: qt.date_field.id, value: params[:answer][cnt_num][:answer])
-        end
-      end
-      cnt += 1
-      buf.save
+    @report = @project.reports.new(create_reports_params)
+    if @report.save
+      flash[:seccess] = '報告を登録しました。'
+    else
+      flash[:danger] = '報告を登録に失敗しました。'
     end
-    @report.save
-    flash[:seccess] = "報告を登録しました。"
     redirect_to user_project_path(@user, @project)
   end
 
@@ -78,7 +61,7 @@ class Projects::ReportsController < BaseController
   def index
     @user = current_user
     @project = Project.find(params[:project_id])
-    @qlist = @project.form_display_orders
+    @qlist = @project.questions
     @reports = @project.reports.order(created_at: 'DESC')
   end
 
@@ -97,4 +80,11 @@ class Projects::ReportsController < BaseController
     redirect_to action: :show
   end
 
+  private
+
+  # フォーム新規登録並びに編集用/create
+  def create_reports_params
+    params.require(:report).permit(:id, :user_id, :project_id,
+                                   answers_attributes: %i[id question_type question_id value array_value])
+  end
 end

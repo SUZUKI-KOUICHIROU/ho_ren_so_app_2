@@ -99,7 +99,7 @@
   box-sizing: border-box;
   width: 100%;
   height: 50px;
-  border: 1px solid #a6a6a6;
+  border: 2px solid #a6a6a6;
   box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
   border-radius: 3px;
   padding: 0 7px;
@@ -121,6 +121,7 @@
 }
 
 .column-right {
+  margin-top: 0.3rem;
   float: right;
   // a {
   //   color: rgb(0, 0, 0);
@@ -135,7 +136,7 @@
 .login-btn {
   width: 100%;
   background-color: #f6f6f6;
-  border: 1px solid #eee;
+  border: 2px solid #eee;
   color: #bbb;
   display: inline-block;
   font-size: 16px;
@@ -158,7 +159,7 @@
 .sign-up-btn {
   width: 100%;
   background-color: #fc8022;
-  border: 1px solid #fc8022;
+  border: 2px solid #fc8022;
   color: #fff;
   display: inline-block;
   font-size: 16px;

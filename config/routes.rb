@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     post 'project/:project_id/report_formats/create', to: 'report_formats#create', as: :create_project_report_format
     patch 'projects/:project_id/report_formats/update', to: 'report_formats#update', as: :update_project_report_format
     get 'input_forms/replacement_input_forms', to: 'report_formats#replacement_input_forms', as: :replacement_input_forms
-    delete 'projects/:project_id/form_display_order/:form_display_order_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
+    delete 'projects/:project_id/question/:question_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
 
   scope module: :projects do
