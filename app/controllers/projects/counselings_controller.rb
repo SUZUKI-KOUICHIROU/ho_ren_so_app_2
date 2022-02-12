@@ -34,6 +34,7 @@ class Projects::CounselingsController < BaseController
     @counseling_c = @counseling.counseling_confirmers.find_by(counseling_confirmer_id: current_user)
   end
 
+  # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])
     @counseling = Counseling.find(params[:id])

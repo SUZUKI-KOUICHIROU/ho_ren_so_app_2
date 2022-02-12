@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
-
+gem 'activesupport'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.1.1'
@@ -41,6 +41,7 @@ gem 'spring-commands-rspec'
 gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'whenever', require: false
 gem 'will_paginate'
 gem 'rinku'
 

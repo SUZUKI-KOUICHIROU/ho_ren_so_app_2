@@ -34,6 +34,7 @@ class Projects::ReportsController < BaseController
       buf.save
     end
     @report.save
+    @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
     flash[:seccess] = "報告を登録しました。"
     redirect_to user_project_path(@user, @project)
   end
@@ -90,6 +91,7 @@ class Projects::ReportsController < BaseController
     @answers = @report.answers
   end
 
+  # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
     @report.update!(params.require(:report).permit(:remanded_reason, :remanded))

@@ -1,26 +1,53 @@
 /* universal */
+#logo {
+  margin-left: 5%;
+}
+
+html, body { height: 100%; }
+
+// 横スクロールバーを非表示
+.content-box {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+// ヘッダーの位置を固定
+.header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
 section {
   overflow: auto;
 }
+
 textarea {
   resize: vertical;
 }
+
 .center {
   text-align: center;
 }
+
 .center h1 {
   margin-bottom: 10px;
 }
+
 /* typography */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
+
 h1 {
   font-size: 3em;
   letter-spacing: -2px;
-  margin-bottom: 30px;
+  margin-bottom: 5%;
   text-align: center;
 }
+
 h2 {
   font-size: 1.2em;
   letter-spacing: -1px;
@@ -29,20 +56,17 @@ h2 {
   font-weight: normal;
   color: #777;
 }
+
 p {
   font-size: 1.1em;
   line-height: 1.7em;
 }
 
-.debug_dump {
-  clear: both;
-  float: left;
-  width: 100%;
-  margin-top: 45px;
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing:         border-box;
+// モーダル位置調整
+.modal-dialog-center {
+  padding-top: 10%;
 }
+
 
 /* debug */
 .debug_dump {
@@ -50,9 +74,13 @@ p {
   float: left;
   width: 100%;
   margin-top: 45px;
+  padding: 20px;
   -moz-box-sizing:    border-box;
   -webkit-box-sizing: border-box;
   box-sizing:         border-box;
+  background-color: rgba(219, 233, 255, 0.7);
+  border-radius: 10px;
+  border: 1px #ddd solid;
 }
 
 /* error_messages */

@@ -61,12 +61,12 @@ projects.each do |project|
   text_field.save
   position_val += 1
 
-  date_field = DateField.new(label_name: '期日')
-  date_field.build_form_display_order(position: position_val,
-                                      form_table_type: date_field.field_type,
-                                      project_id: project.id)
-  date_field.save
-  position_val += 1
+  # date_field = DateField.new(label_name: '期日')
+  # date_field.build_form_display_order(position: position_val,
+  #                                     form_table_type: date_field.field_type,
+  #                                     project_id: project.id)
+  # date_field.save
+  # position_val += 1
 
   # label_nameが報告内容のtext_areaを生成
   text_area = TextArea.new(label_name: '報告内容')
@@ -82,8 +82,8 @@ projects.each do |project|
                                         form_table_type: radio_button.field_type,
                                         project_id: project.id)
   radio_button.save
-  radio_button.radio_button_option_strings.create!(option_string: 'あり0')
-  radio_button.radio_button_option_strings.create!(option_string: 'なし0')
+  radio_button.radio_button_option_strings.create!(option_string: 'あり')
+  radio_button.radio_button_option_strings.create!(option_string: 'なし')
   position_val += 1
 
   # label_nameが問題内容のtext_areaを生成

@@ -4,11 +4,14 @@
 <div class="row box invite">
   <h3 class="center">友人を招待する</h3>
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:invitee, url:create_invitation_path) do |f| %>
+    <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
       <%= f.label :email %>
       <%= f.email_field :email, class: 'form-control' %>
-
-      <%= f.submit "招待メールを送信", class: "btn btn-primary" %>
+      <%= f.hidden_field :project_leader_id, :value => @user.id %>
+      <%= f.hidden_field :project_id, :value => @project.id %>
+      <div class="modal-footer">
+          <%= f.submit "送信", class: "btn btn-primary btn-new" %>
+      </div>
     <% end %>
   </div>
 </div>

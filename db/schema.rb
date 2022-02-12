@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_20_134017) do
+ActiveRecord::Schema.define(version: 2022_01_12_133317) do
 
   create_table "answers", force: :cascade do |t|
     t.integer "report_id"
@@ -98,6 +98,14 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
     t.datetime "updated_at", null: false
     t.index ["position"], name: "index_form_display_orders_on_position"
     t.index ["project_id"], name: "index_form_display_orders_on_project_id"
+  end
+
+  create_table "joins", force: :cascade do |t|
+    t.string "token"
+    t.integer "project_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "message_confirmers", force: :cascade do |t|
@@ -192,7 +200,9 @@ ActiveRecord::Schema.define(version: 2021_12_20_134017) do
     t.boolean "submitted", default: false
     t.boolean "reminded", default: false
     t.date "deadline"
+    t.boolean "isNewest", default: true
     t.index ["project_id"], name: "index_report_statuses_on_project_id"
+    t.index ["user_id"], name: "index_report_statuses_on_user_id"
   end
 
   create_table "reports", force: :cascade do |t|
