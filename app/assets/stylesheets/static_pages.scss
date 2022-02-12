@@ -2,70 +2,88 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.sessions-new-img{
-  // background-image: url("https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg");
-  // background-position: 50% 50%;
-  // background-size: cover;
-  // margin: 0 calc(50% - 50vw);
-  width: 100vw;
-  height: 100%;
-}
+// .sessions-new-img{
+//   background-image: url("https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg");
+//   background-position: 50% 50%;
+//   background-size: cover;
+//   margin: 0 calc(50% - 50vw);
+//   width: 100vw;
+//   height: 100%;
+// }
 
 .sessions-new-container {
   padding-top: 5%;
   // background-color: rgba(8, 20, 39, 0.5);
-  height: 100%;
+  // height: 100%;
 }
 
-.report-overview {
-  background-color: rgba(219, 233, 255, 0.7);
-  border: 1px #ddd solid;
-  border-radius: 10px;
-  margin-bottom: 5%;
-  color: #111111;
-  padding: 3%;
-}
+// .login-box {
+//   height: 100%;
+// }
+// .report-overview {
+//   background-color: rgba(219, 233, 255, 0.7);
+//   border: 1px #ddd solid;
+//   border-radius: 10px;
+//   margin-bottom: 5%;
+//   color: #111111;
+//   padding: 3%;
+// }
 
-.contact-overview {
-  background-color: rgba(219, 233, 255, 0.7);
-  border: 1px #ddd solid;
-  border-radius: 10px;
-  margin-bottom: 5%;
-  color: #111111;
-  padding: 3%;
-}
+// .contact-overview {
+//   background-color: rgba(219, 233, 255, 0.7);
+//   border: 1px #ddd solid;
+//   border-radius: 10px;
+//   margin-bottom: 5%;
+//   color: #111111;
+//   padding: 3%;
+// }
 
-.counseling-overview{
-  background-color: rgba(219, 233, 255, 0.7);
-  border: 1px #ddd solid;
-  border-radius: 10px;
-  margin-bottom: 5%;
-  color: #111111;
-  padding: 3%;
-}
+// .counseling-overview{
+//   background-color: rgba(219, 233, 255, 0.7);
+//   border: 1px #ddd solid;
+//   border-radius: 10px;
+//   margin-bottom: 5%;
+//   color: #111111;
+//   padding: 3%;
+// }
 
 // login form
-.login-box {
-  padding: 0px 30px;
-}
-
-.box {
-  background-color: rgba(219, 233, 255, 0.7);
-  border-radius: 10px;
-  border: 1px #ddd solid;
-  width: 90%;
-}
-
 .box-inner {
-  margin: auto;
-  padding: 20px 35px;
+  padding: 5% 0%;
 }
 
-h1 {
-  font-weight: 400;
+.box-login-title {
   font-size: 28px;
   line-height: 1.2;
   color: #111111;
+  font-weight: bolder;
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.box-login-title:after {
+  background-color: #fc8022;
+  content: "";
+  display: block;
+  height: 3px;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 5%;
+}
+
+.box-login-text {
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.password-label, .email-label {
+  font-weight: 700;
+  font-size: 15px;
+  padding-left: 2px;
+  margin-bottom: 2%;
 }
 
 .box-email {
@@ -76,46 +94,59 @@ h1 {
   margin-bottom: 5%;
 }
 
-.box-email label, .box-password label {
-  font-weight: 700;
-  font-size: 15px;
-  padding-left: 2px;
-}
-
 .box-email input[type="email"], .box-password input[type="password"] {
   border-style: none;
   box-sizing: border-box;
   width: 100%;
-  height: 40px;
-  border: 1px solid #a6a6a6;
+  height: 50px;
+  border: 2px solid #a6a6a6;
   box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
   border-radius: 3px;
   padding: 0 7px;
+  background-color: #fff5ee;
 }
 
 .column-left {
   float: left;
 }
 
-.column-right {
-  float: right;
-}
-
-.box-password a {
+.remember {
   font-size: 15px;
+  margin-bottom: 5%;
+  padding-left: 3px;
 }
 
-.box-login input[type="submit"] {
-  border-style: none;
-  width: 100%;
-  height: 31px;
-  background: linear-gradient(to bottom,#f7f8fa,#e7e9ec);
-  border-radius: 3px;
-  border: 1px #a2a6ac solid;
+.remember-login {
+  margin-bottom: 0rem;
+}
+
+.column-right {
+  margin-top: 0.3rem;
+  float: right;
+  // a {
+  //   color: rgb(0, 0, 0);
+  // }
+}
+
+.box-login {
+  font-size: 16px;
   margin-bottom: 5%;
 }
 
-.box-login input[type="submit"]:hover {
+.login-btn {
+  width: 100%;
+  background-color: #f6f6f6;
+  border: 2px solid #eee;
+  color: #bbb;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 5px 0;
+  padding: 13px;
+}
+
+.login-btn:hover {
   cursor: pointer;
   background: #e7e9ec;
 }
@@ -125,48 +156,35 @@ h1 {
   font-size: 15px;
 }
 
-.remember {
-  font-size: 15px;
-  margin-bottom: 5%;
-  padding-left: 3px;
+.sign-up-btn {
+  width: 100%;
+  background-color: #fc8022;
+  border: 2px solid #fc8022;
+  color: #fff;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 5px 0;
+  padding: 13px;
+}
+
+sign-up-btn:focus, .sign-up-btn:hover {
+  outline: none;
+  cursor: pointer;
+  background-color: #fc9749;
+  text-decoration: none;
 }
 
 .box-newusr p {
   text-align: center;
   font-size: 15px;
   color: #222222;
-  // margin-bottom: 14px;
+  margin-bottom: 5%;
 }
 
 .box-newusr p span {
   text-decoration-color: #e7e7e7;
-}
-
-.box-newusr a {
-  display: block;
-  width: 100%;
-  height: 31px;
-  font-size: 15px;
-  color: #111;
-  line-height: 31px;
-  text-align: center;
-  background: linear-gradient(to bottom,#f7f8fa,#e7e9ec);
-  border-radius: 3px;
-  border: 1px #a2a6ac solid;
-}
-
-.box-newusr a:hover {
-  cursor: pointer;
-  background: #e7e9ec;
-  text-decoration: none;
-}
-
-.remember-login {
-  margin-bottom: 0rem;
-}
-
-.new-gest {
-  margin-bottom: 5%;
 }
 
 // border: thin solid;

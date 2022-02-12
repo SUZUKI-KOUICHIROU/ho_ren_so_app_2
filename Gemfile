@@ -7,7 +7,6 @@ gem 'activesupport'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.1.1'
-gem 'bootstrap-will_paginate'
 gem 'cancancan'
 gem 'clipboard-rails'
 gem 'coffee-rails', '~> 4.2'

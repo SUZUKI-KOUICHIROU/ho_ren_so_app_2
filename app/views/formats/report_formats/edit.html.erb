@@ -12,13 +12,13 @@
 </div>
 
 <%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
-  <% @form_display_orders.each do |form_display_order|%>
+  <% @questions.each do |question|%>
     <% @form_number += 1 %>
-    <% case form_display_order.form_table_type %>
+    <% case question.form_table_type %>
     <% when 'text_field', 'text_area', 'date_field'%>
-      <%= render partial: "edit_description_type_form", locals: { form_display_order: form_display_order, f: f } %>
+      <%= render partial: "edit_description_type_form", locals: { question: question, f: f } %>
     <% when 'radio_button', 'check_box', 'select' %>
-      <%= render partial: "edit_selection_type_form", locals: { form_display_order: form_display_order, f: f } %>
+      <%= render partial: "edit_selection_type_form", locals: { question: question, f: f } %>
     <% end %>
   <% end %>
   <div class="edit-report-formats-footer">

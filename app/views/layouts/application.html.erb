@@ -11,16 +11,16 @@
   </head>
   <%= render 'layouts/header' %>
   <body>
-      <div class="content-box">
-        <div class="row" style="height: 100%;">
-          <% if user_signed_in? %>
-              <%= yield(:side_menu) if block_given? %>
-          <% end %>
-          <div class="container col-10" style="height: 100%;">
-            <%= yield %>
-          </div>
+    <div class="content-box">
+      <div class="row">
+        <% if user_signed_in? %>
+            <%= yield(:side_menu) if block_given? %>
+        <% end %>
+        <div class="container col-10">
+          <%= yield %>
         </div>
       </div>
-      <%= debug(params) if Rails.env.development? %>
+    </div>
+    <%= debug(params) if Rails.env.development? %>
   </body>
 </html>

@@ -1,5 +1,5 @@
 class DateField < ApplicationRecord
-  belongs_to :form_display_order
+  belongs_to :question
   has_many :date_field_contents, dependent: :destroy
 
   validates :label_name, presence: true

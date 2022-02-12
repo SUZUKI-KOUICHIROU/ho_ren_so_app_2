@@ -4,51 +4,89 @@
   <%= render 'project_index_sidebar' %>
 <% end %>
 
-<% if params[:search].present? %>
-  <h1>検索結果</h1>
-<% else%>
-  <h1>プロジェクト一覧</h1>
-<% end %>
-
-<div>
-  <a>プロジェクト名検索：</a>
-  <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
-    <%= form.text_field :search, id: "search-box", placeholder: "キーワードを入力" %>
-    <%= form.submit "検索", id: "search-btn", class: "btn btn-primary" %>
-  <% end %>
-</div>
-<div>
-  <%= link_to "プロジェクト新規登録", new_user_project_path(@user), remote: true, class: "btn btn-primary btn-sm", id: "modal-but", data: {"turbolinks" => false} %>
-</div>
-
-<div class="container">
-  <div class="row">
-    <table class="table table-condensed table-hover" id="table-users">
-      <thead>
-        <tr>
-          <th>プロジェクト</th>
-          <th>リーダー</th>
-          <th>メンバー数</th>
-          <th>次回報告日</th>
-          <th></th>
-        </tr>
-      </thead>
-      <% if @projects.present? %>
-        <%= render partial: 'project_list_detail', collection: @projects, as: :project %>
-      <% end %>
-      <% if @projects.blank?%>
-        <P>該当のプロジェクトはありません。</P>
-      <% end %>
-    </table>
-  </div>
-  <% if @projects.present?%>
-  <div class="paginate">
-    <P>ページネーション実装予定。</P>
-  </div>
+<div class="box-project-index">
+  <div class="boxproject_search">
+    <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
+      <%= form.label :search, "プロジェクト名検索：", class: "project-search-label" %>
+      <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+      <%= form.submit "検索", class: "search-btn" %>
     <% end %>
-  <%= link_to "戻る", :back, class: "btn btn-light btn-outline-dark" %>
+  </div>
+
+  <div class="table-header">
+    <div class="project-name">
+      プロジェクト名
+    </div>
+    <!-- div class="project-leader">
+      リーダー名
+    </div -->
+    <div class="project-next-report-date">
+      次回報告日
+    </div>
+    <div class="project-news">
+      お知らせ
+    </div>
+  </div>
+
+  <div class="table-body">
+    <% if @projects.present? %>
+      <% line_num = 0%>
+      <% @projects.each do |project|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+          <div class="project-name">
+            <%= link_to "#{project.project_name}", user_project_path(@user, project.id), class: "project-detail-link" %>
+          </div>
+          <!-- div class="project-leader">
+            <%#= User.find(project.project_leader_id).user_name %>
+          </div -->
+          <div class="project-next-report-date">
+            <%= l(project.project_next_report_date, format: :long) %>
+          </div>
+
+          <div class="project-news">
+            <% remanded_reports = project.reports.where(user_id: @user.id, remanded: true) %>
+
+            <% if remanded_reports.count > 0 %>
+                <% remanded_reports.each do |report| %>
+                  <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, project, report) %>
+                  <span>に修正依頼が来ています。</span></p>
+                <% end %>
+            <% end %>
+
+            <% messages = project.messages.my_messages(@user) %>
+            <% if messages.count > 0 %>
+                <p><%= link_to "新着の連絡", user_project_messages_path(@user, project) %>
+                <span>が<%= "#{messages.count}件あります。" %></span></p>
+            <% end %>
+
+            <% counselings = project.counselings.my_counselings(@user) %>
+            <% if counselings.count > 0 %>
+                <p><%= link_to "新着の相談", user_project_messages_path(@user, project) %>
+                <span>が<%= "#{counselings.count}件あります。" %></span></p>
+            <% end %>
+
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if @projects.blank?%>
+      <P>参画中のプロジェクトはありません。</P>
+    <% end %>
+  </div>
+
+  <div class="index-footer">
+    <% if @projects.present?%>
+      <div class="paginate">
+        <%= paginate @projects %>
+      </div>
+    <% end %>
+
+    <div class="back-btn">
+      <%= link_to "戻る", :back, class: "btn btn-light btn-outline-dark" %>
+    </div>
+  </div>
 </div>
-<!--プロジェクト新規登録用モーダルウインドウ表示-->
+<!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
 <div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
-<!--プロジェクト内容編集モーダルウインドウ表示-->
-<!-- div id="project-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"><div -->

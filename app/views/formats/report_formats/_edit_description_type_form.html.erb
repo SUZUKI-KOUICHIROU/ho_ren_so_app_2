@@ -1,4 +1,4 @@
-<% case form_display_order.form_table_type %>
+<% case question.form_table_type %>
 <% when 'text_field' %>
   <% form_type_symbol = :text_field %>
 <% when 'text_area' %>
@@ -7,7 +7,7 @@
   <% form_type_symbol = :date_field %>
 <% end %>
   <div id="form-<%= @form_number %>", draggable="true", class="form"">
-    <%= f.fields_for 'form_display_order_attributes[]', form_display_order do |fdof| %>
+    <%= f.fields_for 'question_attributes[]', question do |fdof| %>
       <%= fdof.hidden_field :id %>
       <%= fdof.hidden_field :form_table_type %>
       <%= fdof.hidden_field :position, class: "position" %>
@@ -31,7 +31,7 @@
         </div>
       <% end %>
     <% end %>
-    <% case form_display_order.form_table_type %>
+    <% case question.form_table_type %>
     <% when 'text_field'%>
       <div class="text-field-box">
         <a>記述式テキスト（短文回答）</a>
@@ -49,6 +49,6 @@
       <a>　</a>
     </div>
     <div class="form-delete-button">
-      <%= link_to "削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
     </div>
   </div>

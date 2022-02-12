@@ -1,5 +1,5 @@
 <%= ftf.fields_for form_option_symbol do |osf| %>
-  <div class="option-box", data-form-table-type-value="<%="#{form_table_type_value}"%>", data-form-display-order-id="<%="#{form_display_order_id}"%>", data-form-index="<%="#{osf.index}"%>">
+  <div class="option-box", data-form-table-type-value="<%="#{form_table_type_value}"%>", data-question-id="<%="#{question_id}"%>", data-form-index="<%="#{osf.index}"%>">
     <% case form_table_type_value %>
     <% when 'radio_button' %>
       <a class='option-symbol'>&#x25C9;</a>

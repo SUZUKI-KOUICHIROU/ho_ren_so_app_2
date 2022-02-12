@@ -1,20 +1,20 @@
-<% case form_display_order.form_table_type %>
+<% case question.form_table_type %>
 <% when 'radio_button' %>
   <% form_type_symbol = :radio_button %>
-  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_table_type_value = question.form_table_type %>
   <% form_option_symbol = :radio_button_option_strings %>
 <% when 'check_box' %>
   <% form_type_symbol = :check_box %>
-  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_table_type_value = question.form_table_type %>
   <% form_option_symbol = :check_box_option_strings %>
 <% when 'select' %>
   <% form_type_symbol = :select %>
-  <% form_table_type_value = form_display_order.form_table_type %>
+  <% form_table_type_value = question.form_table_type %>
   <% form_option_symbol = :select_option_strings %>
 <% end %>
 
 <div id="form-<%= @form_number %>", draggable="true", class="form">
-  <%= f.fields_for 'form_display_order_attributes[]', form_display_order do |fdof| %>
+  <%= f.fields_for 'question_attributes[]', question do |fdof| %>
     <%= fdof.hidden_field :id %>
     <%= fdof.hidden_field :form_table_type %>
     <%= fdof.hidden_field :position, class: "position" %>
@@ -39,7 +39,7 @@
         <%= ftf.label :option_string, "選択肢" %>
       </div>
       <div class="option-form-edit">
-        <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, form_display_order_id: form_display_order.id} %>
+        <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, question_id: question.id} %>
         <div class="option-add-btn-box">
           <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-primary btn-sm' %>
         </div>
@@ -47,7 +47,7 @@
     <% end %>
 
     <div class="form-delete-button">
-      <%= link_to "削除", destroy_project_report_format_path(@project, form_display_order), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
     </div>
   <% end %>
 </div>
