@@ -46,7 +46,12 @@
     <%= link_to "連絡", new_user_project_message_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
     <br>
     <%= link_to "相談", new_user_project_counseling_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-  </div>
+    <br>
+    <%= link_to "新しいレポートフラグ作成テストボタン", user_project_new_period_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %> 
+    <br>
+    <%= link_to "リーダーに未報告者通知メール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %> 
+    <br>
+    <%# <%= link_to "メンバーにリマインドメール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>  %>
 
   <div style="margin: 10px;">
 

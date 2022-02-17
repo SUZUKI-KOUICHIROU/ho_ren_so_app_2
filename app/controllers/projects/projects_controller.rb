@@ -24,8 +24,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
       @project = @user.projects.create(project_params)
       flash[:success] = 'プロジェクトを新規登録しました。'
     else
-      flash[:success] = 'プロジェクト新規登録に失敗しました。'
+      'プロジェクト新規登録に失敗しました。'
     end
+    @project.update_deadline(@project.project_next_report_date)
     redirect_to user_projects_path(@user.id)
     report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
   end
@@ -108,6 +109,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
       end
     end
   end
+
 
   private
 

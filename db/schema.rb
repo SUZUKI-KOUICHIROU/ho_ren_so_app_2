@@ -191,13 +191,15 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.index ["report_id"], name: "index_report_confirmers_on_report_id"
   end
 
-  create_table "report_histories", force: :cascade do |t|
+  create_table "report_statuses", force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
-    t.boolean "done", default: false
-    t.boolean "reminded", default: false
+    t.boolean "has_submitted", default: false
+    t.boolean "has_reminded", default: false
     t.date "deadline"
-    t.index ["project_id"], name: "index_report_histories_on_project_id"
+    t.boolean "is_newest", default: true
+    t.index ["project_id"], name: "index_report_statuses_on_project_id"
+    t.index ["user_id"], name: "index_report_statuses_on_user_id"
   end
 
   create_table "reports", force: :cascade do |t|
