@@ -41,7 +41,6 @@ gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever', require: false
-gem 'will_paginate'
 gem 'rinku'
 
 group :development, :test do

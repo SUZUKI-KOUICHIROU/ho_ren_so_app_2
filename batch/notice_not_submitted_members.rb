@@ -1,6 +1,6 @@
 # 未報告者をリーダーに連絡するバッチ処理
+targetDate = Date.yesterday
 Project.all.each do |project|
-  targetDate = Date.yesterday
   if project.project_next_report_date == targetDate
     members = project.report_statuses.where(has_reminded: false, has_submitted: false, deadline: targetDate).pluck(:user_id)
     if members.count > 0

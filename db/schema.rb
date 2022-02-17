@@ -194,10 +194,10 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
   create_table "report_statuses", force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
-    t.boolean "submitted", default: false
-    t.boolean "reminded", default: false
+    t.boolean "has_submitted", default: false
+    t.boolean "has_reminded", default: false
     t.date "deadline"
-    t.boolean "isNewest", default: true
+    t.boolean "is_newest", default: true
     t.index ["project_id"], name: "index_report_statuses_on_project_id"
     t.index ["user_id"], name: "index_report_statuses_on_user_id"
   end

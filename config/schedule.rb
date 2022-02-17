@@ -27,7 +27,7 @@ set :environment, :development
 
 every 1.days, at: '9:00 am' do #トリガー
   runner "batch/notice_not_submitted_members.rb" # 毎朝9時にリーダーへ未報告者を報告
-  # runner "batch/update_deadline.rb"
+  runner "batch/update_deadline.rb" # レポートの期限を更新する
 end
 
 every 1.days, at: '7:00 am' do #トリガー
