@@ -34,6 +34,7 @@ class Projects::MessagesController < BaseController
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
   end
 
+  # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])
     @message = Message.find(params[:id])

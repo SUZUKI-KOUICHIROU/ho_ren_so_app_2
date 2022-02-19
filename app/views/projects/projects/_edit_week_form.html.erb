@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+ <%= form_with(model: @project, url: user_project_path(@user), local: true, method: :patch, id: "project-form") do |f| %>
+=======
  <%= form_with(model: @project, url: user_project_path(@user, @project), local: true, method: :patch, id: "project-form") do |f| %>
+>>>>>>> main
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
   <div class="modal-body">
     <div class="box-project-name">
