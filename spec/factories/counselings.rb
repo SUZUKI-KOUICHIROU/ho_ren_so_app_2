@@ -5,6 +5,5 @@ FactoryBot.define do
     counseling_reply_detail { 'MyText' }
     counseling_reply_flag { false }
     project { nil }
-    task { nil }
   end
 end

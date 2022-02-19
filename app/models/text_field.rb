@@ -1,5 +1,5 @@
 class TextField < ApplicationRecord
-  belongs_to :form_display_order
+  belongs_to :question
   has_many :text_field_contents, dependent: :destroy
 
   validates :label_name, presence: true

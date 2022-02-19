@@ -1,8 +1,37 @@
 <% provide(:title, @project.project_name) %>
 
+<%= content_for :side_menu do %>
+  <%= render 'project_show_sidebar' %>
+<% end %>
 
-<div class="container" style="margin-top: 20px;">
-  <%= link_to '一覧へ戻る', user_projects_path(@user,@project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
+  <div class="card">
+    <div class="card-header card-header-radius"><%= @project.project_name %></div>
+    <div class="card-body">
+      <div class="card-title">概要</div>
+      <p class="card-text"><%= @project.description %></p>
+      <div class="card-title">リーダー</div>
+      <p class="card-text"><%= User.find(@project.project_leader_id).user_name %></p>
+      <div class="card-title">報告頻度</div>
+      <% if @project.project_report_frequency == 7 %>
+        <p class="card-text">毎週<%= ApplicationHelper.weeks[@project.project_next_report_date.wday] %>曜日</p>
+      <% else %>
+        <p class="card-text"><%= @project.project_report_frequency %>日に１回</p>
+      <% end %>
+      <div class="card-title">メンバー</div>
+      <p class="card-text">
+        <% @member.each do |member| %>
+          <span class="box-user-name"><%= member.user_name %></span>
+        <% end %>
+        <a href="#" class="card-link">Card link</a>
+      </p>
+    </div>
+  </div>
+
+<!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
+<div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
+
+<div>
+  <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
   <h1><%= "■#{@project.project_name}■"%></h1>
   <%= link_to "報告", new_user_project_report_path(@user, @project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
     <br>
@@ -36,9 +65,9 @@
       <div class="block_contents">
         <p><%= "▼報告内容の手直し依頼が来ています。▼" %></p>
         <% @remanded_reports.each do |report| %>
-            <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, @project, report) %> 
-            <span><%= report.remanded_reason %></span></p>
-          <% end %> 
+          <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, @project, report) %>
+          <span><%= report.remanded_reason %></span></p>
+        <% end %>
       </div>
     <% end %>
 

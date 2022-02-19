@@ -1,0 +1,114 @@
+.boxproject_search {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.project-search-label {
+margin-bottom: 0;
+}
+
+.search-box {
+  border-style: none;
+  box-sizing: border-box;
+  height: 90%;
+  border: 2px solid #a6a6a6;
+  box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
+  border-radius: 3px;
+  padding: 0 7px;
+  background-color: #fff5ee;
+  vertical-align: middle ;
+}
+
+.search-btn  {
+  height: 90%;
+  box-sizing: border-box;
+  background-color: #fc8022;
+  border: 2px solid #fc8022;
+  color: #fff;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 13px;
+  vertical-align: middle ;
+}
+
+search-btn:focus, .search-btn:hover {
+  outline: none;
+  cursor: pointer;
+  background-color: #fc9749;
+  text-decoration: none;
+}
+
+.box-project-index {
+  margin: 5rem 5rem 0 4rem;
+}
+
+.boxproject_search {
+  margin-bottom: 2rem;
+}
+
+.table-header {
+  font-weight: 700;
+  padding: 2rem 2rem 0 2rem;
+  background-color: #d8d8d8;
+  border-radius: 10px 10px 0 0;
+  div {
+    border-radius: 5px;
+    background-color: #fc8022;
+    color: #ffffff;
+  }
+}
+
+.table-body {
+  padding: 0rem 2rem 2rem 2rem;
+  background-color: #d8d8d8;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 2rem;
+  .table-line {
+    background-color: #d8d8d8;
+    font-weight: 500;
+    div {
+    background-color: #ffffff;
+    border-radius: 5px;
+    }
+  }
+}
+
+.table-header, .table-line {
+  display: flex;
+  div {
+    // width: 100%;
+    font-size: 1.3rem;
+    padding: 1rem;
+  }
+}
+
+.project-name {
+  width: 25%;
+  margin-bottom: 0.5rem;
+}
+
+// .project-leader {
+//   margin: 0rem 0.5rem 0.5rem 0.5rem;
+// }
+
+.project-next-report-date {
+  width: 25%;
+  margin: 0rem 0.5rem 0.5rem 0.5rem;
+}
+
+.project-news {
+  width: 50%;
+  margin: 0rem 0.5rem 0.5rem 0rem;
+  p:last-child {
+    margin-bottom: 0rem;
+  }
+}
+
+.index-footer {
+  display: flex;
+}
+
+.back-btn {
+  margin-left: auto;
+}
