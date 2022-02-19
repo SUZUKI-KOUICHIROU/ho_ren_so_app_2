@@ -1,13 +1,8 @@
 <div class="container col-2">
-  <div class="listings shadow">
-    <div class="listings_channels">
-      <!-- h2 class="listings_header">メニューリスト</div -->
-      <ul class="channel_list">
-        <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(@user, @project), {remote: true, class: 'channel_name', data: {"turbolinks" => false}}) %>
-        <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(@project)) %>
-        <%= sidebar_link_item('招待', new_invitation_path(@user, @project)) %>
-        <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id)) %>
-      </ul>
-    </div>
+  <div class="menu-content shadow">
+    <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(@user, @project), {remote: true, class: 'btn-outline-orange', data: {"turbolinks" => false}}) %>
+    <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(@project), {class: 'btn-outline-orange'}) %>
+    <%= sidebar_link_item('招待', new_invitation_path(@user, @project), {class: 'btn-outline-orange'}) %>
+    <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id), {class: 'btn-outline-orange'}) %>
   </div>
 </div>

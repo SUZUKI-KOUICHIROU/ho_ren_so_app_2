@@ -16,19 +16,9 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.string "question_type"
     t.integer "question_id"
     t.string "value"
-    t.text "array_value"
+    t.text "c"
     t.integer "report_id"
     t.index ["report_id"], name: "index_answers_on_report_id"
-  end
-
-  create_table "check_box_contents", force: :cascade do |t|
-    t.string "check_box_value", default: "", null: false
-    t.integer "check_box_id"
-    t.integer "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["check_box_id"], name: "index_check_box_contents_on_check_box_id"
-    t.index ["report_id"], name: "index_check_box_contents_on_report_id"
   end
 
   create_table "check_box_option_strings", force: :cascade do |t|
@@ -68,14 +58,6 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_counselings_on_project_id"
-  end
-
-  create_table "date_field_contents", force: :cascade do |t|
-    t.date "date_field_value", null: false
-    t.integer "date_field_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["date_field_id"], name: "index_date_field_contents_on_date_field_id"
   end
 
   create_table "date_fields", force: :cascade do |t|
@@ -155,16 +137,6 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.index ["project_id"], name: "index_questions_on_project_id"
   end
 
-  create_table "radio_button_contents", force: :cascade do |t|
-    t.string "radio_button_value", default: "", null: false
-    t.integer "radio_button_id"
-    t.integer "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["radio_button_id"], name: "index_radio_button_contents_on_radio_button_id"
-    t.index ["report_id"], name: "index_radio_button_contents_on_report_id"
-  end
-
   create_table "radio_button_option_strings", force: :cascade do |t|
     t.string "option_string", default: "", null: false
     t.integer "radio_button_id"
@@ -211,16 +183,6 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
-  create_table "select_contents", force: :cascade do |t|
-    t.string "select_value", default: "", null: false
-    t.integer "select_id"
-    t.integer "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["report_id"], name: "index_select_contents_on_report_id"
-    t.index ["select_id"], name: "index_select_contents_on_select_id"
-  end
-
   create_table "select_option_strings", force: :cascade do |t|
     t.string "option_string", default: "", null: false
     t.integer "select_id"
@@ -238,16 +200,6 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.index ["question_id"], name: "index_selects_on_question_id"
   end
 
-  create_table "text_area_contents", force: :cascade do |t|
-    t.string "text_area_value", default: "", null: false
-    t.integer "text_area_id"
-    t.integer "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["report_id"], name: "index_text_area_contents_on_report_id"
-    t.index ["text_area_id"], name: "index_text_area_contents_on_text_area_id"
-  end
-
   create_table "text_areas", force: :cascade do |t|
     t.string "label_name", default: "", null: false
     t.string "field_type", default: "text_area", null: false
@@ -255,16 +207,6 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_text_areas_on_question_id"
-  end
-
-  create_table "text_field_contents", force: :cascade do |t|
-    t.string "text_field_value", default: "", null: false
-    t.integer "text_field_id"
-    t.integer "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["report_id"], name: "index_text_field_contents_on_report_id"
-    t.index ["text_field_id"], name: "index_text_field_contents_on_text_field_id"
   end
 
   create_table "text_fields", force: :cascade do |t|

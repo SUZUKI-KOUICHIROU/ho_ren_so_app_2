@@ -1,7 +1,6 @@
 class CheckBox < ApplicationRecord
   belongs_to :question
   has_many :check_box_option_strings, dependent: :destroy
-  has_many :check_box_contents, dependent: :destroy
   accepts_nested_attributes_for :check_box_option_strings, allow_destroy: true
 
   validates :label_name, presence: true

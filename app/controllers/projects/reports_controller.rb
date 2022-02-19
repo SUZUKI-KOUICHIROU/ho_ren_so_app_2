@@ -9,7 +9,6 @@ class Projects::ReportsController < BaseController
   end
 
   def create
-    debugger
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @report = @project.reports.new(create_reports_params)
@@ -59,10 +58,12 @@ class Projects::ReportsController < BaseController
   end
 
   def index
-    @user = current_user
+    @user = User.find(params[:user_id])
+    @projects = @user.projects
     @project = Project.find(params[:project_id])
-    @qlist = @project.questions
-    @reports = @project.reports.order(created_at: 'DESC')
+    @first_question = @project.questions.first
+    @label_name = @first_question.send(@first_question.form_table_type).label_name
+    @reports = @project.reports.order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
   def show
@@ -80,11 +81,20 @@ class Projects::ReportsController < BaseController
     redirect_to action: :show
   end
 
+  def report_form_switching
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @projects = @user.projects
+    @report = @user.reports.build(project_id: @project.id)
+    @answer = @report.answers.build
+    @questions = @project.questions.where(using_flag: true)
+  end
+
   private
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
     params.require(:report).permit(:id, :user_id, :project_id,
-                                   answers_attributes: %i[id question_type question_id value array_value])
+                                   answers_attributes: [:id, :question_type, :question_id, :value, array_value: []])
   end
 end

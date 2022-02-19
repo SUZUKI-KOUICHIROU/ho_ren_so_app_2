@@ -1,8 +1,7 @@
 class Counseling < ApplicationRecord
   belongs_to :project
-  attr_accessor :send_to
-
   has_many :counseling_confirmers, dependent: :destroy
+  attr_accessor :send_to
 
   validates :counseling_detail, presence: true
   # validates :counseling_reply_flag, inclusion: [true, false]
