@@ -1,12 +1,21 @@
-.boxproject_search {
-  display: flex;
-  justify-content: flex-end;
+////////// プロジェクト一覧の余白を調整 //////////
+.box-project-index, box-report-index {
+  margin: 5rem 5rem 0 4rem;
 }
 
-.project-search-label {
+////////// 検索に関連する要素の表示位置 //////////
+.box-project_search, .box-report_search {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+////////// 検索のtext_fialdのラベルのデザイン //////////
+.search-label {
 margin-bottom: 0;
 }
 
+////////// 検索のtext_fieldのデザイン //////////
 .search-box {
   border-style: none;
   box-sizing: border-box;
@@ -19,34 +28,7 @@ margin-bottom: 0;
   vertical-align: middle ;
 }
 
-.search-btn  {
-  height: 90%;
-  box-sizing: border-box;
-  background-color: #fc8022;
-  border: 2px solid #fc8022;
-  color: #fff;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 13px;
-  vertical-align: middle ;
-}
-
-search-btn:focus, .search-btn:hover {
-  outline: none;
-  cursor: pointer;
-  background-color: #fc9749;
-  text-decoration: none;
-}
-
-.box-project-index {
-  margin: 5rem 5rem 0 4rem;
-}
-
-.boxproject_search {
-  margin-bottom: 2rem;
-}
-
+////////// 一覧のヘッダーのデザイン //////////
 .table-header {
   font-weight: 700;
   padding: 2rem 2rem 0 2rem;
@@ -59,6 +41,7 @@ search-btn:focus, .search-btn:hover {
   }
 }
 
+////////// 一覧のボディーのデザイン //////////
 .table-body {
   padding: 0rem 2rem 2rem 2rem;
   background-color: #d8d8d8;
@@ -74,29 +57,28 @@ search-btn:focus, .search-btn:hover {
   }
 }
 
+////////// 一覧の行のデザイン //////////
 .table-header, .table-line {
   display: flex;
   div {
-    // width: 100%;
     font-size: 1.3rem;
     padding: 1rem;
   }
 }
 
-.project-name {
+////////// プロジェクト名の列のデザイン //////////
+.project-name, .subject-name {
   width: 25%;
   margin-bottom: 0.5rem;
 }
 
-// .project-leader {
-//   margin: 0rem 0.5rem 0.5rem 0.5rem;
-// }
-
-.project-next-report-date {
+////////// 報告期日の列のデザイン //////////
+.project-next-report-date, .reported-date, .report-confirmer, .report-action {
   width: 25%;
   margin: 0rem 0.5rem 0.5rem 0.5rem;
 }
 
+////////// お知らせの列のデザイン //////////
 .project-news {
   width: 50%;
   margin: 0rem 0.5rem 0.5rem 0rem;
@@ -105,10 +87,14 @@ search-btn:focus, .search-btn:hover {
   }
 }
 
-.index-footer {
+////////// 一覧のフッターのデザイン //////////
+.index-paginate {
   display: flex;
 }
 
+////////// 戻るボタンの位置 //////////
 .back-btn {
   margin-left: auto;
 }
+
+//border: thin solid;

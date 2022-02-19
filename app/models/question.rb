@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  default_scope -> { order(:position) }
+
   belongs_to :project
   has_one :text_field, dependent: :destroy
   has_one :text_area, dependent: :destroy

@@ -1,0 +1,159 @@
+////////// オレンジ色のボタンのデザイン //////////
+.btn {
+  border: 2px solid;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 1;
+  margin: 5px 0;
+  padding: 13px;
+}
+
+.btn-outline-orange {
+  color: #fc8022;
+  border-color: #fc8022;
+  border: 2px solid #fc8022;
+  background-color: #ffffff;
+}
+
+.btn-outline-orange:hover,
+.btn-outline-orange:not(:disabled):not(.disabled):active, .btn-outline-orange:not(:disabled):not(.disabled).active,
+.show > .btn-outline-orange.dropdown-toggle {
+  color: #fff;
+  background-color: #fc8022;
+  border: 2px solid #fc8022;
+  text-decoration: none
+}
+
+.btn-outline-orange:focus, .btn-outline-orange.focus,
+.btn-outline-orange:not(:disabled):not(.disabled):active:focus, .btn-outline-orange:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-orange.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 123, 0, 0.5);
+}
+
+.btn-outline-orange.disabled, .btn-outline-orange:disabled {
+  color: #fc8022;
+  background-color: transparent;
+}
+
+////////// ラジオボタン、チェックボックスで共通のデザイン //////////
+input[type=checkbox],input[type=radio] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  vertical-align: -0.7rem;
+  transition:all .15s ease-out 0s;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin: .4rem;
+  outline: none;
+  border-radius: 10%;
+}
+
+////////// チェックボックスのデザイン //////////
+input[type=checkbox]:before,input[type=checkbox]:after {
+  position: absolute;
+  content: "";
+  background: #fff;
+  transition: all .2s ease-in-out;
+}
+
+input[type=checkbox]:before {
+  left: 2px;
+  top: 6px;
+  width: 0;
+  height: 2px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+
+input[type=checkbox]:after {
+  right: 9px;
+  bottom: 3px;
+  width: 2px;
+  height: 0;
+  transform: rotate(40deg);
+  -webkit-transform: rotate(40deg);
+  -moz-transform: rotate(40deg);
+  -ms-transform: rotate(40deg);
+  -o-transform: rotate(40deg);
+  transition-delay: .2s;
+}
+
+input[type=checkbox]:checked:before {
+  left: 1px;
+  top: 10px;
+  width: 6px;
+  height: 2px;
+}
+
+input[type=checkbox]:checked:after {
+  right: 5px;
+  bottom: 1px;
+  width: 2px;
+  height: 14px;
+}
+
+input[type=checkbox]:indeterminate:before,input[type=checkbox]:indeterminate:after {
+  width: 7px;
+  height: 2px;
+  transform: rotate(0);
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -ms-transform: rotate(0);
+  -o-transform: rotate(0);
+}
+
+input[type=checkbox]:indeterminate:before {
+  left: 1px;
+  top: 7px;
+}
+
+input[type=checkbox]:indeterminate:after {
+  right: 1px;
+  bottom: 7px;
+}
+
+////////// ラジオボタンのデザイン //////////
+input[type=radio] {
+  border-radius: 50%;
+}
+
+input[type=radio]:checked:before {
+  transform: scale(1);
+}
+
+input[type=radio]:before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 3px;
+  transform: scale(0);
+  transition: all ease-out 250ms;
+}
+
+////////// ラジオボタンとチェックボックスの色 //////////
+input[type=checkbox], input[type=radio] {
+  border: 2px solid #a6a6a6;
+}
+
+input[type=checkbox]:checked, input[type=checkbox]:indeterminate, input[type=radio]:checked:before {
+  background: #fc8022;
+}
+
+// border: thin solid;

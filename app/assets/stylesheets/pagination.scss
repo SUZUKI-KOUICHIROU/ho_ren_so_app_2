@@ -1,0 +1,62 @@
+////////// ページネーション全体のデザイン //////////
+.pagination {
+  li {
+    a {
+      font-weight: bolder;
+      color: #fc8022;
+      border-radius: 15px;
+      border: 2px solid #fc8022;
+      margin-right: 5px;
+      line-height: 1;
+    }
+  }
+}
+
+////////// 一番左のボタンのデザイン //////////
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+////////// 表示しているページ番号のデザイン //////////
+.page-item.active .page-link {
+  font-weight: bolder;
+  color: #ffffff;
+  border: 2px solid #fc8022;
+  background-color: #fc8022;
+  border-radius: 15px;
+}
+
+////////// 一番右のボタンのデザイン //////////
+.page-item:last-child .page-link {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+////////// ページ番号のホバー時のデザイン //////////
+.pagination {
+  .page-link:hover {
+    font-weight: bolder;
+    border-radius: 15px;
+    background-color: #fc8022;
+    border: 2px solid #fc8022;
+    color: #ffffff;
+  }
+}
+
+////////// 表示しているページ番号のホバー時の文字色 //////////
+.page-item:hover {
+  color: #ffffff;
+}
+
+////////// ボタンがフォーカスされた時のデザイン //////////
+.page-link:focus,
+.page-link.focus,
+.page-link:not(:disabled):not(.disabled):active:focus,
+.page-link:not(:disabled):not(.disabled).active:focus,
+.show > .page-link.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 123, 0, 0.5);
+}
+
+// border: thin solid;

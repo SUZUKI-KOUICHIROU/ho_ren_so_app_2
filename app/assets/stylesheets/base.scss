@@ -1,19 +1,16 @@
-/* universal */
-
+////////// ロゴのデザイン //////////
 #logo {
   font-size: 200%;
 }
 
-// html, body { height: 100%; }
-
-// 横スクロールバーを非表示
+////////// 横スクロールバーを非表示 //////////
 .content-box {
   position: relative;
   overflow: hidden;
   height: 100%;
 }
 
-// ヘッダーの位置を固定
+////////// ヘッダーの位置を固定 //////////
 .header {
   position: -webkit-sticky;
   position: sticky;
@@ -38,18 +35,16 @@ textarea {
   margin-bottom: 10px;
 }
 
-/* typography */
 .row {
   height: 100%;
 }
 
-// モーダル位置調整
+////////// モーダルウインドウの表示位置 //////////
 .modal-dialog-center {
   padding-top: 10%;
 }
 
-
-/* debug */
+////////// デバッグウインドウのデザイン //////////
 .debug_dump {
   clear: both;
   float: right;
@@ -63,7 +58,7 @@ textarea {
   border: 2px #ddd solid;
 }
 
-/* error_messages */
+////////// エラーメッセージのデザイン //////////
 
 #error_explanation {
   color: red;
@@ -73,169 +68,9 @@ textarea {
   }
 }
 
-// ログインページのinpytfieldのbackground-colorを設定するために必要
+////////// text_fieldとtext_areaのbackground-colorを設定するために必要 //////////
 input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
-}
-
-// ラジオボタン、チェックボックスのデザイン
-input[type=checkbox],input[type=radio] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  appearance: none;
-  position: relative;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  vertical-align: -0.7rem;
-  transition:all .15s ease-out 0s;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  margin: .4rem;
-  outline: none;
-  border-radius: 10%;
-}
-/* Checkbox */
-input[type=checkbox]:before,input[type=checkbox]:after {
-  position: absolute;
-  content: "";
-  background: #fff;
-  transition: all .2s ease-in-out;
-}
-input[type=checkbox]:before {
-  left: 2px;
-  top: 6px;
-  width: 0;
-  height: 2px;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-}
-input[type=checkbox]:after {
-  right: 9px;
-  bottom: 3px;
-  width: 2px;
-  height: 0;
-  transform: rotate(40deg);
-  -webkit-transform: rotate(40deg);
-  -moz-transform: rotate(40deg);
-  -ms-transform: rotate(40deg);
-  -o-transform: rotate(40deg);
-  transition-delay: .2s;
-}
-input[type=checkbox]:checked:before {
-  left: 1px;
-  top: 10px;
-  width: 6px;
-  height: 2px;
-}
-input[type=checkbox]:checked:after {
-  right: 5px;
-  bottom: 1px;
-  width: 2px;
-  height: 14px;
-}
-input[type=checkbox]:indeterminate:before,input[type=checkbox]:indeterminate:after {
-  width: 7px;
-  height: 2px;
-  transform: rotate(0);
-  -webkit-transform: rotate(0);
-  -moz-transform: rotate(0);
-  -ms-transform: rotate(0);
-  -o-transform: rotate(0);
-}
-input[type=checkbox]:indeterminate:before {
-  left: 1px;
-  top: 7px;
-}
-input[type=checkbox]:indeterminate:after {
-  right: 1px;
-  bottom: 7px;
-}
-/* Radio */
-input[type=radio] {
-  border-radius: 50%;
-}
-input[type=radio]:checked:before {
-  transform: scale(1);
-}
-input[type=radio]:before {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 3px;
-  transform: scale(0);
-  transition: all ease-out 250ms;
-}
-/* 色指定 */
-input[type=checkbox], input[type=radio] {
-  border: 2px solid #a6a6a6;
-}
-input[type=checkbox]:checked, input[type=checkbox]:indeterminate, input[type=radio]:checked:before {
-  background: #fc8022;
-}
-
-
-// ページネーション全体のデザイン
-.pagination {
-  li {
-    a {
-      font-weight: bolder;
-      color: #fc8022;
-      border-radius: 15px;
-      border: 2px solid #fc8022;
-      margin-right: 5px;
-      line-height: 1;
-    }
-  }
-}
-
-// 一番左のリンクのデザイン
-.page-item:first-child .page-link {
-  margin-left: 0;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-}
-
-// 表示しているページ番号のデザイン
-.page-item.active .page-link {
-  font-weight: bolder;
-  color: #ffffff;
-  border: 2px solid #fc8022;
-  background-color: #fc8022;
-  border-radius: 15px;
-}
-
-// ページ番号のホバー時のデザイン
-.pagination {
-  .page-link:hover {
-    font-weight: bolder;
-    border-radius: 15px;
-    background-color: #fc9749;
-    border: 2px solid #fc8022;
-    color: #ffffff;
-  }
-}
-
-// 表示しているページ番号のホバー時の文字色
-.page-item:hover {
-  font-weight: bolder;
-  color: #ffffff;
-}
-
-// 一番右のリンクのデザイン
-.page-item:last-child .page-link {
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
 }
 
 // border: thin solid;
