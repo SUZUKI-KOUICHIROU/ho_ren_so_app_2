@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
+  has_many :report_statuses
+
   has_many :reports, dependent: :nullify
   has_many :pdca, dependent: :nullify
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token

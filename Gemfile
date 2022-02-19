@@ -40,6 +40,7 @@ gem 'spring-commands-rspec'
 gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'whenever', require: false
 gem 'rinku'
 
 group :development, :test do

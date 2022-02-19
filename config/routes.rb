@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
+        get 'new_period'
+        get 'notice_not_submitted_members'
         resources :messages do
           member do
             patch 'read'
