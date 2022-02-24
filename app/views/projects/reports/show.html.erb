@@ -19,13 +19,13 @@ function changeForm() {
   <li>
     <% case answer.question_type %>
     <% when 'text_field' %>
-      <%= TextField.find(answer.question_id).label_name %>
+      <%= TextField.find_by(question_id: answer.question_id).label_name %>
     <% when 'text_area' %>
-      <%= TextArea.find(answer.question_id).label_name %>
+      <%= TextArea.find_by(question_id: answer.question_id).label_name %>
     <% when 'radio_button' %>
-      <%= RadioButton.find(answer.question_id).label_name %>
+      <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
     <% when 'check_box' %>
-      <%= CheckBox.find(answer.question_id).label_name %>
+      <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
       <br>
       <% if answer.array_value.count != 0 %>
         <ul>

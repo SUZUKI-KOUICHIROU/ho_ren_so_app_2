@@ -1,13 +1,15 @@
 <% provide(:title, 'edit report_formats') %>
 
-<h1>報告フォーマット編集</h1>
+<%= content_for :side_menu do %>
+  <%= render 'layouts/sidebar' %>
+<% end %>
 
 <div class="edit-report-formats-header">
   <div class="project-name-box">
-    <a>プロジェクト名：<%= @project.project_name %></a>
+    <p>プロジェクト名：<%= @project.project_name %></p>
   </div>
   <div class="form-add">
-    <%= link_to "項目を追加", new_project_report_format_path(@project), remote: true, class: "btn btn-success btn-sm" %>
+    <%= link_to "項目を追加", new_project_report_format_path(@project), remote: true, class: "btn btn-outline-orange" %>
   </div>
 </div>
 
@@ -22,7 +24,7 @@
     <% end %>
   <% end %>
   <div class="edit-report-formats-footer">
-    <%= f.submit "変更", class: "btn btn-success btn-sm" %>
+    <%= f.submit "変更", class: "btn btn-outline-orange" %>
   </div>
 <% end %>
 

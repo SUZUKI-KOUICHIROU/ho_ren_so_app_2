@@ -4,11 +4,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
-    @project = Project.first
-    @counselings = @project.counselings.my_counselings(current_user)
-    # @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all
-    # @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
     @projects =
       if params[:search].present?
         @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
@@ -52,9 +47,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト詳細ページ表示アクション
   def show
-    @user = current_user
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
-    # @messages = @project.my_messages(current_user)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
     @member = @project.users.all
@@ -108,6 +102,10 @@ class Projects::ProjectsController < Projects::BaseProjectController
         @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
       end
     end
+  end
+
+  def index_switching
+    debugger
   end
 
 

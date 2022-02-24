@@ -5,14 +5,13 @@
 <% end %>
 
 <div class="box-project-index">
-  <div class="box-project_search">
+  <div class="box-search">
     <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
       <%= form.label :search, "プロジェクト名検索：", class: "search-label" %>
       <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
       <%= form.submit "検索", class: "btn btn-outline-orange" %>
     <% end %>
   </div>
-
   <div class="table-header">
     <div class="project-name">
       プロジェクト名
@@ -24,7 +23,6 @@
       お知らせ
     </div>
   </div>
-
   <div class="table-body">
     <% if @projects.present? %>
       <% line_num = 0%>
@@ -37,51 +35,42 @@
           <div class="project-next-report-date">
             <%= l(project.project_next_report_date, format: :long) %>
           </div>
-
           <div class="project-news">
             <% remanded_reports = project.reports.where(user_id: @user.id, remanded: true) %>
-
             <% if remanded_reports.count > 0 %>
                 <% remanded_reports.each do |report| %>
                   <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, project, report) %>
                   <span>に修正依頼が来ています。</span></p>
                 <% end %>
             <% end %>
-
             <% messages = project.messages.my_messages(@user) %>
             <% if messages.count > 0 %>
                 <p><%= link_to "新着の連絡", user_project_messages_path(@user, project) %>
                 <span>が<%= "#{messages.count}件あります。" %></span></p>
             <% end %>
-
             <% counselings = project.counselings.my_counselings(@user) %>
             <% if counselings.count > 0 %>
-                <p><%= link_to "新着の相談", user_project_messages_path(@user, project) %>
+                <p><%= link_to "新着の相談", user_project_counselings_path(@user, project) %>
                 <span>が<%= "#{counselings.count}件あります。" %></span></p>
             <% end %>
-
             <% counselings = project.counselings.my_counselings(@user) %>
             <% if remanded_reports.empty? && messages.empty? && counselings.empty? %>
                 <p>無し</p>
             <% end %>
-
           </div>
         </div>
       <% end %>
     <% end %>
-
     <% if @projects.blank?%>
       <P>参画中のプロジェクトはありません。</P>
     <% end %>
   </div>
-
-  <div class="index-paginate">
+  <div class="index-footer">
     <% if @projects.present?%>
       <div class="paginate">
         <%= paginate @projects %>
       </div>
     <% end %>
-
     <div class="back-btn">
       <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
     </div>

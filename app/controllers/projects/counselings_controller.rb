@@ -12,10 +12,12 @@ class Projects::CounselingsController < BaseController
   end
 
   def index
-    @user = current_user
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @member = @project.users.all
-    @counselings = @project.counselings.my_counselings(current_user)
+    @projects = @user.projects.all
+    @counselings = @project.counselings.all.order(update_at: 'DESC').page(params[:page]).per(5)
+    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
+    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
   def new

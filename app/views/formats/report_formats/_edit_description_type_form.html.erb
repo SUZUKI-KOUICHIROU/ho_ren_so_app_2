@@ -6,7 +6,7 @@
 <% when 'date_field' %>
   <% form_type_symbol = :date_field %>
 <% end %>
-  <div id="form-<%= @form_number %>", draggable="true", class="form"">
+  <div id="form-<%= @form_number %>", draggable="true", class="form">
     <%= f.fields_for 'question_attributes[]', question do |fdof| %>
       <%= fdof.hidden_field :id %>
       <%= fdof.hidden_field :form_table_type %>
@@ -49,6 +49,6 @@
       <a>　</a>
     </div>
     <div class="form-delete-button">
-      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
     </div>
   </div>

@@ -1,3 +1,8 @@
+.card-box {
+  margin: 5rem 5rem 0 4rem;
+  font-weight: 700;
+}
+
 .card {
   position: relative;
   display: flex;
@@ -8,7 +13,6 @@
   background-clip: border-box;
   border: 2px solid rgba(0, 0, 0, 0.125);
   border-radius: 10px;
-  margin: 5rem 5rem 0 4rem;
   font-weight: 700;
 }
 
@@ -50,5 +54,3 @@
   background-color: #ffffff;
   border: thin solid;
 }
-
-// border: thin solid;

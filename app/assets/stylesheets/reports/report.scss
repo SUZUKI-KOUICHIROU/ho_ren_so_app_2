@@ -11,7 +11,7 @@
   }
 }
 
-.report-project-select-box, .report-text-field-box, .report-date-field-box, .report-text-area-box, .report-radio-button-box, .report-check-box, .report-select-box {
+.box-project-select, .report-text-field-box, .report-date-field-box, .report-text-area-box, .report-radio-button-box, .report-check-box, .report-select-box {
   margin-bottom: 0.5rem;
   .radio-label, .check-label {
     display: table;
@@ -21,7 +21,7 @@
   }
 }
 
-.project-select, .report-date, .report-select {
+.reprt-project-select-box, .report-date, .report-select {
   margin-left: 1rem;
   border-style: none;
   box-sizing: border-box;
@@ -32,7 +32,6 @@
   border-radius: 3px;
   padding: 0 7px;
   background-color: #fff5ee;
-
 }
 
 .report-text {

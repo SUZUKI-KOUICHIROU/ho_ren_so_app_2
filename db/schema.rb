@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2022_02_04_100410) do
     t.string "question_type"
     t.integer "question_id"
     t.string "value"
-    t.text "c"
+    t.text "array_value"
     t.integer "report_id"
     t.index ["report_id"], name: "index_answers_on_report_id"
   end
