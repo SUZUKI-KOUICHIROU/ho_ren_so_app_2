@@ -8,8 +8,8 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
 
   #招待メールを送信する
-  def send_invite_email(token)
-    UserMailer.invitation(self, token).deliver_now
+  def send_invite_email(token,project_name, password)
+    UserMailer.invitation(self, token, project_name, password).deliver_now
   end
 
   #招待の期限が切れている場合はtrueを返す
@@ -31,7 +31,8 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
 
-  VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze
+  # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
+  VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
   validates :password, presence: true, length: { maximum: 50, minimum: 6 },
                       format: { with: VALID_PASSWORD_REGEX,
                       message: 'は半角英数（英字は小文字のみ）で入力して下さい' },

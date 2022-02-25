@@ -4,6 +4,7 @@ class CounselingConfirmer < ApplicationRecord
   validates :counseling_confirmer_id, presence: true
   validates :counseling_confirmation_flag, inclusion: [true, false]
 
+  # 確認した/しないを切り替える　そのうちメソッド名を変更したい
   def switch_read_flag
     self.counseling_confirmation_flag = counseling_confirmation_flag ? false : true
     save
