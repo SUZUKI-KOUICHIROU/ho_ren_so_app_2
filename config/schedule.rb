@@ -34,4 +34,8 @@ every 1.days, at: '7:00 am' do #トリガー
   runner "batch/notice_not_submitted_members.rb" # 毎朝7時に報告未提出メンバーにリマインドを送る
 end
 
+every 1.minutes do #テスト用バッチ処理
+  runner "batch/test.rb"
+end
+
 # Learn more: http://github.com/javan/whenever

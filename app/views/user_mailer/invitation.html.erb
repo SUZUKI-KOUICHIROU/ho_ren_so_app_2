@@ -1,8 +1,9 @@
-<h2><%= @user.user_name %> 様</h2>
-  <p>この度は、お問い合わせありがとうございました。<br>
-  以下でご質問の回答となっておりますでしょうか。</p>
+<h2><%= "#{@inviter}があなたを#{@project_name}に招待しています。" %></h2>
+  <p>下記のリンクをクリックし、プロジェクトへ参加しましょう！</p>
+  <p>このメールを受信しているアドレスでログインできます。</P>
+  <p>初期パスワード: <%= @password %></p>
 
-  <%= link_to "グループ参加", join_url(token: @token) %>
+  <%= link_to "プロジェクトへ参加", join_url(token: @token) %>
 
   <p><%#= @answer %></p>
   <%#= link_to '参　加', join_user_project_url(project: @project) %>
