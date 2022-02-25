@@ -113,9 +113,9 @@
                 <div class="report-person">
                   報告者
                 </div>
-                <!-- div class="report-action">
-                  アクション
-                </div !-->
+                <div class="report-action">
+                  この項目の表示内容は考え中
+                </div>
               </div>
               <div class="table-body">
                 <% line_num = 0%>
@@ -135,10 +135,10 @@
                     <div class="report-person">
                       <%= User.find(id: report.user_id).user_name %>
                     </div>
-                    <!-- div class="report-action">
+                    <div class="report-action">
                       <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
                       <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
-                    </div -->
+                    </div>
                   </div>
                 <% end %>
               </div>
