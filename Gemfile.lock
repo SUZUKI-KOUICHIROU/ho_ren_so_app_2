@@ -102,7 +102,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.10.1)
+    devise-i18n (1.10.2)
       devise (>= 4.8.0)
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
@@ -153,7 +153,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    i18n (1.9.1)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
@@ -196,14 +196,14 @@ GEM
     minitest (5.15.0)
     momentjs-rails (2.29.1.1)
       railties (>= 3.1)
-    msgpack (1.4.4)
+    msgpack (1.4.5)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.1-x86_64-darwin)
+    nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.21.0)
-    parser (3.1.0.0)
+    parser (3.1.1.0)
       ast (~> 2.4.1)
     payjp (0.0.8)
       rest-client (~> 2.0)
@@ -305,8 +305,8 @@ GEM
       rubocop-ast (>= 1.15.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.15.1)
-      parser (>= 3.0.1.1)
+    rubocop-ast (1.16.0)
+      parser (>= 3.1.1.0)
     rubocop-discourse (2.5.0)
       rubocop (>= 1.1.0)
       rubocop-rspec (>= 2.0.0)
@@ -393,7 +393,6 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  x86_64-darwin-20
   x86_64-darwin-21
 
 DEPENDENCIES
