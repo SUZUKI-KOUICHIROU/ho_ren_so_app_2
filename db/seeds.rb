@@ -75,9 +75,11 @@ users.each do |user|
   end
 end
 
-# 報告フォーマット作成
+
 projects = Project.all
 projects.each do |project|
+
+# 報告フォーマット作成
   position_val = 1
   #label_nameが件名のtext_fieldを生成
   text_field = TextField.new(label_name: '件名')
@@ -171,4 +173,7 @@ projects.each do |project|
   select_box.select_option_strings.create!(option_string: '肉体的なもの（風邪など）')
   select_box.select_option_strings.create!(option_string: '精神的なもの（うつなど）')
   select_box.select_option_strings.create!(option_string: '両方')
+
+  # 報告済/未済管理用レコードを作成
+  project.update_deadline(project.project_next_report_date)
 end

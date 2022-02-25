@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   scope module: :projects do
     get 'input_forms/frequency_input_form_switching', to: 'projects#frequency_input_form_switching', as: :frequency_input_form_switching
+    get 'report_forms/report_form_switching', to: 'reports#report_form_switching', as: :report_form_switching
   end
 
   scope module: :users do
@@ -63,5 +64,4 @@ Rails.application.routes.draw do
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
-  get 'users/:user_id/page_after_login/new', to: 'page_after_login#new', as: :new_page_after_login
 end

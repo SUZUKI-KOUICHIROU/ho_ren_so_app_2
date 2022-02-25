@@ -7,7 +7,7 @@
   background-color: #fff;
   background-clip: border-box;
   border: 2px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  border-radius: 10px;
   margin: 5rem 5rem 0 4rem;
   font-weight: 700;
 }
@@ -18,6 +18,12 @@
   background-color: #fc8022;
   color: #ffffff;
   border-bottom: none;
+}
+
+.card-header:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  // border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 
 .card-title {
@@ -44,6 +50,5 @@
   background-color: #ffffff;
   border: thin solid;
 }
-
 
 // border: thin solid;
