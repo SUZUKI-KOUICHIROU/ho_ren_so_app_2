@@ -1,9 +1,5 @@
 <div class="container col-2">
   <div class="menu-content shadow">
-    <%= sidebar_link_item('報告', new_user_project_report_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('連絡', new_user_project_message_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('相談', new_user_project_counseling_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('報連相一覧', user_project_reports_path(@user, @project), {class: 'btn-outline-orange'}) %>
     <%= sidebar_link_item('プロジェクト登録', new_user_project_path(@user), {remote: true, class: 'btn-outline-orange', data: {"turbolinks" => false}}) %>
     <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id), {class: 'btn-outline-orange'}) %>
   </div>

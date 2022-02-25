@@ -46,10 +46,10 @@ Rails.application.routes.draw do
   get 'join', to: 'projects/projects#join'
 
   scope module: :formats do
-    get 'projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
-    get 'projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format
-    post 'project/:project_id/report_formats/create', to: 'report_formats#create', as: :create_project_report_format
-    patch 'projects/:project_id/report_formats/update', to: 'report_formats#update', as: :update_project_report_format
+    get 'users/:user_id/projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
+    get 'users/:user_id/projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format
+    post 'users/:user_id/project/:project_id/report_formats/create', to: 'report_formats#create', as: :create_project_report_format
+    patch 'users/:user_id/projects/:project_id/report_formats/update', to: 'report_formats#update', as: :update_project_report_format
     get 'input_forms/replacement_input_forms', to: 'report_formats#replacement_input_forms', as: :replacement_input_forms
     delete 'projects/:project_id/question/:question_id/report_formats/destroy', to: 'report_formats#destroy', as: :destroy_project_report_format
   end
@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     get 'input_forms/frequency_input_form_switching', to: 'projects#frequency_input_form_switching', as: :frequency_input_form_switching
     get 'report_forms/report_form_switching', to: 'reports#report_form_switching', as: :report_form_switching
   end
+
+  get 'index/index_switching', to: 'base#index_switching', as: :index_switching
 
   scope module: :users do
     get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation

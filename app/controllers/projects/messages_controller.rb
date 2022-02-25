@@ -12,10 +12,12 @@ class Projects::MessagesController < BaseController
   end
 
   def index
-    @user = current_user
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @member = @project.users.all
-    @messages = @project.messages.my_messages(current_user)
+    @projects = @user.projects.all
+    @messages = @project.messages.all.order(update_at: 'DESC').page(params[:page]).per(5)
+    you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
+    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
   def new
