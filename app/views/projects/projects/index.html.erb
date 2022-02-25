@@ -1,15 +1,15 @@
 <% provide(:title, 'All projects') %>
 
 <%= content_for :side_menu do %>
-  <%= render 'project_index_sidebar' %>
+  <%= render 'layouts/sidebar' %>
 <% end %>
 
 <div class="box-project-index">
-  <div class="boxproject_search">
+  <div class="box-project_search">
     <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
-      <%= form.label :search, "プロジェクト名検索：", class: "project-search-label" %>
+      <%= form.label :search, "プロジェクト名検索：", class: "search-label" %>
       <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-      <%= form.submit "検索", class: "search-btn" %>
+      <%= form.submit "検索", class: "btn btn-outline-orange" %>
     <% end %>
   </div>
 
@@ -17,9 +17,6 @@
     <div class="project-name">
       プロジェクト名
     </div>
-    <!-- div class="project-leader">
-      リーダー名
-    </div -->
     <div class="project-next-report-date">
       次回報告日
     </div>
@@ -37,9 +34,6 @@
           <div class="project-name">
             <%= link_to "#{project.project_name}", user_project_path(@user, project.id), class: "project-detail-link" %>
           </div>
-          <!-- div class="project-leader">
-            <%#= User.find(project.project_leader_id).user_name %>
-          </div -->
           <div class="project-next-report-date">
             <%= l(project.project_next_report_date, format: :long) %>
           </div>
@@ -66,6 +60,11 @@
                 <span>が<%= "#{counselings.count}件あります。" %></span></p>
             <% end %>
 
+            <% counselings = project.counselings.my_counselings(@user) %>
+            <% if remanded_reports.empty? && messages.empty? && counselings.empty? %>
+                <p>無し</p>
+            <% end %>
+
           </div>
         </div>
       <% end %>
@@ -76,15 +75,15 @@
     <% end %>
   </div>
 
-  <div class="index-footer">
+  <div class="index-paginate">
     <% if @projects.present?%>
       <div class="paginate">
         <%= paginate @projects %>
       </div>
     <% end %>
     <div class="back-btn">
-      <%= link_to "戻る", :back, class: "btn btn-light btn-outline-dark" %>
-      <%= link_to "ユーザー情報", user_path(@user), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+      <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
+      <%= link_to "ユーザー情報", user_path(@user), class: "btn btn-light btn-outline-orange" %>
     </div>
   </div>
 </div>

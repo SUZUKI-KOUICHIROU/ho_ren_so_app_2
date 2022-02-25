@@ -47,7 +47,7 @@
 //   padding: 3%;
 // }
 
-// login form
+// ログインフォームのデザイン
 .box-inner {
   padding: 5% 0%;
 }
@@ -123,9 +123,6 @@
 .column-right {
   margin-top: 0.3rem;
   float: right;
-  // a {
-  //   color: rgb(0, 0, 0);
-  // }
 }
 
 .box-login {
@@ -133,47 +130,13 @@
   margin-bottom: 5%;
 }
 
-.login-btn {
-  width: 100%;
-  background-color: #f6f6f6;
-  border: 2px solid #eee;
-  color: #bbb;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 5px 0;
-  padding: 13px;
-}
-
-.login-btn:hover {
-  cursor: pointer;
-  background: #e7e9ec;
-}
-
 .legal-text {
   margin-bottom: 5%;
   font-size: 15px;
 }
 
-.sign-up-btn {
-  width: 100%;
-  background-color: #fc8022;
-  border: 2px solid #fc8022;
-  color: #fff;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 5px 0;
-  padding: 13px;
-}
-
-sign-up-btn:focus, .sign-up-btn:hover {
-  outline: none;
-  cursor: pointer;
-  background-color: #fc9749;
-  text-decoration: none;
+.sign-up:hover {
+  text-decoration: none
 }
 
 .box-newusr p {

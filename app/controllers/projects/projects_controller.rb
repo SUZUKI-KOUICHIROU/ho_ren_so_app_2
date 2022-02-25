@@ -97,6 +97,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     else
       bypass_sign_in user
       redirect_to new_page_after_login_path(@user)
+      #redirect_to user_projects_path(@user)
     end
   end
 

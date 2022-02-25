@@ -1,9 +1,10 @@
-.listings {
+.menu-content {
   height: 100%;
   float: left;
   width: 15%;
   position: fixed;
   left: 0;
+  padding: 2rem 1rem 0rem 1rem;
   overflow-y: auto;
   overflow-x: hidden;
   @media screen and (max-width: 600px) {
@@ -15,39 +16,18 @@
   }
 }
 
-.listings_channels {
-  margin: 2rem 1rem 0rem 1rem;
-}
-
-.listings_header {
-  text-align: center;
-  font-size: 1rem;
-  line-height: 2rem;
-  text-transform: uppercase;
-  font-weight: bolder;
-  position: relative;
-}
-
-.channel_list {
-  list-style-type: none;
-  text-align: left;
-  padding: 0;
-}
-
-.channel.active {
-  color: #ffffff;
-  background: #fc8022;
+.menu.active {
   border-radius: 20px;
   a {
     color: #ffffff;
+    background: #fc8022;
   }
 }
 
-.channel {
+.menu {
   text-align: center;
-  margin-bottom: 2%;
+  margin-bottom: 3%;
   border-radius: 20px;
-  border: 2px solid #fc8022;
   a {
     color: #fc8022;
     border-radius: 20px;
@@ -57,7 +37,7 @@
   }
 }
 
-.channel:hover {
+.menu:hover {
   a {
   color: #ffffff;
   }
