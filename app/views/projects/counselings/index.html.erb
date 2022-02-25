@@ -1,21 +1,160 @@
-<span>▼あなた宛の相談一覧▼</span>
-    <table>
-      <thead>
-        <th>概要</th>
-        <th>連絡者</th>
-      </thead>
+<% provide(:title, 'counseling index') %>
 
-      <tbody>
-        <% @counselings.each do |counseling| %>
-          <tr>
-            <td>
-              <%= link_to counseling.title, user_project_counseling_path(current_user,@project,counseling) %>
-            </td>
-            <td>
-              <%= @member.find(counseling.sender_id).user_name %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>
+<%= content_for :side_menu do %>
+  <%= render 'layouts/sidebar' %>
+<% end %>
+
+<div class="card-box">
+  <!-- div class="box-project-select">
+    <%#= form_with do |form| %>
+      <%#= form.label :project_id, "プロジェクト選択：" %>
+      <%#= form.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},
+      {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "counseling"}}) %>
+    <%# end %>
+  </div -->
+  <div class="card">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+        <li class="nav-item">
+        <a class="nav-link active" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなた宛の相談 ▼</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="counseling-tab" data-toggle="tab" href="#counseling" target="_blank" rel="external nofollow"  role="tab" aria-controls="counseling" aria-selected="false">▼ 全メンバーの相談 ▼</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <div class="tab-content" id="myTabContent">
+        <!-- あなた宛の相談一覧 -->
+        <div class="tab-pane fade show active" id="you-addressee" role="tabpanel" aria-labelledby="you-addressee-tab">
+          <div class="box-you-addressee-index">
+            <% if @you_addressee_counselings.present? %>
+              <div class="box-search">
+                <%= form_with url: "#", method: :get, local: true do |form| %>
+                  <%= form.hidden_field :search_type, :value => "you-addressee" %>
+                  <%= form.label :search, "件名検索：", class: "search-label" %>
+                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
+                <% end %>
+              </div>
+              <div class="table-header">
+                <div class="subject-name">
+                  件名
+                </div>
+                <div class="counseling-date">
+                  連絡日
+                </div>
+                <div class="counseling-person">
+                  相談者
+                </div>
+                <!-- div class="counseling-action">
+                  アクション
+                </div -->
+              </div>
+              <div class="table-body">
+                <% line_num = 0%>
+                <% @you_addressee_counselings.each do |counseling|%>
+                  <% line_num += 1%>
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+                    <div class="subject-name">
+                      <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+                    </div>
+                    <div class="counseling-date">
+                      <%= l(counseling.updated_at, format: :long) %>
+                    </div>
+                    <div class="counseling-person">
+                      <%= User.find(counseling.sender_id).user_name %>
+                    </div>
+                    <!-- div class="counseling-action">
+                        <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
+                        <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
+                    </div -->
+                  </div>
+                <% end %>
+              </div>
+            <% else @you_addressee_counselings.blank? %>
+              <P>あなた宛の相談履歴がありません。</P>
+            <% end %>
+            <div class="index-footer">
+              <% if @you_addressee_counselings.present?%>
+                <div class="paginate">
+                  <%= paginate @you_addressee_counselings %>
+                </div>
+              <% end %>
+              <div class="back-btn">
+                <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 全メンバーの連絡 -->
+        <div class="tab-pane fade" id="counseling" role="tabpanel" aria-labelledby="counseling-tab">
+          <div class="box-counseling-index">
+            <% if @counselings.present? %>
+              <div class="box-search">
+                <%= form_with url: "#", method: :get, local: true do |form| %>
+                  <%= form.hidden_field :search_type, :value => "counseling" %>
+                  <%= form.label :search, "件名検索：", class: "search-label" %>
+                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
+                <% end %>
+              </div>
+              <div class="table-header">
+                <div class="subject-name">
+                  件名
+                </div>
+                <div class="counseling-date">
+                  連絡日
+                </div>
+                <div class="counseling-person">
+                  相談者
+                </div>
+                <div class="counseling-action">
+                  アクション
+                </div>
+              </div>
+              <div class="table-body">
+                <% line_num = 0%>
+                <% @counselings.each do |counseling|%>
+                  <% line_num += 1%>
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+                    <div class="subject-name">
+                      <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+                    </div>
+                    <div class="counseling-date">
+                      <%= l(counseling.updated_at, format: :long) %>
+                    </div>
+                    <div class="counseling-person">
+                      <%= User.find(counseling.sender_id).user_name %>
+                    </div>
+                    <div class="counseling-action">
+                      <% if counseling.sender_id == current_user.id %>
+                        <%= link_to "編集", "#", class: "btn btn-outline-orange" %>
+                        <%= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else @counselings.blank?%>
+              <P>相談履歴がありません。</P>
+            <% end %>
+            <div class="index-footer">
+              <% if @counselings.present?%>
+                <div class="paginate">
+                  <%= paginate @counselings %>
+                </div>
+              <% end %>
+              <div class="back-btn">
+                <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
+<div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>

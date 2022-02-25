@@ -4,6 +4,7 @@
   <%= render 'project_show_sidebar' %>
 <% end %>
 
+<div class="card-box">
   <div class="card">
     <div class="card-header card-header-radius"><%= @project.project_name %></div>
     <div class="card-body">
@@ -26,6 +27,7 @@
       </p>
     </div>
   </div>
+</div>
 
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
 <div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
