@@ -41,13 +41,13 @@
       <div class="option-form-edit">
         <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, question_id: question.id} %>
         <div class="option-add-btn-box">
-          <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-primary btn-sm' %>
+          <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-outline-primary btn-sm' %>
         </div>
       </div>
     <% end %>
 
     <div class="form-delete-button">
-      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger btn-sm" %>
+      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
     </div>
   <% end %>
 </div>

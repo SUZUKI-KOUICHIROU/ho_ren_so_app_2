@@ -1,0 +1,8 @@
+<% case params[:list_type] %>
+<% when 'report' %>
+  $('.card').html('<%= escape_javascript(render '') %>')
+<% when 'message' %>
+  $('.card').html('<%= escape_javascript(render '') %>')
+<% when 'counseling' %>
+  $('.card').html('<%= escape_javascript(render '') %>')
+<% end %>

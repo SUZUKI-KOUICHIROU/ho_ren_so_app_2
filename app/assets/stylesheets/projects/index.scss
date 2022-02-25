@@ -1,10 +1,10 @@
 ////////// プロジェクト一覧の余白を調整 //////////
-.box-project-index, box-report-index {
+.box-project-index {
   margin: 5rem 5rem 0 4rem;
 }
 
 ////////// 検索に関連する要素の表示位置 //////////
-.box-project_search, .box-report_search {
+.box-search {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 2rem;
@@ -66,16 +66,13 @@ margin-bottom: 0;
   }
 }
 
-////////// プロジェクト名の列のデザイン //////////
-.project-name, .subject-name {
+////////// 一覧の列のデザイン //////////
+.project-name, .subject-name, .project-next-report-date,
+.reported-date, .report-confirmer, .report-person, .report-action,
+.message-date, .message-confirmer, .message-person, .message-action,
+.counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
   width: 25%;
-  margin-bottom: 0.5rem;
-}
-
-////////// 報告期日の列のデザイン //////////
-.project-next-report-date, .reported-date, .report-confirmer, .report-action {
-  width: 25%;
-  margin: 0rem 0.5rem 0.5rem 0.5rem;
+  margin: 0rem 0.5rem 0.5rem 0rem;
 }
 
 ////////// お知らせの列のデザイン //////////
@@ -88,7 +85,7 @@ margin-bottom: 0;
 }
 
 ////////// 一覧のフッターのデザイン //////////
-.index-paginate {
+.index-footer {
   display: flex;
 }
 
@@ -97,4 +94,19 @@ margin-bottom: 0;
   margin-left: auto;
 }
 
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #fc8022;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.nav-link {
+  color: #ffffff;
+}
+
+.nav-link:hover {
+  color: #fc8022;
+  background-color: #fff;
+  border-bottom: none;
+}
 //border: thin solid;

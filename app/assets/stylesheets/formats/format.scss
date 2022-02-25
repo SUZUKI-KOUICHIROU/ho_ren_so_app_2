@@ -3,18 +3,27 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 //報告フォーマット編集画面関連
-.edit-report-formats-header, .edit-report-formats-footer {
-  margin: 1% auto;
+.edit-report-formats-header {
+  display: flex;
+  font-weight: 700;
+  margin: 5rem auto 0;
   padding: 1%;
   width: 50%;
 }
 
-.edit-report-formats-header {
+.edit-report-formats-footer {
   display: flex;
+  width: 50%;
+  margin: 0rem auto;
+  input[type=submit] {
+    text-align: right;
+    margin-left: 86.5%;
+  }
 }
 
 .project-name-box {
-  margin-top: 1%;
+  margin-top: auto;
+  font-size: 1.2rem;
 }
 
 .form-add {
@@ -24,12 +33,17 @@
 }
 
 .form {
+  font-weight: 700;
+  border: 2px solid #a6a6a6;
   background-color: rgb(245, 245, 245);
   border-radius: 10px;
   margin: 1% auto;
   padding: 1%;
   width: 50%;
   cursor: pointer;
+  input, select {
+    border: 2px solid #a6a6a6;
+  }
 }
 
 .label-select-box {
@@ -48,13 +62,13 @@
 }
 
 .text-field-box, .date-field-box {
-  border-bottom: thin dotted;
+  border-bottom: 2px dotted;
   margin-top: 1em;
   width: 50%;
 }
 
 .text-area-box {
-  border-bottom: thin dotted;
+  border-bottom: 2px dotted;
   margin-top: 1em;
 }
 
@@ -78,7 +92,7 @@
 }
 
 .text-common-box {
-  border-bottom: thin dotted;
+  border-bottom: 2px dotted;
   margin-top: 1em;
 }
 

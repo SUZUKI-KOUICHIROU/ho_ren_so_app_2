@@ -62,11 +62,12 @@ class Projects::ReportsController < BaseController
 
   def index
     @user = User.find(params[:user_id])
-    @projects = @user.projects
     @project = Project.find(params[:project_id])
+    @projects = @user.projects.all
     @first_question = @project.questions.first
-    @label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.order(update_at: 'DESC').page(params[:page]).per(5)
+    @report_label_name = @first_question.send(@first_question.form_table_type).label_name
+    @reports = @project.reports.where.not(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
+    @you_reports = @project.reports.where(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
   def show

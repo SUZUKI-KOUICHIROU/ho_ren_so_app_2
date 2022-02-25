@@ -7,7 +7,7 @@ class Message < ApplicationRecord
 
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
-    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user }).order(created_at: :desc)
+    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user, message_confirmation_flag: false }).order(created_at: :desc)
   end
 
   # ログインユーザー宛メッセージ最新の５件を取得
