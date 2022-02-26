@@ -10,7 +10,10 @@
       <%= f.hidden_field :project_leader_id, :value => @user.id %>
       <%= f.hidden_field :project_id, :value => @project.id %>
       <div class="modal-footer">
-          <%= f.submit "送信", class: "btn btn-primary btn-new" %>
+          <%= f.submit "送信", class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
+      </div>
+      <div>
+        <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-orange", style: "margin: 10px;" %>
       </div>
     <% end %>
   </div>

@@ -34,19 +34,9 @@
 
 <div>
   <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
-  <h1><%= "■#{@project.project_name}■"%></h1>
-  <%= link_to "報告", new_user_project_report_path(@user, @project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "連絡", new_user_project_message_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "相談", new_user_project_counseling_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-    <%= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-    <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
-    <div class="block_contents">
-      <p><%= "▼報告の一覧▼" %></p>
-      <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %>
-    </div>
 </div>
+
+<!--
 
 <hr color="#eeeeee">
 </pre>
@@ -64,7 +54,7 @@
     <br>
     <%= link_to "リーダーに未報告者通知メール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %> 
     <br>
-    <%# <%= link_to "メンバーにリマインドメール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>  %>
+    <%#= link_to "メンバーにリマインドメール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
 
   <div style="margin: 10px;">
 
@@ -78,55 +68,6 @@
       </div>
     <% end %>
 
-    <div class="block_contents">
-      <p><%= "▼報告の一覧▼" %></p>
-      <%= link_to "報告一覧", user_project_reports_path(@project,current_user) %>
-    </div>
-
-    <br>
-
-    <div class="block_contents">
-      <p><%= "▼あなた宛の連絡(最新の#{@messages.count}件)▼" %></p>
-      <table>
-        <tbody>
-          <% @messages.each do |message| %>
-            <tr>
-              <td>
-                <%= link_to message.title, user_project_message_path(current_user,@project,message) %>
-              </td>
-              <td>
-                <%= @member.find(message.sender_id).user_name %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to "連絡一覧", user_project_messages_path(current_user,@project) %>
-    </div>
-
-    <br>
-
-    <div class="block_contents">
-      <p><%= "▼あなた宛の連絡(最新の#{@counselings.count}件)▼" %></p>
-      <table>
-        <tbody>
-          <% @counselings.each do |counseling| %>
-            <tr>
-              <td>
-                <%= link_to counseling.title, user_project_counseling_path(current_user,@project,counseling) %>
-              </td>
-              <td>
-                <%= @member.find(counseling.sender_id).user_name %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to "相談一覧", user_project_counselings_path(current_user,@project) %>
-    </div>
-  </div>
-</div>
-
 <%= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-<%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
+<%#= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
 </div>
