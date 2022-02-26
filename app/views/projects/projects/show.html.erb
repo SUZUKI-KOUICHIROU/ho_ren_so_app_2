@@ -31,8 +31,11 @@
 
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
 <div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
+<%
+=begin%>
 <<<<<<< HEAD
 
+ 
 <div>
   <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
   <h1><%= "■#{@project.project_name}■"%></h1>
@@ -115,4 +118,6 @@
 <%= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
 </div>
 =======
->>>>>>> 4d3ae039fa52e6c99599638757d0d50b3a336b3e
+>>>>>>> 4d3ae039fa52e6c99599638757d0d50b3a336b3e 
+<%
+=end%>
