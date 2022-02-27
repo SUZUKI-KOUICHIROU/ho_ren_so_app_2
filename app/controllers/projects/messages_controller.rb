@@ -1,14 +1,20 @@
 class Projects::MessagesController < BaseController
   def create
-    @project = Project.find(params[:project_id])
-    @message = @project.messages.new(message_params)
-    @message.sender_id = current_user.id
-    @message.save
-    @message.send_to.each do |t|
-      @send = @message.message_confirmers.new(message_confirmer_id: t)
-      @send.save
+    unless params[:send_to].nil?
+      @project = Project.find(params[:project_id])
+      @message = @project.messages.new(message_params)
+      @message.sender_id = current_user.id
+      @message.save
+      debugger
+      @message.send_to.each do |t|
+        @send = @message.message_confirmers.new(message_confirmer_id: t)
+        @send.save
+      end
+      redirect_to user_project_path current_user, params[:project_id]
+    else
+      flash[:danger] = "送信相手を選択してください。"
+      redirect_to
     end
-    redirect_to user_project_path current_user, params[:project_id]
   end
 
   def index

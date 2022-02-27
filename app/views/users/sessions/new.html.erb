@@ -22,7 +22,11 @@
 
             <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
               <h1 class="box-login-title">ログイン</h1>
-              <p class="box-login-text">メールアドレスとパスワードを入力してログインして下さい。</p>
+              <%
+=begin%>
+ <p class="box-login-text">メールアドレスとパスワードを入力してログインして下さい。</p> 
+<%
+=end%>
               <%= f.label :email, "メールアドレス", class: "email-label" %>
               <div class="box-email">
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
