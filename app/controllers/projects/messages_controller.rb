@@ -1,15 +1,4 @@
 class Projects::MessagesController < BaseController
-  def create
-    @project = Project.find(params[:project_id])
-    @message = @project.messages.new(message_params)
-    @message.sender_id = current_user.id
-    @message.save
-    @message.send_to.each do |t|
-      @send = @message.message_confirmers.new(message_confirmer_id: t)
-      @send.save
-    end
-    redirect_to user_project_path current_user, params[:project_id]
-  end
 
   def index
     @user = User.find(params[:user_id])
@@ -20,13 +9,6 @@ class Projects::MessagesController < BaseController
     @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
-  def new
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @member = @project.users.all
-    @message = @project.messages.new
-  end
-
   def show
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -34,6 +16,25 @@ class Projects::MessagesController < BaseController
     @message = Message.find(params[:id])
     @checkers = @message.checkers
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
+  end
+
+  def new
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @member = @project.users.where.not(id: current_user.id)
+    @message = @project.messages.new
+  end
+
+  def create
+    @project = Project.find(params[:project_id])
+    @message = @project.messages.new(message_params)
+    @message.sender_id = current_user.id
+    @message.save
+    @message.send_to.each do |t|
+      @send = @message.message_confirmers.new(message_confirmer_id: t)
+      @send.save
+    end
+    redirect_to user_project_path current_user, params[:project_id]
   end
 
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
