@@ -105,7 +105,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   end
 
   def index_switching
-    debugger
   end
 
 
