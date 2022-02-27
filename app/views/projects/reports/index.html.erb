@@ -133,7 +133,7 @@
                       <%= l(report.updated_at, format: :long) %>
                     </div>
                     <div class="report-person">
-                      <%= User.find(id: report.user_id).user_name %>
+                      <%= User.find(report.user_id).user_name %>
                     </div>
                     <!-- div class="report-action">
                       <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
