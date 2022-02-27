@@ -23,7 +23,7 @@ class Projects::CounselingsController < BaseController
   def new
     @user = current_user
     @project = Project.find(params[:project_id])
-    @member = @project.users.all
+    @member = @project.users.where.not(id: current_user.id)
     @counseling = @project.counselings.new
   end
 
