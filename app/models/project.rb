@@ -27,8 +27,7 @@ class Project < ApplicationRecord
     self.report_statuses.where(is_newest: true).update_all(is_newest: false) # "最新である"フラグをfalseに
     self.users.all.each do |user|
       unless self.report_statuses.exists?(user_id: user.id, deadline: next_deadline)
-        report_status = self.report_statuses.new(user_id: user.id, deadline: next_deadline)
-        report_status.save
+        self.report_statuses.create(user_id: user.id, deadline: next_deadline)
       end
     end
   end

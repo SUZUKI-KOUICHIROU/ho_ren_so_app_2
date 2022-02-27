@@ -31,7 +31,8 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
 
-  VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze
+  # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
+  VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
   validates :password, presence: true, length: { maximum: 50, minimum: 6 },
                       format: { with: VALID_PASSWORD_REGEX,
                       message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
