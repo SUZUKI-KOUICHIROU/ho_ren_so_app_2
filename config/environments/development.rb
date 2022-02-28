@@ -72,4 +72,8 @@ Rails.application.configure do
     :password => ENV["GOOGLE_MAILER_PASSWORD"],
     :authentication => 'login'
   }
+
+  #letter_openerのメソッドをセット
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 end

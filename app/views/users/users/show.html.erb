@@ -1,23 +1,32 @@
 <% provide(:title, (@user.user_name)) %>
-<div class="user">
-<p class="subject">
-<h1>ユーザー情報</h1></p>
-  <div class="row">
-    <div class="titlebar">
-      <p class="date"><%= link_to "編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %></p>
+<div class="sessions-new-img">
+  <div class="sessions-new-container">
+    <div class="container">      
+        <div class="login-box">
+          <div class="box-inner">
+            <h1>ユーザー情報</h1></p>
+              <div class="row">
+                <table class="table table-bordered" id="table-user-description">
+                <tbody>
+                  <tr>
+                  <th class="active col-md-2"><%= User.human_attribute_name :氏名 %></th>
+                    <td><%= @user.user_name %></td>
+                  </tr>
+                  <tr>
+                    <th class="active col-md-2"><%= User.human_attribute_name :メールアドレス %></th>
+                    <td><%= @user.email %></td>
+                  </tr>
+                </tbody>
+                </table>
+                <div class="center">
+                  <%= link_to "ユーザー情報の編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %>
+                  <%= link_to "戻る", :back, class: "btn btn-block btn-outline-secondary" %>
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <table class="table table-bordered" id="table-user-description">
-      <tbody>
-        <tr>
-        <th class="active col-md-2"><%= User.human_attribute_name :氏名 %></th>
-          <td><%= @user.user_name %></td>
-        </tr>
-        <tr>
-          <th class="active col-md-2"><%= User.human_attribute_name :メールアドレス %></th>
-          <td><%= @user.email %></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
-<%#= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
