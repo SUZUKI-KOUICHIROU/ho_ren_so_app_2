@@ -65,5 +65,10 @@ Rails.application.routes.draw do
     get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
+  
+  #letter_openerを追加
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
 end

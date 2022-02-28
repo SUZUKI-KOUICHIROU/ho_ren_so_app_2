@@ -107,7 +107,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # def index_switching
   # end
 
-
   private
 
   def project_params
