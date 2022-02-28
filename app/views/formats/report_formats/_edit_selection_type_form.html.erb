@@ -14,6 +14,7 @@
 <% end %>
 
 <div id="form-<%= @form_number %>", draggable="false", class="form">
+  <div class ="dorack-area">ドラックエリア</div>
   <%= f.fields_for 'question_attributes[]', question do |fdof| %>
     <%= fdof.hidden_field :id %>
     <%= fdof.hidden_field :form_table_type %>
