@@ -17,18 +17,18 @@ User.create!( user_name: 'Admin User',
                 password_confirmation: password )
 end
 
-# # プロジェクトを2件作成
-# Project.create!( project_name: 'プロジェクトA',
-#                  project_leader_id: 1,
-#                  project_report_frequency: 1,
-#                  project_next_report_date: Date.current.since(1.days),
-#                  project_reported_flag: false )
+# プロジェクトを2件作成
+Project.create!( project_name: 'プロジェクトA',
+                 project_leader_id: 1,
+                 project_report_frequency: 1,
+                 project_next_report_date: Date.current.since(1.days),
+                 project_reported_flag: false )
 
-# Project.create!( project_name: 'プロジェクトB',
-#                  project_leader_id: 1,
-#                  project_report_frequency: 7,
-#                  project_next_report_date: Date.current.since(7.days),
-#                  project_reported_flag: false )
+Project.create!( project_name: 'プロジェクトB',
+                 project_leader_id: 1,
+                 project_report_frequency: 7,
+                 project_next_report_date: Date.current.since(7.days),
+                 project_reported_flag: false )
 
 
 projects = Project.all
@@ -131,7 +131,8 @@ projects.each do |project|
 
   # 報告済/未済管理用レコードを作成
   project.update_deadline(project.project_next_report_date)
-end
+
+  end
 # # idが1~3のユーザーをプロジェクトAに参画
 # users = User.where(id: [1, 2, 3, 4])
 # project = Project.find(1)
@@ -304,3 +305,5 @@ end
 #                           project_id: project.id )
 # text_area.save
 # position_val += 1
+
+end

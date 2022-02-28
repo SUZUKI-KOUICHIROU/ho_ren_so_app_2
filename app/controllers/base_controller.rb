@@ -3,7 +3,6 @@ class BaseController < ApplicationController
 
   # 報告、連絡、相談の一覧を選択されたプロジェクトによって切り替える
   def index_switching
-    debugger
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all

@@ -22,7 +22,6 @@ class Users::InvitationsController < BaseController
       mypassword = SecureRandom.alphanumeric.downcase
       # mypassword = Devise.friendly_token.first(10) # 半角小大英数記号生成
       puts mypassword
-      debugger
       @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id)
       @user.save!
       @join = Join.create(project_id: @project.id, user_id: @user.id)

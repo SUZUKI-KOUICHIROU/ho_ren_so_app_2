@@ -4,9 +4,7 @@ class Message < ApplicationRecord
   attr_accessor :send_to
 
   validates :message_detail, presence: true
-  # validates_presence_of(:send_to)
-  # validates :send_to, a
-  # validate :send_to, :no_check_become_invalid
+  validate :no_check_become_invalid
 
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
@@ -23,10 +21,10 @@ class Message < ApplicationRecord
     User.where(id: buf)
   end
 
-  # def no_check_become_invalid
-  #   if self.send_to.nil?
-  #     errors.add "", "送信相手を選択してください。"
-  #     redirect_to :new
-  #   end
-  # end
+  # 送信相手を一名以上選択しているか。
+  def no_check_become_invalid
+    if self.send_to.nil?
+      errors.add "", "送信相手を選択してください。"
+    end
+  end
 end
