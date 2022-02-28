@@ -100,7 +100,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     case params[:form_type]
     when 'day', 'week'
-      @project = @user.projects.new(project_name: params[:project_name])
+      @project = @user.projects.new(project_name: params[:project_name], description: params[:project_description])
     when 'edit_day', 'edit_week'
       @project = @user.projects.find(params[:project_id])
       @project.project_name = params[:project_name]
@@ -111,9 +111,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
-  def index_switching
-  end
-
+  # def index_switching
+  # end
 
   private
 

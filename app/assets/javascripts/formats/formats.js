@@ -276,6 +276,36 @@ $(document).on('turbolinks:load', function(){
       });
     };
   });
+
+  // ドラック有効、無効を切り替える処理
+  $(function($) {
+    // .dorack-areaにマウスポインタが触れている時.formをドラック出来る様にするよ
+    // まず.dorack-areaを全て取得してeach処理するよ
+    document.querySelectorAll('.dorack-area').forEach (element => {
+      // eachで1つずつ取り出された要素はelementに入るよ
+      // この要素にonmouseoverイベントを設定するよ
+      element.onmouseover = function () {
+        console.log( "オンマウスオーバーイベントを感知しました(￣^￣)ゞ" )
+        // .formを全て取得してeach処理するよ
+        document.querySelectorAll('.form').forEach (element => {
+          // 取り出した要素のdraggable属性をtrueに変更するよ
+          // これで.dorack-areaにマウスポインタが触れた時にドラック出来る様になるよ
+          element.setAttribute( "draggable", "true");
+          console.log(element)
+        });
+      };
+
+      // 今度は.dorack-areaからマウスポインタが離れた時.formをドラック出来ない様にするよ
+      // 処理の流れは上記と同じだね
+      element.onmouseout = function () {
+        console.log( "オンマウスアウトイベントを感知しました(￣^￣)ゞ" )
+        document.querySelectorAll('.form').forEach (element => {
+          element.setAttribute( "draggable", "false");
+          console.log(element)
+        });
+      };
+    });
+  })
 });
 
 // console.log(true);
