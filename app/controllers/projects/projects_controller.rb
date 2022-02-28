@@ -94,6 +94,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
       #redirect_to new_page_after_login_path(@user)
       redirect_to user_projects_path(@user)
     end
+    @project.join_new_member(@user.id)
+    # フラッシュメッセージを入れる
+    redirect_to root_path
   end
 
   def frequency_input_form_switching
