@@ -47,9 +47,9 @@
                 <div class="message-person">
                   連絡者
                 </div>
-                <!-- div class="message-action">
-                  アクション
-                </div -->
+                <div class="message-action">
+                  この項目の表示内容は考え中
+                </div>
               </div>
               <div class="table-body">
                 <% line_num = 0%>
@@ -65,10 +65,10 @@
                     <div class="message-person">
                       <%= User.find(message.sender_id).user_name %>
                     </div>
-                    <!-- div class="message-action">
+                    <div class="message-action">
                         <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
                         <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
-                    </div -->
+                    </div>
                   </div>
                 <% end %>
               </div>
