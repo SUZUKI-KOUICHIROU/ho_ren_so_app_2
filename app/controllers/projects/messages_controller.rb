@@ -1,4 +1,4 @@
-class Projects::MessagesController < BaseController
+class Projects::MessagesController < Projects::BaseProjectController
 
   def index
     @user = User.find(params[:user_id])
@@ -10,33 +10,33 @@ class Projects::MessagesController < BaseController
   end
 
   def show
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @members = @project.users.all
+    set_project_members
     @message = Message.find(params[:id])
     @checkers = @message.checkers
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
   end
 
   def new
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @member = @project.users.where.not(id: current_user.id)
+    set_project_members
     @message = @project.messages.new
   end
 
   def create
-    @project = Project.find(params[:project_id])
+    set_project_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
-    @message.save
-    @message.send_to.each do |t|
-      @send = @message.message_confirmers.new(message_confirmer_id: t)
-      @send.save
+    if @message.save
+      @message.send_to.each do |t|
+        @send = @message.message_confirmers.new(message_confirmer_id: t)
+        @send.save
+      end
+      flash[:success] = "連絡内容を送信しました。"
+      redirect_to user_project_path current_user, params[:project_id]
+    else
+      flash[:danger] = "送信相手を選択してください。"
+      render action: :new
     end
-    redirect_to user_project_path current_user, params[:project_id]
   end
-
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])
@@ -51,4 +51,5 @@ class Projects::MessagesController < BaseController
   def message_params
     params.require(:message).permit(:message_detail, :title, { send_to: [] })
   end
+
 end

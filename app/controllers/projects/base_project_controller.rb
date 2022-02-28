@@ -1,5 +1,5 @@
 class Projects::BaseProjectController < BaseController
-  before_action :project_reader_user
+  # before_action :project_reader_user
 
   # デフォルト報告フォーマット作成アクション(projects/projects#create内で呼ばれる)
   def report_format_creation(project)
@@ -29,6 +29,14 @@ class Projects::BaseProjectController < BaseController
                                        project_id: project.id)
     text_area.save
   end
+
+    # ユーザー、プロジェクト、送信先をインスタンス化
+    def set_project_members
+      @user = current_user
+      @project = Project.find(params[:project_id])
+      # @members = @project.users.all
+      @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
+    end
 
   private
 

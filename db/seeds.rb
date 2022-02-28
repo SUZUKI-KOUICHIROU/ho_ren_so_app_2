@@ -30,12 +30,6 @@ Project.create!( project_name: 'プロジェクトB',
                  project_next_report_date: Date.current.since(7.days),
                  project_reported_flag: false )
 
-########## 報告済/未済管理用レコードを作成 ##########
-projects = Project.all
-projects.each do |project|
-  project.update_deadline(project.project_next_report_date)
-end
-
 ########## idが1~3のユーザーをプロジェクトAに参画 ##########
 users = User.where(id: [1, 2, 3, 4])
 project = Project.find(1)
@@ -48,6 +42,12 @@ users = User.where(id: [1, 4, 5, 6])
 project = Project.find(2)
 users.each do |user|
   user.projects << project
+end
+
+########## 報告済/未済管理用レコードを作成 ##########
+projects = Project.all
+projects.each do |project|
+  project.update_deadline(project.project_next_report_date)
 end
 
 ########## プロジェクトAに報告フォーマットを登録 ##########

@@ -32,4 +32,12 @@ class Project < ApplicationRecord
     end
   end
 
+  # 引数に指定したIDを除く、プロジェクトメンバーを取得
+  def other_members(my_id)
+    return self.users.where.not(id: my_id)
+  end
+
+  def join_new_member(user_id)
+    self.report_statuses.create(user_id: user_id, deadline: self.project_next_report_date)
+  end
 end
