@@ -37,7 +37,7 @@ class Project < ApplicationRecord
     return self.users.where.not(id: my_id)
   end
 
-  def join_new_member(user)
-    self.report_statuses.create(user_id: user.id, deadline: next_deadline)
+  def join_new_member(user_id)
+    self.report_statuses.create(user_id: user_id, deadline: self.project_next_report_date)
   end
 end
