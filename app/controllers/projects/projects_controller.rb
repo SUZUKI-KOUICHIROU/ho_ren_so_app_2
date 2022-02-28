@@ -85,6 +85,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(@join.user_id)
     @project = Project.find_by(id: @join.project_id)
     @project.users << @user
+    @project.join_new_member(@user.id)
     # フラッシュメッセージを入れる
     redirect_to root_path
   end

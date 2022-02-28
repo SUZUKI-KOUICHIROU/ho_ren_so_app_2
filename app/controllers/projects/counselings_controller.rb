@@ -1,6 +1,6 @@
-class Projects::CounselingsController < BaseController
+class Projects::CounselingsController < Projects::BaseProjectController
   def create
-    @project = Project.find(params[:project_id])
+    set_project_members
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.save
@@ -21,16 +21,12 @@ class Projects::CounselingsController < BaseController
   end
 
   def new
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @member = @project.users.where.not(id: current_user.id)
+    set_project_members
     @counseling = @project.counselings.new
   end
 
   def show
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    # @member = @project.users.all
+    set_project_members
     @counseling = Counseling.find(params[:id])
     @checkers = @counseling.checkers
     @counseling_c = @counseling.counseling_confirmers.find_by(counseling_confirmer_id: current_user)
@@ -49,5 +45,12 @@ class Projects::CounselingsController < BaseController
 
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] })
+  end
+
+  # ユーザー、プロジェクト、送信先をインスタンス化
+  def set_counseling_initialize
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
   end
 end
