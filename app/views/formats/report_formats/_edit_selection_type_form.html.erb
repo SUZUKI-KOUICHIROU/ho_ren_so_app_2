@@ -13,7 +13,7 @@
   <% form_option_symbol = :select_option_strings %>
 <% end %>
 
-<div id="form-<%= @form_number %>", draggable="true", class="form">
+<div id="form-<%= @form_number %>", draggable="false", class="form">
   <%= f.fields_for 'question_attributes[]', question do |fdof| %>
     <%= fdof.hidden_field :id %>
     <%= fdof.hidden_field :form_table_type %>
