@@ -23,7 +23,7 @@
         <% @member.each do |member| %>
           <span class="box-user-name"><%= member.user_name %></span>
         <% end %>
-        <!--<a href="#" class="card-link">Card link</a>#報告のため一時的に消しました。-->
+        <a href="#" class="card-link">Card link</a>#報告のため一時的に消しました。
       </p>
     </div>
   </div>
@@ -45,9 +45,7 @@
 =======
 <%
 =begin%>
-<<<<<<< HEAD
 
- 
 <div>
   <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
   <h1><%= "■#{@project.project_name}■"%></h1>
