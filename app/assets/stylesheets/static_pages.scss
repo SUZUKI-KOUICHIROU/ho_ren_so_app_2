@@ -52,6 +52,15 @@
   padding: 5% 0%;
 }
 
+.box-new-title {
+  font-size: 28px;
+  line-height: 1.2;
+  color: #111111;
+  font-weight: bolder;
+  text-align: center;
+  margin-bottom: 5%;
+}
+
 .box-login-title {
   font-size: 28px;
   line-height: 1.2;
@@ -79,11 +88,15 @@
   margin-bottom: 5%;
 }
 
-.password-label, .email-label {
+.name-label, .password-label, .email-label {
   font-weight: 700;
   font-size: 15px;
   padding-left: 2px;
   margin-bottom: 2%;
+}
+
+.box-name {
+  margin-bottom: 5%;
 }
 
 .box-email {
@@ -94,7 +107,7 @@
   margin-bottom: 5%;
 }
 
-.box-email input[type="email"], .box-password input[type="password"] {
+.box-name input[type="text"], .box-email input[type="email"], .box-password input[type="password"] {
   border-style: none;
   box-sizing: border-box;
   width: 100%;

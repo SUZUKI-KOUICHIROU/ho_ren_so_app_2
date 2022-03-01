@@ -74,6 +74,9 @@
     <div class="back-btn">
       <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
     </div>
+    <div data-turbolinks="false">
+        <%= link_to "ユーザー情報", user_path(@user), class: "btn btn-light btn-outline-orange" %>
+      </div>
   </div>
 </div>
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
