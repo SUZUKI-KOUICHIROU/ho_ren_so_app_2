@@ -1,8 +1,10 @@
 class UserMailer < ApplicationMailer
-  def invitation(user, token)
+  def invitation(user, token, project_name, password)
     @user = user
-    @inviter = User.find(@user.invited_by)
+    @inviter = User.find(@user.invited_by).user_name
     @token = token
-    mail to: @user.email, subject: "#{@inviter.user_name}が01Booksに招待しています。"
+    @project_name = project_name
+    @password = password
+    mail to: @user.email, subject: "【ホウレンソウアプリ】プロジェクトへの招待のお知らせ"
   end
 end
