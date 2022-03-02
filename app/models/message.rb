@@ -16,7 +16,7 @@ class Message < ApplicationRecord
     joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user_id }).order(created_at: :desc).limit(5)
   end
 
-  def checkers
+  def checked_members
     buf = message_confirmers.where(message_confirmation_flag: true).select('message_confirmer_id')
     User.where(id: buf)
   end

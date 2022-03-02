@@ -1,4 +1,20 @@
-class Projects::ReportsController < BaseController
+class Projects::ReportsController < Projects::BaseProjectController
+
+  def index
+    set_project_and_members
+    @first_question = @project.questions.first
+    @report_label_name = @first_question.send(@first_question.form_table_type).label_name
+    @reports = @project.reports.where.not(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
+    @you_reports = @project.reports.where(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
+  end
+
+  def show
+    set_project_and_members
+    @report = Report.find(params[:id])
+    @user = User.find(@report.user_id)
+    @answers = @report.answers
+  end
+
   def new
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -15,7 +31,7 @@ class Projects::ReportsController < BaseController
     if @report.save
       flash[:seccess] = '報告を登録しました。'
     else
-      flash[:danger] = '報告を登録に失敗しました。'
+      flash[:danger] = '報告の登録に失敗しました。'
     end
     @report.save
     @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
@@ -58,24 +74,6 @@ class Projects::ReportsController < BaseController
     @report.update(remanded: false)
     flash[:seccess] = "報告を編集しました。"
     redirect_to user_project_path(@user, @project)
-  end
-
-  def index
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
-    @projects = @user.projects.all
-    @first_question = @project.questions.first
-    @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
-    @you_reports = @project.reports.where(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
-  end
-
-  def show
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = Report.find(params[:id])
-    @user = User.find(@report.user_id)
-    @answers = @report.answers
   end
 
   # 再提出を求める。

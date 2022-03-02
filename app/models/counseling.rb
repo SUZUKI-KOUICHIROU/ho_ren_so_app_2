@@ -18,7 +18,7 @@ class Counseling < ApplicationRecord
   end
 
   # 確認者を抽出
-  def checkers
+  def checked_members
     buf = counseling_confirmers.where(counseling_confirmation_flag: true).select('counseling_confirmer_id')
     User.where(id: buf)
   end
