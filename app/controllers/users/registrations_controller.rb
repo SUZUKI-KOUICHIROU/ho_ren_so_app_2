@@ -85,5 +85,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # ユーザー新規登録の際にパラメーターを追加(user_nameを追加)
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name])
   end
 end

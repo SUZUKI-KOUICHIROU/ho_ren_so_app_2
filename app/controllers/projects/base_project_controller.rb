@@ -30,13 +30,13 @@ class Projects::BaseProjectController < BaseController
     text_area.save
   end
 
-    # ユーザー、プロジェクト、送信先をインスタンス化
-    def set_project_and_members
-      @user = current_user
-      @project = Project.find(params[:project_id])
-      # @members = @project.users.all
-      @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
-    end
+  # ユーザー、プロジェクト、送信先を取得
+  def set_project_and_members
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    # @members = @project.users.all
+    @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
+  end
 
   private
 

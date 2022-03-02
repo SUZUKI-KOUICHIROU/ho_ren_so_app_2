@@ -51,10 +51,4 @@ class Projects::CounselingsController < Projects::BaseProjectController
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] })
   end
 
-  # # ユーザー、プロジェクト、送信先をインスタンス化
-  # def set_counseling_initialize
-  #   @user = current_user
-  #   @project = Project.find(params[:project_id])
-  #   @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
-  # end
 end
