@@ -31,7 +31,7 @@ class Projects::BaseProjectController < BaseController
   end
 
     # ユーザー、プロジェクト、送信先をインスタンス化
-    def set_project_members
+    def set_project_and_members
       @user = current_user
       @project = Project.find(params[:project_id])
       # @members = @project.users.all

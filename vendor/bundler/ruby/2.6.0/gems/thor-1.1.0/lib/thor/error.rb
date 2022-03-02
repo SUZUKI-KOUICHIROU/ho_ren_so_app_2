@@ -102,7 +102,7 @@ class Thor
   end
 
   if Correctable
-    DidYouMean::SPELL_CHECKERS.merge!(
+    DidYouMean::SPELL_checked_members.merge!(
       'Thor::UndefinedCommandError' => UndefinedCommandError::SpellChecker,
       'Thor::UnknownArgumentError' => UnknownArgumentError::SpellChecker
     )

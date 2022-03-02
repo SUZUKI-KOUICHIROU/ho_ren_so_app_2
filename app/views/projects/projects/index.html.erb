@@ -71,9 +71,13 @@
         <%= paginate @projects %>
       </div>
     <% end %>
-    <div class="back-btn">
+    <%
+=begin%>
+ <div class="back-btn">
       <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
-    </div>
+    </div> 
+<%
+=end%>
   </div>
 </div>
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
