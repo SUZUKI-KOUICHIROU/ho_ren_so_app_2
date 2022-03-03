@@ -15,22 +15,27 @@ class Users::InvitationsController < BaseController
   def create
     @project = Project.find(params[:project_id])
     if params[:invitee][:email].blank?
-      flash[:danger] = 'メールアドレスを入力してください。'
+      flash[:danger] = 'メールアドレスを入力してください。' 
       render 'new'
     else
-      require 'securerandom'
-      mypassword = SecureRandom.alphanumeric.downcase
-      # mypassword = Devise.friendly_token.first(10) # 半角小大英数記号生成
-      puts mypassword
-      @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id)
-      @user.save!
-      @join = Join.create(project_id: @project.id, user_id: @user.id)
-      #@user.create_invite_digest
-      #user.projects << project
-      @user.send_invite_email(@join.token, @project.project_name, mypassword)
-      flash[:info] = '招待メールを送信しました！'
-      redirect_to user_project_path(current_user, @project)
+      if User.exists?(email: params[:invitee][:email])  
+        @user = User.find_by(email: params[:invitee][:email])
+      else
+        require 'securerandom'
+        mypassword = SecureRandom.alphanumeric.downcase
+        # mypassword = Devise.friendly_token.first(10) # 半角小大英数記号生成
+        puts mypassword
+        debugger
+        @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id)
+        @user.save!
+      end
+        @join = Join.create(project_id: @project.id, user_id: @user.id)
+        #@user.create_invite_digest
+        #user.projects << project
+        @user.send_invite_email(@join.token, @project.project_name, mypassword)
+        flash[:info] = '招待メールを送信しました！'
     end
+    redirect_to user_project_path(current_user, @project)
   end
 
   def edit

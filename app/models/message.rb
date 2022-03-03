@@ -4,6 +4,7 @@ class Message < ApplicationRecord
   attr_accessor :send_to
 
   validates :message_detail, presence: true
+  validate :no_check_become_invalid
 
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
@@ -15,8 +16,15 @@ class Message < ApplicationRecord
     joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user_id }).order(created_at: :desc).limit(5)
   end
 
-  def checkers
+  def checked_members
     buf = message_confirmers.where(message_confirmation_flag: true).select('message_confirmer_id')
     User.where(id: buf)
+  end
+
+  # 送信相手を一名以上選択しているか。
+  def no_check_become_invalid
+    if self.send_to.nil?
+      errors.add "", "送信相手を選択してください。"
+    end
   end
 end

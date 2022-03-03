@@ -44,6 +44,12 @@ users.each do |user|
   user.projects << project
 end
 
+########## 報告済/未済管理用レコードを作成 ##########
+projects = Project.all
+projects.each do |project|
+  project.update_deadline(project.project_next_report_date)
+end
+
 ########## プロジェクトAに報告フォーマットを登録 ##########
 project = Project.find(1)
 position_val = 1

@@ -80,11 +80,21 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def invitations; end
 
   def join
-    # ログイン処理を入れる
+    user = User.find_by(email: params[:email])
     @join = Join.find_by(token: params[:token])
     @user = User.find(@join.user_id)
     @project = Project.find_by(id: @join.project_id)
     @project.users << @user
+    if @user.sign_in_count == 0
+      bypass_sign_in user
+      #redirect_to edit_user_registration_path(@user)
+      redirect_to user_projects_path(@user)
+    else
+      bypass_sign_in user
+      #redirect_to new_page_after_login_path(@user)
+      redirect_to user_projects_path(@user)
+    end
+    @project.join_new_member(@user.id)
     # フラッシュメッセージを入れる
     redirect_to root_path
   end
