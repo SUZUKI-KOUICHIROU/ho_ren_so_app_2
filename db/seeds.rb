@@ -30,12 +30,6 @@ Project.create!( project_name: 'プロジェクトB',
                  project_next_report_date: Date.current.since(7.days),
                  project_reported_flag: false )
 
-########## 報告済/未済管理用レコードを作成 ##########
-projects = Project.all
-projects.each do |project|
-  project.update_deadline(project.project_next_report_date)
-end
-
 ########## idが1~3のユーザーをプロジェクトAに参画 ##########
 users = User.where(id: [1, 2, 3, 4])
 project = Project.find(1)
@@ -208,3 +202,9 @@ text_area.build_question( position: position_val,
                           project_id: project.id )
 text_area.save
 position_val += 1
+
+########## 報告済/未済管理用レコードを作成 ##########
+projects = Project.all
+projects.each do |project|
+  project.update_deadline(project.project_next_report_date)
+end

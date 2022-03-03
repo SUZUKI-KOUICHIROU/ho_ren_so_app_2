@@ -7,16 +7,20 @@
   <% form_type_symbol = :date_field %>
 <% end %>
   <div id="form-<%= @form_number %>", draggable="false", class="form">
-    <div class ="dorack-area">ドラックエリア</div>
     <%= f.fields_for 'question_attributes[]', question do |fdof| %>
+      <div class ="dorack-area">
+        <div class ="dorack-area-before">項目<%= @form_number %></div>
+        <div class ="dorack-area-center"></div>
+        <div class ="dorack-area-after">
+          <div class="report-format-check-box">
+            <%= fdof.check_box :using_flag %>
+            <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
+          </div>
+        </div>
+      </div>
       <%= fdof.hidden_field :id %>
       <%= fdof.hidden_field :form_table_type %>
       <%= fdof.hidden_field :position, class: "position" %>
-      <div class="check-box">
-        <%= fdof.check_box :using_flag %>
-        <%= fdof.label :using_flag, "有効にする。" %>
-      </div>
-
       <%= fdof.fields_for form_type_symbol do |ftf| %>
         <%= ftf.hidden_field :id %>
         <div class="label-select-box">
