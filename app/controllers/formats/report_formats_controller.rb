@@ -28,8 +28,8 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム編集ページ表示アクション
   def edit
-    @user = Project.find(params[:project_id])
-    @project = Project.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @user = User.find(params[:user_id])
     @questions = @project.questions.order(:position)
     @form_number = 0
   end
