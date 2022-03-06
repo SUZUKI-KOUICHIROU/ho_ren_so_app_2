@@ -19,12 +19,15 @@
         <p class="card-text"><%= @project.project_report_frequency %>日に１回</p>
       <% end %>
       <div class="card-title">メンバー</div>
-      <p class="card-text">
-        <% @member.each do |member| %>
-          <span class="box-user-name"><%= member.user_name %></span>
-        <% end %>
-        <a href="#" class="card-link">Card link</a>#報告のため一時的に消しました。
-      </p>
+      <% if @member.empty? %>
+        <p class="card-text">現在のメンバーはリーダーのみです。</p>
+      <% else %>
+        <p class="card-text">
+          <% @member.each do |member| %>
+            <span class="box-user-name"><%= member.user_name %></span>
+          <% end %>
+        </p>
+      <% end %>
     </div>
   </div>
 </div>
@@ -64,9 +67,9 @@
     <br>
     <%= link_to "相談", new_user_project_counseling_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
     <br>
-    <%= link_to "新しいレポートフラグ作成テストボタン", user_project_new_period_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %> 
+    <%= link_to "新しいレポートフラグ作成テストボタン", user_project_new_period_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
     <br>
-    <%= link_to "リーダーに未報告者通知メール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %> 
+    <%= link_to "リーダーに未報告者通知メール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
     <br>
     <%#= link_to "メンバーにリマインドメール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
 
