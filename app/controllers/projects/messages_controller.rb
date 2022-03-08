@@ -10,19 +10,19 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def show
-    set_project_members
+    set_project_and_members
     @message = Message.find(params[:id])
-    @checkers = @message.checkers
+    @checked_members = @message.checked_members
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
   end
 
   def new
-    set_project_members
+    set_project_and_members
     @message = @project.messages.new
   end
 
   def create
-    set_project_members
+    set_project_and_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
     if @message.save
@@ -43,7 +43,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = Message.find(params[:id])
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
     @message_c.switch_read_flag
-    @checkers = @message.checkers
+    @checked_members = @message.checked_members
   end
 
   private

@@ -10,8 +10,8 @@
         <div>
           
           <%= f.label :sent_to, "送信対象", class:"font-weight-bold col-12" %>
-          <% if @member.present? %>
-            <%= f.collection_check_boxes :send_to, @member, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
+          <% if @members.present? %>
+            <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
           <% else %>
             <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
           <% end %>

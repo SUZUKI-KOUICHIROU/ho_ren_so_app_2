@@ -109,7 +109,7 @@ module Zip
       @ftype == type
     end
 
-    # Dynamic checkers
+    # Dynamic checked_members
     %w[directory file symlink].each do |k|
       define_method "#{k}?" do
         file_type_is?(k.to_sym)

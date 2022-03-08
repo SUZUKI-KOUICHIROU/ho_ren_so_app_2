@@ -106,7 +106,7 @@ module Spring
       require Spring.application_root_path.join("config", "environment")
 
       @original_cache_classes = Rails.application.config.cache_classes
-      Rails.application.config.cache_classes = false
+      Rails.application.config.cache_classes = true
 
       disconnect_database
 
