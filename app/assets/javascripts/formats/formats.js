@@ -245,8 +245,14 @@ $(document).on('turbolinks:load', function(){
   });
 
   // ドラッグアンドドロップに関する処理
+  // .formを全て取得しeach処理でドラック＆ドロップに関するイベントを設定
   document.querySelectorAll('.form').forEach (element => {
+    // dragstartは要素がドラッグされた時に発生するイベントで、このイベントに関数を代入
     element.ondragstart = function (event) {
+      // eventをレシーバーにdataTransfer.setData()メソッドを呼び出す。
+      // このメソッドはドラッグ操作の drag data に指定したデータと型を設定する。
+      // 今回はデータの方に'text/plain'、データにevent.target.idを指定している。
+      // これにより、.formのidの値をdrag objectに追加している。これは後の処理で取り出して使う。
       event.dataTransfer.setData('text/plain', event.target.id);
     };
 
@@ -263,15 +269,23 @@ $(document).on('turbolinks:load', function(){
       var position_num = 0
       event.preventDefault();
       let id = event.dataTransfer.getData('text');
-      console.log(id);
+      // console.log(id);
       let element_drag = document.getElementById(id);
-      console.log(element_drag);
-      console.log(this);
-      this.parentNode.insertBefore(element_drag, this);
+      // console.log(element_drag);
+      let element_drag_num = element_drag.querySelector("input[class='position']").value;
+      // console.log(element_drag_num);
+      // console.log(this);
+      let this_num = (this).querySelector("input[class='position']").value;
+      // console.log(this_num);
+      if (element_drag_num < this_num) {
+        this.parentNode.insertBefore(element_drag, this.nextSibling);
+      } else {
+        this.parentNode.insertBefore(element_drag, this);
+      }
       this.style.borderTop = '';
       document.querySelectorAll('.position').forEach (element => {
         position_num = ++position_num;
-        console.log(position_num)
+        // console.log(position_num)
         element.value = position_num;
       });
     };
@@ -285,23 +299,23 @@ $(document).on('turbolinks:load', function(){
       // eachで1つずつ取り出された要素はelementに入るよ
       // この要素にonmouseoverイベントを設定するよ
       element.onmouseover = function () {
-        console.log( "オンマウスオーバーイベントを感知しました(￣^￣)ゞ" )
+        // console.log( "オンマウスオーバーイベントを感知しました(￣^￣)ゞ" )
         // .formを全て取得してeach処理するよ
         document.querySelectorAll('.form').forEach (element => {
           // 取り出した要素のdraggable属性をtrueに変更するよ
           // これで.dorack-areaにマウスポインタが触れた時にドラック出来る様になるよ
           element.setAttribute( "draggable", "true");
-          console.log(element)
+          // console.log(element)
         });
       };
 
       // 今度は.dorack-areaからマウスポインタが離れた時.formをドラック出来ない様にするよ
       // 処理の流れは上記と同じだね
       element.onmouseout = function () {
-        console.log( "オンマウスアウトイベントを感知しました(￣^￣)ゞ" )
+        // console.log( "オンマウスアウトイベントを感知しました(￣^￣)ゞ" )
         document.querySelectorAll('.form').forEach (element => {
           element.setAttribute( "draggable", "false");
-          console.log(element)
+          // console.log(element)
         });
       };
     });

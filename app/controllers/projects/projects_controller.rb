@@ -51,7 +51,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find(params[:id])
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all
+    @member = @project.users.all.where.not(id: @project.project_leader_id)
     @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 

@@ -208,3 +208,9 @@ text_area.build_question( position: position_val,
                           project_id: project.id )
 text_area.save
 position_val += 1
+
+########## 報告済/未済管理用レコードを作成 ##########
+projects = Project.all
+projects.each do |project|
+  project.update_deadline(project.project_next_report_date)
+end
