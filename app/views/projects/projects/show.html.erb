@@ -30,14 +30,12 @@
       <% end %>
     </div>
   </div>
+  <%= link_to "削除", user_project_path(current_user, @project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
+  <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-outline-secondary", style: "margin: 10px;" %>
 </div>
 
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
 <div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
-
-<div>
-  <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
-</div>
 
 <!--
 

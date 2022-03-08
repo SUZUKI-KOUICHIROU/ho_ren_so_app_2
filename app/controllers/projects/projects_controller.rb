@@ -72,6 +72,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def destroy
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
+    debugger
     @project.destroy
     flash[:success] = "#{@project.project_name}を削除しました。"
     redirect_to user_projects_path(@user.id)

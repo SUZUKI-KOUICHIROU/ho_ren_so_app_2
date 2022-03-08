@@ -37,7 +37,7 @@ function changeForm() {
         <%= '回答なし' %>
       <% end %>
     <% when 'select' %>
-      <%= Select.find(answer.question_id).label_name %>
+      <%= Select.find_by(question_id: answer.question_id).label_name %>
     <% end %>
     </li>
     <%= answer.value != '' ? answer.value : '回答なし' %>
