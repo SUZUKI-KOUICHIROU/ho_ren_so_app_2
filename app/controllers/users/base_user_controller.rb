@@ -1,5 +1,5 @@
 class Users::BaseUserController < BaseController
-  before_action :correct_user
+  before_action :admin_or_correct_user
 
   private
 
@@ -11,7 +11,7 @@ class Users::BaseUserController < BaseController
 
   # 管理権限者、または現在ログイン済みユーザーを許可
   def admin_or_correct_user
-    @user = User.find(params[:user_id]) if @user.blank?
+    @user = User.find(params[:id]) if @user.blank?
     return if current_user?(@user) || current_user.admin?
 
     flash[:danger] = '権限がありません。'
