@@ -3,21 +3,21 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 // 報告フォーマット編集フォーム全体の表示位置
-.box-reprot-format-edit {
+.box-reprot-format-edit, .box-message-format-new {
   margin: 5rem auto 5rem;
   background-color: #d8d8d8;
   border-radius: 10px;
   width: 50%;
 }
 //ヘッダー部分のレイアウト
-.edit-report-format-header {
+.edit-report-format-header, .new-message-format-header {
   display: flex;
   font-weight: 700;
   padding: 2rem 2rem 1rem 2rem;
 }
 
 // ヘッダー内のプロジェクト名のレイアウト
-.project-name-box {
+.project-name-box, .message-title-box {
   margin-top: 0.5rem;
   height: 70%;
   padding: 0.5rem 1rem 0.5rem 1rem;

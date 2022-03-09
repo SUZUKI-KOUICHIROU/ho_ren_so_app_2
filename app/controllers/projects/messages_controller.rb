@@ -25,16 +25,34 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
-    if @message.save
-      @message.send_to.each do |t|
-        @send = @message.message_confirmers.new(message_confirmer_id: t)
-        @send.save
+    #コメントつける
+    if ActiveRecord::Type::Boolean.new.cast(params[:message][:send_to_all])
+      #TO ALLが選択されているとき
+      if @message.save
+        @members.each do |member|
+          @send = @message.message_confirmers.new(message_confirmer_id: member.id)
+          @send.save
+        end
+        flash[:success] = "連絡内容を送信しました。"
+        redirect_to user_project_path current_user, params[:project_id]
+      else
+        flash[:danger] = "送信相手を選択してください。"
+        render action: :new
       end
-      flash[:success] = "連絡内容を送信しました。"
-      redirect_to user_project_path current_user, params[:project_id]
     else
-      flash[:danger] = "送信相手を選択してください。"
-      render action: :new
+      #TO ALLが選択されていない時
+      #debugger
+      if @message.save
+        @message.send_to.each do |t|
+          @send = @message.message_confirmers.new(message_confirmer_id: t)
+          @send.save
+        end
+        flash[:success] = "連絡内容を送信しました。"
+        redirect_to user_project_path current_user, params[:project_id]
+      else
+        flash[:danger] = "送信相手を選択してください。"
+        render :new
+      end
     end
   end
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
@@ -49,7 +67,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   private
 
   def message_params
-    params.require(:message).permit(:message_detail, :title, { send_to: [] })
+    params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
   end
 
 end
