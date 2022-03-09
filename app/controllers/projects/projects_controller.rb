@@ -51,7 +51,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = Project.find(params[:id])
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all
+    @member = @project.users.all.where.not(id: @project.project_leader_id)
     @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
@@ -80,23 +80,21 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def invitations; end
 
   def join
-    user = User.find_by(email: params[:email])
     @join = Join.find_by(token: params[:token])
     @user = User.find(@join.user_id)
     @project = Project.find_by(id: @join.project_id)
     @project.users << @user
     if @user.sign_in_count == 0
-      bypass_sign_in user
-      #redirect_to edit_user_registration_path(@user)
-      redirect_to user_projects_path(@user)
+      @user.update(sign_in_count: 1)
+      bypass_sign_in @user
+      redirect_to edit_user_registration_path(@user)
+      #redirect_to user_projects_path(@user)
     else
-      bypass_sign_in user
+      bypass_sign_in @user
       #redirect_to new_page_after_login_path(@user)
       redirect_to user_projects_path(@user)
     end
     @project.join_new_member(@user.id)
-    # フラッシュメッセージを入れる
-    redirect_to root_path
   end
 
   def frequency_input_form_switching
