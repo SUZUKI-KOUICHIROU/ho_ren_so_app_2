@@ -1,32 +1,27 @@
-<% provide(:title, "#{@project.project_name}_報告") %>
+<% provide(:title, "#{@project.project_name}_連絡") %>
 <div>
   <div>
     <div>
+      <h1 class="text-center my-3">連絡を作成</h1>
       <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
-      <div class="col-8 container">
-        <h1>連絡を作成</h1>
-        <div>
-          <%= f.label :sent_to, "送信対象", class:"font-weight-bold col-12" %>
+      <div class="col-6 container offset-3 box-message-format-new pb-2 my-5">
+        <%= f.label :sent_to, "送信対象", class:"font-weight-bold message-title-box" %>
+        <div class="ml-3 mb-3 form col-11">
           <% if @members.present? %>
+            <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
             <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
           <% else %>
             <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
           <% end %>
         </div>
-
-        <div>
-          <%= f.label :title, "件名", class:"font-weight-bold col-12" %>
-          <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "form-control message-text mb-3", required: true %>
-        </div>
-
-        <div>
-          <%= f.label :message_detail, "連絡内容", class:"font-weight-bold col-12" %>
-          <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "form-control message-area mb-3",rows: "10", required: true %>
-        </div>
+          <%= f.label :title, "件名", class:"font-weight-bold message-title-box" %>
+          <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "col-11 form-control message-text mb-3", required: true %>
+          <%= f.label :message_detail, "連絡内容", class:"font-weight-bold message-title-box" %>
+          <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control message-area mb-3",rows: "6", required: true %>
+      
       </div>
-      <p></p>
       <div class="center">
-        <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %>
+        <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-secondary col-2" %>
         <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>
       </div>
     <% end %>
