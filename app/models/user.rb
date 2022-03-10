@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
 
-  validates :user_name, presence: true, length: { maximum: 50 }
+  validates :user_name, presence: true, length: { maximum: 20 }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email, presence: true, length: { maximum: 100 },
@@ -33,11 +33,11 @@ class User < ApplicationRecord
 
   # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
   VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
-  validates :password, presence: true, length: { maximum: 50, minimum: 6 },
+  validates :password, presence: true, length: { maximum: 30, minimum: 8 },
                       format: { with: VALID_PASSWORD_REGEX,
                       message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
                       allow_blank: true
-  validates :password_confirmation, presence: true, length: { maximum: 50, minimum: 6 },
+  validates :password_confirmation, presence: true, length: { maximum: 30, minimum: 8 },
                                     format: { with: VALID_PASSWORD_REGEX,
                                               message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
                                     allow_blank: true

@@ -62,7 +62,7 @@ class Users::SessionsController < Devise::SessionsController
   # end
   protected
 
-  # ログイン後のリダイレクト先をユーザー詳細ページに変更
+  # ユーザー新規登録後のリダイレクト先を参加しているプロジェクト一覧ページに変更
   def after_sign_in_path_for(resource)
     user_projects_path(resource)
   end

@@ -72,9 +72,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
   protected
 
-  # ユーザー新規登録後のリダイレクト先をユーザー詳細ページに変更
+  # ユーザー新規登録後のリダイレクト先を参加しているプロジェクト一覧ページに変更
   def after_sign_up_path_for(resource)
-    user_path(resource)
+    user_projects_path(resource)
   end
 
   # ユーザー編集後のリダイレクト先をユーザー詳細ページに変更
