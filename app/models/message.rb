@@ -1,7 +1,9 @@
 class Message < ApplicationRecord
   belongs_to :project
   has_many :message_confirmers, dependent: :destroy
+
   attr_accessor :send_to
+  attribute :send_to_all#, default: false
 
   validates :message_detail, presence: true
   validate :no_check_become_invalid
@@ -21,10 +23,13 @@ class Message < ApplicationRecord
     User.where(id: buf)
   end
 
+  # 送信相手にTO ALLを選択していない場合
   # 送信相手を一名以上選択しているか。
   def no_check_become_invalid
-    if self.send_to.nil?
-      errors.add "", "送信相手を選択してください。"
+    unless send_to_all
+      if send_to.nil?
+        errors.add "", "送信相手を選択してください。"
+      end
     end
   end
 end

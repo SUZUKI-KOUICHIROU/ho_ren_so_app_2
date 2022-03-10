@@ -3,10 +3,8 @@
   <head>
     <title><%= full_title(yield(:title)) %></title>
     <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'application', media: 'all',
-                               'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application',
-                               'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag'application', media: 'all','data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application','data-turbolinks-track': 'reload' %>
     <%= render 'layouts/shim' %>
   </head>
   <%= render 'layouts/header' %>
@@ -18,9 +16,10 @@
         <% end %>
         <div class="container col-10">
           <%= yield %>
+          <div class="col-12 offset-3"><%= debug(params) if Rails.env.development? %></div>
         </div>
       </div>
     </div>
-    <%= debug(params) if Rails.env.development? %>
+    
   </body>
 </html>

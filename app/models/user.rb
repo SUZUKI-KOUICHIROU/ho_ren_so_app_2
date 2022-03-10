@@ -8,7 +8,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
 
   #招待メールを送信する
-  def send_invite_email(token,project_name, password)
+  def send_invite_email(token, project_name, password)
     UserMailer.invitation(self, token, project_name, password).deliver_now
   end
 
