@@ -57,6 +57,8 @@ Rails.application.routes.draw do
   scope module: :projects do
     get 'input_forms/frequency_input_form_switching', to: 'projects#frequency_input_form_switching', as: :frequency_input_form_switching
     get 'report_forms/report_form_switching', to: 'reports#report_form_switching', as: :report_form_switching
+    get 'users/:user_id/projects/:project_id/index', to: 'members#index', as: :project_member_index
+    delete 'users/:user_id/project/:project_id/member_destroy', to: 'members#destroy', as: :project_member_destroy
   end
 
   get 'index/index_switching', to: 'base#index_switching', as: :index_switching
@@ -65,7 +67,7 @@ Rails.application.routes.draw do
     get 'users/:user_id/projects/:project_id/invitations/new', to: 'invitations#new', as: :new_invitation
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
-  
+
   #letter_openerを追加
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

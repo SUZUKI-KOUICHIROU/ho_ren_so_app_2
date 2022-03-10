@@ -256,8 +256,11 @@ $(document).on('turbolinks:load', function(){
       event.dataTransfer.setData('text/plain', event.target.id);
     };
 
+    // ondragoverイベントとは、ドラッグ状態のマウスのポインタ（カーソル）が、ドロップ可能な要素上に重なってる時のイベントを設定する。
     element.ondragover = function (event) {
+      // 「event.preventDefault()は、そのイベントのデフォルト処理をキャンセルするメソッドです。ondragoverイベントのデフォルト処理をキャンセルしないと、// ondropイベントが送出されない為に必須。
       event.preventDefault();
+      // thisで重なった要素を取得し、style.borderTop = '3px solid'で要素の枠上の線を少し太くしている。
       this.style.borderTop = '3px solid';
     };
 
