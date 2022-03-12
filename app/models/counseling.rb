@@ -1,7 +1,9 @@
 class Counseling < ApplicationRecord
   belongs_to :project
   has_many :counseling_confirmers, dependent: :destroy
+
   attr_accessor :send_to
+  attribute :send_to_all
 
   validates :counseling_detail, presence: true
   # validates :counseling_reply_flag, inclusion: [true, false]
@@ -25,8 +27,10 @@ class Counseling < ApplicationRecord
 
   # 送信相手を一名以上選択しているか。
   def no_check_become_invalid
-    if self.send_to.nil?
-      errors.add "", "送信相手を選択してください。"
+    unless send_to_all
+      if send_to.nil?
+        errors.add "", "送信相手を選択してください。"
+      end
     end
   end
 end
