@@ -1,40 +1,23 @@
-<% provide(:title, "#{@project.project_name}_報告") %>
-
-<div>
-  <div>
-    <div>
-      
-      <%= form_with(model: @counseling, url: user_project_counselings_path(current_user,@project), local: true, method: :post) do |f| %>
-      <div class="col-8 container">
-        <h1>相談を作成</h1>
-        <div>
-          
-          <%= f.label :sent_to, "送信対象", class:"font-weight-bold col-12" %>
-          <% if @members.present? %>
-            <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
-          <% else %>
-            <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
-          <% end %>
-        
-        </div>
-
-        <div>
-          <%= f.label :title, "概要", class:"font-weight-bold col-12" %>
-          <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "form-control counseling-text mb-3", required: true %>
-        </div>
-
-        <div>
-          <%= f.label :counseling_detail, "相談内容", class:"font-weight-bold col-12" %>
-          <%= f.text_area :counseling_detail, min: 1, placeholder: "最大500文字", class: "form-control counseling-area mb-3",rows: "10", required: true %>
-        </div>
-      </div>
-      <p></p>
-      <div class="center">
-        <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %>
-        <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>
-      </div>
-    <% end %>
-
+<% provide(:title, "#{@project.project_name}_相談") %>
+<%= form_with(model: @counseling, url: user_project_counselings_path(current_user,@project), local: true, method: :post) do |f| %>
+  <h1 class="text-center my-3">相談を作成</h1>
+  <div class="col-6 container offset-3 box-counseling-format-new pb-2 my-5">
+    <%= f.label :sent_to, "送信対象", class:"font-weight-bold counseling-title-box" %>
+    <div class="ml-3 mb-3 form col-11">
+      <% if @members.present? %>
+        <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
+        <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
+      <% else %>
+        <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
+      <% end %>
+    </div>
+      <%= f.label :title, "件名", class:"font-weight-bold counseling-title-box" %>
+      <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "col-11 form-control counseling-text mb-3", required: true %>
+      <%= f.label :counseling_detail, "相談内容", class:"font-weight-bold counseling-title-box" %>
+      <%= f.text_area :counseling_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control counseling-area mb-3",rows: "10", required: true %>
   </div>
-  </div>
-</div>
+  <div class="center">
+    <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-secondary col-2" %>
+    <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>
+  </div>  
+<% end %>
