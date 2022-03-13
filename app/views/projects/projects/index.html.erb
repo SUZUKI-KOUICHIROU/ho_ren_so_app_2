@@ -23,18 +23,30 @@
       お知らせ
     </div>
   </div>
+
   <div class="table-body">
     <% if @projects.present? %>
       <% line_num = 0%>
       <% @projects.each do |project|%>
         <% line_num += 1%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+
+          <%# === プロジェクト名 === %>
           <div class="project-name">
             <%= link_to "#{project.project_name}", user_project_path(@user, project.id), class: "project-detail-link" %>
           </div>
+
+          <%# === 次回報告日 === %>
           <div class="project-next-report-date">
             <%= l(project.project_next_report_date, format: :long) %>
+            <% if @report_statuses.find_by(project_id: project.id).has_submitted %>
+              <span class="label_report-submitted">報告済み</span>
+            <% else %>
+              <span class="label_report-not-submitted">未報告</span>
+            <% end %>
           </div>
+          
+          <%# === お知らせ === %>
           <div class="project-news">
             <% remanded_reports = project.reports.where(user_id: @user.id, remanded: true) %>
             <% if remanded_reports.count > 0 %>

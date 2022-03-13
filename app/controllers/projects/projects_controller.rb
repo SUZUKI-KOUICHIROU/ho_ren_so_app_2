@@ -4,6 +4,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
+    @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
     @projects =
       if params[:search].present?
         @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
