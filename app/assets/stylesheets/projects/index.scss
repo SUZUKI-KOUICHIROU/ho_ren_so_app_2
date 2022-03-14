@@ -110,3 +110,17 @@ margin-bottom: 0;
   border-bottom: none;
 }
 //border: thin solid;
+
+.label_report-submitted {
+  background:blue ; /*背景色*/
+  padding: 2px;/*文字周りの余白*/
+  color: white;/*文字を白に*/
+  border-radius: 0.5em;/*角の丸み*/
+}
+
+.label_report-not-submitted {
+  background:orangered; /*背景色*/
+  padding: 2px;/*文字周りの余白*/
+  color: white;/*文字を白に*/
+  border-radius: 0.5em;/*角の丸み*/
+}
