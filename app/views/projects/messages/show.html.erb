@@ -5,7 +5,7 @@
     </div>
     <div class="container p-4 card-body">
       <h3 class="font-weight-bold message-title-box m-3 d-inline">内容</h3>
-      <textarea class= "col-11 message-area m-3" disabled="disabled"><%= @message.message_detail %></textarea>
+      <div class="card-text"><%= simple_format(@message.message_detail) %></div>
       <div id="read_button">
         <%= render partial: 'read' %>
       </div>  
