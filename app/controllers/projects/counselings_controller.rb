@@ -23,16 +23,33 @@ class Projects::CounselingsController < Projects::BaseProjectController
     set_project_and_members
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
-    if @counseling.save
-      @counseling.send_to.each do |t|
-        @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
-        @send.save
+    #ActiveRecord::Type::Boolean：値の型をboolean型に変更
+    if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
+      #TO ALLが選択されている時
+      if @counseling.save
+        @members.each do |member|
+          @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
+          @send.save
+        end
+        flash[:success] = "相談内容を送信しました。"
+        redirect_to user_project_path current_user, params[:project_id]
+      else
+        flash[:danger] = "送信相手を選択してください。"
+        render action: :new
       end
-      flash[:success] = "相談内容を送信しました。"
-      redirect_to user_project_path current_user, params[:project_id]
     else
-      flash[:danger] = "送信相手を選択してください。"
-      render action: :new
+      #TO ALLが選択されていない時
+      if @counseling.save
+        @counseling.send_to.each do |t|
+          @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
+          @send.save
+        end
+        flash[:success] = "相談内容を送信しました。"
+        redirect_to user_project_path current_user, params[:project_id]
+      else
+        flash[:danger] = "送信相手を選択してください。"
+        render action: :new
+      end
     end
   end
 
@@ -48,7 +65,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   private
 
   def counseling_params
-    params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] })
+    params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
   end
 
 end
