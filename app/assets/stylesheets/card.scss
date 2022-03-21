@@ -38,11 +38,11 @@
 }
 
 .card-body {
-  p {
+  .card-text {
     padding: 20px;
     background-color: #f1f1f1;
     border: 2px solid rgba(0, 0, 0, 0.125);
-    margin-bottom: 1rem;
+    margin: 1rem;
   }
 }
 
