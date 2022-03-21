@@ -10,6 +10,7 @@ class Project < ApplicationRecord
   has_many :joins
   has_many :tokens, through: :joins
   has_many :report_statuses, dependent: :destroy
+  has_many :delegations
 
   validates :project_name, presence: true, length: { maximum: 20 }
   validates :project_leader_id, presence: true
@@ -24,9 +25,9 @@ class Project < ApplicationRecord
       exit
     end
 
-    # self.report_statuses.where(is_newest: true).update_all(is_newest: false) # "最新である"フラグをfalseに
+    self.report_statuses.where(is_newest: true).update_all(is_newest: false) # "最新である"フラグをfalseに
     self.users.all.each do |user|
-      unless self.report_statuses.exists?(user_id: user.id, deadline: next_deadline)
+      unless self.report_statuses.exists?(user_id: user.id, deadline: next_deadline, is_newest: true)
         self.report_statuses.create(user_id: user.id, deadline: next_deadline)
       end
     end
@@ -39,5 +40,10 @@ class Project < ApplicationRecord
 
   def join_new_member(user_id)
     self.report_statuses.create(user_id: user_id, deadline: self.project_next_report_date)
+  end
+
+  def delegate_leader(from_user_id, to_member_id)
+    self.delegations.where(is_valid: true).update_all(is_valid: false) # "最新である"フラグをfalseに
+    self.delegations.create(user_from: from_user_id, user_to: to_member_id)
   end
 end

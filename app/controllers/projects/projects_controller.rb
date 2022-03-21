@@ -50,6 +50,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def show
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
+    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
     @member = @project.users.all.where.not(id: @project.project_leader_id)
@@ -116,6 +117,11 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
+  def delegate_leader
+    user = User.find(params[:user_id])
+    project = user.projects.find(params[:project_id])
+    
+  end
   # def index_switching
   # end
 
