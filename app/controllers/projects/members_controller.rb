@@ -30,7 +30,6 @@ class Projects::MembersController < Projects::BaseProjectController
     user = User.find(params[:user_id])
     project = Project.find(params[:project_id])
     next_leader = User.find(params[:to])
-    # debugger
     project.delegate_leader(user.id, next_leader.id)
     # project.delegations.create(user_from: user.id, user_to: next_leader.id)
     flash[:success] = "#{next_leader.user_name}さんに権限譲渡のリクエストを送信しました。"

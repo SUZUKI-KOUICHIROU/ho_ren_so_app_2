@@ -61,6 +61,8 @@ Rails.application.routes.draw do
     delete 'users/:user_id/project/:project_id/member_destroy', to: 'members#destroy', as: :project_member_destroy
     post 'users/:user_id/project/:project_id/delegate_leader/:to', to: 'members#delegate', as: :delegate_leader
     post 'users/:user_id/project/:project_id/cancel_delegate/:delegate_id', to: 'members#cancel_delegate', as: :cancel_delegate
+    post 'users/:user_id/project/:project_id/accept/:delegate_id', to: 'projects#accept_request', as: :accept_request
+    post 'users/:user_id/project/:project_id/disown/:delegate_id', to: 'projects#disown_request', as: :disown_request
   end
 
   get 'index/index_switching', to: 'base#index_switching', as: :index_switching

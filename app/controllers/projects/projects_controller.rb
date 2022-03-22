@@ -122,8 +122,25 @@ class Projects::ProjectsController < Projects::BaseProjectController
     project = user.projects.find(params[:project_id])
     
   end
-  # def index_switching
-  # end
+
+  def accept_request
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @delegate = @project.delegations.find(params[:delegate_id])
+    @project.update(project_leader_id: params[:user_id])
+    @delegate.update(is_valid: false)
+    flash[:success] = "あなたがリーダーになりました。"
+    redirect_to user_project_path(@user, @project)
+  end
+
+  def disown_request
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @delegate = @project.delegations.find(params[:delegate_id])
+    @delegate.update(is_valid: false)
+    flash[:success] = "リーダー交代リクエストを辞退しました。"
+    redirect_to user_project_path(@user, @project)
+  end
 
   private
 
