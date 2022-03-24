@@ -50,6 +50,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def show
     @user = User.find(params[:user_id])
     @project = Project.find(params[:id])
+    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
     @member = @project.users.all.where.not(id: @project.project_leader_id)
@@ -116,8 +117,30 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
-  # def index_switching
-  # end
+  def delegate_leader
+    user = User.find(params[:user_id])
+    project = user.projects.find(params[:project_id])
+    
+  end
+
+  def accept_request
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @delegate = @project.delegations.find(params[:delegate_id])
+    @project.update(project_leader_id: params[:user_id])
+    @delegate.update(is_valid: false)
+    flash[:success] = "あなたがリーダーになりました。"
+    redirect_to user_project_path(@user, @project)
+  end
+
+  def disown_request
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @delegate = @project.delegations.find(params[:delegate_id])
+    @delegate.update(is_valid: false)
+    flash[:success] = "リーダー交代リクエストを辞退しました。"
+    redirect_to user_project_path(@user, @project)
+  end
 
   private
 

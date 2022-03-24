@@ -6,7 +6,6 @@ class CounselingConfirmer < ApplicationRecord
 
   # 確認した/しないを切り替える　そのうちメソッド名を変更したい
   def switch_read_flag
-    self.counseling_confirmation_flag = counseling_confirmation_flag ? false : true
-    save
+    self.update(counseling_confirmation_flag: !counseling_confirmation_flag)
   end
 end

@@ -6,7 +6,6 @@ class MessageConfirmer < ApplicationRecord
 
   # 確認した/しないを切り替える　そのうちメソッド名を変更したい
   def switch_read_flag
-    self.message_confirmation_flag = message_confirmation_flag ? false : true
-    save
+    self.update(message_confirmation_flag: !message_confirmation_flag)
   end
 end
