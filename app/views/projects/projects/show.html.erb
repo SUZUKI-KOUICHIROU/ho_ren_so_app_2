@@ -3,15 +3,28 @@
 <%= content_for :side_menu do %>
   <%= render 'project_show_sidebar' %>
 <% end %>
-
 <div class="card-box">
   <div class="card">
     <div class="card-header card-header-radius"><%= @project.project_name %></div>
     <div class="card-body">
+      <%# リーダー交代リクエストが来ている場合にメッセージを表示 %>
+      <% if @delegate.present? %>
+        <div class="card-title" style="color: red;">重要なお知らせ</div>
+        <div class="card-text">
+          <p>
+            リーダー交代のリクエストが来ています。
+            <%= link_to "受認", accept_request_path(@user, @project, @delegate), method: :post %>
+            <%= link_to "辞退", disown_request_path(@user, @project, @delegate), method: :post %>
+          </p>
+        </div>
+      <% end %>
+      
       <div class="card-title">概要</div>
       <p class="card-text"><%= @project.description %></p>
+    
       <div class="card-title">リーダー</div>
       <p class="card-text"><%= User.find(@project.project_leader_id).user_name %></p>
+    
       <div class="card-title">報告頻度</div>
       <% if @project.project_report_frequency == 7 %>
         <p class="card-text">毎週<%= ApplicationHelper.weeks[@project.project_next_report_date.wday] %>曜日</p>
@@ -41,53 +54,3 @@
 
 <hr color="#eeeeee">
 </pre>
-
-<div >
-=======
-<%
-=begin%>
-
-<div>
-  <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-light btn-outline-dark", style: "margin: 10px;" %>
-  <h1><%= "■#{@project.project_name}■"%></h1>
-</div>
-
-<hr color="#eeeeee">
-</pre>
-
-<div style="display:flex">
->>>>>>> 95c038f40b8b6dace29bacf427a86d7f200cfc55
-  <div style="padding: 20px; border-right: solid; width: 20%;">
-
-    <%= link_to "報告", new_user_project_report_path(@user, @project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "連絡", new_user_project_message_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "相談", new_user_project_counseling_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "新しいレポートフラグ作成テストボタン", user_project_new_period_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-    <br>
-    <%= link_to "リーダーに未報告者通知メール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-    <br>
-    <%#= link_to "メンバーにリマインドメール送るテスト", user_project_notice_not_submitted_members_path(@user, @project), class: "btn btn-success", style: "margin: 10px;" %>
-
-  <div style="margin: 10px;">
-
-    <% if @remanded_reports.count > 0 %>
-      <div class="block_contents">
-        <p><%= "▼報告内容の手直し依頼が来ています。▼" %></p>
-        <% @remanded_reports.each do |report| %>
-          <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, @project, report) %>
-          <span><%= report.remanded_reason %></span></p>
-        <% end %>
-      </div>
-    <% end %>
-
-<%= link_to "招待する", new_invitation_path(@user, @project), class: "btn btn-secondary", style: "margin: 10px;" %>
-<%#= link_to "報告フォーマットを編集する", edit_project_report_format_path(@project), class: "btn btn-primary button-p10", style: "margin: 10px;" %>
-</div>
-<%
-=end%>
->>>>>>> 95c038f40b8b6dace29bacf427a86d7f200cfc55
-=======
->>>>>>> 06700f5e511dfdc5941c476e164e89d3edac3d70
