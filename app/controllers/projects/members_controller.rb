@@ -1,5 +1,5 @@
 class Projects::MembersController < Projects::BaseProjectController
-  before_action :project_reader_user, only: %i[index]
+  # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトに参加しているメンバー一覧ページ表示アクション
   def index

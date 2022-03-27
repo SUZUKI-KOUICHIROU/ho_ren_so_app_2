@@ -1,5 +1,5 @@
 class Projects::BaseProjectController < BaseController
-  # before_action :project_reader_user
+  # before_action :project_leader_user
 
   # デフォルト報告フォーマット作成アクション(projects/projects#create内で呼ばれる)
   def report_format_creation(project)
@@ -44,16 +44,21 @@ class Projects::BaseProjectController < BaseController
     @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
   end
 
+  def project_authorization
+    @user = current_user
+    @project = Project.find(params[:id])
+    unless @project.project_users.exists?(user_id: @user)
+      redirect_to user_projects_path(@user)
+    end
+  end
+  
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-  # プロジェクトリーダーを許可
-  def project_reader_user
-    id = params[:project_id].nil? ? params[:id] : params[:project_id]
-    @project = Project.find(id)
+  # # プロジェクトリーダーを許可
+  def project_leader_user
     return if current_user.id == @project.project_leader_id
-
     flash[:danger] = 'リーダーではない為、権限がありません。'
-    redirect_to user_project_path(params[:id])
+    redirect_to user_project_path(@user, @project)
   end
 end

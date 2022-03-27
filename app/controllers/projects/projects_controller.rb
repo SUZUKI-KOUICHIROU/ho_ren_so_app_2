@@ -1,6 +1,7 @@
 class Projects::ProjectsController < Projects::BaseProjectController
-  before_action :project_reader_user, only: %i[edit update destroy]
-
+  before_action :project_authorization, only: %i[show edit update destroy delegate_leader accept_request disown_request]
+  before_action :project_leader_user, only: %i[edit update destroy]
+  
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
@@ -15,28 +16,28 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト新規登録アクション
   def create
-    @user = User.find(params[:user_id])
+    @user = current_user
     if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
+      @project.update_deadline(@project.project_next_report_date)
+      report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
       flash[:success] = 'プロジェクトを新規登録しました。'
+      redirect_to user_project_path(@user, @project)
     else
-      'プロジェクト新規登録に失敗しました。'
+      flash[:danger] = 'プロジェクト新規登録に失敗しました。'
+      redirect_to user_projects_path(@user)
     end
-    @project.update_deadline(@project.project_next_report_date)
-    redirect_to user_projects_path(@user.id)
-    report_format_creation(@project) # デフォルト報告フォーマット作成アクション呼び出し
+    
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
   def new
-    @user = User.find(params[:user_id])
+    @user = current_user
     @project = @user.projects.new
   end
 
   # プロジェクト編集用モーダルウインドウ表示アクション
   def edit
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:id])
     if @project.project_report_frequency == 7
       @report_frequency_type = 'week'
       project_next_report_date_wday = @project.project_next_report_date.wday
@@ -48,8 +49,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト詳細ページ表示アクション
   def show
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:id])
     @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
@@ -59,21 +58,16 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト内容編集アクション
   def update
-    user = User.find(params[:user_id])
-    @project = Project.find(params[:id])
-    @projects = Project.all
     if @project.update(project_params)
       flash[:success] = "#{@project.project_name}の内容を更新しました。"
     else
       flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
     end
-    redirect_to user_projects_path(user)
+    redirect_to user_project_path(@user, @project)
   end
 
   # プロジェクト削除アクション
   def destroy
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:id])
     if @project.destroy
       flash[:success] = "#{@project.project_name}を削除しました。"
     else
@@ -93,10 +87,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
       @user.update(sign_in_count: 1)
       bypass_sign_in @user
       redirect_to edit_user_registration_path(@user)
-      #redirect_to user_projects_path(@user)
     else
       bypass_sign_in @user
-      #redirect_to new_page_after_login_path(@user)
       redirect_to user_projects_path(@user)
     end
     @project.join_new_member(@user.id)
@@ -117,15 +109,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
-  def delegate_leader
-    user = User.find(params[:user_id])
-    project = user.projects.find(params[:project_id])
-    
-  end
-
   def accept_request
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @delegate = @project.delegations.find(params[:delegate_id])
     @project.update(project_leader_id: params[:user_id])
     @delegate.update(is_valid: false)
@@ -134,8 +118,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   end
 
   def disown_request
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @delegate = @project.delegations.find(params[:delegate_id])
     @delegate.update(is_valid: false)
     flash[:success] = "リーダー交代リクエストを辞退しました。"
@@ -146,15 +128,5 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   def project_params
     params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date, :description)
-  end
-
-  # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-  # プロジェクトリーダーを許可
-  def project_reader_user
-    @project = Project.find(params[:id])
-    return if current_user.id == @project.project_leader_id
-
-    flash[:danger] = 'リーダーではない為、権限がありません。'
-    redirect_to users_user_projects_path(params[:id])
   end
 end
