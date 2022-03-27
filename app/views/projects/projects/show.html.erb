@@ -33,7 +33,7 @@
       <% end %>
       <div class="card-title">メンバー</div>
       <% if @member.empty? %>
-        <p class="card-text">現在のメンバーはリーダーのみです。</p>
+        <p class="card-text">メンバーはいません。</p>
       <% else %>
         <p class="card-text">
           <% @member.each do |member| %>
@@ -43,8 +43,10 @@
       <% end %>
     </div>
   </div>
-  <%= link_to "削除", user_project_path(current_user, @project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
-  <%= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-outline-secondary", style: "margin: 10px;" %>
+  <% if project_leader? %>
+    <%= link_to "削除", user_project_path(current_user, @project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
+  <% end %>
+  <%#= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-outline-secondary", style: "margin: 10px;" %>
 </div>
 
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
