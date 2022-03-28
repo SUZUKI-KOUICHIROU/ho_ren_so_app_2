@@ -53,7 +53,6 @@
               </div>
               <div class="table-body">
                 <% line_num = 0%>
-                <%# debugger %>
                 <% @you_reports.each do |report|%>
                   <% line_num += 1%>
                   <% subject = report.answers.find_by(question_id: @first_question.id).value %>
@@ -95,7 +94,6 @@
         <!-- 他メンバーの報告一覧 -->
         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
           <div class="box-report-index">
-          <%# debugger %>
             <% if @reports.present? %>
               <div class="box-search">
                 <%= form_with url: "#", method: :get, local: true do |form| %>

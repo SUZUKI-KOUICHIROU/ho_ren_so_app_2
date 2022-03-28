@@ -6,13 +6,11 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
     @you_reports = @project.reports.where(sender_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
-    # debugger
   end
 
   def show
     set_project_and_members
     @report = Report.find(params[:id])
-    # @user = User.find(@report.user_id)
     @answers = @report.answers
   end
 
