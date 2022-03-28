@@ -1,13 +1,21 @@
-<p>■件名■</p>
-<%= @counseling.title %>
-<p>■内容■</p>
-<%= @counseling.counseling_detail %>
-<br>
-<div id="read_button">
-  <%= render partial: 'read' %>
-</div>
 
-<div id="checked_members">
-  <%= render partial: 'checker' %>
+<div class="col-6 offset-3 p-4">
+  <div class="card">
+    <div class="card-header card-header-radius">
+      <%= @counseling.title %>
+    </div>
+    <div class="container p-4 card-body">
+      <h3 class="font-weight-bold counseling-title-box m-3 d-inline">内容</h3>
+      <div class="card-text"><%= simple_format(@counseling.counseling_detail) %></div>
+      <div id="read_button">
+        <%= render partial: 'read' %>
+      </div>  
+      <div id="checked_members">
+        <%= render partial: 'checker' %>
+      </div>  
+    </div>
+  </div>
 </div>
-<p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_messages_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %></p>
+<div class="text-center">
+  <%= link_to '戻る', user_project_messages_path(@user,@project),class: "btn btn-light btn-outline-secontary col-2 " %>
+</div>
