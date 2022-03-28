@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
-  has_many :report_statuses
+  has_many :report_statuses, dependent: :destroy
 
   has_many :reports, dependent: :nullify
   has_many :pdca, dependent: :nullify

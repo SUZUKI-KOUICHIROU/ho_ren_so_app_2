@@ -53,7 +53,8 @@ class Projects::BaseProjectController < BaseController
     @project = Project.find(id)
     return if current_user.id == @project.project_leader_id
 
+    #debugger
     flash[:danger] = 'リーダーではない為、権限がありません。'
-    redirect_to user_project_path(params[:id])
+    redirect_to user_project_path(current_user.id, @project.id)
   end
 end

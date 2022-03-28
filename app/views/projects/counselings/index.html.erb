@@ -63,7 +63,7 @@
                       <%= l(counseling.updated_at, format: :long) %>
                     </div>
                     <div class="counseling-person">
-                      <%= User.find(counseling.sender_id).user_name %>
+                        <%= counseling.sender_name %>
                     </div>
                     <!-- div class="counseling-action">
                         <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
@@ -125,7 +125,7 @@
                       <%= l(counseling.updated_at, format: :long) %>
                     </div>
                     <div class="counseling-person">
-                      <%= User.find(counseling.sender_id).user_name %>
+                        <%= counseling.sender_name %>
                     </div>
                     <div class="counseling-action">
                       <% if counseling.sender_id == current_user.id %>
