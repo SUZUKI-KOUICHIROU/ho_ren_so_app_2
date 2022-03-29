@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_15_130724) do
+ActiveRecord::Schema.define(version: 2022_03_27_145329) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_130724) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sender_name"
     t.index ["project_id"], name: "index_counselings_on_project_id"
   end
 
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_130724) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sender_name"
     t.index ["project_id"], name: "index_messages_on_project_id"
   end
 
@@ -191,6 +193,8 @@ ActiveRecord::Schema.define(version: 2022_03_15_130724) do
     t.string "remanded_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sender_id"
+    t.string "sender_name"
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end

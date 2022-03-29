@@ -25,6 +25,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
+    @message.sender_name = current_user.user_name
     #ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:message][:send_to_all])
       #TO ALLが選択されているとき

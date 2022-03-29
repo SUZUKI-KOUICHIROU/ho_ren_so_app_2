@@ -1,5 +1,4 @@
 <% provide(:title, 'report index') %>
-
 <%= content_for :side_menu do %>
   <%= render 'layouts/sidebar' %>
 <% end %>
@@ -12,6 +11,7 @@
       {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "report"}}) %>
     <%# end %>
   </div -->
+  
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -120,6 +120,7 @@
               <div class="table-body">
                 <% line_num = 0%>
                 <% @reports.each do |report|%>
+                
                   <% line_num += 1%>
                   <% subject = report.answers.find_by(question_id: @first_question.id).value %>
                   <% if subject.blank? %>
@@ -133,7 +134,7 @@
                       <%= l(report.updated_at, format: :long) %>
                     </div>
                     <div class="report-person">
-                      <%= User.find(report.user_id).user_name %>
+                      <%= report.sender_name %>
                     </div>
                     <div class="report-action">
                       <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>

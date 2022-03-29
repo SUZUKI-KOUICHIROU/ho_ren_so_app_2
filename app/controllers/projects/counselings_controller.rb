@@ -23,6 +23,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     set_project_and_members
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
+    @counseling.sender_name = current_user.user_name
     #ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
       #TO ALLが選択されている時
