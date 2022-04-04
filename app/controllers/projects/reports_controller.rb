@@ -46,6 +46,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = Report.find(params[:id])
     @user = User.find(@report.user_id)
     @answers = @report.answers
+    # debugger
   end
 
   def update
@@ -80,8 +81,15 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
-    @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
-    @report.save
+    if params[:report][:remanded_reason] != ""
+      @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
+      if @report.save
+        flash[:seccess] = "登録完了しました。"
+      else
+        flash[:danger] = "登録に失敗しました。"
+      end
+    end
+    # redirect_to user_project_report_path(@user, @project, @report)
     redirect_to action: :show
   end
 
