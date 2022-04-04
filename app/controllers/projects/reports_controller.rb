@@ -46,7 +46,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = Report.find(params[:id])
     @user = User.find(@report.user_id)
     @answers = @report.answers
-    # debugger
   end
 
   def update
@@ -89,7 +88,6 @@ class Projects::ReportsController < Projects::BaseProjectController
         flash[:danger] = "登録に失敗しました。"
       end
     end
-    # redirect_to user_project_report_path(@user, @project, @report)
     redirect_to action: :show
   end
 
