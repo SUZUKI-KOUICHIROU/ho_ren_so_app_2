@@ -80,8 +80,16 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
-    @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
-    @report.save
+    if params[:report][:remanded_reason] != ""
+      @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
+      if @report.save
+        flash[:seccess] = "登録完了しました。"
+      else
+        flash[:danger] = "登録に失敗しました。"
+      end
+    else
+      flash[:danger] = "登録に失敗しました。"
+    end
     redirect_to action: :show
   end
 
