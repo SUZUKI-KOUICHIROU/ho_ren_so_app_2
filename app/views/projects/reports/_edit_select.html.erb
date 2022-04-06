@@ -1,7 +1,7 @@
 <div class="container">
-<%= Select.find(@answers.find_by(report_id: @report.id).question_id).label_name %>
-<br>
-<%= f.fields_for "answer[#{c}]", mo do |m| %>
-  <%= m.collection_select(:value, Select.find(@answers.find_by(report_id: @report.id).question_id).select_option_strings.all, :option_string, :option_string) %>
-<% end %>
+  <%= Select.find(@answers.find_by(report_id: @report.id).question_id).label_name %>
+  <br>
+  <%= f.fields_for "answer[#{c}]", mo do |m| %>
+    <%= m.collection_select(:value, Select.find(@answers.find_by(report_id: @report.id).question_id).select_option_strings.all, :option_string, :option_string) %>
+  <% end %>
 </div>

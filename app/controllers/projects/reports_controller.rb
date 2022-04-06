@@ -87,6 +87,8 @@ class Projects::ReportsController < Projects::BaseProjectController
       else
         flash[:danger] = "登録に失敗しました。"
       end
+    else
+      flash[:danger] = "登録に失敗しました。"
     end
     redirect_to action: :show
   end
