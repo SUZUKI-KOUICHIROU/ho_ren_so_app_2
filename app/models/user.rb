@@ -7,16 +7,30 @@ class User < ApplicationRecord
   has_many :pdca, dependent: :nullify
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
 
-  #招待メールを送信する
+  # 招待メールを送信する
   def send_invite_email(token, project_name, password)
     UserMailer.invitation(self, token, project_name, password).deliver_now
   end
 
-  #招待の期限が切れている場合はtrueを返す
+  # 招待の期限が切れている場合はtrueを返す
   def invitation_expired?
     self.invite_sent_at < 24.hours.ago
   end
 
+  # 現在のパスワードなしでユーザー情報を変更
+  def update_without_current_password(params, *options)
+    params.delete(:current_password)
+    
+    if params[:password].blank? && params[:password_confirmation].blank? 
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end
+    
+    result = update_attributes(params, *options)
+    clean_up_passwords
+    result
+  end
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -33,12 +47,18 @@ class User < ApplicationRecord
 
   # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
   VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
-  validates :password, presence: true, length: { maximum: 30, minimum: 8 },
-                      format: { with: VALID_PASSWORD_REGEX,
-                      message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
-                      allow_blank: true
-  validates :password_confirmation, presence: true, length: { maximum: 30, minimum: 8 },
-                                    format: { with: VALID_PASSWORD_REGEX,
-                                              message: 'は半角英数（英字は小文字のみ）で入力して下さい' },
-                                    allow_blank: true
+  MESSAGE_WITH_INVALID_PASSWORD = 'は半角英数（英字は小文字のみ）で入力して下さい'
+  validates :password, 
+                    allow_blank: true,
+                    presence: true,
+                    length: { maximum: 30, minimum: 6 },
+                    format: { with: VALID_PASSWORD_REGEX,
+                    message: MESSAGE_WITH_INVALID_PASSWORD }
+
+  validates :password_confirmation, 
+                    allow_blank: true,
+                    presence: true, 
+                    length: { maximum: 30, minimum: 6 },
+                    format: { with: VALID_PASSWORD_REGEX,
+                    message: MESSAGE_WITH_INVALID_PASSWORD }
 end

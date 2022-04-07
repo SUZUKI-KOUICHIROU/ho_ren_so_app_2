@@ -78,20 +78,20 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   def invitations; end
 
+  # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
   def join
     @join = Join.find_by(token: params[:token])
     @user = User.find(@join.user_id)
     @project = Project.find_by(id: @join.project_id)
-    @project.users << @user
-    if @user.sign_in_count == 0
-      @user.update(sign_in_count: 1)
-      bypass_sign_in @user
-      redirect_to edit_user_registration_path(@user)
+    unless @project.users.exists?(id: @user)
+      @project.users << @user
+      @project.join_new_member(@user.id)
+      flash[:success] = "#{@project.project_name}に参加しました。"
     else
-      bypass_sign_in @user
-      redirect_to user_projects_path(@user)
+      flash[:success] = '参加済みプロジェクトです。'
     end
-    @project.join_new_member(@user.id)
+    bypass_sign_in @user
+    redirect_to user_project_path(@user,@project) 
   end
 
   def frequency_input_form_switching
@@ -109,6 +109,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
+  # リーダー権限委譲リクエスト受認クリック時アクション
   def accept_request
     @delegate = @project.delegations.find(params[:delegate_id])
     @project.update(project_leader_id: params[:user_id])
@@ -117,6 +118,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     redirect_to user_project_path(@user, @project)
   end
 
+  # リーダー権限委譲リクエスト辞退クリック時アクション
   def disown_request
     @delegate = @project.delegations.find(params[:delegate_id])
     @delegate.update(is_valid: false)

@@ -1,5 +1,6 @@
 class Projects::BaseProjectController < BaseController
   # before_action :project_leader_user
+  before_action :temporarily_user?
 
   # デフォルト報告フォーマット作成アクション(projects/projects#create内で呼ばれる)
   def report_format_creation(project)
@@ -44,6 +45,7 @@ class Projects::BaseProjectController < BaseController
     @members = @project.other_members(@user.id) # 自分以外のメンバーを取得
   end
 
+  # メンバー外ユーザーをフィルタ
   def project_authorization
     @user = current_user
     @project = Project.find(params[:id])
@@ -52,6 +54,13 @@ class Projects::BaseProjectController < BaseController
     end
   end
   
+  # 仮登録のままのユーザーを編集画面へ飛ばす
+  def temporarily_user?
+    if current_user.has_editted == false
+      flash[:success] = 'ユーザー名を入力してください。'
+      redirect_to edit_user_registration_path(current_user)
+    end
+  end
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓

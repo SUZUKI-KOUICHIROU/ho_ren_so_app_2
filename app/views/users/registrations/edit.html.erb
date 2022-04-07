@@ -1,3 +1,9 @@
+<!--<h3>Cancel my account</h3>
+
+<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+-->
+
 <% provide(:title, 'ユーザー情報編集') %>
 <div class="sessions-new-img">
   <div class="sessions-new-container">
@@ -6,50 +12,52 @@
         <div class="login-box">
           <div class="box-inner">
             <h1 class="box-new-title">ユーザー情報編集</h1>
-              <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-                <%= render "users/shared/error_messages", resource: resource %>
-                  <%= form_with(model: @user, local: true) do |f| %>
-                    <%= f.label :user_name, "名前", class: "email-label" %>
-                      <div class="box-name">
-                        <%= f.text_field :user_name, autofocus: true, autocomplete: "name" ,class: "text-name" %>
-                      </div>
-                    <%= f.label :email, "メールアドレス", class: "email-label" %>
-                      <div class="box-email">
-                        <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
-                      </div>
-                  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-                    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-                  <% end %>
-                    <div class="box-password">
-                      <%= f.label :password %>(変更しない場合は空欄のままにしてください)<br />
-                      <%= f.password_field :password, class: "form-control" %>
-                        <% if @minimum_password_length %>
-                          <em><%= @minimum_password_length %> 文字以上で入力してください</em>
-                        <% end %>
-                    </div>
-                      <%= f.label :password_confirmation %><br />
-                        <div class="box-password">
-                      <%= f.password_field :password_confirmation, class: "form-control" %>
-                    </div>
-                    <div class="box-password">
-                      <%= f.label :current_password %>(パスワードを変更する場合は、現在のパスワードを入力してください)<br />
-                      <%= f.password_field :current_password, class: "form-control" %>
-                    </div>
-                    <div class="center">
-                      <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
-                    </div>
+
+            <%= render "users/shared/error_messages", resource: resource %>
+
+            <!--  ユーザー情報変更フォーム -->
+            <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), method: :put, local: true) do |f| %>
+
+              <!--  ユーザーネーム -->
+              <%= f.label :user_name, "名前", class: "email-label" %>
+              <div class="box-name">
+                <%= f.text_field :user_name, autofocus: true, autocomplete: "name" ,class: "text-name" %>
+              </div>
+              
+              <!--  メールアドレス -->
+              <%= f.label :email, "メールアドレス", class: "email-label" %>
+              <div class="box-email">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
+              </div>
+            
+              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+              <% end %>
+
+              <!--  変更後パスワード -->
+              <div class="box-password">
+                <%= f.label :password %>(変更する場合のみ入力)<br />
+                <%= f.password_field :password, class: "form-control" %>
+                <% if @minimum_password_length %>
+                  <em><%= @minimum_password_length %> 文字以上で入力してください</em>
                 <% end %>
               </div>
-              <% end %>        
+              
+              <!--  変更後パスワード再入力 -->
+              <%= f.label :password_confirmation %><br />
+              <div class="box-password">
+                <%= f.password_field :password_confirmation, class: "form-control" %>
+              </div>
+              
+              <!--  更新ボタン -->
+              <div class="center">
+                <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
+              </div>
+            
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!--<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>

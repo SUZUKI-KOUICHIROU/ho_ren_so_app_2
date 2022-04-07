@@ -36,7 +36,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report.save
     @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
     flash[:seccess] = "報告を登録しました。"
-    redirect_to user_project_path(@user, @project)
+    redirect_to user_project_report_path(@user, @project, @report)
   end
 
   def edit

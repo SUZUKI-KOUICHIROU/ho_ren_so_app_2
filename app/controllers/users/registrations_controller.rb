@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  protect_from_forgery
   before_action :configure_permitted_parameters, if: :devise_controller?
   prepend_before_action :require_no_authentication, only: [:cancel]
   prepend_before_action :authenticate_scope!, only: %i[update destroy edit]
@@ -82,9 +83,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     user_path(resource)
   end
 
+  def update_resource(resource, params)
+    params[:has_editted] = true # ユーザー情報に変更があったフラグをTRUEに
+    resource.update_without_current_password(params)
+  end
+
   # ユーザー新規登録の際にパラメーターを追加(user_nameを追加)
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name, :has_editted])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name, :has_editted])
   end
 end
