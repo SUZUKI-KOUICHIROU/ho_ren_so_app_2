@@ -97,7 +97,7 @@ Rails.application.configure do
   
   host = 'nameless-shelf-86781.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
-  config.action_mailer.default_url_options = { protocol: 'https',host: host}
+  # config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {
     :enable_starttls_auto => true,
     :address => "smtp.gmail.com",
