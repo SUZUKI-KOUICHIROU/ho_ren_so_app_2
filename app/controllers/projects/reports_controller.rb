@@ -4,14 +4,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
-    @you_reports = @project.reports.where(user_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
+    @reports = @project.reports.where.not(sender_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
+    @you_reports = @project.reports.where(sender_id: @user.id).order(update_at: 'DESC').page(params[:page]).per(5)
   end
 
   def show
     set_project_and_members
     @report = Report.find(params[:id])
-    @user = User.find(@report.user_id)
     @answers = @report.answers
   end
 
@@ -28,6 +27,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @report = @project.reports.new(create_reports_params)
+    @report.sender_id = @user.id
+    @report.sender_name = @user.user_name
     if @report.save
       flash[:seccess] = '報告を登録しました。'
     else
@@ -79,8 +80,16 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
-    @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
-    @report.save
+    if params[:report][:remanded_reason] != ""
+      @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
+      if @report.save
+        flash[:seccess] = "登録完了しました。"
+      else
+        flash[:danger] = "登録に失敗しました。"
+      end
+    else
+      flash[:danger] = "登録に失敗しました。"
+    end
     redirect_to action: :show
   end
 

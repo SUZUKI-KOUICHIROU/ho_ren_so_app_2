@@ -39,7 +39,7 @@
                 <%= f.label :password %>(変更する場合のみ入力)<br />
                 <%= f.password_field :password, class: "form-control" %>
                 <% if @minimum_password_length %>
-                  <em><%= @minimum_password_length %> 文字以上で入力してください</em>
+                  <em><%= @minimum_password_length %> 文字以上で入力してください</em>     
                 <% end %>
               </div>
               
@@ -53,11 +53,24 @@
               <div class="center">
                 <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
               </div>
-            
+
             <% end %>
+            <div class="center">
+            <% bln_leader = resource.project_leader? %>              
+            <%= button_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger", disabled: bln_leader %>
+            <% if bln_leader %>
+              <p>アカウント削除を行うには、リーダーを務めているプロジェクトが存在しないことが条件となります。</p>
+            <% end %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- <h3>Cancel my account</h3>
+
+<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+<%= link_to "Back", :back %>

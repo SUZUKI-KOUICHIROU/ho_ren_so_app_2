@@ -1,4 +1,5 @@
 class Projects::MessagesController < Projects::BaseProjectController
+  before_action :my_message, only: %i[show]
 
   def index
     @user = User.find(params[:user_id])
@@ -25,6 +26,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
+    @message.sender_name = current_user.user_name
     #ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:message][:send_to_all])
       #TO ALLが選択されているとき
@@ -70,4 +72,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
   end
 
+  def my_message
+    @message = Message.find(params[:id])
+    if @message.sender_id != current_user.id && @message.message_confirmers.exists?(message_confirmer_id: current_user.id) == false
+      redirect_to root_path
+    end
+  end
 end

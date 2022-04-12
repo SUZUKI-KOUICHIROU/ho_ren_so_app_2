@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
-  has_many :report_statuses
+  has_many :report_statuses, dependent: :destroy
 
   has_many :reports, dependent: :nullify
   has_many :pdca, dependent: :nullify
@@ -31,6 +31,9 @@ class User < ApplicationRecord
     result
   end
   
+  def project_leader?
+    return Project.exists?(project_leader_id: self.id)
+  end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

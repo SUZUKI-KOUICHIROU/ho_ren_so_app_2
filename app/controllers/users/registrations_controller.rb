@@ -39,9 +39,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    if resource.project_leader?
+      flash[:message] = 'リーダーを務めているプロジェクトが存在するため、アカウント削除はできませんでした。'
+      redirect_to edit_user_registration_path
+    end
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign

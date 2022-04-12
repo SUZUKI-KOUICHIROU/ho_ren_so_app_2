@@ -3,8 +3,10 @@
 
 <% cnt = 1 %>
 <div class="container col-6">
-<p>コメント</p>
-<%= @report.remanded_reason %>
+ <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
+    <p>コメント</p>
+  <p><%= @report.remanded_reason %></p>
+  <% end %>
 <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
   <ol>
   
@@ -27,9 +29,9 @@
       <% end %>
       <%= render partial: q_type, locals: { pattern: answer ,mo: answer, f: f, c: cnt} %>
       <% cnt += 1 %>
-      </li> 
-    </div>
-    <% end %>
+    </li> 
+  </div>
+  <% end %>
     
   </ol>
   <%# レンダリング %>

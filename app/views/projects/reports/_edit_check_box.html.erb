@@ -1,8 +1,8 @@
 <div class="container">
   <% c -= 1 %>
-  <%= CheckBox.find(pattern.question_id).label_name %>
+  <%= CheckBox.find(@answers.find_by(report_id: @report.id).question_id).label_name %>
   <br>
-  <% CheckBox.find(pattern.question_id).check_box_option_strings.each do |box| %>
+  <% CheckBox.find(@answers.find_by(report_id: @report.id).question_id).check_box_option_strings.each do |box| %>
     <% boolExists = @answers[c][:array_value].include? box.option_string %>
     <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists}, box[:option_string] %><%= box.option_string %>
   <% end %> 
