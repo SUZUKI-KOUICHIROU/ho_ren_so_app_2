@@ -45,6 +45,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to edit_user_registration_path
     else
       resource.destroy
+      flash[:message] = 'アカウントを削除しました。ご利用ありがとうございました。'
       redirect_to root_path
     end
   end
