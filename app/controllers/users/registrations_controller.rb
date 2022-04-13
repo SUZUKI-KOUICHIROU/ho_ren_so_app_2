@@ -43,6 +43,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.project_leader?
       flash[:message] = 'リーダーを務めているプロジェクトが存在するため、アカウント削除はできませんでした。'
       redirect_to edit_user_registration_path
+    else
+      resource.destroy
+      redirect_to root_path
     end
   end
 
