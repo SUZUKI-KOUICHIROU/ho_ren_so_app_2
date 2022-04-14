@@ -9,4 +9,5 @@ class CreateReports < ActiveRecord::Migration[5.2]
       t.string :sender_name # 報告者名
       t.timestamps
     end
-  endend
+  end
+end
