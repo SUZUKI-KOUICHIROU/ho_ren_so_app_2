@@ -1,5 +1,4 @@
 class Projects::BaseProjectController < BaseController
-  # before_action :project_leader_user
   before_action :temporarily_user?
 
   # デフォルト報告フォーマット作成アクション(projects/projects#create内で呼ばれる)
