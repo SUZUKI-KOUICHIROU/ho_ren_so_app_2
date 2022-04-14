@@ -5,10 +5,12 @@
     <%= sidebar_link_item('相談', new_user_project_counseling_path(@user, @project), {class: 'btn-outline-orange'}) %>
     <%= sidebar_link_item('報告一覧', user_project_reports_path(@user, @project), {class: 'btn-outline-orange'}) %>
     <%= sidebar_link_item('連絡一覧', user_project_messages_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('相談一覧', user_project_counselings_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(@user, @project), {remote: true, class: 'btn-outline-orange', data: {"turbolinks" => false}}) %>
-    <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(@user, @project), {class: 'btn-outline-orange'}) %>
-    <%= sidebar_link_item('メンバーを招待', new_invitation_path(@user, @project), {class: 'btn-outline-orange'}) %>
+    <% if project_leader? %>
+      <%= sidebar_link_item('相談一覧', user_project_counselings_path(@user, @project), {class: 'btn-outline-orange'}) %>
+      <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(@user, @project), {remote: true, class: 'btn-outline-orange', data: {"turbolinks" => false}}) %>
+      <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(@user, @project), {class: 'btn-outline-orange'}) %>
+      <%= sidebar_link_item('メンバーを招待', new_invitation_path(@user, @project), {class: 'btn-outline-orange'}) %>
+    <% end %>
     <%= sidebar_link_item('メンバー一覧', project_member_index_path(@user, @project), {class: 'btn-outline-orange'}) %>
     <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id), {class: 'btn-outline-orange'}) %>
   </div>

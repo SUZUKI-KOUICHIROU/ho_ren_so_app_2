@@ -3,6 +3,9 @@
 class DeviseCreateUsers < ActiveRecord::Migration[5.2]
   def change
     create_table :users do |t|
+
+      t.boolean :has_editted, default: true # ユーザー情報の編集が行われたかを管理
+      
       ## Database authenticatable
       t.string :email,              null: false, default: ''
       t.string :encrypted_password, null: false, default: ''

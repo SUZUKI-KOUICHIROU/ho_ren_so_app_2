@@ -6,10 +6,6 @@ class Users::InvitationsController < BaseController
   def new
     @user = User.find(current_user.id)
     @project = Project.find(params[:project_id])
-    #@token = Token.find by(token: params[:token])
-    #@join = Join.create(token: token, project_id: project_id, user_id: user_id)
-    #@project.users << current_user
-    #redirect_to root_path
   end
 
   def create
@@ -24,13 +20,10 @@ class Users::InvitationsController < BaseController
         require 'securerandom'
         mypassword = SecureRandom.alphanumeric.downcase
         # mypassword = Devise.friendly_token.first(10) # 半角小大英数記号生成
-        puts mypassword
-        @user = User.new(user_name: "名無しの招待者", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id)
-        @user.save!
+        @user = User.new(user_name: "", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id, has_editted: false)
+        @user.save!(validate: false) # 招待ユーザーの初期ネームを空欄にするためにバリデーションを無視
       end
         @join = Join.create(project_id: @project.id, user_id: @user.id)
-        #@user.create_invite_digest
-        #user.projects << project
         @user.send_invite_email(@join.token, @project.project_name, mypassword)
         flash[:info] = '招待メールを送信しました！'
     end

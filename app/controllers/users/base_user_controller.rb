@@ -1,6 +1,7 @@
 class Users::BaseUserController < BaseController
-  before_action :admin_or_correct_user
-
+  # before_action :admin_or_correct_user
+  before_action :correct_user
+  
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -14,7 +15,7 @@ class Users::BaseUserController < BaseController
     @user = User.find(params[:id]) if @user.blank?
     return if current_user?(@user) || current_user.admin?
 
-    flash[:danger] = '権限がありません。'
+    # flash[:danger] = '権限がありません。'
     redirect_to root_path
   end
 
@@ -27,7 +28,7 @@ class Users::BaseUserController < BaseController
             end
     return if current_user?(@user)
 
-    flash[:danger] = '権限がありません。'
+    # flash[:danger] = '権限がありません。'
     redirect_to root_path
   end
 end

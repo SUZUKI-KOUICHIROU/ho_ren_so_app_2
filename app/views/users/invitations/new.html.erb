@@ -9,7 +9,7 @@
               <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
                 <%= f.label :email, "招待したい人のメールアドレスを入力し、送信ボタンを押してください", class: "email-label" %>
                   <div class="box-email">
-                    <%= f.email_field :email, class: 'form-control' %>
+                    <%= f.email_field :email, class: 'form-control', required: true %>
                     <%= f.hidden_field :project_leader_id, :value => @user.id %>
                     <%= f.hidden_field :project_id, :value => @project.id %>
                   </div>

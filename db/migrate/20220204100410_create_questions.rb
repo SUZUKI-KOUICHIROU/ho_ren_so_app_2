@@ -7,8 +7,6 @@ class CreateQuestions < ActiveRecord::Migration[5.2]
       t.boolean :using_flag, null: false, default: true # 使用フラグ
 
       t.timestamps
-
-      t.timestamps
     end
   end
 end
