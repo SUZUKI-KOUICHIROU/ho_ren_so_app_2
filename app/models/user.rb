@@ -4,7 +4,6 @@ class User < ApplicationRecord
   has_many :report_statuses, dependent: :destroy
 
   has_many :reports, dependent: :nullify
-  has_many :pdca, dependent: :nullify
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
 
   # 招待メールを送信する

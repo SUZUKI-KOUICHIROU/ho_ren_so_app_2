@@ -1,5 +1,4 @@
 class Users::BaseUserController < BaseController
-  # before_action :admin_or_correct_user
   before_action :correct_user
   
   private
