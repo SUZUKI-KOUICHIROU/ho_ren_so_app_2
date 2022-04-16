@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ruby: cimg/ruby@1.1.2
+  ruby: circleci/ruby@1.1.2
   node: circleci/node@2
 
 # setup
@@ -20,7 +20,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.6.3-node
+      - image: cimg/ruby:2.6.5-stretch-node
         environment:
           DB_HOST: 127.0.0.1
           RAILS_ENV: test
@@ -30,7 +30,7 @@ jobs:
       - setup
   test:
     docker:
-      - image: circleci/ruby:2.6.3-node
+      - image: cimg/ruby:2.6.5-stretch-node
       - image: circleci/postgres:11.6-alpine
         name: "db"
         environment:
