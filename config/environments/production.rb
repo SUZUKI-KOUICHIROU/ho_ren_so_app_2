@@ -95,7 +95,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   
-  host = 'nameless-shelf-86781.herokuapp.com'
+  host = 'fast-taiga-22074.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
   config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {

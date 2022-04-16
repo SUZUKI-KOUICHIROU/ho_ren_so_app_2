@@ -2,9 +2,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def index
     set_project_and_members
-    @counselings = @project.counselings.all.order(update_at: 'DESC').page(params[:page]).per(5)
+    @counselings = @project.counselings.all.order(updated_at: 'DESC').page(params[:page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(update_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
   end
   
   def show
