@@ -70,7 +70,7 @@
                       <%= report.report_confirmers.where(report_confirmation_flag: true).count %>人
                     </div>
                     <div class="report-action">
-                      <%= link_to "編集", "#", class: "btn btn-outline-orange" %>
+                      <%= link_to "編集", edit_user_project_report_path(@user, @project, report), class: "btn btn-outline-orange" %>
                       <%= link_to "削除", "#", method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
                     </div>
                   </div>

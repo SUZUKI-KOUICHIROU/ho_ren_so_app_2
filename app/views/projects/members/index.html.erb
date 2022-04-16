@@ -19,9 +19,11 @@
     <div class="project-next-report-date">
       参加日
     </div>
+    <% if project_leader? %>
     <div class="project-news">
       アクション
     </div>
+    <% end %>
   </div>
   <div class="table-body">
     <% if @members.present? %>
@@ -35,6 +37,7 @@
             <% entry_date = ProjectUser.find_by(project_id: @project.id, user_id: member.id).created_at %>
             <%= l(entry_date, format: :long) %>
           </div>
+          <% if project_leader? %>
           <div class="project-news">
             <% unless @project.project_leader_id == member.id %>
               <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
@@ -44,11 +47,16 @@
                 <% else %>
               <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.user_name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
               <% end %>
-            <% else %>
+            <%
+=begin%>
+ <% else %>
               <p>リーダーはプロジェクトから外すことは出来ません。</p>
-              <p>外す場合、リーダー権限を譲渡してから外して下さい。</p>
+              <p>外す場合、リーダー権限を譲渡してから外して下さい。</p> 
+<%
+=end%>
             <% end %>
           </div>
+          <% end %>
         </div>
       <% end %>
     <% end %>

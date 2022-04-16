@@ -37,7 +37,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report.save
     @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
     flash[:seccess] = "報告を登録しました。"
-    redirect_to user_project_path(@user, @project)
+    redirect_to user_project_report_path(@user, @project, @report)
   end
 
   def edit
@@ -80,8 +80,16 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
-    @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
-    @report.save
+    if params[:report][:remanded_reason] != ""
+      @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
+      if @report.save
+        flash[:seccess] = "登録完了しました。"
+      else
+        flash[:danger] = "登録に失敗しました。"
+      end
+    else
+      flash[:danger] = "登録に失敗しました。"
+    end
     redirect_to action: :show
   end
 

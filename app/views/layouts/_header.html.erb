@@ -21,7 +21,7 @@
             <%= current_user.user_name %>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <%= link_to "アカウント管理", "#", class: "dropdown-item" %>
+            <%= link_to "ユーザー設定", user_path(@user), class: "dropdown-item" %>
             <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
           </div>
         </li>

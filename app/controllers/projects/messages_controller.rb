@@ -1,4 +1,5 @@
 class Projects::MessagesController < Projects::BaseProjectController
+  before_action :my_message, only: %i[show]
 
   def index
     @user = User.find(params[:user_id])
@@ -71,4 +72,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
   end
 
+  def my_message
+    @message = Message.find(params[:id])
+    if @message.sender_id != current_user.id && @message.message_confirmers.exists?(message_confirmer_id: current_user.id) == false
+      redirect_to root_path
+    end
+  end
 end

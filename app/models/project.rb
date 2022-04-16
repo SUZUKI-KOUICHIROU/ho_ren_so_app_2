@@ -42,6 +42,7 @@ class Project < ApplicationRecord
     self.report_statuses.create(user_id: user_id, deadline: self.project_next_report_date)
   end
 
+  # リーダー権限譲渡アクション。引数に元リーダーと次リーダーのユーザーIDを指定。
   def delegate_leader(from_user_id, to_member_id)
     self.delegations.where(is_valid: true).update_all(is_valid: false) # "最新である"フラグをfalseに
     self.delegations.create(user_from: from_user_id, user_to: to_member_id)

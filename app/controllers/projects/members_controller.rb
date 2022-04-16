@@ -1,5 +1,5 @@
 class Projects::MembersController < Projects::BaseProjectController
-  before_action :project_reader_user, only: %i[index]
+  # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトに参加しているメンバー一覧ページ表示アクション
   def index
@@ -26,16 +26,17 @@ class Projects::MembersController < Projects::BaseProjectController
     redirect_to project_member_index_path(current_user.id, project.id)
   end
 
+  # リーダー権限委譲リクエストクリック時アクション
   def delegate
     user = User.find(params[:user_id])
     project = Project.find(params[:project_id])
     next_leader = User.find(params[:to])
     project.delegate_leader(user.id, next_leader.id)
-    # project.delegations.create(user_from: user.id, user_to: next_leader.id)
     flash[:success] = "#{next_leader.user_name}さんに権限譲渡のリクエストを送信しました。"
     redirect_to project_member_index_path(current_user.id, project.id)
   end
 
+  # リーダー権限委譲リクエストキャンセルクリック時アクション
   def cancel_delegate
     user = User.find(params[:user_id])
     project = Project.find(params[:project_id])

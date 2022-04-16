@@ -59,10 +59,10 @@ Rails.application.routes.draw do
     get 'report_forms/report_form_switching', to: 'reports#report_form_switching', as: :report_form_switching
     get 'users/:user_id/projects/:project_id/index', to: 'members#index', as: :project_member_index
     delete 'users/:user_id/project/:project_id/member_destroy', to: 'members#destroy', as: :project_member_destroy
-    post 'users/:user_id/project/:project_id/delegate_leader/:to', to: 'members#delegate', as: :delegate_leader
-    post 'users/:user_id/project/:project_id/cancel_delegate/:delegate_id', to: 'members#cancel_delegate', as: :cancel_delegate
-    post 'users/:user_id/project/:project_id/accept/:delegate_id', to: 'projects#accept_request', as: :accept_request
-    post 'users/:user_id/project/:project_id/disown/:delegate_id', to: 'projects#disown_request', as: :disown_request
+    post 'users/:user_id/project/:project_id/delegate_leader/:to', to: 'members#delegate', as: :delegate_leader # リーダー権限委譲リクエストの発行
+    post 'users/:user_id/project/:project_id/cancel_delegate/:delegate_id', to: 'members#cancel_delegate', as: :cancel_delegate # リーダー権限委譲リクエストのキャンセル
+    post 'users/:user_id/project/:id/accept/:delegate_id', to: 'projects#accept_request', as: :accept_request # リーダー権限委譲に対する受認
+    post 'users/:user_id/project/:id/disown/:delegate_id', to: 'projects#disown_request', as: :disown_request # リーダー権限委譲に対する辞退
   end
 
   get 'index/index_switching', to: 'base#index_switching', as: :index_switching
