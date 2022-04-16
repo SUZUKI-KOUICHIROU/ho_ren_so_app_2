@@ -24,7 +24,7 @@ jobs:
         environment:
           DB_HOST: 127.0.0.1
           RAILS_ENV: test
-          BUNDLER_VERSION: 1.17.2
+          BUNDLER_VERSION: 2.3.11
           TZ: "Japan" 
     steps:
       - setup
