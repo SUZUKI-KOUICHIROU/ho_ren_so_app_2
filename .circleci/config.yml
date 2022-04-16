@@ -20,7 +20,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/ruby:2.6.3-node
+      - image: circleci/ruby:2.6.3-node
         environment:
           DB_HOST: 127.0.0.1
           RAILS_ENV: test
@@ -30,7 +30,7 @@ jobs:
       - setup
   test:
     docker:
-      - image: cimg/ruby:2.6.3-node
+      - image: circleci/ruby:2.6.3-node
       - image: circleci/postgres:11.6-alpine
         name: "db"
         environment:
