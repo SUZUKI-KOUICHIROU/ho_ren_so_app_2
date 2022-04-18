@@ -42,11 +42,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def destroy
     if resource.project_leader?
       flash[:message] = 'リーダーを務めているプロジェクトが存在するため、アカウント削除はできませんでした。'
-      redirect_to edit_user_registration_path
+      render 'edit'
     else
       resource.destroy
       flash[:message] = 'アカウントを削除しました。ご利用ありがとうございました。'
-      redirect_to root_path
+      render 'users/sessions/new'
     end
   end
 

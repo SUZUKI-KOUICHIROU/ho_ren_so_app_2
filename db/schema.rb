@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_27_145329) do
+ActiveRecord::Schema.define(version: 2022_03_15_130724) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -54,10 +54,10 @@ ActiveRecord::Schema.define(version: 2022_03_27_145329) do
     t.date "counseling_reply_deadline"
     t.integer "project_id"
     t.integer "sender_id"
+    t.string "sender_name"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "sender_name"
     t.index ["project_id"], name: "index_counselings_on_project_id"
   end
 
@@ -101,22 +101,11 @@ ActiveRecord::Schema.define(version: 2022_03_27_145329) do
     t.text "message_detail", default: "", null: false
     t.integer "project_id"
     t.integer "sender_id"
+    t.string "sender_name"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "sender_name"
     t.index ["project_id"], name: "index_messages_on_project_id"
-  end
-
-  create_table "pdcas", force: :cascade do |t|
-    t.text "pdca_plan", default: "", null: false
-    t.text "pdca_do", default: "", null: false
-    t.text "pdca_check", default: "", null: false
-    t.text "pdca_action", default: "", null: false
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_pdcas_on_user_id"
   end
 
   create_table "project_users", force: :cascade do |t|
@@ -191,10 +180,10 @@ ActiveRecord::Schema.define(version: 2022_03_27_145329) do
     t.integer "user_id"
     t.boolean "remanded"
     t.string "remanded_reason"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "sender_id"
     t.string "sender_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
@@ -236,6 +225,11 @@ ActiveRecord::Schema.define(version: 2022_03_27_145329) do
 
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
+    t.string "invite_digest"
+    t.integer "invited_by"
+    t.datetime "invite_sent_at"
+    t.string "user_name", default: "", null: false
+    t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -248,11 +242,6 @@ ActiveRecord::Schema.define(version: 2022_03_27_145329) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "user_name", default: "", null: false
-    t.boolean "admin", default: false, null: false
-    t.string "invite_digest"
-    t.integer "invited_by"
-    t.datetime "invite_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
