@@ -1,4 +1,5 @@
 class Projects::ProjectsController < Projects::BaseProjectController
+  before_action :authenticate_user!, only: %i[index new create]
   before_action :project_authorization, only: %i[show edit update destroy delegate_leader accept_request disown_request]
   before_action :project_leader_user, only: %i[edit update destroy]
   

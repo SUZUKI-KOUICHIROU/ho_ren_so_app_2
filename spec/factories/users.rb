@@ -6,5 +6,6 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { 'password' }
     admin { true }
+    has_editted { true }
   end
 end
