@@ -1,41 +1,51 @@
-<h1><%= @project.project_name %></h1>
-<h2>報告の編集</h2>
-
+<h1 class="text-center my-3">報告の編集</h1>
 <% cnt = 1 %>
-<div class="container col-6">
- <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
-    <p>コメント</p>
-  <p><%= @report.remanded_reason %></p>
+<div class="container col-10">
+  <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
+    <div class="box-comment">
+      <div class="card">
+        <div class="card-header card-header-radius">
+          コメント
+        </div>
+        <div class="container p-4 card-body">
+          <h3 class="font-weight-bold counseling-title-box m-3 d-inline">内容</h3>
+          <div class="card-text"><%= simple_format(@report.remanded_reason) %></div>
+        </div>
+      </div>
+    </div>
   <% end %>
-<%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
-  <ol>
-  
-  <% @answers.each do |answer| %>
-  <div class="container" style="padding: 5px">
-    <li>
-    <% case answer.question_type %>
-      <% when 'text_field' %>
-        <% q_type = 'edit_text_field' %>
-      <% when 'text_area' %>
-        <% q_type = 'edit_text_area' %>
-      <% when 'radio_button' %>
-        <% q_type = 'edit_radio_button' %>
-      <% when 'select' %>
-        <% q_type = 'edit_select' %>
-      <% when 'check_box' %>
-        <% q_type = 'edit_check_box' %>
-      <% when 'date_field' %>
-        <% q_type = 'edit_date_field' %>
+  <div class="box-reprot-edit">
+    <div class="edit-report-header">
+      <div class="project-name-box">
+        <a><%= @project.project_name %></a>
+      </div>
+    </div>
+    <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
+      <% @answers.each do |answer| %>
+      <div class="form" style="padding: 5px">
+        <% case answer.question_type %>
+          <% when 'text_field' %>
+            <% q_type = 'edit_text_field' %>
+          <% when 'text_area' %>
+            <% q_type = 'edit_text_area' %>
+          <% when 'radio_button' %>
+            <% q_type = 'edit_radio_button' %>
+          <% when 'select' %>
+            <% q_type = 'edit_select' %>
+          <% when 'check_box' %>
+            <% q_type = 'edit_check_box' %>
+          <% when 'date_field' %>
+            <% q_type = 'edit_date_field' %>
+        <% end %>
+        <%= render partial: q_type, locals: { pattern: answer ,mo: answer, f: f, c: cnt} %>
+        <% cnt += 1 %>
+      </div>
       <% end %>
-      <%= render partial: q_type, locals: { pattern: answer ,mo: answer, f: f, c: cnt} %>
-      <% cnt += 1 %>
-    </li> 
+      <%# レンダリング %>
+  </div>
+  <div class="center">
+    <%= f.submit '変更', class: "btn btn-outline-orange col-2" %>
+    <%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-secondary col-2", style: "margin-left: 10px;" %>
   </div>
   <% end %>
-    
-  </ol>
-  <%# レンダリング %>
-  <p class="center" style="padding-top: 30px;"><%= f.submit '投稿', class: "btn btn-primary col-6" %></p>
-  <p class="center" style="padding: 10px;"><%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-light btn-outline-dark col-6" %></p>
-<% end %>
 </div>
