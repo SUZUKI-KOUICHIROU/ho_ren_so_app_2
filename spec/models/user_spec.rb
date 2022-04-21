@@ -71,13 +71,13 @@ describe User, type: :model do
         end
 
         it 'パスワードが50文字の場合はOK' do
-          buf_pass = '1' * 50
+          buf_pass = '1' * 30
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_valid
         end
 
         it 'パスワードが51文字以上の場合はNG' do
-          buf_pass = '1' * 51
+          buf_pass = '1' * 31
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_invalid
         end

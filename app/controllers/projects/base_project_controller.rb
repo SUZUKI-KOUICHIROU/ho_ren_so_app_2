@@ -20,10 +20,10 @@ class Projects::BaseProjectController < BaseController
   
   # 仮登録のままのユーザーを編集画面へ飛ばす
   def temporarily_user?
-    if current_user.has_editted == false
-      flash[:success] = 'ユーザー名を入力してください。'
-      redirect_to edit_user_registration_path(current_user)
-    end
+    return if current_user.nil?
+    return if current_user.has_editted
+    flash[:success] = 'ユーザー名を入力してください。'
+    redirect_to edit_user_registration_path(current_user)
   end
   private
 

@@ -11,11 +11,11 @@
                   <%= form_with(model: @user, local: true) do |f| %>
                     <%= f.label :user_name, "名前", class: "email-label" %>
                       <div class="box-name">
-                        <%= f.text_field :user_name, autofocus: true, autocomplete: "name" ,class: "text-name" %>
+                        <%= f.text_field :user_name, autofocus: true, autocomplete: "name" ,class: "text-name", id: 'users_name' %>
                       </div>
                     <%= f.label :email, "メールアドレス", class: "email-label" %>
                       <div class="box-email">
-                        <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
+                        <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email", id: 'users_email' %>
                       </div>
                     <%= f.label :password, "パスワード", class: "password-label" %>
                       <div class="box-password">
@@ -26,7 +26,7 @@
                         <%= f.password_field :password_confirmation, autocomplete: "current-password" %>
                       </div>
                     <div class="center">
-                      <%= f.submit "新規作成", class: "btn btn-block btn-outline-orange" %>
+                      <%= f.submit "新規作成", class: "btn btn-block btn-outline-orange", id: "button_create-user" %>
                     </div>
                     <div class="center">
                       <%= link_to "ログイン画面に戻る", :back, class: "btn btn-block btn-outline-secondary" %>
@@ -34,9 +34,9 @@
                 <% end %>
               </div>
               <% end %>
-                <div class="box-newusr">
-                  <p><span>------------------------------------------------</span></p>
-                </div>
+              <div class="box-newusr">
+                <p><span>------------------------------------------------</span></p>
+              </div>
           </div>
         </div>
       </div>
