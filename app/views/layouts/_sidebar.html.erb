@@ -1,6 +1,6 @@
 <div class="container col-2">
   <div class="menu-content shadow">
-    <%= sidebar_link_item('プロジェクト登録', new_user_project_path(@user), {remote: true, class: 'btn-outline-orange', data: {"turbolinks" => false}}) %>
-    <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id), {class: 'btn-outline-orange'}) %>
+    <%= sidebar_link_item('プロジェクト登録', new_user_project_path(@user), {remote: true, data: {"turbolinks" => false}}) %>
+    <%= sidebar_link_item('プロジェクト一覧', user_projects_path(current_user.id)) %>
   </div>
 </div>

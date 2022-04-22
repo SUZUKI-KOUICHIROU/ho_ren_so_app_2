@@ -1,10 +1,12 @@
 .menu-content {
   height: 100%;
   float: left;
+  font-size: 20px;
   width: 15%;
   position: fixed;
   left: 0;
-  padding: 2rem 1rem 0rem 1rem;
+  padding-top: 2rem;
+  // padding: 2rem 1rem 0rem 1rem;
   overflow-y: auto;
   overflow-x: hidden;
   @media screen and (max-width: 600px) {
@@ -17,7 +19,7 @@
 }
 
 .menu.active {
-  border-radius: 20px;
+  // border-radius: 20px;
   a {
     color: #ffffff;
     background: #fc8022;
@@ -26,14 +28,14 @@
 
 .menu {
   text-align: center;
-  margin-bottom: 3%;
-  border-radius: 20px;
   a {
+    // background: #ffffee;
     color: #fc8022;
-    border-radius: 20px;
+    // border-radius: 20px;
     text-decoration: none;
     font-weight: bolder;
     display: block;
+    padding: 5px 0px;
   }
 }
 
