@@ -1,4 +1,9 @@
 <% provide(:title, '友人を招待する') %>
+
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
 <div class="sessions-new-img">
   <div class="sessions-new-container">
     <div class="container">
