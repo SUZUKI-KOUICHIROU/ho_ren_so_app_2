@@ -10,7 +10,7 @@ env :PATH, ENV['PATH']
 # ログファイルの出力先
 set :output, 'log/cron.log'
 # ジョブの実行環境の指定
-set :environment, :development
+set :environment, :development, :production
 #
 # every 12.hours do
 #   command "/usr/bin/some_great_command"
@@ -25,7 +25,7 @@ set :environment, :development
 # end
 
 
-every 1.days, at: '9:00 am' do #トリガー
+every 1.days, at: '3:05 pm' do #トリガー
   runner "batch/notice_not_submitted_members.rb" # 毎朝9時にリーダーへ未報告者を報告
   runner "batch/update_deadline.rb" # レポートの期限を更新する
 end
