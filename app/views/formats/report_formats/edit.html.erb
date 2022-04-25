@@ -10,7 +10,7 @@
       <a><%= @project.project_name %></a>
     </div>
     <div class="form-add">
-      <%= link_to "項目を追加", new_project_report_format_path(@project), remote: true, class: "btn btn-outline-orange" %>
+      <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
     </div>
   </div>
 

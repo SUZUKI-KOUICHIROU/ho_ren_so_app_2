@@ -13,6 +13,7 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム新規登録用モーダルウインドウ表示アクション
   def new
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @position_value =
       if @project.questions.exists?
@@ -60,6 +61,7 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム新規登録用モーダルウインドウ内のコンテンツを動的に変化させる処理に関連するajaxアクション
   def replacement_input_forms
+    @user = current_user
     @project = Project.find(params[:project_id])
     @position_value =
       if @project.questions.exists?
