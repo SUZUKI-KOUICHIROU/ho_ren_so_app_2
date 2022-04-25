@@ -20,17 +20,17 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.6.3-node
+      - image: circleci/ruby:2.6.3-node-browsers
         environment:
           DB_HOST: 127.0.0.1
           RAILS_ENV: test
-          BUNDLER_VERSION: 1.17.2
+          BUNDLER_VERSION: 2.3.11
           TZ: "Japan" 
     steps:
       - setup
   test:
     docker:
-      - image: circleci/ruby:2.6.3-node
+      - image: circleci/ruby:2.6.3-node-browsers
       - image: circleci/postgres:11.6-alpine
         name: "db"
         environment:
