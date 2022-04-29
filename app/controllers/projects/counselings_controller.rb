@@ -58,7 +58,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def read
     @project = Project.find(params[:project_id])
     @counseling = Counseling.find(params[:id])
-    @counseling_c = @counseling.counseling_confirmers.find_by(Counseling_confirmer_id: current_user)
+    @counseling_c = @counseling.counseling_confirmers.find_by(counseling_confirmer_id: current_user)
     @counseling_c.switch_read_flag
     @checked_members = @counseling.checked_members
   end
