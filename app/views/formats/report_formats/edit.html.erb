@@ -13,8 +13,7 @@
       <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
     </div>
   </div>
-
-  <%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
+  <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch do |f| %>
     <% @questions.each do |question|%>
       <% @form_number += 1 %>
       <% case question.form_table_type %>
