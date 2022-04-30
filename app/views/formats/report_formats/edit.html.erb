@@ -1,7 +1,7 @@
 <% provide(:title, 'edit report_formats') %>
 
 <%= content_for :side_menu do %>
-  <%= render 'layouts/sidebar' %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="box-reprot-format-edit">
@@ -10,11 +10,10 @@
       <a><%= @project.project_name %></a>
     </div>
     <div class="form-add">
-      <%= link_to "項目を追加", new_project_report_format_path(@project), remote: true, class: "btn btn-outline-orange" %>
+      <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
     </div>
   </div>
-
-  <%= form_with url: update_project_report_format_path(@project), local: true, method: :patch do |f| %>
+  <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch do |f| %>
     <% @questions.each do |question|%>
       <% @form_number += 1 %>
       <% case question.form_table_type %>

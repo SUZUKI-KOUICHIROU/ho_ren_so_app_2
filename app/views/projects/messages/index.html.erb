@@ -1,7 +1,7 @@
 <% provide(:title, 'message index') %>
 
 <%= content_for :side_menu do %>
-  <%= render 'layouts/sidebar' %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="card-box">

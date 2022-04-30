@@ -1,3 +1,7 @@
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
 <h1 class="text-center my-3">報告の編集</h1>
 <% cnt = 1 %>
 <div class="container col-10">
