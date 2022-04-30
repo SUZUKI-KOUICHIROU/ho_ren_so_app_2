@@ -11,6 +11,9 @@ function changeForm() {
 -->
 </script>
 
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
 
 <h1><%= @report.sender_name %>さんの報告</h1>
 <ol>

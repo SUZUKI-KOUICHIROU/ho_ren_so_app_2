@@ -1,4 +1,6 @@
 class Formats::ReportFormatsController < Formats::BaseFormatController
+before_action :project_authorization, only: %i[edit]
+
   # 入力フォーム新規登録アクション
   def create
     @project = Project.find(params[:project_id])
@@ -13,6 +15,7 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム新規登録用モーダルウインドウ表示アクション
   def new
+    @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @position_value =
       if @project.questions.exists?
@@ -28,8 +31,8 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   # 入力フォーム編集ページ表示アクション
   def edit
-    @project = Project.find(params[:project_id])
-    @user = User.find(params[:user_id])
+    # @project = Project.find(params[:project_id])
+    # @user = User.find(params[:user_id])
     @questions = @project.questions.order(:position)
     @form_number = 0
   end
@@ -49,17 +52,21 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
   # 入力フォーム削除アクション
   def destroy
     @project = Project.find(params[:project_id])
-    form = Question.find(params[:question_id])
-    if form.destroy
-      flash[:notice] = '入力フォームを削除しました。'
-    else
-      flash[:alert] = '入力フォームの削除に失敗しました。'
+    form = @project.questions.find(params[:question_id])
+    case
+      when @project.questions.count <= 1 
+        flash[:notice] = '項目を削除できませんでした。※項目は1つ以上必要です。'
+      when form.destroy
+        flash[:notice] = '項目を削除しました。'
+      else
+        flash[:alert] = '項目の削除に失敗しました。'
     end
     redirect_to edit_project_report_format_path(@project)
   end
 
   # 入力フォーム新規登録用モーダルウインドウ内のコンテンツを動的に変化させる処理に関連するajaxアクション
   def replacement_input_forms
+    @user = current_user
     @project = Project.find(params[:project_id])
     @position_value =
       if @project.questions.exists?

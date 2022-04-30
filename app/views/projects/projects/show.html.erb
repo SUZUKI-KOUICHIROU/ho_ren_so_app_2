@@ -1,7 +1,7 @@
 <% provide(:title, @project.project_name) %>
 
 <%= content_for :side_menu do %>
-  <%= render 'project_show_sidebar' %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 <div class="card-box">
   <div class="card">

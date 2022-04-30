@@ -1,3 +1,7 @@
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
 <% provide(:title, "#{@project.project_name}_連絡") %>
 <h1 class="text-center my-3">連絡を作成</h1>
 <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
