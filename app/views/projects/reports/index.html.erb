@@ -122,10 +122,10 @@
                 <% @reports.each do |report|%>
                 
                   <% line_num += 1%>
-                  <% subject = report.answers.find_by(question_id: @first_question.id).value %>
-                  <% if subject.blank? %>
-                    <% subject = report.answers.find_by(question_id: @first_question.id).array_value %>
-                  <% end %>
+                  <%# subject = report.answers.find_by(question_id: @first_question.id).value %>
+                  <%# if subject.blank? %>
+                    <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
+                  <%# end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
                     <div class="subject-name">
                       <%= link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
