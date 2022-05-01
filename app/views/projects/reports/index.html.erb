@@ -38,9 +38,9 @@
                 <% end %>
               </div>
               <div class="table-header">
-                <div class="subject-name">
-                  <%= @report_label_name %>
-                </div>
+                <%# <div class="subject-name"> %>
+                  <%# @report_label_name %>
+                <%# </div> %>
                 <div class="reported-date">
                   報告日
                 </div>
@@ -60,9 +60,9 @@
                     <% subject = report.answers.find_by(question_id: @first_question.id).array_value %>
                   <% end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-                    <div class="subject-name">
-                      <%= link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
-                    </div>
+                    <%# <div class="subject-name"> %>
+                      <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                    <%# </div> %>
                     <div class="reported-date">
                       <%= l(report.updated_at, format: :long) %>
                     </div>
@@ -104,9 +104,9 @@
                 <% end %>
               </div>
               <div class="table-header">
-                <div class="subject-name">
-                  <%= @report_label_name %>
-                </div>
+                <%# <div class="subject-name"> %>
+                  <%# @report_label_name %>
+                <%# </div> %>
                 <div class="reported-date">
                   報告日
                 </div>
