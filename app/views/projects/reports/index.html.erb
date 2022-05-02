@@ -4,6 +4,7 @@
 <% end %>
 
 <div class="card-box">
+  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
   <!-- div class="box-project-select">
     <%#= form_with do |form| %>
       <%#= form.label :project_id, "プロジェクト選択：" %>
@@ -38,6 +39,7 @@
                 <% end %>
               </div>
               <div class="table-header">
+                <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                 <%# <div class="subject-name"> %>
                   <%# @report_label_name %>
                 <%# </div> %>
@@ -55,11 +57,13 @@
                 <% line_num = 0%>
                 <% @you_reports.each do |report|%>
                   <% line_num += 1%>
+                  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                   <%# subject = report.answers.find_by(question_id: @first_question.id).value %>
                   <%# if subject.blank? %>
                     <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
                   <%# end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+                    <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                     <%# <div class="subject-name"> %>
                       <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     <%# </div> %>
@@ -104,6 +108,7 @@
                 <% end %>
               </div>
               <div class="table-header">
+                <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                 <%# <div class="subject-name"> %>
                   <%# @report_label_name %>
                 <%# </div> %>
@@ -122,11 +127,13 @@
                 <% @reports.each do |report|%>
                 
                   <% line_num += 1%>
+                  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                   <%# subject = report.answers.find_by(question_id: @first_question.id).value %>
                   <%# if subject.blank? %>
                     <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
                   <%# end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+                    <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                     <%# <div class="subject-name"> %>
                       <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     <%# </div> %>
@@ -137,6 +144,7 @@
                       <%= report.sender_name %>
                     </div>
                     <div class="report-action">
+                      <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
                       <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
                       <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
                     </div>
