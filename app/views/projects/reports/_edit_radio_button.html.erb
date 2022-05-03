@@ -1,6 +1,6 @@
 <div class="container">
 
-<%= RadioButton.find(@answers.find_by(report_id: @report.id).question_id).label_name %>
+<%= RadioButton.find_by(question_id:@answers.find_by(report_id: @report.id).question_id).label_name %>
 <br>
 <% RadioButton.find(@answers.find_by(report_id: @report.id).question_id).radio_button_option_strings.each do |item| %>
   <%= f.fields_for "answer[#{c}]", mo do |m| %>
