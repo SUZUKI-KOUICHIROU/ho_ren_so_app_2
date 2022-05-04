@@ -41,7 +41,7 @@
           <% when 'date_field' %>
             <% q_type = 'edit_date_field' %>
         <% end %>
-        <%= render partial: q_type, locals: { pattern: answer ,mo: answer, f: f, c: cnt} %>
+        <%= render partial: q_type, locals: { answer: answer, f: f, c: cnt} %>
         <% cnt += 1 %>
       </div>
       <% end %>
