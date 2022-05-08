@@ -1,6 +1,6 @@
 <div class="container">
-<%= TextArea.find(pattern.question_id).label_name %>
-  <%= f.fields_for "answer[#{c}]", mo do |m| %>
+<%= TextArea.find_by(question_id: answer.question_id).label_name %>
+  <%= f.fields_for "answer[#{c}]", answer do |m| %>
   <p style="padding-top: 5px;"><%= m.text_area :value %></p>
   <% end %>
 </div>
