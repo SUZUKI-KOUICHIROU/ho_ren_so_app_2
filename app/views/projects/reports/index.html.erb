@@ -68,7 +68,7 @@
                       <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     <%# </div> %>
                     <div class="reported-date">
-                      <%= l(report.updated_at, format: :long) %>
+                      <%= link_to l(report.updated_at, format: :long), user_project_report_path(@user, @project, report) %>
                     </div>
                     <div class="report-confirmer">
                       <%= report.report_confirmers.where(report_confirmation_flag: true).count %>人
