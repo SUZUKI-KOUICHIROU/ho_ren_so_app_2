@@ -24,6 +24,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
       @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
       flash[:success] = 'プロジェクトを新規登録しました。'
       redirect_to user_project_path(@user, @project)
+      @project.create_format(title: '件名')
     else
       flash[:danger] = 'プロジェクト新規登録に失敗しました。'
       redirect_to user_projects_path(@user)

@@ -106,7 +106,10 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
-    params.require(:report).permit(:id, :user_id, :project_id,
-                                   answers_attributes: [:id, :question_type, :question_id, :value, array_value: []])
+    params.require(:report).permit(:id, :user_id, :project_id, :title,
+      answers_attributes: [
+        :id, :question_type, :question_id, :value, array_value: []
+      ]
+    )
   end
 end

@@ -13,7 +13,18 @@
       <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
     </div>
   </div>
-  <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch do |f| %>
+  <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch  do |f| %>
+    <%= f.fields_for 'format_attribute[]', @format do |format| %>
+    <div class='form'>
+      <div class='label-box'>
+        <p><%= format.label :title, "タイトル項目", class: 'text-right' %></p>
+        <%= format.text_field :title, class: 'form-control' %>
+        <%= format.label "フォームの種類:" %>
+        <%= format.label '記述式', class: 'font-weight-bold'%>
+      </div>
+      <p class='annotation'>※この項目は順番の変更は行えません</p>
+    </div>
+    <% end %>
     <% @questions.each do |question|%>
       <% @form_number += 1 %>
       <% case question.form_table_type %>
@@ -28,7 +39,7 @@
     </div>
   <% end %>
 </div>
-
+  
 
 <!--入力フォーム新規登録用モーダルウインドウ表示-->
 <div class="modal fade" id="form-new" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>

@@ -39,10 +39,9 @@
                 <% end %>
               </div>
               <div class="table-header">
-                <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                <%# <div class="subject-name"> %>
-                  <%# @report_label_name %>
-                <%# </div> %>
+                <div class="subject-name">
+                  <%=@project.format.title%>
+                </div>
                 <div class="reported-date">
                   報告日
                 </div>
@@ -63,12 +62,11 @@
                     <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
                   <%# end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-                    <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                    <%# <div class="subject-name"> %>
-                      <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
-                    <%# </div> %>
+                    <div class="subject-name">
+                      <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                    </div>
                     <div class="reported-date">
-                      <%= link_to l(report.updated_at, format: :long), user_project_report_path(@user, @project, report) %>
+                      <%= l(report.updated_at, format: :long) %>
                     </div>
                     <div class="report-confirmer">
                       <%= report.report_confirmers.where(report_confirmation_flag: true).count %>人
