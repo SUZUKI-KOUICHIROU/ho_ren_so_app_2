@@ -15,51 +15,62 @@ function changeForm() {
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<h1><%= @report.sender_name %>さんの報告</h1>
-<h3>タイトル</h3>
-<p><%= @report.title %></p>
-<ol>
-  <% @answers.each do |answer| %>
-  <div class="container" style="padding: 5px">
-  <li>
-    <% case answer.question_type %>
-    <% when 'text_field' %>
-      <%= TextField.find_by(question_id: answer.question_id).label_name %>
-    <% when 'text_area' %>
-      <%= TextArea.find_by(question_id: answer.question_id).label_name %>
-    <% when 'radio_button' %>
-      <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
-    <% when 'check_box' %>
-      <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
-      <br>
-      <% if answer.array_value.count != 0 %>
-        <ul>
-          <% answer.array_value.each do |buf| %>
-            <li><%= buf %></li>
+<div class="card-box ">
+  <div class="card">
+    <div class="card-header card-header-radius">
+      <%= @report.sender_name %>さんの報告
+    </div>
+    <div class="card-body">
+      <% @answers.each do |answer| %>
+      <div class="container" style="padding: 5px">
+        <li class="card-title-frame">
+          <span>
+          <% case answer.question_type %>
+          <% when 'text_field' %>
+            <%= TextField.find_by(question_id: answer.question_id).label_name %>
+          <% when 'text_area' %>
+            <%= TextArea.find_by(question_id: answer.question_id).label_name %>
+          <% when 'radio_button' %>
+            <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
+          <% when 'date_field' %>
+            <%= DateField.find_by(question_id: answer.question_id).label_name %>
+          <% when 'check_box' %>
+            <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
+          <% when 'select' %>
+            <%= Select.find_by(question_id: answer.question_id).label_name %>
           <% end %>
-        </ul>
-      <% elsif %>
-        <%= '回答なし' %>
+          </span>
+        </li>
+        <% if answer.array_value.count != 0 %>
+            <% answer.array_value.each do |buf| %>
+              <div class="card-text ml-0">
+                <%= buf %>
+              </div>
+            <% end %>
+        <% elsif answer.value != '' %>
+          <div class="card-text ml-0">
+            <%= answer.value %>
+          </div>
+        <% else %>
+          <div class="card-text ml-0">
+            回答なし
+          </div>
+        <% end %>
+      </div>
       <% end %>
-    <% when 'select' %>
-      <%= Select.find_by(question_id: answer.question_id).label_name %>
-    <% end %>
-    </li>
-    <%= answer.value != '' ? answer.value : '回答なし' %>
+      <% if @project.project_leader_id == @user.id %>
+        <p><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger"></p>
+      <% end %>
+      <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
+          <p>コメント</p>
+        <p><%= @report.remanded_reason %></p>
+      <% end %>
+      <div id="formblock" style="display: none">
+        <%= render partial: 'reason', locals: {report: @report} %>
+      </div>
+    </div>
   </div>
-  <% end %>
-</ol>
-<% if @project.project_leader_id == @user.id %>
-  <p><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger"></p>
-<% end %>
-<% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
-    <p>コメント</p>
-  <p><%= @report.remanded_reason %></p>
-<% end %>
-<div id="formblock" style="display: none">
-  <%= render partial: 'reason', locals: {report: @report} %>
-</div>
-<div class="center">
-  <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
-  <%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-dark col-2" %>
+  <div class="text-right mt-3">
+    <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
+  </div>
 </div>

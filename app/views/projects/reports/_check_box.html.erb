@@ -2,6 +2,6 @@
   <%= pattern.check_box.label_name %>
   <br>
   <% pattern.check_box.check_box_option_strings.each do |box| %>
-   <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false}, box[:option_string] %><%= box.option_string %>
+    <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false}, box[:option_string] %><%= box.option_string %>
   <% end %> 
 </div>
