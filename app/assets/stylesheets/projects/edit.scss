@@ -1,0 +1,58 @@
+
+.projects-format-edit {
+  margin: 5rem auto 5rem;
+  width: 50%;
+}
+
+.projects-format-edit .form-body {
+  background-color: #d8d8d8;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.project-edit-detail {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid gray;
+  margin-bottom: 1rem;
+}
+
+.project-edit-detail:last-child {
+  margin-bottom: 0rem;
+}
+
+.project-edit-detail label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.project-edit-radio {
+  display: flex;
+}
+
+.project-edit-radio label {
+  display: inline;
+  margin-bottom: 0.5rem;
+  padding-right: 1.5rem;
+}
+
+.project-edit-report-frequency {
+  display: flex;
+}
+
+.project-edit-report-frequency div {
+  padding: 6px;
+}
+
+.project-edit-week-select {
+  display: flex;
+}
+
+.project-edit-week-select div:first-child {
+  padding: 6px 6px 6px 0;  
+}
+
+.project-edit-week-select div {
+  padding: 6px;
+}

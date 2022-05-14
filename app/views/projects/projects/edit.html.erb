@@ -1,0 +1,16 @@
+<% provide(:title, @project.project_name) %>
+
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="projects-format-edit">
+  <div class="form-content">
+    <% if @report_frequency_type == "week" %>
+      <%= render partial: "edit_week_form" %>
+    <% else %>
+      <%= render partial: "edit_day_form" %>
+    <% end %>
+  </div>
+</div>
+
