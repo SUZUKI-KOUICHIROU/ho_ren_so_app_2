@@ -43,7 +43,6 @@ class Projects::MessagesController < Projects::BaseProjectController
       end
     else
       #TO ALLが選択されていない時
-      #debugger
       if @message.save
         @message.send_to.each do |t|
           @send = @message.message_confirmers.new(message_confirmer_id: t)

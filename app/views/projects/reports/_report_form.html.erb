@@ -1,6 +1,8 @@
 <%= form_with(model: @report, url: user_project_reports_path(@user, @project), local: true, method: :post) do |rf| %>
   <%= rf.hidden_field :id %>
   <%= rf.hidden_field :user_id %>
+  <%= rf.label :title, class:'title-label' %>
+  <%= rf.text_field :title, class:'report-text'%>
   <!-- div class="box-project-select">
     <%#= rf.label :project_id, "プロジェクト", class: "title-label" %>
     <%#= rf.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},

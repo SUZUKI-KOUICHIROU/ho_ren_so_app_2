@@ -39,7 +39,7 @@
               </div>
               <div class="table-header">
                 <div class="subject-name">
-                  <%= @report_label_name %>
+                  <%=@project.format.title%>
                 </div>
                 <div class="reported-date">
                   報告日
@@ -61,7 +61,7 @@
                   <% end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
                     <div class="subject-name">
-                      <%= link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                      <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
                     <div class="reported-date">
                       <%= l(report.updated_at, format: :long) %>

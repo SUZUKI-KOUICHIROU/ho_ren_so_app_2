@@ -49,7 +49,7 @@
 }
 
 .form {
-  font-weight: 700;
+  // font-weight: 700;
   border: 2px solid #a6a6a6;
   background-color: #ffffff;
   border-radius: 10px;
@@ -103,7 +103,9 @@ margin-bottom: 0;
   width: 50%;
 }
 
-.label-box input[type="text"], .option-box input[type="text"] {
+.label-box input[type="text"],
+.option-box input[type="text"],
+.format-title-box {
   border-style: none;
   box-sizing: border-box;
   height: 50px;
@@ -185,5 +187,9 @@ margin-bottom: 0;
 .sidebar-content {
   color: red;
   font-size: 20px;
+}
+
+p .annotation {
+  font-size: small;
 }
 // border: thin solid;

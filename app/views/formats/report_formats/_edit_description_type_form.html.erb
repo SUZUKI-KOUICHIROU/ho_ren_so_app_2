@@ -25,33 +25,25 @@
         <%= ftf.hidden_field :id %>
         <div class="label-select-box">
           <div class="label-box">
-            <%= ftf.label :label_name, "項目名" %>
+            <p><%= ftf.label :label_name, "項目名" %></p>
             <%= ftf.text_field :label_name, class: 'form-control', required: true %>
-          </div>
-          <div class="select-box">
-            <%= ftf.label :field_type, "フォームの種類" %>
-            <%= ftf.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control', disabled: true } %>
+            <%= ftf.label :field_type, "フォームの種類:" %>
             <%= ftf.hidden_field :field_type %>
+              <% case question.form_table_type %>
+              <% when 'text_field'%>
+                <span class="font-weight-bold">短文テキスト</span>
+              <% when 'text_area'%>
+                <span class="font-weight-bold">長文テキスト</span>
+              <% when 'date_field'%>
+                <span class="font-weight-bold">日付</span>
+              <% end %>
           </div>
         </div>
       <% end %>
     <% end %>
-    <% case question.form_table_type %>
-    <% when 'text_field'%>
-      <div class="text-field-box">
-        <a>記述式テキスト（短文回答）</a>
-      </div>
-    <% when 'text_area'%>
-      <div class="text-area-box">
-        <a>記述式テキスト（長文回答）</a>
-      </div>
-    <% when 'date_field'%>
-      <div class="date-field-box">
-        <a>年 / 月 / 日（カレンダー）</a>
-      </div>
-    <% end %>
+
     <div class="text-common-box">
-      <a>　</a>
+      <a></a>
     </div>
     <div class="form-delete-button">
       <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-outline-danger" %>

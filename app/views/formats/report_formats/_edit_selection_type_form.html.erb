@@ -34,10 +34,15 @@
         <div class="label-box">
           <%= ftf.label :label_name, "項目名" %>
           <%= ftf.text_field :label_name, class: 'form-control', required: true %>
-        </div>
-        <div class="select-box">
           <%= ftf.label :field_type, "フォームの種類" %>
-          <%= ftf.select :field_type, ApplicationHelper.form_option, {}, { class: 'form-control', disabled: true } %>
+          <% case question.form_table_type %>
+              <% when 'radio_button'%>
+                <span class="font-weight-bold">ラジオボタン</span>
+              <% when 'check_box'%>
+                <span class="font-weight-bold">チェックボックス</span>
+              <% when 'select'%>
+                <span class="font-weight-bold">セレクトボックス</span>
+              <% end %>
           <%= ftf.hidden_field :field_type %>
         </div>
       </div>

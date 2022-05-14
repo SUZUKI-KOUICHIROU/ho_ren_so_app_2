@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   attr_accessor :report_frequency_selection, :week_select
 
+  has_one  :format, dependent: :destroy
   has_many :project_users, dependent: :destroy
   has_many :users, through: :project_users
   has_many :reports, dependent: :destroy

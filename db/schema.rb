@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_15_130724) do
+ActiveRecord::Schema.define(version: 2022_05_14_022822) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -78,6 +78,14 @@ ActiveRecord::Schema.define(version: 2022_03_15_130724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_delegations_on_project_id"
+  end
+
+  create_table "formats", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_formats_on_project_id"
   end
 
   create_table "joins", force: :cascade do |t|
@@ -184,6 +192,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_130724) do
     t.string "sender_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end

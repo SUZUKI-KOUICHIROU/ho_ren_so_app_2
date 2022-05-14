@@ -16,6 +16,8 @@ function changeForm() {
 <% end %>
 
 <h1><%= @report.sender_name %>さんの報告</h1>
+<h3>タイトル</h3>
+<p><%= @report.title %></p>
 <ol>
   <% @answers.each do |answer| %>
   <div class="container" style="padding: 5px">

@@ -35,11 +35,15 @@ before_action :project_authorization, only: %i[edit]
     # @user = User.find(params[:user_id])
     @questions = @project.questions.order(:position)
     @form_number = 0
+    @format = @project.format
   end
 
   # 入力フォーム編集アクション
   def update
-    @project = Project.find(params[:project_id])
+    # formatモデルの内容を更新する処理
+    # paramsの代わりにupdate_formats_paramsが用いられているので注意
+    format_object = @project.format
+    format_object.update(title: update_formats_params[:format_attribute]["1"][:title])
     params = update_formats_params[:question_attributes]
     params.each do |question_id, items|
       question_object = Question.find(question_id)
@@ -114,34 +118,36 @@ before_action :project_authorization, only: %i[edit]
   # フォーム新規登録並びに編集用/create
   def create_formats_params
     params.require(:question).permit(:id, :form_table_type, :position,
-                                     text_field_attributes: %i[id label_name field_type],
-                                     text_area_attributes: %i[id label_name field_type],
-                                     date_field_attributes: %i[id label_name field_type],
-                                     radio_button_attributes: [:id, :label_name, :field_type, {
-                                       radio_button_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }],
-                                     check_box_attributes: [:id, :label_name, :field_type, {
-                                       check_box_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }],
-                                     select_attributes: [:id, :label_name, :field_type, {
-                                       select_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }])
+      text_field_attributes: %i[id label_name field_type],
+      text_area_attributes: %i[id label_name field_type],
+      date_field_attributes: %i[id label_name field_type],
+      radio_button_attributes: [:id, :label_name, :field_type, { 
+        radio_button_option_strings_attributes: [%i[id option_string _destroy]]
+      }],
+      check_box_attributes: [:id, :label_name, :field_type, { 
+        check_box_option_strings_attributes: [%i[id option_string _destroy]]
+      }],
+      select_attributes: [:id, :label_name, :field_type, { 
+        select_option_strings_attributes: [%i[id option_string _destroy]]
+      }])
   end
 
   def update_formats_params
-    params.permit(question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, {
-                    text_field_attributes: %i[id label_name field_type],
-                    text_area_attributes: %i[id label_name field_type],
-                    date_field_attributes: %i[id label_name field_type],
-                    radio_button_attributes: [:id, :label_name, :field_type, {
-                      radio_button_option_strings_attributes: %i[id option_string _destroy]
-                    }],
-                    check_box_attributes: [:id, :label_name, :field_type, {
-                      check_box_option_strings_attributes: %i[id option_string _destroy]
-                    }],
-                    select_attributes: [:id, :label_name, :field_type, {
-                      select_option_strings_attributes: %i[id option_string _destroy]
-                    }]
-                  }]])
+    params.permit(
+      format_attribute: [:id,[:title]],
+      question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, {
+      text_field_attributes: %i[id label_name field_type],
+      text_area_attributes: %i[id label_name field_type],
+      date_field_attributes: %i[id label_name field_type],
+      radio_button_attributes: [:id, :label_name, :field_type, {
+        radio_button_option_strings_attributes: %i[id option_string _destroy]
+      }],
+      check_box_attributes: [:id, :label_name, :field_type, {
+        check_box_option_strings_attributes: %i[id option_string _destroy]
+      }],
+      select_attributes: [:id, :label_name, :field_type, {
+        select_option_strings_attributes: %i[id option_string _destroy]
+      }]
+    }]])
   end
 end
