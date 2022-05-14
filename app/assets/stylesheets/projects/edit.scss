@@ -45,6 +45,10 @@
   padding: 6px;
 }
 
+.project-edit-report-frequency .box-number {
+  width: 50px;
+}
+
 .project-edit-week-select {
   display: flex;
 }
@@ -55,4 +59,8 @@
 
 .project-edit-week-select div {
   padding: 6px;
+}
+
+.project-edit-week-select .box-week {
+  width: fit-content;
 }
