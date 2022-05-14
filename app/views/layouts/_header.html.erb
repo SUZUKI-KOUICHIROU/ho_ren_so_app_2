@@ -2,7 +2,7 @@
   <% if user_signed_in? %>
     <%= link_to "Horenso_App", root_path, id: "logo", class: "navbar-brand" %>
     <% flash.each do |key, value| %>
-      <%= content_tag(:a, value, class: "flash flash_#{key}") %>
+      <%= content_tag(:a, value, class: "alert alert-#{key} mb-0") %>
     <% end %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
   <% else %>
     <%= link_to "Horenso_App", root_path, id: "logo", class: "navbar-brand" %>
     <% flash.each do |key, value| %>
-      <%= content_tag(:a, value, class: "flash flash_#{key}") %>
+      <%= content_tag(:a, value, class: "alert alert-#{key} mb-0") %>
     <% end %>
   <% end %>
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">

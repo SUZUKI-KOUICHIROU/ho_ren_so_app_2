@@ -38,7 +38,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @project = @user.projects.new
   end
 
-  # プロジェクト編集用モーダルウインドウ表示アクション
+  # プロジェクト編集ページ表示アクション
   def edit
     if @project.project_report_frequency == 7
       @report_frequency_type = 'week'
