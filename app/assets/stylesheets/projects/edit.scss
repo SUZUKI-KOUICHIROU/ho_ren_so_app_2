@@ -1,15 +1,3 @@
-
-.projects-format-edit {
-  margin: 5rem auto 5rem;
-  width: 50%;
-}
-
-.projects-format-edit .form-body {
-  background-color: #d8d8d8;
-  padding: 2rem;
-  border-radius: 10px;
-}
-
 .project-edit-detail {
   background-color: #fff;
   padding: 1rem;
@@ -43,24 +31,4 @@
 
 .project-edit-report-frequency div {
   padding: 6px;
-}
-
-.project-edit-report-frequency .box-number {
-  width: 50px;
-}
-
-.project-edit-week-select {
-  display: flex;
-}
-
-.project-edit-week-select div:first-child {
-  padding: 6px 6px 6px 0;  
-}
-
-.project-edit-week-select div {
-  padding: 6px;
-}
-
-.project-edit-week-select .box-week {
-  width: fit-content;
 }

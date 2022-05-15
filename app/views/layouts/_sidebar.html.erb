@@ -1,7 +1,7 @@
 <div class="container col-2">
   <div class="menu-content shadow">
     <% if project.nil? %>
-      <%= sidebar_link_item('プロジェクト登録', new_user_project_path(user), {remote: true, data: {"turbolinks" => false}}) %>
+      <%= sidebar_link_item('プロジェクト登録', new_user_project_path(user)) %>
     <% else %>
       <%= sidebar_link_item('詳細', user_project_path(user, project)) %>
       <%= sidebar_link_item('報告', new_user_project_report_path(user, project)) %>

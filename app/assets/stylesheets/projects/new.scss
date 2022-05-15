@@ -1,0 +1,57 @@
+// Place all the styles related to the projects::base_project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.box-project-name {
+  margin-bottom: 1.5rem;;
+}
+
+.new-project label {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.project-name-text-box {
+  width: 70%;
+}
+
+.box-project-description {
+  margin-bottom: 1.5rem;
+}
+
+.box-project-radio {
+  margin-bottom: 0.25rem;
+  .project-radio-label {
+    background-color: unset;
+    margin-bottom: 0rem;
+    padding: 0.2rem 0rem;
+    color: unset;
+  }
+}
+
+.box-project-report-frequency {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  label {
+    margin-bottom: 0rem;
+  }
+}
+
+.box-project-next-report-date span {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+//border: thin solid;

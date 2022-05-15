@@ -1,0 +1,39 @@
+.projects-format {
+  margin: 5rem auto 5rem;
+  width: 50%;
+}
+
+.projects-format .form-body {
+  background-color: #d8d8d8;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.box-number {
+  width: 50px;
+}
+
+.box-week {
+  width: fit-content;
+}
+
+.box-project-required {
+  background-color: red;
+  padding: 5px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.project-week-select {
+  display: flex;
+}
+
+.project-week-select div:first-child {
+  padding: 6px 6px 6px 0;
+}
+
+.project-week-select div {
+  padding: 6px;
+}

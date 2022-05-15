@@ -4,7 +4,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="projects-format-edit" id="project-new-edit">
+<div class="projects-format" id="project-new-edit">
   <div class="form-content">
     <% if @report_frequency_type == "week" %>
       <%= render partial: "edit_week_form" %>

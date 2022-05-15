@@ -1,18 +1,18 @@
 <%= form_with(model: @project, url: user_projects_path(@user), local: true, method: :post, id: "project-form") do |f| %>
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
-  <div class="modal-body">
+  <div class="new-project form-body">
     <div class="box-project-name">
-      <%= f.label :project_name, "プロジェクト名：", class: "project-name-label" %>
+      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="box-project-required">必須</span>
       <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="box-project-description">
-      <%= f.label :description, "概要", class: "project-description-label" %>
+      <%= f.label :description, "概要", class: "project-description-label" %><span class="box-project-required">必須</span>
       <%= f.text_area :description, class: "form-control project-description-textarea-box", required: true %>
     </div>
 
     <div class='box-project-radio'>
-      <%= f.label :project_report_frequency, "報告頻度：" %>
+      <%= f.label :project_report_frequency, "報告頻度" %><span class="box-project-required">必須</span><br>
       <%= f.radio_button :report_frequency_selection, :day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}"} %>
       <%= f.label :report_frequency_selection_day, "日数で設定", class: "project-radio-label" %>
 
@@ -27,16 +27,13 @@
     <div class="box-project-next-report-date">
       <a id="project-next-report-date">
         <% week = ApplicationHelper.weeks[Date.current.tomorrow.wday]%>
-        次回報告日：<%= Date.current.tomorrow.strftime("%Y年%-m月%d日(#{week})")%>
+        <span>次回報告日</span><br><%= Date.current.tomorrow.strftime("%Y年%-m月%d日(#{week})")%>
       </a>
       <%= f.hidden_field :project_next_report_date, :value => Date.current.tomorrow %>
     </div>
   </div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-light btn-outline-secondary" data-dismiss="modal">
-      キャンセル
-    </button>
+  <div class="text-right mt-3">
       <%= f.submit "新規登録", class: "btn btn-outline-orange btn-new", id: "project-create" %>
   </div>
 <% end %>
