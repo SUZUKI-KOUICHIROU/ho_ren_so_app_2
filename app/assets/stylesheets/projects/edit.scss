@@ -1,20 +1,3 @@
-.project-edit-detail {
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid gray;
-  margin-bottom: 1rem;
-}
-
-.project-edit-detail:last-child {
-  margin-bottom: 0rem;
-}
-
-.project-edit-detail label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
 .project-edit-radio {
   display: flex;
 }
@@ -23,12 +6,4 @@
   display: inline;
   margin-bottom: 0.5rem;
   padding-right: 1.5rem;
-}
-
-.project-edit-report-frequency {
-  display: flex;
-}
-
-.project-edit-report-frequency div {
-  padding: 6px;
 }
