@@ -1,42 +1,38 @@
 <%= form_with(model: @project, url: user_project_path(@user, @project), local: true, method: :patch, id: "project-form") do |f| %>
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
-  <div class="form-body">
+  <div class="project form-body">
     <div class="project-detail">
-      <%= f.label :project_name, "プロジェクト名"%>
-      <%= f.text_field :project_name, class: "form-control project-name-text-box", id: "project-new-edit", placeholder: "最大20文字", maxlength: 20, required: true %>
+      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="project-required">必須</span>
+      <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :description, "概要" %>
-      <%= f.text_area :description, class: "form-control project-description-textarea-box", id: "project-new-edit", required: true %>
+      <%= f.label :description, "概要", class: "project-description-label" %><span class="project-required">必須</span>
+      <%= f.text_area :description, class: "form-control project-description-textarea-box", required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告頻度" %>
-      <div class="project-edit-radio">
-        <div>
-          <%= f.radio_button :report_frequency_selection, :edit_day, checked: true, class: "project-radio", id: "project-new-edit", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
-          <%= f.label :report_frequency_selection_edit_day, "日数で設定", class: "project-radio-label" %>
-        </div>
-        <div>
-          <%= f.radio_button :report_frequency_selection, :edit_week, class: "project-radio", id: "project-new-edit", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
-          <%= f.label :report_frequency_selection_edit_week, "曜日で設定", class: "project-radio-label" %>
-        </div>
-      </div>
+      <%= f.label :project_report_frequency, "報告頻度" %><span class="project-required">必須</span><br>
+      <%= f.radio_button :report_frequency_selection, :edit_day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
+      <%= f.label :report_frequency_selection_edit_day, "日数で設定", class: "project-radio-label" %>
+      <%= f.radio_button :report_frequency_selection, :edit_week, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
+      <%= f.label :report_frequency_selection_edit_week, "曜日で設定", class: "project-radio-label" %>
     </div>
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告回数" %>
+      <%= f.label :project_report_frequency, "報告回数" %><span class="project-required">必須</span>
       <div class="project-report-frequency">
         <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number", id: "project_project_report_frequency", required: true %>
         <div>日に1回</div>
       </div>
     </div>
-    <div class="project-edit-next-report-date project-detail">
-      <a id="project-next-report-date">
-        <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
-        次回報告日：<%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
-      </a>
-      <%= f.hidden_field :project_next_report_date, :value => @project.project_next_report_date, id: "project_project_next_report_date" %>
+    <div class="project-detail">
+      <div class="project-next-report-date">
+        <a id="project-next-report-date">
+          <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
+          <span>次回報告日</span><br><%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
+        </a>
+        <%= f.hidden_field :project_next_report_date, :value => @project.project_next_report_date, id: "project_project_next_report_date" %>
+      </div>
     </div>
   </div>
   <div class="text-right mt-3">
