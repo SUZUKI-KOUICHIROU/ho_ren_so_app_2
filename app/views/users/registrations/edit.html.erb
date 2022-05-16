@@ -5,18 +5,18 @@
 <% end %>
 
 <%= render "users/shared/error_messages", resource: resource %>
-<div class="projects-format-edit">
+<div class="projects-format">
   <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), method: :put, local: true) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3"><%= current_user.user_name %>情報編集</h1>
-      <div class="form-body">
-        <div class="project-edit-detail">
-          <%= f.label :user_name, "氏名"%>
-          <%= f.text_field :user_name, autofocus: true, autocomplete: "name" ,class: "text-name" %>
+      <div class="project form-body">
+        <div class="project-detail">
+          <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="project-required">必須</span>
+          <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control" %>
         </div>
-        <div class="project-edit-detail">
-          <%= f.label :email, "メールアドレス", class: "email-label" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
+        <div class="project-detail">
+          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
         </div>
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -25,28 +25,29 @@
           </div>
         <% end %>
 
-        <div class="project-edit-detail">
-          <%= f.label :password %>(変更する場合のみ入力)<br />
+        <div class="project-detail">
+          <%= f.label :password, class:'project-description-label' %><br />
+          (変更する場合のみ入力)
           <%= f.password_field :password, class: "form-control" %>
           <% if @minimum_password_length %>
             <em><%= @minimum_password_length %> 文字以上で入力してください</em>     
           <% end %>
         </div>
 
-        <div class="project-edit-detail">
-          <%= f.label :password_confirmation %><br />
+        <div class="project-detail">
+          <%= f.label :password_confirmation, class:'project-description-label' %>
           <%= f.password_field :password_confirmation, class: "form-control" %>
         </div>
 
         <div class="center">
           <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
           <% bln_leader = resource.project_leader? %>              
-          <%= button_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger", disabled: bln_leader %>
-          <% if bln_leader %>
-            <p class="text-danger">アカウント削除を行うには、リーダーを務めているプロジェクトが存在しないことが条件となります。</p>
-          <% end %>
         </div>
       </div>
+      <%= button_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger", disabled: bln_leader %>
+      <% if bln_leader %>
+        <p class="text-danger ">アカウント削除を行うには、リーダーを務めているプロジェクトが存在しないことが条件となります。</p>
+      <% end %>
     </div>
   <% end %>
 </div>
