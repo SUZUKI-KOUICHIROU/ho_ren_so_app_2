@@ -1,44 +1,46 @@
 <%= form_with(model: @project, url: user_projects_path(@user), local: true, method: :post, id: "project-form") do |f| %>
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
-  <div class="modal-body">
-    <div class="box-project-name">
-      <%= f.label :project_name, "プロジェクト名：", class: "project-name-label" %>
+  <div class="project form-body">
+    <div class="project-detail">
+      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="project-required">必須</span>
       <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
-    <div class="box-project-description">
-      <%= f.label :description, "概要", class: "project-description-label" %>
+    <div class="project-detail">
+      <%= f.label :description, "概要", class: "project-description-label" %><span class="project-required">必須</span>
       <%= f.text_area :description, class: "form-control project-description-textarea-box", required: true %>
     </div>
 
-    <div class='box-project-radio'>
-      <%= f.label :project_report_frequency, "報告頻度：" %>
+    <div class="project-detail">
+      <%= f.label :project_report_frequency, "報告頻度" %><span class="project-required">必須</span><br>
       <%= f.radio_button :report_frequency_selection, :day, class: "project-radio", data: { user_id: "#{@user.id}"} %>
       <%= f.label :report_frequency_selection_day, "日数で設定", class: "project-radio-label" %>
 
       <%= f.radio_button :report_frequency_selection, :week, checked: true, class: "project-radio", data: { user_id: "#{@user.id}"} %>
       <%= f.label :report_frequency_selection_week, "曜日で設定", class: "project-radio-label" %>
     </div>
-    <div class="box-project-report-frequency">
-      <div class="weekly">毎週</div>
-      <%= f.select(:week_select, options_for_select(ApplicationHelper.weeks.map{|c|[c]}, "月"), {}, {class: 'form-control box-week', required: true}) %>
-      <%= f.hidden_field :project_report_frequency, :value => 7 %>
-      <div class="weekday">曜日</div>
+    <div class="project-detail box-project-report-frequency">
+      <%= f.label :week_select, "報告日" %><span class="project-required">必須</span>
+      <div class="project-week-select">
+        <div>毎週</div>
+        <%= f.select(:week_select, options_for_select(ApplicationHelper.weeks.map{|c|[c]}, "月"), {}, {class: 'form-control box-week', required: true}) %>
+        <%= f.hidden_field :project_report_frequency, :value => 7 %>
+        <div>曜日</div>
+      </div>
     </div>
 
-    <div class="box-project-next-report-date">
-      <a id="project-next-report-date">
-        <% week = ApplicationHelper.weeks[Date.current.next_week(:monday).wday]%>
-        次回報告日：<%= Date.current.next_week(:monday).strftime("%Y年%-m月%d日(#{week})")%>
-      </a>
-      <%= f.hidden_field :project_next_report_date, :value => Date.current.next_week(:monday) %>
+    <div class="project-detail">
+      <div class="project-next-report-date">
+        <a id="project-next-report-date">
+          <% week = ApplicationHelper.weeks[Date.current.next_week(:monday).wday]%>
+          <span>次回報告日</span><br><%= Date.current.next_week(:monday).strftime("%Y年%-m月%d日(#{week})")%>
+        </a>
+        <%= f.hidden_field :project_next_report_date, :value => Date.current.next_week(:monday) %>
+      </div>
     </div>
   </div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-light btn-outline-secondary" data-dismiss="modal">
-      キャンセル
-    </button>
+  <div class="text-right mt-3">
       <%= f.submit "新規登録", class: "btn btn-outline-orange btn-new", id: "project-create" %>
   </div>
 <% end %>

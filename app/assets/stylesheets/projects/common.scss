@@ -1,0 +1,124 @@
+.projects-format {
+  margin: 5rem auto 5rem;
+  width: 50%;
+}
+
+.projects-format .form-body {
+  background-color: #d8d8d8;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.box-number {
+  width: 50px;
+}
+
+.box-week {
+  width: fit-content;
+}
+
+.project-required {
+  background-color: red;
+  padding: 5px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.project-week-select {
+  display: flex;
+}
+
+.project-week-select div:first-child {
+  padding: 6px 6px 6px 0;
+}
+
+.project-week-select div {
+  padding: 6px;
+}
+
+.project-detail {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid gray;
+  margin-bottom: 1rem;
+}
+
+.project-detail:last-child {
+  margin-bottom: 0rem;
+}
+
+.project-detail label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.project-report-frequency {
+  display: flex;
+}
+
+.project-report-frequency div {
+  padding: 6px;
+}
+
+.project-next-report-date span {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.box-project-name {
+  margin-bottom: 1.5rem;;
+}
+
+.project label {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.project-name-text-box {
+  width: 70%;
+}
+
+.box-project-description {
+  margin-bottom: 1.5rem;
+}
+
+.box-project-radio {
+  margin-bottom: 0.25rem;
+}
+
+.project .project-radio-label {
+  background-color: unset;
+  margin-bottom: 0rem;
+  padding: 0.2rem 0rem;
+  color: unset;
+}
+
+.box-project-next-report-date span {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.project .project-next-report-date {
+  width: unset;
+}
