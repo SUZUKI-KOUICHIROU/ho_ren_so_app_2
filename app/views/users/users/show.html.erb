@@ -4,34 +4,33 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="sessions-new-img">
-  <div class="sessions-new-container">
-    <div class="container">      
-        <div class="login-box">
-          <div class="box-inner">
-            <h1>ユーザー情報</h1></p>
-              <div class="row">
-                <table class="table table-bordered" id="table-user-description">
-                <tbody>
-                  <tr>
-                  <th class="active col-md-2"><%= User.human_attribute_name :氏名 %></th>
-                    <td><%= @user.user_name %></td>
-                  </tr>
-                  <tr>
-                    <th class="active col-md-2"><%= User.human_attribute_name :メールアドレス %></th>
-                    <td><%= @user.email %></td>
-                  </tr>
-                </tbody>
-                </table>
-                <div class="center">
-                  <%= link_to "ユーザー情報の編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %>
-                  <%= link_to "戻る", :back, class: "btn btn-block btn-outline-secondary" %>
-                </div>  
-              </div>
-            </div>
-          </div>
+
+<div class="card-box col-md-10">
+  <div class="card">
+    <div class="card-header card-header-radius">
+      <%= current_user.user_name %>
+    </div>
+    <div class="card-body">
+      <div class="container" style="padding: 5px">
+        <span class='card-title-frame'>
+          <span>
+            氏名
+          </span>
+        </span>
+        <div class="card-text ml-0">
+          <%= @user.user_name %>
         </div>
+        <span class='card-title-frame'>
+          <span>メールアドレス</span>
+        </span>
+        <div class="card-text ml-0">
+          <%= @user.email %>
+        </div>
+        <div class='text-right'>
+          <%= link_to "ユーザー情報の編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %>
+        </div> 
       </div>
     </div>
   </div>
 </div>
+
