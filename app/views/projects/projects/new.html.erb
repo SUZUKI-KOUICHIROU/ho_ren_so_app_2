@@ -1,0 +1,11 @@
+<% provide(:title, 'Create project') %>
+
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: nil } %>
+<% end %>
+
+<div class="projects-format" id="project-new-edit">
+  <div class="form-content">
+    <%= render partial: "day_form" %>
+  </div>
+</div>

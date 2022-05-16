@@ -4,8 +4,9 @@
 @import "formats/format";
 @import "sidebar";
 @import "static_pages";
-@import "projects/modal_project";
+@import "projects/common";
 @import "projects/index";
+@import "projects/new";
 @import "projects/edit";
 @import "reports/report";
 @import "pagination";
