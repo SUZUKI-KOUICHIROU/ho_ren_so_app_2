@@ -2,7 +2,6 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<h1 class="text-center my-3">報告の編集</h1>
 <% cnt = 1 %>
 <div class="container col-10">
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
@@ -18,38 +17,37 @@
       </div>
     </div>
   <% end %>
-  <div class="box-reprot-edit">
-    <div class="edit-report-header">
-      <div class="project-name-box">
-        <a><%= @project.project_name %></a>
+  <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
+    <div class="box-reprot-edit">
+      <div class="edit-report-header">
+        <div class="edit-report-title">
+          <a><%= @project.project_name %></a>
+        </div>
       </div>
-    </div>
-    <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
-      <% @answers.each do |answer| %>
-      <div class="form" style="padding: 5px">
-        <% case answer.question_type %>
-          <% when 'text_field' %>
-            <% q_type = 'edit_text_field' %>
-          <% when 'text_area' %>
-            <% q_type = 'edit_text_area' %>
-          <% when 'radio_button' %>
-            <% q_type = 'edit_radio_button' %>
-          <% when 'select' %>
-            <% q_type = 'edit_select' %>
-          <% when 'check_box' %>
-            <% q_type = 'edit_check_box' %>
-          <% when 'date_field' %>
-            <% q_type = 'edit_date_field' %>
+        <% @answers.each do |answer| %>
+        <div class="report-edit-form">
+          <% case answer.question_type %>
+            <% when 'text_field' %>
+              <% q_type = 'edit_text_field' %>
+            <% when 'text_area' %>
+              <% q_type = 'edit_text_area' %>
+            <% when 'radio_button' %>
+              <% q_type = 'edit_radio_button' %>
+            <% when 'select' %>
+              <% q_type = 'edit_select' %>
+            <% when 'check_box' %>
+              <% q_type = 'edit_check_box' %>
+            <% when 'date_field' %>
+              <% q_type = 'edit_date_field' %>
+          <% end %>
+          <%= render partial: q_type, locals: { answer: answer, f: f, c: cnt} %>
+          <% cnt += 1 %>
+        </div>
         <% end %>
-        <%= render partial: q_type, locals: { answer: answer, f: f, c: cnt} %>
-        <% cnt += 1 %>
-      </div>
-      <% end %>
-      <%# レンダリング %>
-  </div>
-  <div class="center">
-    <%= f.submit '変更', class: "btn btn-outline-orange col-2" %>
-    <%= link_to '戻る', user_project_reports_path(@user,@project),class: "btn btn-light btn-outline-secondary col-2", style: "margin-left: 10px;" %>
-  </div>
+        <%# レンダリング %>
+    </div>
+    <div class="text-right mt-3">
+      <%= f.submit '変更', class: "btn btn-outline-orange col-2" %>
+    </div>
   <% end %>
 </div>

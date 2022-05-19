@@ -1,7 +1,7 @@
-<div class="container">
-  <%= Select.find_by(question_id: answer.question_id).label_name %>
+<div  class="col-sm-6 pl-0">
+  <span><%= Select.find_by(question_id: answer.question_id).label_name %></span>
   <br>
   <%= f.fields_for "answer[#{c}]", answer do |m| %>
-    <%= m.collection_select(:value, Select.find_by(question_id: answer.question_id).select_option_strings.all, :option_string, :option_string) %>
+    <%= m.collection_select(:value, Select.find_by(question_id: answer.question_id).select_option_strings.all, :option_string, :option_string, { prompt: false } ,{class: "form-control"}) %>
   <% end %>
 </div>
