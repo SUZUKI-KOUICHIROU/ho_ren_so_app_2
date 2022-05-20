@@ -2,6 +2,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
+<h1 class="text-center mt-5">報告の編集</h1>
 <% cnt = 1 %>
 <div class="container col-10">
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
