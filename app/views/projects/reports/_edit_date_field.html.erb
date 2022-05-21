@@ -1,8 +1,8 @@
-<div class="container">
+<div class="col-sm-6 pl-0">
 <% c -= 1 %>
 <% defalutDate = @answers[c][:value] %>
-<%= DateField.find_by(question_id: answer.question_id).label_name %>
-  <%= f.fields_for "answer[#{c}]", answer do |m| %>
-  <p style="padding-top: 5px;"><%= m.date_field :value, value: defalutDate %></p>
+<span><%= DateField.find_by(question_id: answer.question_id).label_name %></span>
+  <%= f.fields_for "answer[#{c+1}]", answer do |m| %>
+  <div><%= m.date_field :value, value: defalutDate, class: "form-control" %></div>
   <% end %>
 </div>
