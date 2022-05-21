@@ -78,11 +78,10 @@
 }
 
 .box-reprot-edit {
-  margin: 3rem auto 2rem;
+  margin: 3rem auto 0rem;
   padding-bottom: 2rem;
   background-color: #d8d8d8;
   border-radius: 10px;
-  width: 50%;
 }
 
 .box-comment {
@@ -95,4 +94,36 @@
   font-weight: 700;
   padding: 2rem 2rem 1rem 2rem;
 }
+
+.edit-report-title {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.report-edit-form {
+  margin: 0 2rem 1rem 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid gray;
+  margin-bottom: 1rem;
+}
+
+.report-edit-form span {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  background-color: #fc8022;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+
+  
 //border: thin solid;

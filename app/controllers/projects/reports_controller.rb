@@ -30,13 +30,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report.sender_id = @user.id
     @report.sender_name = @user.user_name
     if @report.save
-      flash[:seccess] = '報告を登録しました。'
+      flash[:success] = '報告を登録しました。'
     else
       flash[:danger] = '報告の登録に失敗しました。'
     end
     @report.save
     @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
-    flash[:seccess] = "報告を登録しました。"
+    flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
 
@@ -73,7 +73,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       cnt += 1
     end
     @report.update(remanded: false)
-    flash[:seccess] = "報告を編集しました。"
+    flash[:success] = "報告を編集しました。"
     redirect_to user_project_path(@user, @project)
   end
 
@@ -83,7 +83,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     if params[:report][:remanded_reason] != ""
       @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
       if @report.save
-        flash[:seccess] = "登録完了しました。"
+        flash[:success] = "登録完了しました。"
       else
         flash[:danger] = "登録に失敗しました。"
       end
