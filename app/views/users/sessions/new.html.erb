@@ -1,73 +1,49 @@
 <% provide(:title, "Top") %>
-<div class="sessions-new-img">
-  <div class="sessions-new-container">
-    <div class="container">
-      <div class="row justify-content-around">
-        <!--div class="app-overview col-6">
-          <div class="report-overview">
-            <p>報告の定義</p>
-            <p>報告とは、任務を受けた者がその状況を告げ知らせることを意味します。</p>
-          </div>
-          <div class="contact-overview">
-            <p>連絡の定義</p>
-            <p>連絡とは、情報を知らせることを意味します。事実のみを伝えることで自分の意見などは必要ありません。</p>
-          </div>
-          <div class="counseling-overview">
-            <p>相談の定義</p>
-            <p>相談とは、物事を決定する際に他の人に意見を求めたり、話し合いをすることを意味します。</p>
-          </div>
-        </div -->
-        <div class="login-box">
-          <div class="box-inner">
 
-            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-              <h1 class="box-login-title">ログイン</h1>
-              <%
-=begin%>
- <p class="box-login-text">メールアドレスとパスワードを入力してログインして下さい。</p> 
-<%
-=end%>
-              <%= f.label :email, "メールアドレス", class: "email-label" %>
-              <div class="box-email">
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class: "text-email" %>
-              </div>
-              <%= f.label :password, "パスワード", class: "password-label" %>
-              <div class="box-password">
-                <%= f.password_field :password, autocomplete: "current-password" %>
-              </div>
+<%= render "users/shared/error_messages", resource: resource %>
 
-              <div class="a-row">
-                <% if devise_mapping.rememberable? %>
-                  <div class="column-left remember">
-                    <%= f.check_box :remember_me %>
-                    <%= f.label :remember_me, "ログインしたままにする", class: "remember-login" %>
-                  </div>
-                <% end %>
-                <div class="column-right">
-                  <%= link_to "パスワードを忘れた場合", new_user_password_path %>
-                </div>
-              </div>
+<div class="projects-format", style="margin:3rem auto auto auto;">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="form-content">
+      <h1 class="text-center my-3">ログイン</h1>
+      <div class="project form-body">
 
-              <div class="box-login">
-                <%= f.submit "ログイン", class: "btn btn-outline-secondary btn-block" %>
-                <!-- div class="legal-text">
-                  続行することで、Horenso_Appの
-                  <%= link_to "利用規約", "#" %>
-                  および
-                  <%= link_to "プライバシー規約", "#" %>
-                  に同意するものとみなされます。
-                </div -->
-              </div>
-            <% end %>
+        <div class="project-detail">
+          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+        </div>
 
-            <div class="box-newusr">
-              <p><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></p>
-              <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block" %>
-            </div>
+        
+        <div class="project-detail">
+          <%= f.label :password, "パスワード", class: "password-label project-description-label" %><span class="project-required">必須</span><br />
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+        </div>
+
+        <div class="a-row project-detail">
+          <% if devise_mapping.rememberable? %>
+            <span class="remember">
+              <%= f.check_box :remember_me %>
+              <%# f.label :remember_me, "ログインしたままにする", class: "remember-login" %>
+              <span class='remember-login'>ログインしたままにする</span>
+            </span>
+          <% end %>
+          <div class="column-right">
+            <%= link_to "パスワードを忘れた場合", new_user_password_path %>
           </div>
         </div>
 
+
+        <div class="center">
+          <%= f.submit "ログイン", class: "btn btn-block btn-outline-orange" %>
+        </div>
       </div>
     </div>
+  <% end %>
+
+  <div class="box-newusr text-center m-2">
+    <h4><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h4>
+    <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block" %>
   </div>
 </div>
+
+
