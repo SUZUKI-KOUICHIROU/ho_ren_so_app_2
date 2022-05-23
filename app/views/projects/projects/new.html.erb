@@ -1,10 +1,12 @@
-<% provide(:title, 'Create project') %>
+<% provide(:title, 'プロジェクト登録') %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: nil } %>
 <% end %>
 
 <div class="projects-format" id="project-new-edit">
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="center">プロジェクト登録</h1>
   <div class="form-content">
     <%= render partial: "day_form" %>
   </div>

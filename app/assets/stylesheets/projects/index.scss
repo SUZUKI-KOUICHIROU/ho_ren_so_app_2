@@ -1,13 +1,14 @@
 ////////// プロジェクト一覧の余白を調整 //////////
 .box-project-index {
-  margin: 5rem 5rem 0 4rem;
+  margin: 2.5rem 5rem 0 4rem;
 }
 
 ////////// 検索に関連する要素の表示位置 //////////
 .box-search {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 2rem;
+  // margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 ////////// 検索のtext_fialdのラベルのデザイン //////////
@@ -31,7 +32,7 @@ margin-bottom: 0;
 ////////// 一覧のヘッダーのデザイン //////////
 .table-header {
   font-weight: 700;
-  padding: 2rem 2rem 0 2rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
   background-color: #d8d8d8;
   border-radius: 10px 10px 0 0;
   div {
@@ -43,7 +44,8 @@ margin-bottom: 0;
 
 ////////// 一覧のボディーのデザイン //////////
 .table-body {
-  padding: 0rem 2rem 2rem 2rem;
+  // padding: 0rem 2rem 2rem 2rem;
+  padding: 0rem 1.5rem 1.5rem 1.5rem;
   background-color: #d8d8d8;
   border-radius: 0 0 10px 10px;
   margin-bottom: 2rem;
@@ -61,8 +63,10 @@ margin-bottom: 0;
 .table-header, .table-line {
   display: flex;
   div {
-    font-size: 1.3rem;
-    padding: 1rem;
+    // font-size: 1.3rem;
+    // padding: 1rem;
+    font-size: 1.2rem;
+    padding: 0.75rem;
   }
 }
 

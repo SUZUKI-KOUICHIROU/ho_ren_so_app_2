@@ -4,8 +4,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(5)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(5)
+    @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
   end
 
   def show

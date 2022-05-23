@@ -1,4 +1,4 @@
-<% provide(:title, 'report index') %>
+<% provide(:title, '報告一覧') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
@@ -12,7 +12,8 @@
       {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "report"}}) %>
     <%# end %>
   </div -->
-  
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="center">報告一覧</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -87,9 +88,6 @@
                   <%= paginate @you_reports %>
                 </div>
               <% end %>
-              <div class="back-btn">
-                <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
-              </div>
             </div>
           </div>
         </div>
@@ -158,9 +156,6 @@
                   <%= paginate @reports %>
                 </div>
               <% end %>
-              <div class="back-btn">
-                <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
-              </div>
             </div>
           </div>
         </div>
