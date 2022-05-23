@@ -19,14 +19,14 @@
     </div>
   <% end %>
   <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
-    <div class="box-reprot-edit">
+    <div class="box-report">
       <div class="edit-report-header">
         <div class="edit-report-title">
           <a><%= @project.project_name %></a>
         </div>
       </div>
         <% @answers.each do |answer| %>
-        <div class="report-edit-form">
+        <div class="report-form">
           <% case answer.question_type %>
             <% when 'text_field' %>
               <% q_type = 'edit_text_field' %>

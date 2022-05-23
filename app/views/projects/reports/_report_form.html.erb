@@ -1,13 +1,16 @@
 <%= form_with(model: @report, url: user_project_reports_path(@user, @project), local: true, method: :post) do |rf| %>
-  <%= rf.hidden_field :id %>
-  <%= rf.hidden_field :user_id %>
-  <%= rf.label :title, class:'title-label' %>
-  <%= rf.text_field :title, class:'report-text'%>
-  <!-- div class="box-project-select">
-    <%#= rf.label :project_id, "プロジェクト", class: "title-label" %>
-    <%#= rf.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},
-    {class: "reprt-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false}}) %>
-  </div -->
+  <div class="box-report pt-5">
+    <%= rf.hidden_field :id %>
+    <%= rf.hidden_field :user_id %>
+    <div class="report-form">
+      <span><%= rf.label :title, class: "mb-0" %></span>
+      <%= rf.text_field :title, class:'form-control' %>
+    </div>
+    <!-- div class="box-project-select">
+      <%#= rf.label :project_id, "プロジェクト", class: "title-label" %>
+      <%#= rf.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},
+      {class: "reprt-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false}}) %>
+    </div -->
     <% @questions.each do |question| %>
     <%= rf.fields_for :answers do |af|%>
       <%= af.hidden_field :id %>
@@ -15,47 +18,51 @@
       <%= af.hidden_field :question_id, value: question.id%>
       <% case question.form_table_type %>
       <% when 'text_field' %>
-        <div class="report-text-field-box">
-          <%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
-          <%= af.text_field :value, class: 'report-text' %>
+        <div class="report-form">
+          <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
+          <%= af.text_field :value, class:'form-control' %>
         </div>
       <% when 'text_area' %>
-        <div class="report-text-area-box">
-          <%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
-          <%= af.text_area :value, class: 'report-area' %>
+        <div class="report-form">
+          <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
+          <%= af.text_area :value, class:'form-control' %>
         </div>
       <% when 'date_field' %>
-        <div class="report-date-field-box">
-          <%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
-          <%= af.date_field :value, class: 'report-date' %>
+        <div class="report-form">
+          <div class="col-sm-6 pl-0">
+            <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
+            <%= af.date_field :value, class:'form-control' %>
+          </div>
         </div>
       <% when 'radio_button' %>
-        <div class="report-radio-button-box">
+        <div class="report-form">
           <% radio_option = question.radio_button.radio_button_option_strings %>
-          <%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
+          <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span><br>
           <%= af.collection_radio_buttons(:value, radio_option, :option_string , :option_string, {}, {}) do |r| %>
             <% r.label(class: "radio-label") { r.radio_button(class: "radio-button") + r.text } %>
           <% end %>
         </div>
       <% when 'select' %>
-        <div class="report-select-box">
-          <% select_option = question.select.select_option_strings %>
-          <%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
-          <%= af.collection_select(:value, select_option, :option_string, :option_string, {prompt: "選択してください"}, {class: "report-select"}) %>
+        <div class="report-form">
+          <div class="col-sm-6 pl-0">
+            <% select_option = question.select.select_option_strings %>
+            <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
+            <%= af.collection_select(:value, select_option, :option_string, :option_string, {prompt: "選択してください"}, {class: "form-control"}) %>
+          </div>
         </div>
       <% when 'check_box' %>
-        <div class="report-check-box">
+        <div class="report-form">
           <% check_option = question.check_box.check_box_option_strings %>
-          <%= af.label :array_value, "#{question.send(question.form_table_type).label_name}", class: "title-label" %>
+          <span><%= af.label :array_value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span><br>
           <%= af.collection_check_boxes(:array_value, check_option, :option_string, :option_string, {prompt: "選択してください", include_hidden: false}, {}) do |c| %>
             <% c.label(class: "check-label") { c.check_box(class: "check-button") + c.text } %>
           <% end %>
         </div>
       <% end %>
     <% end %>
-  <% end %>
-  <div class="report-btn">
-    <%= rf.submit '投稿', class: "btn btn-outline-orange" %></br>
-    <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
+    <% end %>
+  </div>
+  <div class="text-right mt-3">
+    <%= rf.submit '投稿', class: "btn btn-outline-orange" %><br>
   </div>
 <% end %>
