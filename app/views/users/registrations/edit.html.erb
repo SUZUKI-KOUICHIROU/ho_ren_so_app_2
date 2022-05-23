@@ -8,7 +8,7 @@
 <div class="projects-format">
   <%= form_with(model: resource, url: registration_path(resource_name), method: :put, local: true) do |f| %>
     <div class="form-content">
-      <h1 class="text-center my-3"><%= current_user.user_name %>情報編集</h1>
+      <h1 class="center"><%= current_user.user_name %>さんの情報編集</h1>
       <div class="project form-body">
         <div class="project-detail">
           <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="project-required">必須</span>

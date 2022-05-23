@@ -1,8 +1,9 @@
 .menu-content {
   height: 100%;
   float: left;
-  font-size: 20px;
+  font-size: 19px;
   width: 15%;
+  min-width: 220px;
   position: fixed;
   left: 0;
   padding-top: 2rem;
@@ -27,10 +28,11 @@
 }
 
 .menu {
-  text-align: center;
+  text-align: left;
+  text-indent: 1.5em;
   a {
     // background: #ffffee;
-    color: #fc8022;
+    color: #6E6E6E;
     // border-radius: 20px;
     text-decoration: none;
     font-weight: bolder;

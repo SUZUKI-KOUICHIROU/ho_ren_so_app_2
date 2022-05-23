@@ -1,10 +1,12 @@
-<% provide(:title, 'All project_members') %>
+<% provide(:title, 'メンバー一覧') %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="box-project-index">
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="center">メンバー一覧</h1>
   <div class="box-search">
     <%= form_with url: project_member_index_path(@user, @project), method: :get, local: true do |form| %>
       <%= form.label :search, "ユーザー名検索：", class: "search-label" %>

@@ -4,6 +4,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 <div class="card-box">
+  <h1 class="center">プロジェクト詳細</h1>
   <div class="card">
     <div class="card-header card-header-radius"><%= @project.project_name %></div>
     <div class="card-body">
@@ -43,10 +44,9 @@
       <% end %>
     </div>
   </div>
-  <% if project_leader? %>
-    <%= link_to "削除", user_project_path(current_user, @project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
-  <% end %>
-  <%#= link_to '一覧へ戻る', user_projects_path(@user, @project),class: "btn btn-outline-secondary", style: "margin: 10px;" %>
+  <%# if project_leader? %>
+    <%#= link_to "削除", user_project_path(current_user, @project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
+  <%# end %>
 </div>
 
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->

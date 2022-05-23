@@ -1,10 +1,11 @@
-<% provide(:title, 'All projects') %>
+<% provide(:title, 'プロジェクト一覧') %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="box-project-index">
+  <h1 class="center">プロジェクト一覧</h1>
   <div class="box-search">
     <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
       <%= form.label :search, "プロジェクト名検索：", class: "search-label" %>
@@ -85,12 +86,9 @@
     <% end %>
     
     <%# begin %>
-  <div class="back-btn">
-      <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
-    </div>
-    <div data-turbolinks="false">
+    <!--div data-turbolinks="false">
         <%= link_to "ユーザー情報", user_path(@user), class: "btn btn-light btn-outline-orange" %>
-      </div>
+    </div-->
   </div>
 </div>
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->

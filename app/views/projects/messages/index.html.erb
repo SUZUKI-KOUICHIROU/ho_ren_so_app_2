@@ -1,4 +1,4 @@
-<% provide(:title, 'message index') %>
+<% provide(:title, '連絡一覧') %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
@@ -12,6 +12,8 @@
       {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "message"}}) %>
     <%# end %>
   </div -->
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="center">連絡一覧</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
