@@ -2,9 +2,10 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div>
-  <h1 class="text-center mt-5">報告の作成</h1>
-  <div class="container col-10">
+<div class="box-project-report">
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="center">報告作成</h1>
+  <div class="container">
     <%= render partial: "report_form" %>
   </div>
 </div>
