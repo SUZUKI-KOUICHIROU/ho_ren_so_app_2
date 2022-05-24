@@ -165,6 +165,11 @@ select_box.select_option_strings.create!( option_string: '肉体的なもの（�
 select_box.select_option_strings.create!( option_string: '精神的なもの（うつなど）' )
 select_box.select_option_strings.create!( option_string: '両方' )
 
+# プロジェクトA用のタイトル作成
+Format.create!( title: '件名',
+                 project_id: 1
+                )
+
 ########## プロジェクトBに報告フォーマットを登録 ##########
 project = Project.find(2)
 position_val = 1
@@ -210,6 +215,11 @@ text_area.build_question( position: position_val,
                           project_id: project.id )
 text_area.save
 position_val += 1
+
+# プロジェクトB用のタイトル作成
+Format.create!( title: '件名',
+                 project_id: 2
+                )
 
 ########## 報告済/未済管理用レコードを作成 ##########
 projects = Project.all
