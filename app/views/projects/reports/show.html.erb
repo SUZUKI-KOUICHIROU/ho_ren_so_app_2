@@ -59,7 +59,7 @@ function changeForm() {
       </div>
       <% end %>
       <% if @project.project_leader_id == @user.id %>
-        <p><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger"></p>
+        <p class="text-center"><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger"></p>
       <% end %>
       <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
           <p>コメント</p>
