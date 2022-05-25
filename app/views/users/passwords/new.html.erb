@@ -1,16 +1,25 @@
-<h2>Forgot your password?</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+<% provide(:title, 'パスワードリセット画面') %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<%= render "users/shared/error_messages", resource: resource %>
+<div class="projects-format" style="margin:3rem auto auto auto;">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <div class="form-content">
+      <h1 class="text-center my-3">パスワードリセット</h1>
+      <div class="project form-body">
+        <div class="project-detail">
+          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id:'users_email' %>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+        <div class="center">
+          <%= f.submit "パスワードリセット", class: "btn btn-block btn-outline-orange" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
-<%= render "users/shared/links" %>
+  <div class="center mt-3">
+    <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-block btn-outline-secondary" %>
+  </div>  
+</div>

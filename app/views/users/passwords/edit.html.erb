@@ -1,25 +1,30 @@
-<h2>Change your password</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+<% provide(:title, 'パスワード設定画面') %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
+ <%= render "users/shared/error_messages", resource: resource %>
+<div class="projects-format" style="margin:3rem auto auto auto;">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <div class="form-content">
+      <h1 class="text-center my-3">パスワード再設定</h1>
+      <div class="project form-body">
+        <%= f.hidden_field :reset_password_token %>
+        <div class="project-detail">
+          <%= f.label :password, "パスワード" , class:'project-description-label' %><span class="project-required">必須</span>
+          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+        <div class="project-detail">
+          <%= f.label :password_confirmation, "パスワード確認" %><span class="project-required">必須</span>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+        <div class="actions">
+          <%= f.submit "パスワード変更", class: "btn btn-block btn-outline-orange" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="center mt-3">
+    <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-block btn-outline-secondary" %>
+  </div>  
+</div>
