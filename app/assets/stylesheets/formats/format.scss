@@ -2,14 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.box-reprot-format {
+  margin: 2.5rem auto 5rem;
+  width: 50%;
+}
 // 報告フォーマット編集フォーム全体の表示位置
 .box-reprot-format-edit,
 .box-message-format-new,
 .box-counseling-format-new {
-  margin: 5rem auto 5rem;
   background-color: #d8d8d8;
   border-radius: 10px;
-  width: 50%;
 }
 //ヘッダー部分のレイアウト
 .edit-report-format-header,
