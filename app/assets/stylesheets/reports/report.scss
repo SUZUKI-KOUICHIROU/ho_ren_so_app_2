@@ -101,5 +101,19 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
+
+.report-form-color {
+  background-color: #fff5ee;
+}
+
+.report-form .report-required {
+  background-color: red;
+  padding: 5px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+
   
 //border: thin solid;
