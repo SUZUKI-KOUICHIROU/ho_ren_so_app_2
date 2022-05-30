@@ -10,6 +10,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def show
     set_project_and_members
+    @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
     @answers = @report.answers
   end
@@ -74,7 +75,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
     @report.update(remanded: false)
     flash[:success] = "報告を編集しました。"
-    redirect_to user_project_path(@user, @project)
+    redirect_to user_project_report_path(@user, @project, @report)
   end
 
   # 再提出を求める。

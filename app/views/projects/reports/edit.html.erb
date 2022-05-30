@@ -1,10 +1,10 @@
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
-
-<h1 class="text-center mt-5">報告の編集</h1>
-<% cnt = 1 %>
-<div class="container col-10">
+<div class="box-project-report">
+  <p>プロジェクト：<%= @project.project_name %></p>
+  <h1 class="text-center mt-3">報告編集</h1>
+  <% cnt = 1 %>
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
     <div class="box-comment">
       <div class="card">
@@ -26,7 +26,6 @@
         </div>
       </div>
         <% @answers.each do |answer| %>
-        <div class="report-form">
           <% case answer.question_type %>
             <% when 'text_field' %>
               <% q_type = 'edit_text_field' %>
@@ -43,7 +42,6 @@
           <% end %>
           <%= render partial: q_type, locals: { answer: answer, f: f, c: cnt} %>
           <% cnt += 1 %>
-        </div>
         <% end %>
         <%# レンダリング %>
     </div>

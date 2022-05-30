@@ -18,11 +18,11 @@ function changeForm() {
 <div class="card-box ">
   <div class="card">
     <div class="card-header card-header-radius">
-      <%= @report.sender_name %>さんの報告
+      <%= @user.user_name %>さんの報告
     </div>
     <div class="card-body">
       <% @answers.each do |answer| %>
-      <div class="container" style="padding: 5px">
+      <div class="container">
         <li class="card-title-frame">
           <span>
           <% case answer.question_type %>
