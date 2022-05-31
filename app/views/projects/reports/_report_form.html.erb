@@ -3,7 +3,7 @@
     <%= rf.hidden_field :id %>
     <%= rf.hidden_field :user_id %>
     <div class="report-form">
-      <span><%= rf.label :title, class: "mb-0" %></span><span class="report-required">必須</span>
+      <span><%= rf.label "件名", class: "mb-0" %></span><span class="report-required">必須</span>
       <%= rf.text_field :title, class:'form-control report-form-color', placeholder: "最大30文字", maxlength: 30, required: true %>
     </div>
     <!-- div class="box-project-select">

@@ -53,6 +53,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = current_user
     @project = Project.find(params[:project_id])
     @report = @project.reports.find(params[:id])
+    @report.title = params[:title]
     @answers = @report.answers
     cnt = 1
     @answers.each do |answer|
