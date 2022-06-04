@@ -1,6 +1,14 @@
-<div>
+
+<div class="report-form">
   <span><%= TextArea.find_by(question_id: answer.question_id).label_name %></span>
+  <% if( TextArea.find_by(question_id: answer.question_id).label_name == "報告内容" ) %>
+    <span class="report-required">必須</span>
+  <% end %>
   <%= f.fields_for "answer[#{c}]", answer do |m| %>
-  <div><%= m.text_area :value, class: "form-control" %></div>
+  <% if( TextArea.find_by(question_id: answer.question_id).label_name == "報告内容" ) %>
+    <div><%= m.text_area :value, class: "form-control",required: true %></div>
+  <% else %>
+    <div><%= m.text_area :value, class: "form-control" %></div>
+  <% end %>
   <% end %>
 </div>

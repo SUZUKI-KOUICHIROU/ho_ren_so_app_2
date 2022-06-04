@@ -6,10 +6,21 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    if params[:search].present? and params[:search] != ""
+      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
+      if @results.present?
+        @report_ids = @results.map { |r| r[:report_id] }.uniq
+      else
+        @report_ids = 0
+      end
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+    end
   end
 
   def show
     set_project_and_members
+    @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
     @answers = @report.answers
   end
@@ -52,6 +63,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = current_user
     @project = Project.find(params[:project_id])
     @report = @project.reports.find(params[:id])
+    @report.title = params[:title]
     @answers = @report.answers
     cnt = 1
     @answers.each do |answer|
@@ -74,7 +86,19 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
     @report.update(remanded: false)
     flash[:success] = "報告を編集しました。"
-    redirect_to user_project_path(@user, @project)
+    redirect_to user_project_report_path(@user, @project, @report)
+  end
+
+  def destroy
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @report = Report.find(params[:id])
+    if @report.destroy
+      flash[:success] = "報告を削除しました。"
+    else
+      flash[:danger] = "報告の削除に失敗しました。"
+    end
+    redirect_to user_project_reports_path(@user,@project)
   end
 
   def destroy

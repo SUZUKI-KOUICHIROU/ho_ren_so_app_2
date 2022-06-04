@@ -57,13 +57,13 @@ before_action :project_authorization, only: %i[edit]
   def destroy
     @project = Project.find(params[:project_id])
     form = @project.questions.find(params[:question_id])
-    case
-      when @project.questions.count <= 1 
-        flash[:notice] = '項目を削除できませんでした。※項目は1つ以上必要です。'
-      when form.destroy
-        flash[:notice] = '項目を削除しました。'
-      else
-        flash[:alert] = '項目の削除に失敗しました。'
+    answer = Answer.find_by(question_id: params[:question_id])
+    if @project.questions.count <= 1
+      flash[:danger] = '項目を削除できませんでした。※項目は1つ以上必要です。'
+    elsif form.destroy and answer.destroy
+      flash[:success] = '項目を削除しました。'
+    else
+      flash[:danger] = '項目の削除に失敗しました。'
     end
     redirect_to edit_project_report_format_path(@project)
   end

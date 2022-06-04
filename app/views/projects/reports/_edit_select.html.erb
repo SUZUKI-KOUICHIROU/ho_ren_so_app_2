@@ -1,4 +1,5 @@
-<div  class="col-sm-6 pl-0">
+
+<div  class="col-sm-6 report-form pl-0">
   <span><%= Select.find_by(question_id: answer.question_id).label_name %></span>
   <br>
   <%= f.fields_for "answer[#{c}]", answer do |m| %>
