@@ -135,7 +135,7 @@ before_action :project_authorization, only: %i[edit]
   def update_formats_params
     params.permit(
       format_attribute: [:id,[:title]],
-      question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, {
+      question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, :required, {
       text_field_attributes: %i[id label_name field_type],
       text_area_attributes: %i[id label_name field_type],
       date_field_attributes: %i[id label_name field_type],

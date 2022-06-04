@@ -8,9 +8,6 @@
   <h1 class="center">フォーマット編集</h1>
   <div class="box-reprot-format-edit">
     <div class="edit-report-format-header">
-      <div class="project-name-box">
-        <a><%= @project.project_name %></a>
-      </div>
       <div class="form-add">
         <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
       </div>
@@ -36,11 +33,11 @@
           <%= render partial: "edit_selection_type_form", locals: { question: question, f: f } %>
         <% end %>
       <% end %>
-      <div class="edit-report-formats-footer">
-        <%= f.submit "変更", class: "btn btn-outline-orange" %>
-      </div>
     <% end %>
   </div>
+</div>
+<div class="edit-report-formats-footer">
+  <%= f.submit "変更", class: "btn btn-outline-orange" %>
 </div>
 
 <!--入力フォーム新規登録用モーダルウインドウ表示-->
