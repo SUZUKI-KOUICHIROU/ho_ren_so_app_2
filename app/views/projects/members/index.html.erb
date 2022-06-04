@@ -5,7 +5,7 @@
 <% end %>
 
 <div class="box-project-index">
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">メンバー一覧</h1>
   <div class="box-search">
     <%= form_with url: project_member_index_path(@user, @project), method: :get, local: true do |form| %>
@@ -22,7 +22,7 @@
       参加日
     </div>
     <% if project_leader? %>
-    <div class="project-news">
+    <div class="project-member-action">
       アクション
     </div>
     <% end %>
@@ -41,7 +41,7 @@
             <%= l(entry_date, format: :long) %>
           </div>
           <% if project_leader? %>
-          <div class="project-news">
+          <div class="project-member-action">
             <% unless @project.project_leader_id == member.id %>
               <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
               <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
@@ -70,9 +70,6 @@
         <%= paginate @members %>
       </div>
     <% end %>
-  <div class="back-btn">
-    <%= link_to "戻る", :back, class: "btn btn-light btn-outline-secondary" %>
   </div>
-</div>
 <!--プロジェクト新規登録、編集用モーダルウインドウ表示-->
 <div id="project-new-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true" data-turbolinks="false"></div>
