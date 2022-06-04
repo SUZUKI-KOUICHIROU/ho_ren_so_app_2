@@ -16,7 +16,7 @@
         <% end %>
         <div class="container col-10">
           <%= yield %>
-          <div class="col-12 offset-3"><%= debug(params) if Rails.env.development? %></div>
+          <div class="col-6 offset-3"><%= debug(params) if Rails.env.development? %></div>
         </div>
       </div>
     </div>

@@ -12,10 +12,16 @@ class Users::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # POST /resource
-  # def create
-  #   super
-  # end
+  # POST /resource/sign_in
+  def create
+    self.resource = warden.authenticate!(auth_options)
+    set_flash_message!(:notice, :signed_in)
+    sign_in(resource_name, resource)
+    yield resource if block_given?
+    flash[:success] = 'ユーザー情報を変更しました。'
+    redirect_to user_projects_path(current_user)
+    # respond_with resource, location: after_sign_in_path_for(resource)
+  end
 
   # GET /resource/edit
   # def edit

@@ -3,35 +3,38 @@
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
-
-
-<div class="card-box col-md-10">
-<h1 class="center">ユーザー情報</h1>
-  <div class="card">
-    <div class="card-header card-header-radius">
-      <%= current_user.user_name %>
-    </div>
-    <div class="card-body">
-      <div class="container" style="padding: 5px">
-        <span class='card-title-frame'>
+<%# box-project-reportの代わりにm-5を採用してます。 %>
+<div class="m-5">
+  <%# col-md-6でwidth:50%になります。 %>
+  <div class="col-md-6 offset-md-3">
+    <h1 class="center">ユーザー情報</h1>
+    <div class="card">
+      <div class="card-header card-header-radius">
+        <%= current_user.user_name %>
+      </div>
+      <div class="card-body">
+        <div class='card-title-frame'>
           <span>
             氏名
           </span>
-        </span>
+        </div>
         <div class="card-text ml-0">
           <%= @user.user_name %>
         </div>
-        <span class='card-title-frame'>
-          <span>メールアドレス</span>
-        </span>
+        <div class='card-title-frame'>
+          <span>
+            メールアドレス
+          </span>
+        </div>
         <div class="card-text ml-0">
           <%= @user.email %>
         </div>
-        <div class='text-right'>
-          <%= link_to "ユーザー情報の編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %>
-        </div> 
+        
       </div>
     </div>
+    <div class='text-right mt-3'>
+      <%= link_to "ユーザー情報の編集", edit_user_registration_path, class: "btn btn-light btn-outline-orange" %>
+    </div> 
   </div>
 </div>
 
