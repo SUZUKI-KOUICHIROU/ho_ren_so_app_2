@@ -4,7 +4,7 @@
 
 <% provide(:title, "#{@project.project_name}_相談") %>
 <%= form_with(model: @counseling, url: user_project_counselings_path(current_user,@project), local: true, method: :post) do |f| %>
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">相談作成</h1>
   <div class="col-6 container offset-3 box-counseling-format-new pb-2 my-5">
     <%= f.label :sent_to, "送信対象", class:"font-weight-bold counseling-title-box" %>

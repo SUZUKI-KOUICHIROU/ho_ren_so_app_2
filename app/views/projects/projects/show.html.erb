@@ -32,14 +32,12 @@
       <% else %>
         <p class="card-text"><%= @project.project_report_frequency %>日に１回</p>
       <% end %>
-      <div class="card-title">メンバー</div>
+      <div class="card-title">メンバー数</div>
       <% if @member.empty? %>
         <p class="card-text">メンバーはいません。</p>
       <% else %>
         <p class="card-text">
-          <% @member.each do |member| %>
-            <span class="box-user-name"><%= member.user_name %></span>
-          <% end %>
+          <span class=""><%= @member.length %>名</span>
         </p>
       <% end %>
     </div>

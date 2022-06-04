@@ -72,7 +72,7 @@ margin-bottom: 0;
 
 ////////// 一覧の列のデザイン //////////
 .project-name, .subject-name, .project-next-report-date,
-.reported-date, .report-confirmer, .report-person, .report-action,
+.reported-date, .report-confirmer, .report-person, .report-action, .project-action,
 .message-date, .message-confirmer, .message-person, .message-action,
 .counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
   width: 25%;
@@ -81,11 +81,19 @@ margin-bottom: 0;
 
 ////////// お知らせの列のデザイン //////////
 .project-news {
-  width: 50%;
+  width: 25%;
   margin: 0rem 0.5rem 0.5rem 0rem;
   p:last-child {
     margin-bottom: 0rem;
+    vertical-align: middle;
+    display: inline;
   }
+}
+
+////////// メンバー一覧アクション列のデザイン //////////
+.project-member-action {
+  width: 50%;
+  margin: 0rem 0.5rem 0.5rem 0rem;
 }
 
 ////////// 一覧のフッターのデザイン //////////
@@ -116,14 +124,14 @@ margin-bottom: 0;
 //border: thin solid;
 
 .label_report-submitted {
-  background:blue ; /*背景色*/
+  background:#198754 ; /*背景色*/
   padding: 2px;/*文字周りの余白*/
   color: white;/*文字を白に*/
   border-radius: 0.5em;/*角の丸み*/
 }
 
 .label_report-not-submitted {
-  background:orangered; /*背景色*/
+  background:#DC3545; /*背景色*/
   padding: 2px;/*文字周りの余白*/
   color: white;/*文字を白に*/
   border-radius: 0.5em;/*角の丸み*/
