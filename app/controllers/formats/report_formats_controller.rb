@@ -43,13 +43,13 @@ before_action :project_authorization, only: %i[edit]
     # formatモデルの内容を更新する処理
     # paramsの代わりにupdate_formats_paramsが用いられているので注意
     format_object = @project.format
-    format_object.update(title: update_formats_params[:format_attribute]["1"][:title])
+    format_object.update(title: update_formats_params[:format_attribute][@project.format.id.to_s][:title])
     params = update_formats_params[:question_attributes]
     params.each do |question_id, items|
       question_object = Question.find(question_id)
       question_object.update(items)
     end
-    flash[:notice] = '入力項目のデータを更新しました。'
+    flash[:success] = '入力項目のデータを更新しました。'
     redirect_to edit_project_report_format_path(@project)
   end
 
@@ -135,7 +135,7 @@ before_action :project_authorization, only: %i[edit]
   def update_formats_params
     params.permit(
       format_attribute: [:id,[:title]],
-      question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, {
+      question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, :required, {
       text_field_attributes: %i[id label_name field_type],
       text_area_attributes: %i[id label_name field_type],
       date_field_attributes: %i[id label_name field_type],

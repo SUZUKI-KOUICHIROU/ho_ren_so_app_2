@@ -1,12 +1,12 @@
 
 <div class="report-form">
   <span><%= RadioButton.find_by(question_id: answer.question_id).label_name %></span>
+  <% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
   <br>
   <% RadioButton.find_by(question_id: answer.question_id).radio_button_option_strings.each do |item| %>
     <%= f.fields_for "answer[#{c}]", answer do |m| %>
-      <%= m.radio_button :value, item.option_string %>
+      <%= m.radio_button :value, item.option_string, required: Question.find_by(id: answer.question_id).required %>
       <%= item.option_string %>
-      <br>
     <% end %>
   <% end %>
 </div>

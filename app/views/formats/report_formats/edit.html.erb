@@ -4,13 +4,10 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 <div class="box-reprot-format">
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p  class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">フォーマット編集</h1>
   <div class="box-reprot-format-edit">
     <div class="edit-report-format-header">
-      <div class="project-name-box">
-        <a><%= @project.project_name %></a>
-      </div>
       <div class="form-add">
         <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
       </div>
