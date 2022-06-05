@@ -6,7 +6,7 @@
 
 <%= render "users/shared/error_messages", resource: resource %>
 <div class="projects-format">
-  <%= form_with(model: resource, url: registration_path(resource_name), method: :put, local: true) do |f| %>
+  <%= form_with(model: resource, url: user_registration_path(resource_name), method: :put, local: true) do |f| %>
   <%# form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <div class="form-content">
       <h1 class="center"><%= current_user.user_name %>さんの情報編集</h1>
@@ -40,17 +40,30 @@
           <%= f.password_field :password_confirmation, class: "form-control" %>
         </div>
 
-        <div class="center">
-          <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
-        </div>
+        
       </div>
     </div>
+    <div class="text-right my-3">
+      <span class='col-md-4 d-inline-flex'>
+        <%= f.submit "ユーザー情報更新", class: "btn btn-block btn-outline-orange" %>
+      </span>
+    </div>
   <% end %>
-  <% bln_leader = resource.project_leader? %>
-  <%= button_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger", disabled: bln_leader %>
-  <% if bln_leader %>
-    <p class="text-danger ">アカウント削除を行うには、リーダーを務めているプロジェクトが存在しないことが条件となります。</p>
-  <% end %>  
+  <div class="text-right">
+  <% if bln_leader = resource.project_leader? %>
+    <div class='col-md-4 d-inline-flex' title='リーダーは削除できません' data-toggle='tooltip' data-placement='bottom'>
+      <%= link_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger disabled" %>
+    </div>
+  <% else %>
+    <div class='col-md-4 d-inline-flex'>
+      <%= link_to "削除", registration_path(resource_name), data: { confirm: "このユーザーを削除します。よろしいですか？" }, method: :delete, class: "btn btn-block btn-outline-danger" %>
+    </div>
+  <% end %>
+  </div>
 </div>
 
-
+  <script type="text/javascript">
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>

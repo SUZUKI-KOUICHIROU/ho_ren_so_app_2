@@ -28,4 +28,22 @@ module ApplicationHelper
       link_to name, path, options
     end
   end
+
+  # flashメッセージをdeviseに対応させるため追加
+  def bootstrap_alert(key)
+    case key
+    when "alert"
+      "danger"
+    when "notice"
+      "success"
+    when "error"
+      "danger"
+    when "primary"
+      "primary"
+    when 'danger'
+      'danger'
+    when 'success'
+      'success'
+    end
+  end
 end
