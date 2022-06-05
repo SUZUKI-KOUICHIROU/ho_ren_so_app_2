@@ -1,7 +1,9 @@
-<div  class="col-sm-6 pl-0">
+
+<div  class="report-form">
   <span><%= Select.find_by(question_id: answer.question_id).label_name %></span>
+  <% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
   <br>
   <%= f.fields_for "answer[#{c}]", answer do |m| %>
-    <%= m.collection_select(:value, Select.find_by(question_id: answer.question_id).select_option_strings.all, :option_string, :option_string, { prompt: false } ,{class: "form-control"}) %>
+    <%= m.collection_select(:value, Select.find_by(question_id: answer.question_id).select_option_strings.all, :option_string, :option_string, { prompt: false } ,{class: "form-control", required: Question.find_by(id: answer.question_id).required }) %>
   <% end %>
 </div>

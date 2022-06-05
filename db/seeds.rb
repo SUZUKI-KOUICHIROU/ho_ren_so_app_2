@@ -57,14 +57,6 @@ project = Project.find(1)
 position_val = 1
 
 # text_field
-text_field = TextField.new( label_name: '件名' )
-text_field.build_question( position: position_val,
-                           form_table_type: text_field.field_type,
-                           project_id: project.id )
-text_field.save
-position_val += 1
-
-# text_field
 text_field = TextField.new( label_name: 'コメント' )
 text_field.build_question( position: position_val,
                            form_table_type: text_field.field_type,
@@ -173,14 +165,6 @@ Format.create!( title: '件名',
 ########## プロジェクトBに報告フォーマットを登録 ##########
 project = Project.find(2)
 position_val = 1
-
-# text_field
-text_field = TextField.new( label_name: '件名' )
-text_field.build_question( position: position_val,
-                           form_table_type: text_field.field_type,
-                           project_id: project.id )
-text_field.save
-position_val += 1
 
 # data_field
 date_field = DateField.new( label_name: '期日' )

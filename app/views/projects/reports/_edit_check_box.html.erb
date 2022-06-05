@@ -1,9 +1,9 @@
-<div>
+<div class="report-form">
   <% c -= 1 %>
-  <span><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span>
+  <span><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
   <br>
   <% CheckBox.find_by(question_id: answer.question_id).check_box_option_strings.each do |box| %>
     <% boolExists = @answers[c][:array_value].include? box.option_string %>
-    <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists}, box[:option_string] %><%= box.option_string %>
+      <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists, required: Question.find_by(id: answer.question_id).required}, box[:option_string] %><%= box.option_string %>
   <% end %> 
 </div>

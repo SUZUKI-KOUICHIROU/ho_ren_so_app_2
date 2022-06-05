@@ -1,6 +1,8 @@
-<div>
+
+<div class="report-form">
   <span><%= TextArea.find_by(question_id: answer.question_id).label_name %></span>
+  <% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
   <%= f.fields_for "answer[#{c}]", answer do |m| %>
-  <div><%= m.text_area :value, class: "form-control" %></div>
+    <div><%= m.text_area :value, class: "form-control",required: Question.find_by(id: answer.question_id).required %></div>
   <% end %>
 </div>

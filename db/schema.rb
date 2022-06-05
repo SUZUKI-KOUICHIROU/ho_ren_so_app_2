@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_14_022822) do
+ActiveRecord::Schema.define(version: 2022_06_03_230801) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 2022_05_14_022822) do
     t.boolean "using_flag", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "required", default: false, null: false
     t.index ["project_id"], name: "index_questions_on_project_id"
   end
 

@@ -12,7 +12,7 @@
       {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "report"}}) %>
     <%# end %>
   </div -->
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">報告一覧</h1>
   <div class="card">
     <div class="card-header">
@@ -32,9 +32,9 @@
           <div class="box-report-index">
             <% if @you_reports.present? %>
               <div class="box-search">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
+                <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "you-report" %>
-                  <%= form.label :search, "#{@report_label_name}検索：", class: "search-label" %>
+                  <%= form.label :search, "報告検索：", class: "search-label" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
@@ -62,7 +62,7 @@
                   <%# if subject.blank? %>
                     <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
                   <%# end %>
-                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
                     <div class="subject-name">
                       <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="report-action">
                       <%= link_to "編集", edit_user_project_report_path(@user, @project, report), class: "btn btn-outline-orange" %>
-                      <%= link_to "削除", "#", method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
+                      <%= link_to "削除", user_project_report_path(@user, @project, report), method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
                     </div>
                   </div>
                 <% end %>
@@ -96,7 +96,7 @@
           <div class="box-report-index">
             <% if @reports.present? %>
               <div class="box-search">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
+                <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "report" %>
                   <%= form.label :search, "件名検索：", class: "search-label" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>

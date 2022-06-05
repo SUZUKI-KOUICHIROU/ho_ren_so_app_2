@@ -1,8 +1,9 @@
-<div class="col-sm-6 pl-0">
+
+<div class="report-form">
 <% c -= 1 %>
 <% defalutDate = @answers[c][:value] %>
-<span><%= DateField.find_by(question_id: answer.question_id).label_name %></span>
+<span><%= DateField.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
   <%= f.fields_for "answer[#{c+1}]", answer do |m| %>
-  <div><%= m.date_field :value, value: defalutDate, class: "form-control" %></div>
+  <div><%= m.date_field :value, value: defalutDate, class: "form-control", required: Question.find_by(id: answer.question_id).required %></div>
   <% end %>
 </div>

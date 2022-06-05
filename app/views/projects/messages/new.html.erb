@@ -3,7 +3,7 @@
 <% end %>
 
 <% provide(:title, "#{@project.project_name}_連絡") %>
-<p>プロジェクト：<%= @project.project_name %></p>
+<p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">連絡作成</h1>
 <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
   <div class="col-6 container offset-3 box-message-format-new pb-2 my-5">
