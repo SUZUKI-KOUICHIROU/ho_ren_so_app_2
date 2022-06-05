@@ -3,42 +3,42 @@
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
-<div class="box-reprot-format">
-  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">フォーマット編集</h1>
-  <div class="box-reprot-format-edit">
-    <div class="edit-report-format-header">
-      <div class="form-add">
-        <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
-      </div>
-    </div>
-    <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch  do |f| %>
-      <%= f.fields_for 'format_attribute[]', @format do |format| %>
-      <div class='form'>
-        <div class='label-box'>
-          <p><%= format.label :title, "タイトル項目", class: 'text-right' %></p>
-          <%= format.text_field :title, class: 'form-control' %>
-          <%= format.label "フォームの種類:" %>
-          <%= format.label '記述式', class: 'font-weight-bold'%>
+<%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch  do |f| %>
+  <div class="box-reprot-format">
+    <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+    <h1 class="center">フォーマット編集</h1>
+    <div class="box-reprot-format-edit pb-3">
+      <div class="edit-report-format-header">
+        <div class="form-add">
+          <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
         </div>
-        <p class='annotation'>※この項目は順番の変更は行えません</p>
       </div>
-      <% end %>
-      <% @questions.each do |question|%>
-        <% @form_number += 1 %>
-        <% case question.form_table_type %>
-        <% when 'text_field', 'text_area', 'date_field'%>
-          <%= render partial: "edit_description_type_form", locals: { question: question, f: f } %>
-        <% when 'radio_button', 'check_box', 'select' %>
-          <%= render partial: "edit_selection_type_form", locals: { question: question, f: f } %>
+        <%= f.fields_for 'format_attribute[]', @format do |format| %>
+        <div class='form'>
+          <div class='label-box'>
+            <p><%= format.label :title, "タイトル項目", class: 'text-right' %></p>
+            <%= format.text_field :title, class: 'form-control' %>
+            <%= format.label "フォームの種類:" %>
+            <%= format.label '記述式', class: 'font-weight-bold'%>
+          </div>
+          <p class='annotation'>※この項目は順番の変更は行えません</p>
+        </div>
+        <% @questions.each do |question|%>
+          <% @form_number += 1 %>
+          <% case question.form_table_type %>
+          <% when 'text_field', 'text_area', 'date_field'%>
+            <%= render partial: "edit_description_type_form", locals: { question: question, f: f } %>
+          <% when 'radio_button', 'check_box', 'select' %>
+            <%= render partial: "edit_selection_type_form", locals: { question: question, f: f } %>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
+    <div class="mt-3 text-right">
+      <%= f.submit "変更", class: "btn btn-outline-orange" %>
+    </div>
   </div>
-</div>
-<div class="edit-report-formats-footer">
-  <%= f.submit "変更", class: "btn btn-outline-orange" %>
-</div>
+<% end %>
 
 <!--入力フォーム新規登録用モーダルウインドウ表示-->
 <div class="modal fade" id="form-new" tabindex="-1" role="dialog" aria-labelledby="usereditModalLabel" aria-hidden="true"></div>
