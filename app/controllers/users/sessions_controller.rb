@@ -4,7 +4,7 @@ class Users::SessionsController < Devise::SessionsController
   prepend_before_action :require_no_authentication, only: %i[new create]
   prepend_before_action :set_minimum_password_length, only: %i[new edit]
   # before_action :creatable?, only: [:new, :create]
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -18,9 +18,7 @@ class Users::SessionsController < Devise::SessionsController
     set_flash_message!(:notice, :signed_in)
     sign_in(resource_name, resource)
     yield resource if block_given?
-    flash[:success] = 'ユーザー情報を変更しました。'
-    redirect_to user_projects_path(current_user)
-    # respond_with resource, location: after_sign_in_path_for(resource)
+    respond_with resource, location: after_sign_in_path_for(resource)
   end
 
   # GET /resource/edit
@@ -34,9 +32,12 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+    set_flash_message! :alert, :signed_out if signed_out
+    yield if block_given?
+    respond_to_on_destroy
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -48,9 +49,9 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
@@ -66,7 +67,12 @@ class Users::SessionsController < Devise::SessionsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
   protected
+
+  def auth_options
+    { scope: resource_name, recall: "#{controller_path}#new" }
+  end
 
   # ユーザー新規登録後のリダイレクト先を参加しているプロジェクト一覧ページに変更
   def after_sign_in_path_for(resource)
