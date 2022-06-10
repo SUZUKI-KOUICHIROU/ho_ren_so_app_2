@@ -3,19 +3,21 @@
 
  <%= render "users/shared/error_messages", resource: resource %>
 <div class="projects-format" style="margin:3rem auto auto auto;">
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put,id:'password-reset-form' }) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3">パスワード再設定</h1>
       <div class="project form-body">
         <%= f.hidden_field :reset_password_token %>
         <div class="project-detail">
           <%= f.label :password, "パスワード" , class:'project-description-label' %><span class="project-required">必須</span>
-          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
+          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control", id: "reset_password" %>
+          <div id="password-error-message" class="text-danger pt-2"></div>
         </div>
 
         <div class="project-detail">
           <%= f.label :password_confirmation, "パスワード確認" %><span class="project-required">必須</span>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", id: "reset_password_confirm" %>
+          <div id="password-confirm-error-message" class="text-danger pt-2"></div>
         </div>
 
         <div class="actions">
