@@ -37,8 +37,8 @@ $(function() {
   $('#register-form').submit(function() {
     const registerNameValue = $('#users_name').val();
     const registerEmailValue = $('#users_email').val();
-    const registerPasswordValue = $('#users_password').val();
-    const registerPasswordConfirmValue = $('#users_password_confirm').val();
+    const registerPasswordValue = $('#user_password').val();
+    const registerPasswordConfirmValue = $('#user_password_confirm').val();
     
     // Nameが空のとき、エラー文を表示する
     if ( registerNameValue == '') {
