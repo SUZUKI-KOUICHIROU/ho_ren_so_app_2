@@ -1,33 +1,27 @@
-<% provide(:title, '友人を招待する') %>
+<% provide(:title, 'メンバー招待') %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="sessions-new-img">
-  <div class="sessions-new-container">
-    <div class="container">
-      <div class="row justify-content-around">
-        <div class="login-box">
-          <div class="box-inner">
-            <h1 class="box-new-title">友人を招待する</h1>
-              <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
-                <%= f.label :email, "招待したい人のメールアドレスを入力し、送信ボタンを押してください", class: "email-label" %>
-                  <div class="box-email">
-                    <%= f.email_field :email, class: 'form-control', required: true %>
-                    <%= f.hidden_field :project_leader_id, :value => @user.id %>
-                    <%= f.hidden_field :project_id, :value => @project.id %>
-                  </div>
-                  <div class="center">
-                    <%= f.submit "送信", class: "btn btn-block btn-outline-orange" %>
-                    <%= link_to "一覧に戻る", :back, class: "btn btn-block btn-outline-secondary" %>
-                  </div>  
-              <% end %>
+<div class="projects-format col-md-6 offset-md-3">
+  <div class="form-content">
+    <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+      <h1 class="box-new-title">メンバーを招待する</h1>
+      <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
+        <div class="project form-body">
+          <div class="project-detail">
+              <%= f.label :email, "招待メールアドレス", class: "email-label" %><span class="project-required">必須</span>
+              <div>
+                <%= f.email_field :email, class: 'form-control', required: true %>
+                <%= f.hidden_field :project_leader_id, :value => @user.id %>
+                <%= f.hidden_field :project_id, :value => @project.id %>
+              </div>
             </div>
           </div>
+          <div class="text-right my-3">
+            <%= f.submit "送信", class: "btn btn-block btn-outline-orange" %>
           </div>
-        </div>
-      </div>
-    </div>
+      <% end %>
   </div>
 </div>

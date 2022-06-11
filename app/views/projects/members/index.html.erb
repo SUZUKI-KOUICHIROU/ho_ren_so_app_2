@@ -33,7 +33,6 @@
       <% @members.each do |member|%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
           <div class="project-name">
-            <%#= link_to "#{member.user_name}", user_path(member.id), class: "project-detail-link" %>
             <%= member.user_name %>
           </div>
           <div class="project-next-report-date">
@@ -50,13 +49,6 @@
                 <% else %>
               <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.user_name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
               <% end %>
-            <%
-=begin%>
- <% else %>
-              <p>リーダーはプロジェクトから外すことは出来ません。</p>
-              <p>外す場合、リーダー権限を譲渡してから外して下さい。</p> 
-<%
-=end%>
             <% end %>
           </div>
           <% end %>
