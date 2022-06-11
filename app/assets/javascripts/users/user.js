@@ -157,3 +157,60 @@ $(function() {
     }
   });
 });
+
+// ユーザー編集画面
+$(function() {
+  $('#user-edit-form').submit(function() {
+    const editNameValue = $('#edit_user_name').val();
+    const editEmailValue = $('#edit_user_email').val();
+    const editPasswordValue = $('#edit_user_password').val();
+    const editPasswordConfirmValue = $('#edit_user_password_confirm').val();
+    
+    // Nameが空のとき、エラー文を表示する
+    if ( editNameValue == '') {
+      $('#name-error-message').text('入力されていません');
+      var errStatus = true;
+    } else if ( editNameValue.length > 20 ) {
+      $('#name-error-message').text('20文字以内で入力してください');
+      var errStatus = true;
+    } else {
+      $('#name-error-message').text('');
+    }
+
+    // Emailが空のとき、エラー文を表示する
+    if ( editEmailValue == '') {
+      $('#email-error-message').text('入力されていません');
+      var errStatus = true;
+    } else if ( editEmailValue.length > 100 ) {
+      $('#email-error-message').text('100文字以内で入力してください');
+      var errStatus = true;
+    } else {
+      $('#email-error-message').text('');
+    }
+
+    if ( editPasswordConfirmValue != '' && editPasswordValue.length < 6 || editPasswordValue.length > 30 ) {
+      $('#password-error-message').text('6文字以上、30文字以内で入力してください');
+      var errStatus = true;
+    } else if ( editPasswordValue != editPasswordConfirmValue ) {
+      $('#password-error-message').text('パスワードと確認用の値が一致していません');
+      var errStatus = true;
+    } else {
+      $('#password-error-message').text('');
+    }
+
+    // パスワード（確認用）が空のとき、エラー文を表示する
+    if ( editPasswordConfirmValue != '' && editPasswordConfirmValue.length < 6 || editPasswordConfirmValue.length > 30 ) {
+      $('#password-confirm-error-message').text('6文字以上、30文字以内で入力してください');
+      var errStatus = true;
+    } else if ( editPasswordValue != editPasswordConfirmValue ) {
+      $('#password-confirm-error-message').text('パスワードと確認用の値が一致していません');
+      var errStatus = true;
+    } else {
+      $('#password-confirm-error-message').text('');
+    }
+
+    if ( errStatus ) {
+      return false;
+    }
+  });
+});
