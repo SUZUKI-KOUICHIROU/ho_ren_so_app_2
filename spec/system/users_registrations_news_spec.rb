@@ -20,7 +20,7 @@ RSpec.describe 'UsersRegistrationsNews', type: :system do
       fill_in "users_name", with: 'サンプル'
       fill_in 'users_email', with: 'sample@email.com'
       fill_in 'user_password', with: '111111111'
-      fill_in 'user_password_confirmation', with: '111111111'
+      fill_in 'user_password_confirm', with: '111111111'
       click_button '新規作成'
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe 'UsersRegistrationsNews', type: :system do
       fill_in "users_name", with: ''
       fill_in 'users_email', with: 'sample@email.com'
       fill_in 'user_password', with: '111111111'
-      fill_in 'user_password_confirmation', with: '111111111'
+      fill_in 'user_password_confirm', with: '111111111'
       click_button '新規作成'
       expect(page).to have_content '名前を入力してください'
       expect(current_path).to eq '/users'

@@ -1,22 +1,23 @@
 <% provide(:title, "Top") %>
 
 <%= render "users/shared/error_messages", resource: resource %>
-
 <div class="projects-format", style="margin:3rem auto auto auto;">
-  <%= form_for(resource, as: resource_name, url: user_session_path(resource)) do |f| %>
+  <%= form_for(resource, as: resource_name, url: user_session_path(resource), html: { id:'login-form'}) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3">ログイン</h1>
       <div class="project form-body">
 
         <div class="project-detail">
           <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id: "email-form" %>
+          <div id="email-error-message" class="text-danger pt-2"></div>
         </div>
 
         
         <div class="project-detail">
           <%= f.label :password, "パスワード", class: "password-label project-description-label" %><span class="project-required">必須</span><br />
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", id: "password-form" %>
+          <div id="password-error-message" class="text-danger pt-2"></div>
         </div>
 
         <div class="a-row project-detail">
@@ -28,7 +29,7 @@
             </span>
           <% end %>
           <div class="column-right">
-            <%= link_to "パスワードを忘れた場合", new_user_password_path %>
+            <%= link_to "パスワードを忘れた場合", new_user_password_path, data: {"turbolinks" => false} %>
           </div>
         </div>
 
@@ -42,7 +43,7 @@
 
   <div class="box-newusr text-center m-2">
     <h4><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h4>
-    <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block" %>
+    <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block", data: {"turbolinks" => false} %>
   </div>
 </div>
 
