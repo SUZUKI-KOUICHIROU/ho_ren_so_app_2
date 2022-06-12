@@ -9,13 +9,12 @@
   <h1 class="center">メンバー一覧</h1>
   <div class="box-search">
     <%= form_with url: project_member_index_path(@user, @project), method: :get, local: true do |form| %>
-      <%= form.label :search, "ユーザー名検索：", class: "search-label" %>
-      <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+      <%= form.text_field :search, placeholder: "ユーザー名を入力", class: "search-box" %>
       <%= form.submit "検索", class: "btn btn-outline-orange" %>
     <% end %>
   </div>
   <div class="table-header">
-    <div class="project-name">
+    <div class="member-name">
       氏名
     </div>
     <div class="project-next-report-date">
@@ -32,11 +31,11 @@
       <% line_num = 0%>
       <% @members.each do |member|%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-          <div class="project-name">
+          <div class="member-name member-text">
             <%#= link_to "#{member.user_name}", user_path(member.id), class: "project-detail-link" %>
             <%= member.user_name %>
           </div>
-          <div class="project-next-report-date">
+          <div class="project-next-report-date member-text">
             <% entry_date = ProjectUser.find_by(project_id: @project.id, user_id: member.id).created_at %>
             <%= l(entry_date, format: :long) %>
           </div>

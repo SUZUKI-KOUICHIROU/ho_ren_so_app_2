@@ -8,8 +8,7 @@
   <h1 class="center">プロジェクト一覧</h1>
   <div class="box-search">
     <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
-      <%= form.label :search, "プロジェクト名検索：", class: "search-label" %>
-      <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+      <%= form.text_field :search, placeholder: "プロジェクト名を入力", class: "search-box" %>
       <%= form.submit "検索", class: "btn btn-outline-orange" %>
     <% end %>
   </div>
