@@ -30,10 +30,8 @@
 
     <div class="project-detail">
       <div class="project-next-report-date">
-        <a id="project-next-report-date">
-          <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
-          <span>次回報告日</span><br><%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
-        </a>
+        <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
+        <%= f.label :project_report_frequency, "次回報告日" %><br><%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
         <%= f.hidden_field :project_next_report_date, :value => @project.project_next_report_date, id: "project_project_next_report_date" %>
       </div>
     </div>
