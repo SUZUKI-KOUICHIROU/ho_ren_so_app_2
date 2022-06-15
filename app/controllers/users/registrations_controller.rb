@@ -63,7 +63,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       resource.destroy
       flash[:success] = 'アカウントを削除しました。ご利用ありがとうございました。'
-      render 'users/sessions/new'
+      redirect_to root_path
     end
   end
 
