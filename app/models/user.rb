@@ -53,14 +53,14 @@ class User < ApplicationRecord
   validates :password, 
     allow_blank: true,
     presence: true,
-    length: { maximum: 30, minimum: 6 },
+    length: { maximum: 30, minimum: 8 },
     format: { with: VALID_PASSWORD_REGEX,
     message: MESSAGE_WITH_INVALID_PASSWORD }
 
   validates :password_confirmation, 
     allow_blank: true,
     presence: true, 
-    length: { maximum: 30, minimum: 6 },
+    length: { maximum: 30, minimum: 8 },
     format: { with: VALID_PASSWORD_REGEX,
     message: MESSAGE_WITH_INVALID_PASSWORD }
 end
