@@ -58,25 +58,25 @@ describe User, type: :model do
       end
 
       describe '・文字数' do
-        it 'パスワードが5文字の場合はNG' do
-          buf_pass = '1' * 5
+        it 'パスワードが7文字以下の場合はNG' do
+          buf_pass = '1' * 7
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_invalid
         end
 
-        it 'パスワードが6文字の場合はOK' do
-          buf_pass = '1' * 6
+        it 'パスワードが8文字以上の場合はOK' do
+          buf_pass = '1' * 8
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_valid
         end
 
-        it 'パスワードが50文字の場合はOK' do
+        it 'パスワードが30文字以内の場合はOK' do
           buf_pass = '1' * 30
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_valid
         end
 
-        it 'パスワードが51文字以上の場合はNG' do
+        it 'パスワードが31文字以上の場合はNG' do
           buf_pass = '1' * 31
           user = build(:user, password: buf_pass, password_confirmation: buf_pass)
           expect(user).to be_invalid
