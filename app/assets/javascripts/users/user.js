@@ -19,8 +19,8 @@ $(function() {
     if ( loginPasswordValue == '' ) {
       $('#password-error-message').text('入力されていません');
       var errStatus = true;
-    } else if ( loginPasswordValue.length < 6 || loginPasswordValue.length > 30 ) {
-      $('#password-error-message').text('6文字以上、30文字以内で入力してください');
+    } else if ( loginPasswordValue.length < 8 || loginPasswordValue.length > 30 ) {
+      $('#password-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else {
       $('#password-error-message').text('');
@@ -66,8 +66,8 @@ $(function() {
     if ( registerPasswordValue == '') {
       $('#password-error-message').text('入力されていません');
       var errStatus = true;
-    } else if ( registerPasswordValue.length < 6 || registerPasswordValue.length > 30 ) {
-      $('#password-error-message').text('6文字以上、30文字以内で入力してください');
+    } else if ( registerPasswordValue.length < 8 || registerPasswordValue.length > 30 ) {
+      $('#password-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( registerPasswordValue != registerPasswordConfirmValue ) {
       $('#password-error-message').text('パスワードと確認用の値が一致していません');
@@ -83,8 +83,8 @@ $(function() {
     if ( registerPasswordConfirmValue == '') {
       $('#password-confirm-error-message').text('入力されていません');
       var errStatus = true;
-    } else if ( registerPasswordConfirmValue.length < 6 || registerPasswordConfirmValue.length > 30 ) {
-      $('#password-confirm-error-message').text('6文字以上、30文字以内で入力してください');
+    } else if ( registerPasswordConfirmValue.length < 8 || registerPasswordConfirmValue.length > 30 ) {
+      $('#password-confirm-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( registerPasswordValue != registerPasswordConfirmValue ) {
       $('#password-confirm-error-message').text('パスワードと確認用の値が一致していません');
@@ -134,8 +134,8 @@ $(function() {
     if ( resetPasswordValue == '') {
       $('#password-error-message').text('入力されていません');
       var errStatus = true;
-    } else if ( resetPasswordValue.length < 6 || resetPasswordValue.length > 30 ) {
-      $('#password-error-message').text('6文字以上、30文字以内で入力してください');
+    } else if ( resetPasswordValue.length < 8 || resetPasswordValue.length > 30 ) {
+      $('#password-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( resetPasswordValue != resetPasswordConfirmValue ) {
       $('#password-error-message').text('パスワードと確認用の値が一致していません');
@@ -151,8 +151,8 @@ $(function() {
     if ( resetPasswordConfirmValue == '') {
       $('#password-confirm-error-message').text('入力されていません');
       var errStatus = true;
-    } else if ( resetPasswordConfirmValue.length < 6 || resetPasswordConfirmValue.length > 30 ) {
-      $('#password-confirm-error-message').text('6文字以上、30文字以内で入力してください');
+    } else if ( resetPasswordConfirmValue.length < 8 || resetPasswordConfirmValue.length > 30 ) {
+      $('#password-confirm-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( resetPasswordValue != resetPasswordConfirmValue ) {
       $('#password-confirm-error-message').text('パスワードと確認用の値が一致していません');
@@ -200,8 +200,8 @@ $(function() {
       $('#email-error-message').text('');
     }
 
-    if ( editPasswordConfirmValue != '' && editPasswordValue.length < 6 || editPasswordValue.length > 30 ) {
-      $('#password-error-message').text('6文字以上、30文字以内で入力してください');
+    if ( editPasswordConfirmValue != '' && editPasswordValue.length < 8 || editPasswordValue.length > 30 ) {
+      $('#password-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( editPasswordValue != editPasswordConfirmValue ) {
       $('#password-error-message').text('パスワードと確認用の値が一致していません');
@@ -214,8 +214,8 @@ $(function() {
     }
 
     // パスワード（確認用）が空のとき、エラー文を表示する
-    if ( editPasswordConfirmValue != '' && editPasswordConfirmValue.length < 6 || editPasswordConfirmValue.length > 30 ) {
-      $('#password-confirm-error-message').text('6文字以上、30文字以内で入力してください');
+    if ( editPasswordConfirmValue != '' && editPasswordConfirmValue.length < 8 || editPasswordConfirmValue.length > 30 ) {
+      $('#password-confirm-error-message').text('8文字以上、30文字以内で入力してください');
       var errStatus = true;
     } else if ( editPasswordValue != editPasswordConfirmValue ) {
       $('#password-confirm-error-message').text('パスワードと確認用の値が一致していません');

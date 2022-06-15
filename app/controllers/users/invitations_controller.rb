@@ -25,7 +25,7 @@ class Users::InvitationsController < BaseController
       end
         @join = Join.create(project_id: @project.id, user_id: @user.id)
         @user.send_invite_email(@join.token, @project.project_name, mypassword)
-        flash[:info] = '招待メールを送信しました！'
+        flash[:success] = '招待メールを送信しました！'
     end
     redirect_to user_project_path(current_user, @project)
   end
