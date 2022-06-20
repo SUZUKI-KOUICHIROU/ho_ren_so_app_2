@@ -4,14 +4,6 @@
 <% end %>
 
 <div class="card-box">
-  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-  <!-- div class="box-project-select">
-    <%#= form_with do |form| %>
-      <%#= form.label :project_id, "プロジェクト選択：" %>
-      <%#= form.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},
-      {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "report"}}) %>
-    <%# end %>
-  </div -->
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="center">報告一覧</h1>
   <div class="card">
@@ -40,16 +32,16 @@
                 <% end %>
               </div>
               <div class="table-header">
-                <div class="subject-name">
+                <div class="subject-name col-md-4">
                   <%=@project.format.title%>
                 </div>
-                <div class="reported-date">
+                <div class="reported-date col-md-4">
                   報告日
                 </div>
-                <div class="report-confirmer">
+                <%# <div class="report-confirmer">
                   確認者
-                </div>
-                <div class="report-action">
+                </div> %>
+                <div class="report-action col-md-4">
                   アクション
                 </div>
               </div>
@@ -57,22 +49,17 @@
                 <% line_num = 0%>
                 <% @you_reports.each do |report|%>
                   <% line_num += 1%>
-                  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                  <%# subject = report.answers.find_by(question_id: @first_question.id).value %>
-                  <%# if subject.blank? %>
-                    <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
-                  <%# end %>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
-                    <div class="subject-name">
+                    <div class="subject-name col-md-4">
                       <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
-                    <div class="reported-date">
+                    <div class="reported-date col-md-4">
                       <%= l(report.updated_at, format: :long) %>
                     </div>
-                    <div class="report-confirmer">
-                      <%= report.report_confirmers.where(report_confirmation_flag: true).count %>人
-                    </div>
-                    <div class="report-action">
+                    <%# <div class="report-confirmer">
+                      <%= report.report_confirmers.where(report_confirmation_flag: true).count人 %>
+                    <%# </div> %>
+                    <div class="report-action col-md-4">
                       <%= link_to "編集", edit_user_project_report_path(@user, @project, report), class: "btn btn-outline-orange" %>
                       <%= link_to "削除", user_project_report_path(@user, @project, report), method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
                     </div>
@@ -104,46 +91,37 @@
                 <% end %>
               </div>
               <div class="table-header">
-                <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                <%# <div class="subject-name"> %>
-                  <%# @report_label_name %>
-                <%# </div> %>
-                <div class="reported-date">
+                <div class="subject-name col-md-4">
+                  <%=@project.format.title%>
+                </div>
+                <div class="reported-date col-md-4">
                   報告日
                 </div>
-                <div class="report-person">
+                <div class="report-confirmer col-md-4">
                   報告者
                 </div>
-                <div class="report-action">
-                  この項目の表示内容は考え中
-                </div>
+                <%# <div class="report-action">
+                  アクション
+                </div> %>
               </div>
               <div class="table-body">
                 <% line_num = 0%>
                 <% @reports.each do |report|%>
-                
                   <% line_num += 1%>
-                  <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                  <%# subject = report.answers.find_by(question_id: @first_question.id).value %>
-                  <%# if subject.blank? %>
-                    <%# subject = report.answers.find_by(question_id: @first_question.id).array_value %>
-                  <%# end %>
-                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-                    <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                    <%# <div class="subject-name"> %>
-                      <%# link_to "#{subject}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
-                    <%# </div> %>
-                    <div class="reported-date">
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
+                    <div class="subject-name col-md-4">
+                      <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                    </div>
+                    <div class="reported-date col-md-4">
                       <%= l(report.updated_at, format: :long) %>
                     </div>
-                    <div class="report-person">
+                    <div class="report-confirmer col-md-4">
                       <%= report.sender_name %>
                     </div>
-                    <div class="report-action">
-                      <%# 表示のエラーになるため、一時的に非表示にしています。不要でしたら削除します。 %>
-                      <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
-                      <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
-                    </div>
+                    <%# <div class="report-action"> %>
+                      <%# link_to "編集", edit_user_project_report_path(@user, @project, report), class: "btn btn-outline-orange" %>
+                      <%# link_to "削除", user_project_report_path(@user, @project, report), method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
+                    <%# </div> %>
                   </div>
                 <% end %>
               </div>
