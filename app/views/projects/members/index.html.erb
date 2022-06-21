@@ -30,29 +30,31 @@
     <% if @members.present? %>
       <% line_num = 0%>
       <% @members.each do |member|%>
-        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-          <div class="member-name member-text">
-            <%#= link_to "#{member.user_name}", user_path(member.id), class: "project-detail-link" %>
-            <%= member.user_name %>
-          </div>
-          <div class="project-next-report-date member-text">
-            <% entry_date = ProjectUser.find_by(project_id: @project.id, user_id: member.id).created_at %>
-            <%= l(entry_date, format: :long) %>
-          </div>
-          <% if project_leader? %>
-          <div class="project-member-action">
-            <% unless @project.project_leader_id == member.id %>
-              <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
-              <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
-              <% if delegate.present? %>
-                <%= link_to "リクエストをキャンセル", cancel_delegate_path(@user, @project, delegate), method: :post, class: "btn btn-outline-danger" %>
-                <% else %>
-              <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.user_name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
+        <% if member.user_name != "" %>
+          <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+            <div class="member-name member-text">
+              <%#= link_to "#{member.user_name}", user_path(member.id), class: "project-detail-link" %>
+              <%= member.user_name %>
+            </div>
+            <div class="project-next-report-date member-text">
+              <% entry_date = ProjectUser.find_by(project_id: @project.id, user_id: member.id).created_at %>
+              <%= l(entry_date, format: :long) %>
+            </div>
+            <% if project_leader? %>
+            <div class="project-member-action">
+              <% unless @project.project_leader_id == member.id %>
+                <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
+                <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
+                <% if delegate.present? %>
+                  <%= link_to "リクエストをキャンセル", cancel_delegate_path(@user, @project, delegate), method: :post, class: "btn btn-outline-danger" %>
+                  <% else %>
+                <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.user_name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-outline-danger" %>
+                <% end %>
               <% end %>
+            </div>
             <% end %>
           </div>
-          <% end %>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
