@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(version: 2022_06_03_230801) do
     t.string "sender_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "title"
+    t.string "title", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end
