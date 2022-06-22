@@ -78,7 +78,7 @@ function changeForm() {
         </div>
         <% end %>
         <% if @project.project_leader_id == @user.id %>
-          <p class="text-center"><input value="手直ししてもらう" onclick="changeForm()" class="btn btn-danger mb-3"></p>
+          <div class="text-center"><label onclick="changeForm()" class="btn btn-danger mb-3">手直ししてもらう</label></div>
         <% end %>
         <div id="formblock" style="display: none">
           <%= render partial: 'reason', locals: {report: @report} %>
