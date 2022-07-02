@@ -41,8 +41,8 @@
         <div class="report-form">
           <% radio_option = question.radio_button.radio_button_option_strings %>
           <span><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
-          <% if question.required %><span class="report-required">必須</span><% end %><br>
-          <%= af.collection_radio_buttons(:value, radio_option, :option_string , :option_string, {}, { required: question.required }) do |r| %>
+          <span class="report-required">必須</span><br>
+          <%= af.collection_radio_buttons(:value, radio_option, :option_string , :option_string, {}, { required: true }) do |r| %>
             <% r.label(class: "radio-label") { r.radio_button(class: "radio-button") + r.text } %>
           <% end %>
         </div>
