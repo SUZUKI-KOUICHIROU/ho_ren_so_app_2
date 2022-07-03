@@ -75,7 +75,6 @@ class Projects::ReportsController < Projects::BaseProjectController
         when 'text_area'
           answer.update(value: params[:answer][cnt_num][:value])
         when 'radio_button'
-          debugger
           if params[:answer][cnt_num].nil?
             answer.update(value: "")
           else
