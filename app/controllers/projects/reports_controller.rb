@@ -75,7 +75,12 @@ class Projects::ReportsController < Projects::BaseProjectController
         when 'text_area'
           answer.update(value: params[:answer][cnt_num][:value])
         when 'radio_button'
-          answer.update(value: params[:answer][cnt_num][:value])
+          debugger
+          if params[:answer][cnt_num].nil?
+            answer.update(value: "")
+          else
+            answer.update(value: params[:answer][cnt_num][:value]) 
+          end
         when 'check_box'
           answer.update(array_value: params[:answer][cnt_num])
         when 'select'
