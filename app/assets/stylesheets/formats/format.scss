@@ -206,4 +206,13 @@ p .annotation {
   padding: 0 7px;
   background-color: #fff5ee;
 }
+.is-hidden{
+  display: none;
+}
+.fit-contents{
+  width:fit-content;
+}
+#tooltipOn .btn:disabled {
+  pointer-events: none;
+}
 // border: thin solid;

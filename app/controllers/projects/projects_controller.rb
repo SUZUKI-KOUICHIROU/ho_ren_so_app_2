@@ -9,9 +9,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
     @projects =
       if params[:search].present?
-        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
+        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
       else
-        @user.projects.all.page(params[:page]).per(5)
+        @user.projects.all.page(params[:page]).per(10)
       end
   end
 
