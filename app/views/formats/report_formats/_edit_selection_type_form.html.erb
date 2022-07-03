@@ -26,8 +26,10 @@
       </div>
     </div>
     <div class="text-right">
-      <%= fdof.check_box :required %>
-      <%= fdof.label :required, "必須にする", class: "report-format-check-box-label" %>
+      <% unless question.form_table_type == 'radio_button' %>
+        <%= fdof.check_box :required %>
+        <%= fdof.label :required, "必須にする", class: "report-format-check-box-label" %>
+      <% end %>
     </div>
     <%= fdof.hidden_field :id %>
     <%= fdof.hidden_field :form_table_type %>
