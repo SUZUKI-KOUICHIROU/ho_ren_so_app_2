@@ -91,7 +91,7 @@ $(document).on('turbolinks:load', function(){
       var aDateStr = String( yearNum ) + "年" + String( monthNum ) + "月" + String( dayNum ) + "日" + "(" + String( week ) + ")";
       var inputvalDate = String( yearNum ) + "-" + String( monthNum ) + "-" + String( dayNum );
       console.log( "a要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project-next-report-date").innerHTML = `<span>次回報告日</span><br>${aDateStr}`;
+      document.getElementById("project-next-report-date").innerHTML = `<label for="project_project_report_frequency">次回報告日</label><br>${aDateStr}`;
       console.log( "input要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
       document.getElementById("project_project_next_report_date").value = inputvalDate;
     });
@@ -135,7 +135,7 @@ $(document).on('turbolinks:load', function(){
       var aDateStr = String( yearNum ) + "年" + String( monthNum ) + "月" + String( dayNum ) + "日" + "(" + String( week ) + ")";
       var inputvalDate = String( yearNum ) + "-" + String( monthNum ) + "-" + String( dayNum );
       console.log( "a要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project-next-report-date").innerHTML = `<span>次回報告日</span><br>${aDateStr}`;
+      document.getElementById("project-next-report-date").innerHTML = `<label for="project_project_report_frequency">次回報告日</label><br>${aDateStr}`;
       console.log( "input要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
       document.getElementById("project_project_next_report_date").value = inputvalDate;
     });
