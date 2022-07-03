@@ -8,7 +8,7 @@
 
     <div class="project-detail">
       <%= f.label :description, "概要", class: "project-description-label" %><span class="project-required">必須</span>
-      <%= f.text_area :description, class: "form-control project-description-textarea-box", required: true %>
+      <%= f.text_area :description, class: "form-control project-description-textarea-box", placeholder: "最大200文字", maxlength: 200, required: true %>
     </div>
 
     <div class="project-detail">
@@ -29,8 +29,10 @@
 
     <div class="project-detail">
       <div class="project-next-report-date">
-        <% week = ApplicationHelper.weeks[Date.current.tomorrow.wday]%>
-        <%= f.label :project_report_frequency, "次回報告日" %><br><%= Date.current.tomorrow.strftime("%Y年%-m月%d日(#{week})")%>
+        <a id="project-next-report-date">
+          <% week = ApplicationHelper.weeks[Date.current.tomorrow.wday]%>
+          <%= f.label :project_report_frequency, "次回報告日" %><br><%= Date.current.tomorrow.strftime("%Y年%-m月%d日(#{week})")%>
+        </a>
         <%= f.hidden_field :project_next_report_date, :value => Date.current.tomorrow %>
       </div>
     </div>

@@ -46,17 +46,41 @@ function changeForm() {
             <span>
             <% case answer.question_type %>
             <% when 'text_field' %>
-              <%= TextField.find_by(question_id: answer.question_id).label_name %>
+              <% if !TextField.find_by(question_id: answer.question_id).nil?%>
+                <%= TextField.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% when 'text_area' %>
-              <%= TextArea.find_by(question_id: answer.question_id).label_name %>
+              <% if !TextArea.find_by(question_id: answer.question_id).nil?%>
+                <%= TextArea.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% when 'radio_button' %>
-              <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
+              <% if !RadioButton.find_by(question_id: answer.question_id).nil?%>
+                <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% when 'date_field' %>
-              <%= DateField.find_by(question_id: answer.question_id).label_name %>
+              <% if !DateField.find_by(question_id: answer.question_id).nil?%>
+                <%= DateField.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% when 'check_box' %>
-              <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
+              <% if !CheckBox.find_by(question_id: answer.question_id).nil?%>
+                <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% when 'select' %>
-              <%= Select.find_by(question_id: answer.question_id).label_name %>
+              <% if !Select.find_by(question_id: answer.question_id).nil?%>
+                <%= Select.find_by(question_id: answer.question_id).label_name %>
+              <% else %>
+                この質問は削除されました
+              <% end %>
             <% end %>
             </span>
           </li>
