@@ -34,8 +34,13 @@
         <% end %>
       <% end %>
     </div>
-    <div class="mt-3 text-right">
+    <div id="tooltipOff" class="mt-3 text-right">
       <%= f.submit "変更", class: "btn btn-outline-orange" %>
+    </div>
+    <div id="tooltipOn" class="mt-3 text-right is-hidden">
+      <div class="fit-contents d-inline-flex"  title="項目を1つ以上有効にしてください" data-toggle="tooltip" data-placement="bottom">
+        <%= f.submit "変更", class: "btn btn-outline-orange", disabled: true %>
+      </div>
     </div>
   </div>
 <% end %>

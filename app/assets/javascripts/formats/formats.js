@@ -322,6 +322,28 @@ $(document).on('turbolinks:load', function(){
         });
       };
     });
+  });
+
+  //有効にするチェックボックスが選択されていない場合のツールチップ表示
+  $(function() {
+    // チェックボックス全てを取得
+    let checkBoxes = document.querySelectorAll("input[id*='using_flag']");
+    //ツールチップ実行
+    $('[data-toggle="tooltip"]').tooltip();
+    // 全てチェックボックスが外れた際のイベント取得
+    for (let i = 0; i < checkBoxes.length; i++) {
+      // changeイベントを登録
+      checkBoxes[i].addEventListener('change', (e) => {
+        var checkedCount = $("input[id*='using_flag']:checked").length;
+          if(checkedCount == 0) {
+            $("#tooltipOn").removeClass("is-hidden")
+            $("#tooltipOff").addClass("is-hidden")
+          }else{
+            $("#tooltipOn").addClass("is-hidden")
+            $("#tooltipOff").removeClass("is-hidden")
+          }
+      });
+    }
   })
 });
 

@@ -60,7 +60,7 @@ before_action :project_authorization, only: %i[edit]
     answer = Answer.find_by(question_id: params[:question_id])
     if @project.questions.count <= 1
       flash[:danger] = '項目を削除できませんでした。※項目は1つ以上必要です。'
-    elsif form.destroy and answer.destroy
+    elsif form.destroy
       flash[:success] = '項目を削除しました。'
     else
       flash[:danger] = '項目の削除に失敗しました。'
