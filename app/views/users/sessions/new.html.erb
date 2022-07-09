@@ -1,10 +1,10 @@
 <% provide(:title, "Top") %>
 
 <%= render "users/shared/error_messages", resource: resource %>
-<div class="projects-format", style="margin:3rem auto auto auto;">
+<div class="user-format col-lg-6 mx-auto">
   <%= form_for(resource, as: resource_name, url: user_session_path(resource), html: { id:'login-form'}) do |f| %>
     <div class="form-content">
-      <h1 class="text-center my-3">ログイン</h1>
+      <h1 class="text-center my-3 mt-5">ログイン</h1>
       <div class="project form-body">
 
         <div class="project-detail">
@@ -28,7 +28,7 @@
               <span class='remember-login'>ログインしたままにする</span>
             </span>
           <% end %>
-          <div class="column-right">
+          <div class="text-right">
             <%= link_to "パスワードを忘れた場合", new_user_password_path, data: {"turbolinks" => false} %>
           </div>
         </div>

@@ -2,7 +2,7 @@
 <% provide(:title, 'ユーザー新規登録') %>
 
 <%= render "users/shared/error_messages", resource: resource %>
-<div class="projects-format" style="margin:3rem auto auto auto;">
+<div class="user-format col-lg-6 mx-auto" style="margin:3rem auto auto auto;">
   <%= form_for(resource, as: resource_name, url: registration_path(resource),html: { id:'register-form'}) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3">ユーザー新規登録</h1>

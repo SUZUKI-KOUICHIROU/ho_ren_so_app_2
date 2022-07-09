@@ -1,7 +1,7 @@
 <% provide(:title, 'パスワードリセット画面') %>
 
 <%= render "users/shared/error_messages", resource: resource %>
-<div class="projects-format mt-5">
+<div class="user-format col-lg-6 mx-auto mt-5">
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, id:'password-form' }) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3">パスワードリセット</h1>

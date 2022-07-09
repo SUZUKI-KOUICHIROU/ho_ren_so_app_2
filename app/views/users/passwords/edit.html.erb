@@ -2,7 +2,7 @@
 <% provide(:title, 'パスワード設定画面') %>
 
  <%= render "users/shared/error_messages", resource: resource %>
-<div class="projects-format" style="margin:3rem auto auto auto;">
+<div class="user-format col-lg-6 mx-auto mt-5">
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put,id:'password-reset-form' }) do |f| %>
     <div class="form-content">
       <h1 class="text-center my-3">パスワード再設定</h1>
