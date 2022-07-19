@@ -7,7 +7,7 @@
       <h1 class="text-center my-3">パスワードリセット</h1>
       <div class="project form-body">
         <div class="project-detail">
-          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
+          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id:'users_email' %>
           <div id="email-error-message" class="text-danger pt-2"></div>
         </div>

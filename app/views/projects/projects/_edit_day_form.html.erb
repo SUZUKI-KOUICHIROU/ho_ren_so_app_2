@@ -2,24 +2,24 @@
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
   <div class="project form-body">
     <div class="project-detail">
-      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="project-required">必須</span>
+      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :description, "概要", class: "project-description-label" %><span class="project-required">必須</span>
+      <%= f.label :description, "概要", class: "project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <%= f.text_area :description, class: "form-control project-description-textarea-box", placeholder: "最大200文字", maxlength: 200, required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告頻度" %><span class="project-required">必須</span><br>
+      <%= f.label :project_report_frequency, "報告頻度" %><span class="pl-2 font-weight-bold text-danger">必須</span><br>
       <%= f.radio_button :report_frequency_selection, :edit_day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
       <%= f.label :report_frequency_selection_edit_day, "日数で設定", class: "project-radio-label" %>
       <%= f.radio_button :report_frequency_selection, :edit_week, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
       <%= f.label :report_frequency_selection_edit_week, "曜日で設定", class: "project-radio-label" %>
     </div>
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告回数" %><span class="project-required">必須</span>
+      <%= f.label :project_report_frequency, "報告回数" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <div class="project-report-frequency">
         <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number", id: "project_project_report_frequency", required: true %>
         <div>日に1回</div>

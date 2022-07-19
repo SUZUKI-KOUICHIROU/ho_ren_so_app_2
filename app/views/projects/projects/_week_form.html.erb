@@ -2,17 +2,17 @@
   <%= f.hidden_field :project_leader_id, :value => current_user.id %>
   <div class="project form-body">
     <div class="project-detail">
-      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="project-required">必須</span>
+      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :description, "概要", class: "project-description-label" %><span class="project-required">必須</span>
+      <%= f.label :description, "概要", class: "project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <%= f.text_area :description, class: "form-control project-description-textarea-box", placeholder: "最大200文字", maxlength: 200, required: true %>
     </div>
 
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告頻度" %><span class="project-required">必須</span><br>
+      <%= f.label :project_report_frequency, "報告頻度" %><span class="pl-2 font-weight-bold text-danger">必須</span><br>
       <%= f.radio_button :report_frequency_selection, :day, class: "project-radio", data: { user_id: "#{@user.id}"} %>
       <%= f.label :report_frequency_selection_day, "日数で設定", class: "project-radio-label" %>
 
@@ -20,7 +20,7 @@
       <%= f.label :report_frequency_selection_week, "曜日で設定", class: "project-radio-label" %>
     </div>
     <div class="project-detail box-project-report-frequency">
-      <%= f.label :week_select, "報告日" %><span class="project-required">必須</span>
+      <%= f.label :week_select, "報告日" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <div class="project-week-select">
         <div>毎週</div>
         <%= f.select(:week_select, options_for_select(ApplicationHelper.weeks.map{|c|[c]}, "月"), {}, {class: 'form-control box-week', required: true}) %>

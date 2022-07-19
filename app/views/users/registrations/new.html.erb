@@ -8,24 +8,24 @@
       <h1 class="text-center my-3">ユーザー新規登録</h1>
       <div class="project form-body">
         <div class="project-detail">
-          <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="project-required">必須</span>
+          <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="pl-2 font-weight-bold text-danger">必須</span>
           <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control", id: 'users_name' %>
           <div id="name-error-message" class="text-danger pt-2"></div>
         </div>
         <div class="project-detail">
-          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="project-required">必須</span>
+          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id:'users_email' %>
           <div id="email-error-message" class="text-danger pt-2"></div>
         </div>
 
         <div class="project-detail">
-          <%= f.label :password, class:'project-description-label' %><span class="project-required">必須</span>
+          <%= f.label :password, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
           <%= f.password_field :password, class: "form-control", id:'user_password' %>
           <div id="password-error-message" class="text-danger pt-2"></div>
         </div>
 
         <div class="project-detail">
-          <%= f.label :password_confirmation, class:'project-description-label' %><span class="project-required">必須</span>
+          <%= f.label :password_confirmation, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
           <%= f.password_field :password_confirmation, class: "form-control", id:'user_password_confirm' %>
           <div id="password-confirm-error-message" class="text-danger pt-2"></div>
         </div>
