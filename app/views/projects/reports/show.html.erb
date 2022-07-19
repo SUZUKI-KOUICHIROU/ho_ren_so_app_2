@@ -33,8 +33,8 @@ function changeForm() {
       </div>
       <div class="card-body">
         <div class="container mb-4">
-          <div class="card-title-frame">
-            <span>件名</span>
+          <div>
+            <span class="report-item-title font-weight-bold">件名</span>
           </div>
           <div class="card-text ml-0 test">
             <%= @report.title %>
@@ -42,8 +42,8 @@ function changeForm() {
         </div>
         <% @answers.each do |answer| %>
         <div class="container mb-4">
-          <li class="card-title-frame">
-            <span>
+          <li>
+            <span class="report-item-title font-weight-bold">
             <% case answer.question_type %>
             <% when 'text_field' %>
               <% if !TextField.find_by(question_id: answer.question_id).nil?%>

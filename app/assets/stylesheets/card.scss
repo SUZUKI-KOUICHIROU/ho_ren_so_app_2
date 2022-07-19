@@ -60,6 +60,12 @@
   }
 }
 
+.card-body {
+  li {
+    list-style: none;
+  }
+}
+
 .box-user-name {
   display: inline-block;
   margin: 0 5px 5px 0;
