@@ -31,15 +31,12 @@
         </div>
 
         <div class="center">
-          <%= f.submit "新規作成", class: "btn btn-block btn-outline-orange", id: "button_create-user" %>
+          <%= f.submit "新規作成", class: "btn btn-outline-orange", id: "button_create-user" %>
+          <%= link_to "戻る", new_user_session_path, class: "btn btn-secondary ml-3" %>
         </div>
       </div>
     </div>
   <% end %>
-
-  <div class="center">
-    <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-block btn-outline-secondary" %>
-  </div>  
 </div>
 
 

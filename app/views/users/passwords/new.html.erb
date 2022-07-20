@@ -13,13 +13,10 @@
         </div>
 
         <div class="center">
-          <%= f.submit "パスワードリセット", class: "btn btn-block btn-outline-orange" %>
+          <%= f.submit "リセット", class: "btn btn-outline-orange" %>
+          <%= link_to "戻る", new_user_session_path, class: "btn btn-secondary" %>
         </div>
       </div>
     </div>
   <% end %>
-
-  <div class="center mt-3">
-    <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-block btn-outline-secondary" %>
-  </div>  
 </div>

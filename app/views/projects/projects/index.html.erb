@@ -76,7 +76,7 @@
           <%# === アクション === %>
             <div class="project-action">
               <%= link_to "編集", edit_user_project_path(@user, project), class: "btn btn-outline-orange" %>
-              <%= link_to "削除", user_project_path(@user, project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-outline-danger" %>
+              <%= link_to "削除", user_project_path(@user, project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-danger" %>
             </div>
         </div>
       <% end %>

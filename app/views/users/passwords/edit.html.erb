@@ -20,13 +20,11 @@
           <div id="password-confirm-error-message" class="text-danger pt-2"></div>
         </div>
 
-        <div class="actions">
-          <%= f.submit "パスワード変更", class: "btn btn-block btn-outline-orange" %>
+        <div class="actions text-center">
+          <%= f.submit "パスワード変更", class: "btn btn-outline-orange" %>
+          <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-secondary" %>
         </div>
       </div>
     </div>
   <% end %>
-  <div class="center mt-3">
-    <%= link_to "ログイン画面に戻る", new_user_session_path, class: "btn btn-block btn-outline-secondary" %>
-  </div>  
 </div>
