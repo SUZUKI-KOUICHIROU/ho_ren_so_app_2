@@ -7,10 +7,10 @@
     <%= ftf.hidden_field :id %>
       <div class="label-select-box">
         <div class="label-box">
-          <%= ftf.label :label_name, "項目名", class: "form-control-label" %>
+          <%= ftf.label :label_name, "項目名：", class: "form-control-label report-item-title font-weight-bold" %>
           <%= ftf.text_field :label_name, class: "form-control", required: true %>
         </div>
-        <div class="select-box">
+        <div class="select-box mt-3">
           <%= ftf.label :field_type, "フォームの種類" %>
           <%= ftf.select(:field_type, ApplicationHelper.form_option, {}, class: 'form-control select-form', data: { project_id: "#{@project.id}"}) %>
         </div>

@@ -16,12 +16,12 @@
         <%= f.fields_for 'format_attribute[]', @format do |format| %>
         <div class='form'>
           <div class='label-box'>
-            <p><%= format.label :title, "タイトル項目", class: 'text-right' %></p>
-            <%= format.text_field :title, class: 'form-control' %>
-            <%= format.label "フォームの種類:" %>
+            <p><%= format.label :title, "タイトル項目", class: 'text-right report-item-title font-weight-bold mt-3 ml-3' %></p>
+            <%= format.text_field :title, class: 'ml-3 form-control' %>
+            <%= format.label "フォームの種類:", class: 'ml-3' %>
             <%= format.label '記述式', class: 'font-weight-bold'%>
           </div>
-          <p class='annotation'>※この項目は順番の変更は行えません</p>
+          <p class='annotation ml-3'>※この項目は順番の変更は行えません</p>
         </div>
         <% @questions.each do |question|%>
           <% @form_number += 1 %>

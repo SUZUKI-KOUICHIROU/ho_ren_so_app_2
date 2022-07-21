@@ -9,13 +9,15 @@
   <div id="form-<%= @form_number %>", draggable="false", class="form">
     <%= f.fields_for 'question_attributes[]', question do |fdof| %>
       <div class ="dorack-area">
-        <div class ="dorack-area-before">項目<%= @form_number %></div>
         <div class ="dorack-area-center"></div>
         <div class ="dorack-area-after">
-          <div class="report-format-check-box">
-            <%= fdof.check_box :using_flag %>
-            <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
-          </div>
+        </div>
+      </div>
+      <div>
+        <div class ="report-item-title font-weight-bold ml-3">項目<%= @form_number %></div>
+        <div class="report-format-check-box">
+          <%= fdof.check_box :using_flag %>
+          <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
         </div>
       </div>
       <div class="text-right">
@@ -28,8 +30,8 @@
       <%= fdof.fields_for form_type_symbol do |ftf| %>
         <%= ftf.hidden_field :id %>
         <div class="label-select-box">
-          <div class="label-box">
-            <p><%= ftf.label :label_name, "項目名" %></p>
+          <div class="label-box ml-3">
+            <%= ftf.label :label_name, "項目名：", class: 'font-weight-bold' %>
             <%= ftf.text_field :label_name, class: 'form-control', required: true %>
             <%= ftf.label :field_type, "フォームの種類:" %>
             <%= ftf.hidden_field :field_type %>

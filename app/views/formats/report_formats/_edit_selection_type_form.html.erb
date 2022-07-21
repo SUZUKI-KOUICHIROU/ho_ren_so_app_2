@@ -16,13 +16,13 @@
 <div id="form-<%= @form_number %>", draggable="false", class="form">
   <%= f.fields_for 'question_attributes[]', question do |fdof| %>
     <div class ="dorack-area">
-      <div class ="dorack-area-before">項目<%= @form_number %></div>
       <div class ="dorack-area-center"></div>
-      <div class ="dorack-area-after">
-        <div class="report-format-check-box">
-          <%= fdof.check_box :using_flag %>
-          <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
-        </div>
+    </div>
+    <div>
+      <div class ="ml-3 report-item-title font-weight-bold font-weight-bold">項目<%= @form_number %></div>
+      <div class="report-format-check-box">
+        <%= fdof.check_box :using_flag %>
+        <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
       </div>
     </div>
     <div class="text-right">
@@ -38,9 +38,9 @@
       <%= ftf.hidden_field :id %>
       <div class="label-select-box">
         <div class="label-box">
-          <%= ftf.label :label_name, "項目名" %>
-          <%= ftf.text_field :label_name, class: 'form-control', required: true %>
-          <%= ftf.label :field_type, "フォームの種類" %>
+          <%= ftf.label :label_name, "項目名：", class: 'ml-3 font-weight-bold' %>
+          <%= ftf.text_field :label_name, class: 'form-control ml-3', required: true %>
+          <%= ftf.label :field_type, "フォームの種類", class: 'ml-3' %>
           <% case question.form_table_type %>
               <% when 'radio_button'%>
                 <span class="font-weight-bold">ラジオボタン</span>
@@ -52,12 +52,12 @@
           <%= ftf.hidden_field :field_type %>
         </div>
       </div>
-      <div class="label-box">
+      <div class="label-box ml-3">
         <%= ftf.label :option_string, "選択肢" %>
       </div>
       <div class="option-form-edit">
         <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, question_id: question.id} %>
-        <div class="option-add-btn-box">
+        <div class="option-add-btn-box ml-3">
           <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-outline-orange btn-sm' %>
         </div>
       </div>
