@@ -4,7 +4,7 @@
 }
 
 .projects-format .form-body {
-  background-color: #d8d8d8;
+  background-color: #ffe9d8;
   padding: 2rem;
   border-radius: 10px;
 }
@@ -82,12 +82,10 @@
 
 .project label {
   display: inline-block;
-  margin-bottom: 0rem;
-  padding: 0.4rem 0.75rem;
-  background-color: #fc8022;
-  border-radius: 5px;
-  margin-bottom: 0.5rem;
-  color: #fff;
+  padding: 0.5em;
+  color: #494949;
+  background: #fffaf4;
+  border-left: solid 5px #ffaf58;
   font-weight: bold;
 }
 
@@ -104,10 +102,11 @@
 }
 
 .project .project-radio-label {
-  background-color: unset;
+  background: unset;
   margin-bottom: 0rem;
   padding: 0.2rem 0rem;
   color: unset;
+  border-left: unset;
 }
 
 .box-project-next-report-date span {

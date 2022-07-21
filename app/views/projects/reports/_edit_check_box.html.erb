@@ -1,6 +1,6 @@
 <div class="report-form">
   <% c -= 1 %>
-  <span><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="report-required">必須</span><% end %>
+  <span class="report-item-title mb-2 font-weight-bold"><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
   <br>
   <% CheckBox.find_by(question_id: answer.question_id).check_box_option_strings.each do |box| %>
     <% boolExists = @answers[c][:array_value].include? box.option_string %>

@@ -64,7 +64,7 @@
     <% end %>
 
     <div class="form-delete-button">
-      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-outline-danger" %>
+      <%= link_to "削除", destroy_project_report_format_path(@project, question), method: :delete, data: { confirm: "フォームを削除すると、フォームに関連する入力履歴も削除されます。\n削除してよろしいですか？" }, class: "btn btn-danger" %>
     </div>
   <% end %>
 </div>
