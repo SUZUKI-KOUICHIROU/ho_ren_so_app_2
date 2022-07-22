@@ -18,15 +18,19 @@
 
 .btn-secondary:hover {
   color: #6c757d;
-  background-color: #6c757d;
   border: 2px solid #6c757d;
   background-color: #ffffff;
 }
 
 .btn-danger:hover {
   color: #dc3545;
-  background-color: #dc3545;
   border: 2px solid #dc3545;
+  background-color: #ffffff;
+}
+
+.btn-primary:hover  {
+  color: #007bff;
+  border: 2px solid #007bff;
   background-color: #ffffff;
 }
 
@@ -35,7 +39,6 @@
 .btn-outline-orange:not(:disabled):not(.disabled):active, .btn-outline-orange:not(:disabled):not(.disabled).active,
 .show > .btn-outline-orange.dropdown-toggle {
   color: #fc8022;
-  border-color: #fc8022;
   border: 2px solid #fc8022;
   background-color: #ffffff;
 }
