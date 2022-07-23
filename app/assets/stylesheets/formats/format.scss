@@ -63,24 +63,16 @@
     border: 2px solid #a6a6a6;
   }
 }
-.dorack-area {
-  display: flex;
-  cursor: move;
-}
-
-.dorack-area-before {
-  width: 47.5%;
-}
 
 .dorack-area-center {
-  width: 6%;
-  // cursor: move;
+  width: 28px;
   box-sizing: border-box;
-  // border: thin solid;
   background-color: #fff;
   background-image: radial-gradient(#888 10%, transparent 10%);
   background-position: 0 0, 7px 0px;
   background-size: 14px 14px;
+  margin: 10px auto;
+  height: 40px;
 }
 
 .dorack-area-after {
@@ -129,7 +121,6 @@ margin-bottom: 0;
 }
 
 .select-box {
-  margin-left: 1%;
   width: 50%;
 }
 
