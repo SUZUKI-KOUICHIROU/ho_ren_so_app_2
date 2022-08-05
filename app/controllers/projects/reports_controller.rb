@@ -133,6 +133,38 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
+  def view_reports
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+
+    if Date.today == @project.project_next_report_date
+      @latest_day = @project.project_next_report_date
+    elsif Date.today < @project.project_next_report_date
+      @latest_day = @project.project_next_report_date - @project.project_report_frequency
+    end
+    old_day = @project.created_at
+    num = @latest_day
+    i = 0
+    
+    @reports = @project.reports.where("created_at >= ?", num)
+    @days = [] #報告されたはずの日
+    @not_report_users = []
+    @report_users_id = [] # 報告していない人
+    while num > old_day
+      j = 0
+      @report_users_id[i] = []
+      @days[i] = [num, @project.reports.where("created_at < ?", num+1).where("created_at >= ?", num)]
+      @days[i][1].select(:user_id).distinct.each do |report|
+        @report_users_id[i][j] = report.user_id
+        j += 1
+      end
+      @not_report_users[i] = @project.users.all - @project.users.all.where(id: @report_users_id[i])
+      num -= @project.project_report_frequency
+      i += 1
+    end
+  end
+
   def report_form_switching
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
