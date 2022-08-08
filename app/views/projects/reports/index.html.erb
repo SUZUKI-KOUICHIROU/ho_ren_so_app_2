@@ -5,15 +5,15 @@
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">報告一覧</h1>
+  <h1 class="text-center">報告一覧</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
         <li class="nav-item">
-        <a class="nav-link active" id="you-report-tab" data-toggle="tab" href="#you-report" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-report" aria-selected="true">▼ あなたの報告 ▼</a>
+        <a class="text-white active" id="you-report-tab" data-toggle="tab" href="#you-report" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-report" aria-selected="true">▼ あなたの報告 ▼</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="report-tab" data-toggle="tab" href="#report" target="_blank" rel="external nofollow"  role="tab" aria-controls="report" aria-selected="false">▼ 他メンバーの報告 ▼</a>
+          <a class="text-white" id="report-tab" data-toggle="tab" href="#report" target="_blank" rel="external nofollow"  role="tab" aria-controls="report" aria-selected="false">▼ 他メンバーの報告 ▼</a>
         </li>
       </ul>
     </div>
@@ -23,10 +23,10 @@
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
             <% if @you_reports.present? %>
-              <div class="box-search">
+              <div class="d-flex justify-content-end mb-3">
                 <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "you-report" %>
-                  <%= form.label :search, "報告検索：", class: "search-label" %>
+                  <%= form.label :search, "報告検索：", class: "mb-0" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
@@ -69,7 +69,7 @@
             <% else @you_reports.blank?%>
               <P>あなたの報告履歴がありません。</P>
             <% end %>
-            <div class="index-footer">
+            <div class="d-flex">
               <% if @you_reports.present?%>
                 <div class="paginate">
                   <%= paginate @you_reports %>
@@ -82,10 +82,10 @@
         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
           <div class="box-report-index">
             <% if @reports.present? %>
-              <div class="box-search">
+              <div class="d-flex justify-content-end mb-3">
                 <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "report" %>
-                  <%= form.label :search, "件名検索：", class: "search-label" %>
+                  <%= form.label :search, "件名検索：", class: "mb-0" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
@@ -128,7 +128,7 @@
             <% else @reports.blank?%>
               <P>他メンバーの報告履歴がありません。</P>
             <% end %>
-            <div class="index-footer">
+            <div class="d-flex">
               <% if @reports.present?%>
                 <div class="paginate">
                   <%= paginate @reports %>

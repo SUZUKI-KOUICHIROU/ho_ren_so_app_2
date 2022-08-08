@@ -10,37 +10,37 @@
 }
 
 .btn-outline-orange {
-  color: #fff;
-  background-color: #fc8022;
-  border: 2px solid #fc8022;
+  color: $base-sub-color;
+  background-color: $base-color;
+  border: 2px solid $base-color;
   text-decoration: none
 }
 
 .btn-secondary:hover {
   color: #6c757d;
   border: 2px solid #6c757d;
-  background-color: #ffffff;
+  background-color: $base-sub-color;
 }
 
 .btn-danger:hover {
   color: #dc3545;
   border: 2px solid #dc3545;
-  background-color: #ffffff;
+  background-color: $base-sub-color;
 }
 
 .btn-primary:hover  {
   color: #007bff;
   border: 2px solid #007bff;
-  background-color: #ffffff;
+  background-color: $base-sub-color;
 }
 
 
 .btn-outline-orange:hover,
 .btn-outline-orange:not(:disabled):not(.disabled):active, .btn-outline-orange:not(:disabled):not(.disabled).active,
 .show > .btn-outline-orange.dropdown-toggle {
-  color: #fc8022;
-  border: 2px solid #fc8022;
-  background-color: #ffffff;
+  color: $base-color;
+  border: 2px solid $base-color;
+  background-color: $base-sub-color;
 }
 
 .btn-outline-orange:focus, .btn-outline-orange.focus,
@@ -50,7 +50,7 @@
 }
 
 .btn-outline-orange.disabled, .btn-outline-orange:disabled {
-  color: #fc8022;
+  color: $base-color;
   background-color: transparent;
 }
 
@@ -69,7 +69,7 @@ input[type=checkbox],input[type=radio] {
   width: 20px;
   vertical-align: -0.7rem;
   transition:all .15s ease-out 0s;
-  color: #fff;
+  color: $base-sub-color;
   cursor: pointer;
   display: inline-block;
   margin: .4rem;
@@ -81,7 +81,7 @@ input[type=checkbox],input[type=radio] {
 input[type=checkbox]:before,input[type=checkbox]:after {
   position: absolute;
   content: "";
-  background: #fff;
+  background: $base-sub-color;
   transition: all .2s ease-in-out;
 }
 
@@ -170,7 +170,5 @@ input[type=checkbox], input[type=radio] {
 }
 
 input[type=checkbox]:checked, input[type=checkbox]:indeterminate, input[type=radio]:checked:before {
-  background: #fc8022;
+  background: $base-color;
 }
-
-// border: thin solid;

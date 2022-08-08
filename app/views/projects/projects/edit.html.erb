@@ -6,7 +6,7 @@
 
 <div class="projects-format" id="project-new-edit">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">プロジェクト編集</h1>
+  <h1 class="text-center">プロジェクト編集</h1>
   <div class="form-content ">
     <% if @report_frequency_type == "week" %>
       <%= render partial: "edit_week_form" %>

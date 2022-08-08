@@ -6,10 +6,10 @@
 <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch  do |f| %>
   <div class="box-reprot-format">
     <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-    <h1 class="center">フォーマット編集</h1>
+    <h1 class="text-center">フォーマット編集</h1>
     <div class="box-reprot-format-edit pb-3">
       <div class="edit-report-format-header">
-        <div class="form-add">
+        <div class="ml-auto">
           <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
         </div>
       </div>

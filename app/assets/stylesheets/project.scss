@@ -1,0 +1,192 @@
+.projects-format {
+  margin: 2.5rem auto 5rem;
+  width: 50%;
+}
+
+.projects-format .form-body {
+  background-color: $base-background-color;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.box-number {
+  width: 50px;
+}
+
+.box-week {
+  width: fit-content;
+}
+
+.project-required {
+  background-color: red;
+  padding: 5px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: $base-sub-color;
+}
+
+.project-name-text {
+  font-weight: bold;
+  color: $base-title-font-color;
+}
+
+.project-week-select div:first-child {
+  padding: 6px 6px 6px 0;
+}
+
+.project-week-select div {
+  padding: 6px;
+}
+
+.project-detail {
+  background-color: $base-sub-color;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid gray;
+  margin-bottom: 1rem;
+}
+
+.project-detail:last-child {
+  margin-bottom: 0rem;
+}
+
+.project-detail label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.project-detail-link {
+  vertical-align: middle;
+}
+
+.project-report-frequency div {
+  padding: 6px;
+}
+
+.project-next-report-date span {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  color: $base-sub-color;
+  font-weight: bold;
+}
+
+.project label {
+  display: inline-block;
+  padding: 0.5em;
+  color: #494949;
+  background: #fffaf4;
+  border-left: solid 5px #ffaf58;
+  font-weight: bold;
+}
+
+.project .project-radio-label {
+  background: unset;
+  margin-bottom: 0rem;
+  padding: 0.2rem 0rem;
+  color: unset;
+  border-left: unset;
+}
+
+.box-project-next-report-date span {
+  display: inline-block;
+  margin-bottom: 0rem;
+  padding: 0.4rem 0.75rem;
+  background-color: $base-color;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  color: $base-sub-color;
+  font-weight: bold;
+}
+
+.project .project-next-report-date {
+  width: unset;
+}
+
+////////// 検索のtext_fieldのデザイン //////////
+.search-box {
+  border-style: none;
+  box-sizing: border-box;
+  height: 90%;
+  border: 2px solid #a6a6a6;
+  box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
+  border-radius: 3px;
+  padding: 0 7px;
+  background-color: $base-form-color;
+  vertical-align: middle ;
+}
+
+////////// 一覧のヘッダーのデザイン //////////
+.table-header {
+  font-weight: 700;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  background-color: $base-background-color;
+  border-radius: 10px 10px 0 0;
+  div {
+    border-radius: 5px;
+    background-color: $base-color;
+    color: $base-sub-color;
+  }
+}
+
+////////// 一覧のボディーのデザイン //////////
+.table-body {
+  // padding: 0rem 2rem 2rem 2rem;
+  padding: 0rem 1.5rem 1.5rem 1.5rem;
+  background-color: $base-background-color;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 2rem;
+  .table-line {
+    background-color: $base-background-color;
+    font-weight: 500;
+    div {
+    background-color: $base-sub-color;
+    border-radius: 5px;
+    }
+  }
+}
+
+////////// 一覧の行のデザイン //////////
+.table-header, .table-line {
+  display: flex;
+  div {
+    // font-size: 1.3rem;
+    // padding: 1rem;
+    font-size: 1.2rem;
+    padding: 0.75rem;
+  }
+}
+
+////////// 一覧の列のデザイン //////////
+.project-name, .subject-name, .member-name, .project-next-report-date,
+.reported-date, .report-confirmer, .report-person, .report-action, .project-action,
+.message-date, .message-confirmer, .message-person, .message-action,
+.counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
+  width: 25%;
+  margin: 0rem 0.5rem 0.5rem 0rem;
+}
+
+////////// お知らせの列のデザイン //////////
+.project-news {
+  width: 25%;
+  margin: 0rem 0.5rem 0.5rem 0rem;
+  p:last-child {
+    margin-bottom: 0rem;
+    vertical-align: middle;
+    display: inline;
+  }
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: $base-color;
+  background-color: $base-sub-color;
+  border-color: #dee2e6 #dee2e6 $base-sub-color;
+}
+
+.nav-link:hover {
+  color: $base-color;
+  background-color: $base-sub-color;
+  border-bottom: none;
+}

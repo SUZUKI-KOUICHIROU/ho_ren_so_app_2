@@ -1,16 +1,11 @@
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 @import "base";
-@import "formats/format";
+@import "format";
 @import "sidebar";
-@import "static_pages";
-@import "projects/common";
-@import "projects/index";
-@import "projects/new";
-@import "projects/edit";
-@import "projects/members";
-@import "reports/report";
-@import "users/users";
+@import "project";
+@import "report";
+@import "user";
 @import "pagination";
 @import "button";
 @import "card";

@@ -4,10 +4,10 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="box-project-index">
+<div class="mt-3 mr-5 ml-4">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">メンバー一覧</h1>
-  <div class="box-search">
+  <h1 class="text-center">メンバー一覧</h1>
+  <div class="d-flex justify-content-end mb-3">
     <%= form_with url: project_member_index_path(@user, @project), method: :get, local: true do |form| %>
       <%= form.text_field :search, placeholder: "ユーザー名を入力", class: "search-box" %>
       <%= form.submit "検索", class: "btn btn-outline-orange" %>
@@ -21,7 +21,7 @@
       参加日
     </div>
     <% if project_leader? %>
-    <div class="project-member-action">
+    <div class="w-50 mr-2 mb-2">
       アクション
     </div>
     <% end %>
@@ -41,7 +41,7 @@
               <%= l(entry_date, format: :long) %>
             </div>
             <% if project_leader? %>
-            <div class="project-member-action">
+            <div class="w-50 mr-2 mb-2">
               <% unless @project.project_leader_id == member.id %>
                 <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
                 <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
@@ -58,7 +58,7 @@
       <% end %>
     <% end %>
   </div>
-  <div class="index-footer">
+  <div class="d-flex">
     <% if @members.present?%>
       <div class="paginate">
         <%= paginate @members %>

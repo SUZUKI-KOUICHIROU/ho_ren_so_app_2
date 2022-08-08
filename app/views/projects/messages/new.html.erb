@@ -4,7 +4,7 @@
 
 <% provide(:title, "#{@project.project_name}_連絡") %>
 <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">連絡作成</h1>
+  <h1 class="text-center">連絡作成</h1>
 <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
   <div class="col-6 container offset-3 box-message-format-new pb-2 my-5">
     <%= f.label :sent_to, "送信対象", class:"font-weight-bold message-title-box" %>
@@ -20,7 +20,7 @@
       <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "col-11 form-control message-text mb-3", required: true %>
       <%= f.label :message_detail, "連絡内容", class:"font-weight-bold message-title-box" %>
       <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control message-area mb-3",rows: "6", required: true %>
-    <div class="center mb-3">
+    <div class="text-center mb-3">
       <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-secondary col-2" %>
       <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>
     </div>
