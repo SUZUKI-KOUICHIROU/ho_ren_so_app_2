@@ -10,7 +10,7 @@
 .box-reprot-format-edit,
 .box-message-format-new,
 .box-counseling-format-new {
-  background-color: #ffe9d8;
+  background-color: $base-background-color;
   border-radius: 10px;
 }
 //ヘッダー部分のレイアウト
@@ -31,29 +31,14 @@
   padding: 0.5rem 1rem 0.5rem 1rem;
   font-size: 1.2rem;
   border-radius: 5px;
-  background-color: #fc8022;
-  color: #ffffff;
-}
-
-.edit-report-formats-footer {
-  display: flex;
-  margin: 0rem auto;
-  input[type=submit] {
-    text-align: right;
-    margin-left: 86.5%;
-  }
-}
-
-.form-add {
-  margin-top: 1%;
-  text-align: right;
-  margin-left: auto;
+  background-color: $base-color;
+  color: $base-sub-color;
 }
 
 .form {
   // font-weight: 700;
   border: 2px solid #a6a6a6;
-  background-color: #ffffff;
+  background-color: $base-sub-color;
   border-radius: 10px;
   margin: 1% auto;
   padding: 1%;
@@ -67,7 +52,7 @@
 .dorack-area-center {
   width: 28px;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: $base-sub-color;
   background-image: radial-gradient(#888 10%, transparent 10%);
   background-position: 0 0, 7px 0px;
   background-size: 14px 14px;
@@ -107,7 +92,7 @@ margin-bottom: 0;
   box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
   border-radius: 3px;
   padding: 0 7px;
-  background-color: #fff5ee;
+  background-color: $base-form-color;
 }
 
 .select-box select {
@@ -168,12 +153,6 @@ margin-bottom: 0;
   margin-top: 1%;
 }
 
-.form-delete-button {
-  margin-top: 1%;
-  text-align: right;
-  margin-left: auto;
-}
-
 .delete-btn-new {
   display: none;
 }
@@ -195,7 +174,7 @@ p .annotation {
   box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
   border-radius: 3px;
   padding: 0 7px;
-  background-color: #fff5ee;
+  background-color: $base-form-color;
 }
 .is-hidden{
   display: none;

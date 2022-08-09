@@ -1,7 +1,5 @@
 .card-box {
   margin: 2.5rem 5rem 0 4rem;
-  // color:#6E6E6E;
-  // font-weight: bold;
 }
 
 .card {
@@ -10,7 +8,7 @@
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: $base-sub-color;
   background-clip: border-box;
   border: 2px solid rgba(0, 0, 0, 0.125);
   border-radius: 10px;
@@ -20,8 +18,8 @@
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: #fc8022;
-  color: #ffffff;
+  background-color: $base-color;
+  color: $base-sub-color;
   border-bottom: none;
 }
 
@@ -42,12 +40,12 @@
   list-style: none;
   margin-bottom: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: $base-sub-color;
 }
 
 .card-title-frame span {
   padding: 0.4rem 0.75rem;
-  background-color: #fc8022;
+  background-color: $base-color;
   border-radius: 5px;
 }
 
@@ -71,6 +69,6 @@
   margin: 0 5px 5px 0;
   padding: 5px;
   border-radius: 15px;
-  background-color: #ffffff;
+  background-color: $base-sub-color;
   border: thin solid;
 }

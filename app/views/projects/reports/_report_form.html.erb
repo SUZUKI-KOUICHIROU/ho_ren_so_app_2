@@ -1,10 +1,10 @@
 <%= form_with(model: @report, url: user_project_reports_path(@user, @project), local: true, method: :post) do |rf| %>
-  <div class="box-report pt-5">
+  <div class="base-background-color py-5 rounded">
     <%= rf.hidden_field :id %>
     <%= rf.hidden_field :user_id %>
     <div class="report-form">
       <span class="report-item-title mb-2"><%= rf.label "件名", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= rf.text_field :title, class:'form-control report-form-color', placeholder: "最大30文字", maxlength: 30, required: true %>
+      <%= rf.text_field :title, class:'form-control form-color', placeholder: "最大30文字", maxlength: 30, required: true %>
     </div>
     <!-- div class="box-project-select">
       <%#= rf.label :project_id, "プロジェクト", class: "title-label" %>
@@ -21,20 +21,20 @@
         <div class="report-form">
           <span class="report-item-title mb-2 font-weight-bold"><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
           <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
-          <%= af.text_field :value, class:'form-control report-form-color', placeholder: "最大30文字", maxlength: 30, required: question.required %>
+          <%= af.text_field :value, class:'form-control form-color', placeholder: "最大30文字", maxlength: 30, required: question.required %>
         </div>
       <% when 'text_area' %>
         <div class="report-form">
           <span class="report-item-title mb-2 font-weight-bold"><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
           <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
-          <%= af.text_area :value, class:'form-control report-form-color', placeholder: "最大500文字", maxlength: 500, required: question.required %>
+          <%= af.text_area :value, class:'form-control form-color', placeholder: "最大500文字", maxlength: 500, required: question.required %>
         </div>
       <% when 'date_field' %>
         <div class="report-form">
           <div class="col-sm-6 pl-0">
             <span class="report-item-title mb-2 font-weight-bold"><%= af.label :value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
             <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
-            <%= af.date_field :value, class:'form-control report-form-color', required: question.required %>
+            <%= af.date_field :value, class:'form-control form-color', required: question.required %>
           </div>
         </div>
       <% when 'radio_button' %>

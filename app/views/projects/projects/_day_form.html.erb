@@ -3,12 +3,12 @@
   <div class="project form-body">
     <div class="project-detail">
       <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
+      <%= f.text_field :project_name, class: "form-control project-name-text-box form-color", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">
       <%= f.label :description, "概要", class: "project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= f.text_area :description, class: "form-control project-description-textarea-box", placeholder: "最大200文字", maxlength: 200, required: true %>
+      <%= f.text_area :description, class: "form-control project-description-textarea-box form-color", placeholder: "最大200文字", maxlength: 200, required: true %>
     </div>
 
     <div class="project-detail">
@@ -21,8 +21,8 @@
     </div>
     <div class="project-detail">
       <%= f.label :project_report_frequency, "報告回数" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <div class="project-report-frequency">
-        <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number", required: true %>
+      <div class="d-flex project-report-frequency">
+        <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number form-color", required: true %>
         <div>日に1回</div>
       </div>
     </div>

@@ -3,12 +3,12 @@
   <div class="project form-body">
     <div class="project-detail">
       <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= f.text_field :project_name, class: "form-control project-name-text-box", placeholder: "最大20文字", maxlength: 20, required: true %>
+      <%= f.text_field :project_name, class: "form-control project-name-text-box form-color", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">
       <%= f.label :description, "概要", class: "project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= f.text_area :description, class: "form-control project-description-textarea-box", placeholder: "最大200文字", maxlength: 200, required: true %>
+      <%= f.text_area :description, class: "form-control project-description-textarea-box form-color", placeholder: "最大200文字", maxlength: 200, required: true %>
     </div>
 
     <div class="project-detail">
@@ -23,7 +23,7 @@
       <%= f.label :week_select, "報告日" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <div class="project-week-select">
         <div>毎週</div>
-        <%= f.select(:week_select, options_for_select(ApplicationHelper.weeks.map{|c|[c]}, "月"), {}, {class: 'form-control box-week', required: true}) %>
+        <%= f.select(:week_select, options_for_select(ApplicationHelper.weeks.map{|c|[c]}, "月"), {}, {class: 'form-control box-week form-color', required: true}) %>
         <%= f.hidden_field :project_report_frequency, :value => 7 %>
         <div>曜日</div>
       </div>
