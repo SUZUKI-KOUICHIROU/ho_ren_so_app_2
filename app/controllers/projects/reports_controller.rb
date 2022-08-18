@@ -136,12 +136,27 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    i = 0
+    report_users_id = []
+    @reports = @project.reports.where("updated_at >= ?", Date.today)
+    @reports.select(:user_id).distinct.each do |report|
+      report_users_id[i] = report.user_id
+      i += 1
+    end
+    @report_users = @project.users.all.where(id: report_users_id)
+    @not_report_users = @project.users.all - @report_users
+  end
+
+  def view_reports_log
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
 
     if Date.today == @project.project_next_report_date
       @latest_day = @project.project_next_report_date
     elsif Date.today < @project.project_next_report_date
       @latest_day = @project.project_next_report_date - @project.project_report_frequency
+    else
+      @latest_day = @project.project_next_report_date
     end
     old_day = @project.created_at
     num = @latest_day
