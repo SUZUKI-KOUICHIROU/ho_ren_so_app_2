@@ -9,14 +9,14 @@
 
         <div class="project-detail">
           <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id: "email-form" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-color", id: "email-form" %>
           <div id="email-error-message" class="text-danger pt-2"></div>
         </div>
 
         
         <div class="project-detail">
           <%= f.label :password, "パスワード", class: "password-label project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span><br />
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", id: "password-form" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-color", id: "password-form" %>
           <div id="password-error-message" class="text-danger pt-2"></div>
         </div>
 
@@ -34,7 +34,7 @@
         </div>
 
 
-        <div class="center">
+        <div class="text-center">
           <%= f.submit "ログイン", class: "btn btn-block btn-outline-orange" %>
         </div>
       </div>

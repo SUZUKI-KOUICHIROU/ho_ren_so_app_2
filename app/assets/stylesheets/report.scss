@@ -23,7 +23,7 @@
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07) inset;
   border-radius: 3px;
   padding: 0 7px;
-  background-color: #fff5ee;
+  background-color: $base-form-color;
 }
 
 .report-text,
@@ -38,7 +38,7 @@
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07) inset;
   border-radius: 3px;
   padding: 0 7px;
-  background-color: #fff5ee;
+  background-color: $base-form-color;
 }
 
 .report-area,
@@ -53,39 +53,12 @@
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07) inset;
   border-radius: 3px;
   padding: 0 7px;
-  background-color: #fff5ee;
-}
-
-.box-report {
-  padding-bottom: 2rem;
-  border-radius: 10px;
-  background: #ffe9d8;
-}
-
-.box-comment {
-  margin: 3rem auto 0;
-  width: 50%;
-}
-
-.edit-report-header {
-  display: flex;
-  font-weight: 700;
-  padding: 2rem 2rem 1rem 2rem;
-}
-
-.edit-report-title {
-  display: inline-block;
-  margin-bottom: 0rem;
-  padding: 0.4rem 0.75rem;
-  background-color: #fc8022;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: bold;
+  background-color: $base-form-color;
 }
 
 .report-form {
   margin: 0 2rem 1rem 2rem;
-  background-color: #fff;
+  background-color: $base-sub-color;
   padding: 1rem;
   border-radius: 10px;
   border: 1px solid gray;
@@ -100,18 +73,12 @@
   border-left: solid 5px #ffaf58;
 }
 
-.report-form-color {
-  background-color: #fff5ee;
-}
-
 .report-form .report-required {
   background-color: red;
   padding: 5px;
   font-size: 0.8rem;
   margin-left: 10px;
   border-radius: 5px;
-  color: #fff;
+  color: $base-sub-color;
 }
 
-  
-//border: thin solid;

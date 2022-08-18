@@ -13,15 +13,15 @@
     <%# end %>
   </div -->
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">連絡一覧</h1>
+  <h1 class="text-center">連絡一覧</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
         <li class="nav-item">
-        <a class="nav-link active" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなた宛の連絡 ▼</a>
+        <a class="text-white active" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなた宛の連絡 ▼</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" target="_blank" rel="external nofollow"  role="tab" aria-controls="message" aria-selected="false">▼ 全メンバーの連絡 ▼</a>
+          <a class="text-white" id="message-tab" data-toggle="tab" href="#message" target="_blank" rel="external nofollow"  role="tab" aria-controls="message" aria-selected="false">▼ 全メンバーの連絡 ▼</a>
         </li>
       </ul>
     </div>
@@ -31,10 +31,10 @@
         <div class="tab-pane fade show active" id="you-addressee" role="tabpanel" aria-labelledby="you-addressee-tab">
           <div class="box-you-addressee-index">
             <% if @you_addressee_messages.present? %>
-              <div class="box-search">
+              <div class="d-flex justify-content-end mb-3">
                 <%= form_with url: "#", method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "you-addressee" %>
-                  <%= form.label :search, "件名検索：", class: "search-label" %>
+                  <%= form.label :search, "件名検索：", class: "mb-0" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
@@ -77,13 +77,13 @@
             <% else @you_addressee_messages.blank? %>
               <P>あなた宛の連絡履歴がありません。</P>
             <% end %>
-            <div class="index-footer">
+            <div class="d-flex">
               <% if @you_addressee_messages.present?%>
                 <div class="paginate">
                   <%= paginate @you_addressee_messages %>
                 </div>
               <% end %>
-              <div class="back-btn">
+              <div class="ml-auto">
                 <%= link_to "戻る", :back, class: "btn btn-secondary" %>
               </div>
             </div>
@@ -93,10 +93,10 @@
         <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
           <div class="box-message-index">
             <% if @messages.present? %>
-              <div class="box-search">
+              <div class="d-flex justify-content-end mb-3">
                 <%= form_with url: "#", method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "message" %>
-                  <%= form.label :search, "件名検索：", class: "search-label" %>
+                  <%= form.label :search, "件名検索：", class: "mb-0" %>
                   <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
@@ -141,13 +141,13 @@
             <% else @messages.blank?%>
               <P>連絡履歴がありません。</P>
             <% end %>
-            <div class="index-footer">
+            <div class="d-flex">
               <% if @messages.present?%>
                 <div class="paginate">
                   <%= paginate @messages %>
                 </div>
               <% end %>
-              <div class="back-btn">
+              <div class="ml-auto">
                 <%= link_to "戻る", :back, class: "btn btn-secondary" %>
               </div>
             </div>

@@ -9,9 +9,9 @@
 # env :PATH, ENV['PATH']
 require File.expand_path(File.dirname(__FILE__) + "/environment") 
 # ログファイルの出力先
-set :output, '#{Rails.root}log/crontag.log'
+set :output, 'log/crontag.log'
 # ジョブの実行環境の指定
-set :environment, :production
+set :environment, :development
 
 set :runner_command, "rails runner"
 #
@@ -28,9 +28,9 @@ set :runner_command, "rails runner"
 # end
 
 
-every 1.days, at: '16:45' do #トリガー
-  runner "Batch::SendRemind.send_remind" # 毎朝9時にリーダーへ未報告者を報告
-  runner 'Batch::UpdateDeadline.update_deadline' # レポートの期限を更新する
+every 1.day, :at => '0:00 am' do #トリガー
+  # runner "Batch::SendRemind.send_remind" # 毎朝9時にリーダーへ未報告者を報告
+  rake 'update_deadline:update_deadline' # レポートの期限を更新する
 end
 
 every 1.days, at: '7:00 am' do #トリガー

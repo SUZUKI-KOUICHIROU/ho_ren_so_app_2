@@ -4,9 +4,9 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="box-project-index">
-  <h1 class="center">プロジェクト一覧</h1>
-  <div class="box-search">
+<div class="mt-3 mr-5 ml-4">
+  <h1 class="text-center">プロジェクト一覧</h1>
+  <div class="d-flex justify-content-end mb-3">
     <%= form_with url: user_projects_path, method: :get, local: true do |form| %>
       <%= form.text_field :search, placeholder: "プロジェクト名を入力", class: "search-box" %>
       <%= form.submit "検索", class: "btn btn-outline-orange" %>
@@ -85,7 +85,7 @@
       <P>参画中のプロジェクトはありません。</P>
     <% end %>
   </div>
-  <div class="index-footer">
+  <div class="d-flex">
     <% if @projects.present?%>
       <div class="paginate">
         <%= paginate @projects %>

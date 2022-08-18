@@ -3,9 +3,9 @@
   li {
     a {
       font-weight: bolder;
-      color: #fc8022;
+      color: $base-color;
       border-radius: 15px;
-      border: 2px solid #fc8022;
+      border: 2px solid $base-color;
       margin-right: 5px;
       line-height: 1;
     }
@@ -22,9 +22,9 @@
 ////////// 表示しているページ番号のデザイン //////////
 .page-item.active .page-link {
   font-weight: bolder;
-  color: #ffffff;
-  border: 2px solid #fc8022;
-  background-color: #fc8022;
+  color: $base-sub-color;
+  border: 2px solid $base-color;
+  background-color: $base-color;
   border-radius: 15px;
 }
 
@@ -39,15 +39,15 @@
   .page-link:hover {
     font-weight: bolder;
     border-radius: 15px;
-    background-color: #fc8022;
-    border: 2px solid #fc8022;
-    color: #ffffff;
+    background-color: $base-color;
+    border: 2px solid $base-color;
+    color: $base-sub-color;
   }
 }
 
 ////////// 表示しているページ番号のホバー時の文字色 //////////
 .page-item:hover {
-  color: #ffffff;
+  color: $base-sub-color;
 }
 
 ////////// ボタンがフォーカスされた時のデザイン //////////

@@ -3,7 +3,7 @@
   float: left;
   font-size: 19px;
   width: 15%;
-  min-width: 220px;
+  // min-width: 220px;
   position: fixed;
   left: 0;
   padding-top: 2rem;
@@ -22,8 +22,8 @@
 .menu.active {
   // border-radius: 20px;
   a {
-    color: #ffffff;
-    background: #fc8022;
+    color: $base-sub-color;
+    background: $base-color;
   }
 }
 
@@ -32,7 +32,7 @@
   text-indent: 1.5em;
   a {
     // background: #ffffee;
-    color: #6E6E6E;
+    color: $base-title-font-color;
     // border-radius: 20px;
     text-decoration: none;
     font-weight: bolder;
@@ -43,7 +43,7 @@
 
 .menu:hover {
   a {
-  color: #ffffff;
+  color: $base-sub-color;
   }
   background: #fc9749;
 }
