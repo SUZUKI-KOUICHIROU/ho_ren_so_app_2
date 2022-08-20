@@ -64,14 +64,6 @@
   width: 47.5%;
 }
 
-.report-format-check-box {
-text-align: right;
-}
-
-.report-format-check-box-label {
-margin-bottom: 0;
-}
-
 .label-select-box {
   display: flex;
   margin-bottom: 2%;
@@ -145,25 +137,8 @@ margin-bottom: 0;
   margin-top: 1em;
 }
 
-.form-button {
-  display: flex;
-}
-
-.option-add-btn-box{
-  margin-top: 1%;
-}
-
 .delete-btn-new {
   display: none;
-}
-
-.sidebar-content {
-  color: red;
-  font-size: 20px;
-}
-
-p .annotation {
-  font-size: small;
 }
 
 .format-form-style {
@@ -176,13 +151,15 @@ p .annotation {
   padding: 0 7px;
   background-color: $base-form-color;
 }
+
 .is-hidden{
   display: none;
 }
+
 .fit-contents{
   width:fit-content;
 }
+
 #tooltipOn .btn:disabled {
   pointer-events: none;
 }
-// border: thin solid;

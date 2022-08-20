@@ -20,15 +20,15 @@
     </div>
     <div>
       <div class ="ml-3 report-item-title font-weight-bold font-weight-bold">項目<%= @form_number %></div>
-      <div class="report-format-check-box">
+      <div class="text-right">
         <%= fdof.check_box :using_flag %>
-        <%= fdof.label :using_flag, "有効にする", class: "report-format-check-box-label" %>
+        <%= fdof.label :using_flag, "有効にする", class: "mb-0" %>
       </div>
     </div>
     <div class="text-right">
       <% unless question.form_table_type == 'radio_button' %>
         <%= fdof.check_box :required %>
-        <%= fdof.label :required, "必須にする", class: "report-format-check-box-label" %>
+        <%= fdof.label :required, "必須にする", class: "mb-0" %>
       <% end %>
     </div>
     <%= fdof.hidden_field :id %>
@@ -57,7 +57,7 @@
       </div>
       <div class="option-form-edit">
         <%= render partial: 'edit_option_form', locals: { ftf: ftf, form_table_type_value: form_table_type_value, form_option_symbol: form_option_symbol, question_id: question.id} %>
-        <div class="option-add-btn-box ml-3">
+        <div class="ml-3">
           <%= link_to '選択肢追加', '#', class: 'add-field-edit btn btn-outline-orange btn-sm' %>
         </div>
       </div>
