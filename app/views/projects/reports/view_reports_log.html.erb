@@ -5,7 +5,7 @@
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">報告状況ログ</h1>
+  <h1 class="text-center">報告状況ログ</h1>
   
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
@@ -35,51 +35,25 @@
                   <div class="subject-name col-md-4">
                     <%= l(day[0], format: :long) %>
                   </div>
-                  
-                  <%# <div class="report-confirmer">
-                    <%= report.report_confirmers.where(report_confirmation_flag: true).count人 %>
-                  <%# </div> %>
                   <div class="reported-date col-md-4">
                     <%= @project.users.all.count %>人中 <%= day[1].count('DISTINCT user_id') %> 人
-                    <%# <div class="accordion" id="accordionExample">
-                      <div class="card">
-                        <div class="card-header" id="headingOne">
-                          <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                              報告者
-                            </button>
-                          </h5>
-                        </div>
-
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                          <div class="card-body">
-                            名前<br>
-                            名前
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="card">
-                        <div class="card-header" id="headingThree">
-                          <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                              未報告者
-                            </button>
-                          </h5>
-                        </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                          <div class="card-body">
-                            名前<br>
-                            名前
-                          </div>
-                        </div>
-                      </div>
-                    </div> %>
+                    
                   </div>
                   <div class="report-action col-md-4">
-                    <% users.each do |user| %>
-                      <%= user.user_name %>
-                      <br>
+                    <% if users.count > 2 %>
+                      <button type="button" class="btn btn-outline-orange btn-sm" data-toggle="collapse" data-target="#list<%="#{line_num}"%>">未報告者</button>
+                      <div id="list<%="#{line_num}"%>" class="collapse">
+                        <% users.each do |user| %>
+                          <%= user.user_name %>
+                          <br>
+                        <% end %>
+                      </div>
+                    <% else %>
+                    <br>
+                      <% users.each do |user| %>
+                        <%= user.user_name %>
+                        <br>
+                      <% end %>
                     <% end %>
                   </div>
                 </div>

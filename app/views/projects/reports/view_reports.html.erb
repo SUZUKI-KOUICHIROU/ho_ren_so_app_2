@@ -5,7 +5,7 @@
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="center">本日の報告状況 <%= l(Date.today, format: :short) %> </h1>
+  <h1 class="text-center">本日の報告状況 <%= l(Date.today, format: :short) %> </h1>
   
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
@@ -21,21 +21,40 @@
             </div>
             <div class="table-body">
               <% line_num = 0%>
-              <% @report_users.zip(@not_report_users) do |report_user, not_report_user|%>
-                <% line_num += 1%>
-                <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-                  <div class="reported-date col-md-6">
-                    <% unless report_user.nil? %>
-                      <%= report_user.user_name %>
-                    <% end %>
+              <% if @report_users.count >= @not_report_users.count %>
+                <% @report_users.zip(@not_report_users) do |report_user, not_report_user| %>
+                  <% line_num += 1%>
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                    <div class="reported-date col-md-6">
+                      <% unless report_user.nil? %>
+                        <%= report_user.user_name %>
+                      <% end %>
+                    </div>
+                    <div class="report-action col-md-6">
+                      <% unless not_report_user.nil? %>
+                        <%= not_report_user.user_name %>
+                      <% end %>
+                    </div>
                   </div>
-                  <div class="report-action col-md-6">
-                    <% unless not_report_user.nil? %>
-                      <%= not_report_user.user_name %>
-                    <% end %>
+                <% end %>
+              <% else %>
+                <% @not_report_users.zip(@report_users) do |not_report_user, report_user| %>
+                  <% line_num += 1%>
+                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                    <div class="reported-date col-md-6">
+                      <% unless report_user.nil? %>
+                        <%= report_user.user_name %>
+                      <% end %>
+                    </div>
+                    <div class="report-action col-md-6">
+                      <% unless not_report_user.nil? %>
+                        <%= not_report_user.user_name %>
+                      <% end %>
+                    </div>
                   </div>
-                </div>
+                <% end %>
               <% end %>
+                
             </div>
           </div>
         </div>
