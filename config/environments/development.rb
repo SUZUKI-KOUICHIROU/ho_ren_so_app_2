@@ -69,14 +69,12 @@ Rails.application.configure do
     :address => 'smtp.gmail.com',
     :port => 587,
     :domain => 'gmail.com',
-    :user_name => 'celebengineer@gmail.com',
-    :password => 'teiduuoqzvwngrta',
-    # :user_name => ENV["MAILADDRESS"],
-    # :password => ENV["SECRET_KEY"],
+    :user_name => ENV["GOOGLE_MAIL_ADDRESS"],
+    :password => ENV["GOOGLE_MAILER_PASSWORD"],
     :authentication => 'plain'
   }
 
   #letter_openerのメソッドをセット
-  # config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.delivery_method = :letter_opener_web
   config.action_mailer.perform_deliveries = true
 end
