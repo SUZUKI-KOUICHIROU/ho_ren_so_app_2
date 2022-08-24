@@ -26,27 +26,6 @@
 .card-header:first-child {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  // border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-}
-
-.card-title {
-  margin-bottom: 0.25rem;
-  font-weight: 700;
-  // font-size: 1.25rem;
-  color: #5e5e5e;
-}
-
-.card-title-frame {
-  list-style: none;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  color: $base-sub-color;
-}
-
-.card-title-frame span {
-  padding: 0.4rem 0.75rem;
-  background-color: $base-color;
-  border-radius: 5px;
 }
 
 .card-body {
@@ -56,19 +35,4 @@
     border: 2px solid rgba(0, 0, 0, 0.125);
     margin: 0.75rem;
   }
-}
-
-.card-body {
-  li {
-    list-style: none;
-  }
-}
-
-.box-user-name {
-  display: inline-block;
-  margin: 0 5px 5px 0;
-  padding: 5px;
-  border-radius: 15px;
-  background-color: $base-sub-color;
-  border: thin solid;
 }
