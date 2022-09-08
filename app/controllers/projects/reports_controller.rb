@@ -125,7 +125,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
-    @user = User.find(@report.user_id)
+    @user = current_user
     if params[:report][:remanded_reason] != ""
       @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
       if @report.save
