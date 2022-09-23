@@ -88,7 +88,12 @@ class Projects::ReportsController < Projects::BaseProjectController
       end
       cnt += 1
     end
-    @report.update(remanded: false)
+    if @report.remanded
+      @report.update(remanded: false)
+      NotificationMailer.send_fix_notification(@user).deliver_now
+    elsif !@report.remanded
+      @report.update(remanded: false)
+    end
     flash[:success] = "報告を編集しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
@@ -120,10 +125,12 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
+    @user = current_user
     if params[:report][:remanded_reason] != ""
       @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
       if @report.save
         flash[:success] = "登録完了しました。"
+        NotificationMailer.send_rework_notification(@user).deliver_now
       else
         flash[:danger] = "登録に失敗しました。"
       end

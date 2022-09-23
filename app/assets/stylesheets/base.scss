@@ -7,7 +7,7 @@ $base-title-font-color: #6E6E6E;
 // 基本色
 $base-color: #fc8022;
 
-// 基本色
+// 基本複色
 $base-sub-color: #fff;
 
 // 基本フォーム色
@@ -21,16 +21,9 @@ h1, .h1 {
   margin-bottom: 1em;
 }
 
-////////// ロゴのデザイン //////////
-#logo {
-  font-size: 180%;
-}
-
 ////////// 横スクロールバーを非表示 //////////
 .content-box {
-  position: relative;
   overflow: hidden;
-  height: 100%;
 }
 
 ////////// ヘッダーの位置を固定 //////////
@@ -38,19 +31,14 @@ h1, .h1 {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 10;
   text-align: center;
-}
-
-.row {
-  height: 100%;
 }
 
 ////////// 報告、連絡、相談一覧上部にあるプロジェクトのselect_boxのデザイン //////////
 .index-project-select-box {
   border-style: none;
   box-sizing: border-box;
-  // width: 50%;
   height: 40px;
   border: 2px solid #a6a6a6;
   box-shadow: 0 1px 0 rgba(0,0,0,.07) inset;
@@ -90,43 +78,24 @@ input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
 }
 
-// border: thin solid;
-
 // 基本背景色
 .base-background-color {
   background: $base-background-color;
 }
 
+// 基本フォーム色
 .form-color {
   background-color: $base-form-color;
 }
 
-.box-new-title {
-  font-size: 28px;
-  line-height: 1.2;
-  color: #111111;
-  font-weight: bolder;
-  text-align: center;
-  margin-bottom: 5%;
+// 基本リストスタイル削除
+li {
+  list-style: none;
 }
 
-.remember {
-  font-size: 15px;
-  margin-bottom: 5%;
-  padding-left: 3px;
-}
-
-.remember-login {
-  margin-bottom: 0rem;
-}
-
-.box-newusr p {
-  text-align: center;
-  font-size: 15px;
-  color: #222222;
-  margin-bottom: 5%;
-}
-
-.box-newusr p span {
-  text-decoration-color: #e7e7e7;
+// ユーザーフォームのスタイル
+.user-format .form-body {
+  background-color: $base-background-color;
+  padding: 2rem;
+  border-radius: 10px;
 }

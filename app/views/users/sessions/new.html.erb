@@ -22,10 +22,9 @@
 
         <div class="a-row project-detail">
           <% if devise_mapping.rememberable? %>
-            <span class="remember">
+            <span>
               <%= f.check_box :remember_me %>
-              <%# f.label :remember_me, "ログインしたままにする", class: "remember-login" %>
-              <span class='remember-login'>ログインしたままにする</span>
+              <span class='mb-0'>ログインしたままにする</span>
             </span>
           <% end %>
           <div class="text-right">
@@ -41,8 +40,8 @@
     </div>
   <% end %>
 
-  <div class="box-newusr text-center m-2">
-    <h4><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h4>
+  <div class="text-center m-3">
+    <h5><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h5>
     <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block", data: {"turbolinks" => false} %>
   </div>
 </div>

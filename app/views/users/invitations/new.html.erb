@@ -7,7 +7,7 @@
 <div class="projects-format col-md-6 offset-md-3">
   <div class="form-content">
     <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-      <h1 class="box-new-title">メンバーを招待する</h1>
+      <h1 class="text-center">メンバーを招待する</h1>
       <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
         <div class="project form-body">
           <div class="project-detail">

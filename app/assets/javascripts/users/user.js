@@ -1,3 +1,5 @@
+$(document).on ("turbolinks:load", function(){
+
 // ログイン画面
 $(function() {
   $('#login-form').submit(function() {
@@ -231,4 +233,6 @@ $(function() {
       return false;
     }
   });
+});
+
 });

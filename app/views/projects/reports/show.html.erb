@@ -109,7 +109,7 @@ function changeForm() {
           <% end %>
         </div>
         <% end %>
-        <% if @project.project_leader_id == @user.id %>
+        <% if @project.project_leader_id == @user.id && @report.sender_id != @project.project_leader_id %>
           <div class="text-center"><label onclick="changeForm()" class="btn btn-danger mb-3">手直ししてもらう</label></div>
         <% end %>
         <div id="formblock" style="display: none">
