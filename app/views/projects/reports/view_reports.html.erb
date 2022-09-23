@@ -10,6 +10,7 @@
     <div class="row">
       <div class="col-md-4 offset-md-2">
         <div class="card-body">
+          <%= paginate @report_users, :param_name => 'report_users_page' %>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
               <div class="box-report-index">
@@ -19,9 +20,8 @@
                   </div>
                 </div>
                 <div class="table-body">
-                  <% line_num = 0%>
-                  <% report_users = report_users(@project, @project.report_deadlines.last) %>
-                  <% report_users.each do |report_user| %>
+                  <% line_num = 0%>                  
+                  <% @report_users.each do |report_user| %>
                     <% line_num += 1%>
                     <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                       <div class="reported-date col-md-12">
@@ -39,6 +39,7 @@
       </div>
       <div class="col-md-4">
         <div class="card-body">
+          <%= paginate @not_report_users, :param_name => 'not_report_users_page' %>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
               <div class="box-report-index">
@@ -49,8 +50,7 @@
                 </div>
                 <div class="table-body">
                   <% line_num = 0%>
-                  <% not_report_users = @project.users.all - report_users %>
-                  <% not_report_users.each do |not_report_user| %>
+                  <% @not_report_users.each do |not_report_user| %>
                     <% line_num += 1%>
                     <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                       <div class="report-action col-md-12">
@@ -70,6 +70,7 @@
   </div>
   <h1 class="text-center">報告一覧</h1>
   <div class="card-body">
+    <%= paginate @reports, :param_name => 'reports_page' %>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
         <div class="box-report-index">
