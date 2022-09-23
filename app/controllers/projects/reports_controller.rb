@@ -136,48 +136,29 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    i = 0
-    report_users_id = []
-    @reports = @project.reports.where("updated_at >= ?", Date.today)
-    @reports.select(:user_id).distinct.each do |report|
-      report_users_id[i] = report.user_id
-      i += 1
-    end
-    @report_users = @project.users.all.where(id: report_users_id)
-    @not_report_users = @project.users.all - @report_users
+    @reports = @project.reports.where(report_day: Date.today)
   end
 
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-
-    if Date.today == @project.project_next_report_date
-      @latest_day = @project.project_next_report_date
-    elsif Date.today < @project.project_next_report_date
-      @latest_day = @project.project_next_report_date - @project.project_report_frequency
-    else
-      @latest_day = @project.project_next_report_date
-    end
-    old_day = @project.created_at
-    num = @latest_day
-    i = 0
+    @first_day = params[:date].nil??
+    Date.current.beginning_of_month : params[:date].to_date
+    @last_day = @first_day.end_of_month
+    one_month = [*@first_day..@last_day]
+    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
     
-    @reports = @project.reports.where("created_at >= ?", num)
-    @days = [] #報告されたはずの日
-    @not_report_users = []
-    @report_users_id = [] # 報告していない人
-    while num > old_day
-      j = 0
-      @report_users_id[i] = []
-      @days[i] = [num, @project.reports.where("created_at < ?", num+1).where("created_at >= ?", num)]
-      @days[i][1].select(:user_id).distinct.each do |report|
-        @report_users_id[i][j] = report.user_id
-        j += 1
+    if params[:search].present? and params[:search] != ""
+      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
+      if @results.present?
+        @report_ids = @results.map { |r| r[:report_id] }.uniq
+      else
+        @report_ids = 0
       end
-      @not_report_users[i] = @project.users.all - @project.users.all.where(id: @report_users_id[i])
-      num -= @project.project_report_frequency
-      i += 1
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
+    
   end
 
   def report_form_switching
@@ -193,7 +174,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
-    params.require(:report).permit(:id, :user_id, :project_id, :title,
+    params.require(:report).permit(:id, :user_id, :project_id, :title, :report_day,
       answers_attributes: [
         :id, :question_type, :question_id, :value, array_value: []
       ]

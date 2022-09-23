@@ -15,7 +15,7 @@
         <% else %>
           <%= sidebar_link_item('本日の報告状況', user_project_reports_view_reports_path(user, project)) %>
         <% end %>
-        <%= sidebar_link_item('報告状況ログ', user_project_reports_view_reports_log_path(user, project)) %>
+        <%= sidebar_link_item('報告状況履歴', user_project_reports_view_reports_log_path(user, project)) %>
         <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(user, project)) %>
         <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(user, project)) %>
         <%= sidebar_link_item('メンバーを招待', new_invitation_path(user, project)) %>

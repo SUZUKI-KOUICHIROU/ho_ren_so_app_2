@@ -61,6 +61,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト内容編集アクション
   def update
     if @project.update(project_params)
+      @project.report_deadlines.last.update(day: @project.project_next_report_date)
       flash[:success] = "#{@project.project_name}の内容を更新しました。"
     else
       flash[:danger] = "#{@project.project_name}の更新は失敗しました。"

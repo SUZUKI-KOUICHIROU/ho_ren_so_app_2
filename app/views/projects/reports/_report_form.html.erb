@@ -3,6 +3,16 @@
     <%= rf.hidden_field :id %>
     <%= rf.hidden_field :user_id %>
     <div class="report-form">
+      <div class="col-sm-6 pl-0">
+        <span class="report-item-title mb-2 font-weight-bold"><%= rf.label  "報告日", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
+        <%= rf.select :report_day, 
+        @project.report_deadlines.last(7).map{ |report_day| [l(report_day.day, format: :long), report_day.day] },
+        { include_blank: true, selected: @project.report_deadlines.last.day}, 
+        { class: 'form-control' , required: true } %>
+
+      </div>
+    </div>
+    <div class="report-form">
       <span class="report-item-title mb-2"><%= rf.label "件名", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
       <%= rf.text_field :title, class:'form-control form-color', placeholder: "最大30文字", maxlength: 30, required: true %>
     </div>
