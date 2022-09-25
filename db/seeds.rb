@@ -32,6 +32,12 @@ Project.create!( project_name: 'プロジェクトB',
                  description: 'テスト用に作成したプロジェクトBです。',
                  project_reported_flag: false )
 
+########## 最初の報告日を登録する ###########
+projects = Project.all
+projects.each do |project|
+  project.report_deadlines.create!(day: project.project_next_report_date)
+end
+
 ########## idが1~3のユーザーをプロジェクトAに参画 ##########
 users = User.where(id: [1, 2, 3, 4])
 project = Project.find(1)

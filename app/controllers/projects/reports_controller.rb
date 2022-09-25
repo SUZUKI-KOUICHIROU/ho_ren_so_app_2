@@ -140,6 +140,43 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
+  def view_reports
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @reports = @project.reports.where(report_day: Date.today).page(params[:reports_page]).per(10)
+    report_users_id = []
+    i = 0
+    report_users = @project.reports.where(report_day: @project.report_deadlines.last.day).select(:user_id).distinct
+    report_users.each do |user|
+      report_users_id[i] = user.user_id
+      i += 1
+    end
+    @report_users = @project.users.all.where(id: report_users_id).page(params[:report_users_page]).per(10)
+    @not_report_users = @project.users.all.where.not(id: report_users_id).page(params[:not_report_users_page]).per(10)
+  end
+
+  def view_reports_log
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @first_day = params[:date].nil??
+    Date.current.beginning_of_month : params[:date].to_date
+    @last_day = @first_day.end_of_month
+    one_month = [*@first_day..@last_day]
+    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
+    
+    if params[:search].present? and params[:search] != ""
+      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
+      if @results.present?
+        @report_ids = @results.map { |r| r[:report_id] }.uniq
+      else
+        @report_ids = 0
+      end
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+    end
+    
+  end
+
   def report_form_switching
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -153,7 +190,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
-    params.require(:report).permit(:id, :user_id, :project_id, :title,
+    params.require(:report).permit(:id, :user_id, :project_id, :title, :report_day,
       answers_attributes: [
         :id, :question_type, :question_id, :value, array_value: []
       ]

@@ -16,6 +16,12 @@
   <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
     <div class="base-background-color px-5 rounded pt-5">
       <div class="report-form">
+        <span class="report-item-title mb-2 font-weight-bold"><%= f.label  "報告日", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
+        <%= f.select :report_day, {"#{l(@project.report_deadlines.last(2).last.day, format: :long)}": @project.report_deadlines.last(2).last.day, "#{l(@project.report_deadlines.last(2).first.day, format: :long)}": @project.report_deadlines.last(2).first.day}, { include_blank: true, selected: @project.report_deadlines.last(2).last.day}, { class: 'form-control' , required: true } %>
+      </div>
+    </div>
+    <div class="base-backgroud-color px-5">
+      <div class="report-form">
         <span class="report-item-title mb-2 font-weight-bold"><%= f.label "件名", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
         <%= f.text_field :title, class:'form-control', placeholder: "最大30文字", maxlength: 30, required: true, value: @report.title %>
       </div>

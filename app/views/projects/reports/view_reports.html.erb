@@ -1,0 +1,109 @@
+<% provide(:title, '本日の報告状況') %>
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="card-box">
+  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+  <h1 class="text-center">本日の報告状況 <%= l(Date.today, format: :short) %> </h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 offset-md-2">
+        <div class="card-body">
+          <%= paginate @report_users, :param_name => 'report_users_page' %>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
+              <div class="box-report-index">
+                <div class="table-header">
+                  <div class="reported-date col-md-12">
+                    報告者名
+                  </div>
+                </div>
+                <div class="table-body">
+                  <% line_num = 0%>                  
+                  <% @report_users.each do |report_user| %>
+                    <% line_num += 1%>
+                    <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                      <div class="reported-date col-md-12">
+                        <% unless report_user.nil? %>
+                          <%= report_user.user_name %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-body">
+          <%= paginate @not_report_users, :param_name => 'not_report_users_page' %>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
+              <div class="box-report-index">
+                <div class="table-header">
+                  <div class="report-action col-md-12">
+                    未報告者名
+                  </div>
+                </div>
+                <div class="table-body">
+                  <% line_num = 0%>
+                  <% @not_report_users.each do |not_report_user| %>
+                    <% line_num += 1%>
+                    <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                      <div class="report-action col-md-12">
+                        <% unless not_report_user.nil? %>
+                          <%= not_report_user.user_name %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1 class="text-center">報告一覧</h1>
+  <div class="card-body">
+    <%= paginate @reports, :param_name => 'reports_page' %>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
+        <div class="box-report-index">
+          <div class="table-header">
+            <div class="subject-name col-md-4">
+              報告者名
+            </div>
+            <div class="reported-date col-md-4">
+              件名
+            </div>
+            <div class="report-action col-md-4">
+              報告日
+            </div>
+          </div>
+          <div class="table-body">
+            <% line_num = 0%>
+            <% @reports.each do |report| %>
+              <% line_num += 1%>
+              <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                <div class="subject-name col-md-4">
+                  <%= User.find(report.user_id).user_name %>
+                </div>
+                <div class="reported-date col-md-4">
+                  <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                </div>
+                <div class="report-action col-md-4">
+                  <%= l(report.updated_at, format: :long) %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
