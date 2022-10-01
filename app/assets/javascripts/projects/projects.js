@@ -7,7 +7,6 @@ $(document).on('turbolinks:load', function(){
   $(function($) {
     $('#project-new-edit').on('input', '.project-name-text-box', function(){
       nameText = $(this).val();
-      console.log( "textの要素に入力された値だよ(*ﾟ▽ﾟ)ﾉ", nameText )
     });
   });
 
@@ -15,43 +14,35 @@ $(document).on('turbolinks:load', function(){
     $(function($) {
       $('#project-new-edit').on('input', '.project-description-textarea-box', function(){
         descriptionText = $(this).val();
-        console.log( "textの要素に入力された値だよ(*ﾟ▽ﾟ)ﾉ", descriptionText )
       });
     });
 
   // プロジェクト登録、編集モーダルウインドウ((ラジオボタンの選択肢に応じてコンテンツを変化させる処理)
   $(function($) {
     $('#project-new-edit').on('change', '.project-radio', function(){
-      console.log( "チェンジイベントを感知しました(￣^￣)ゞ" )
 
       // nameTextが定義されていない場合、nameTextを定義
       if (typeof nameText == 'undefined') {
         nameText = $('input:text[name="project[project_name]"]').val();
-        console.log( "nameTextが定義されていなかったので定義したよ(*ﾟ▽ﾟ)ﾉ", nameText )
       }
 
       // descriptionTextが定義されていない場合、descriptionTextを定義
       if (typeof descriptionText == 'undefined') {
         descriptionText = $('textarea[name="project[description]"]').val();
-        console.log( "descriptionTextが定義されていなかったので定義したよ(*ﾟ▽ﾟ)ﾉ", descriptionText )
       }
 
       // radiobuttonのvalue値を取得しform_typeに代入
       var form_type = $('input:radio[name="project[report_frequency_selection]"]:checked').val();
-      console.log( "ラジオボタンのvalue値だよ(*ﾟ▽ﾟ)ﾉ", form_type )
 
       // radiobutton要素のdata属性(user_id)値を取得しuser_idに代入
       var user_id = $('input:radio[name="project[report_frequency_selection]"]:checked').data('userId');
-      console.log( "ラジオボタンの要素にセットしたdata属性のuser_idの値だよ(*ﾟ▽ﾟ)ﾉ", user_id )
 
       // radiobutton要素のdata属性(project_id)値を取得しproject_idに代入
       // radiobutton要素のdata属性(project_id))が存在している場合とそうでない場合でproject_idに代入する値を変更
       if( typeof $('input:radio[name="project[report_frequency_selection]"]:checked').data('projectId') !== 'undefined' ) {
         var project_id = $('input:radio[name="project[report_frequency_selection]"]:checked').data('projectId');
-        console.log( "ラジオボタンの要素にセットしたdata属性のproject_id_idの値だよ(*ﾟ▽ﾟ)ﾉ", project_id )
       } else {
         var project_id = 'nill'
-        console.log( "ラジオボタンの要素にセットしたdata属性のproject_id_idの値だよ(*ﾟ▽ﾟ)ﾉ", project_id )
       }
 
       $.ajax({
