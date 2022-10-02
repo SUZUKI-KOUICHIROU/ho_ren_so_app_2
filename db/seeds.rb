@@ -21,14 +21,14 @@ end
 Project.create!( project_name: 'プロジェクトA',
                  project_leader_id: 1,
                  project_report_frequency: 1,
-                 project_next_report_date: Date.current.since(1.days),
+                 project_next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
                  project_reported_flag: false )
 
 Project.create!( project_name: 'プロジェクトB',
                  project_leader_id: 1,
                  project_report_frequency: 7,
-                 project_next_report_date: Date.current.since(7.days),
+                 project_next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトBです。',
                  project_reported_flag: false )
 

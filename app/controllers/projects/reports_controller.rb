@@ -158,6 +158,8 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
+    @display = params[:display].nil??
+    "percent" : params[:display]
     @first_day = params[:date].nil??
     Date.current.beginning_of_month : params[:date].to_date
     @last_day = @first_day.end_of_month

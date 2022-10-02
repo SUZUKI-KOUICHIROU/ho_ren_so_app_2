@@ -10,28 +10,27 @@
     <%= @first_day.month %>月
   </h1>
   
+
+  
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
             <div class="d-flex justify-content-end mb-3">
-              <%= link_to "⇦ 前月", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.prev_month), class: "btn btn-outline-orange" %>
-              <%= link_to "次月 ⇨", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.next_month), class: "btn btn-outline-orange" %>
-              <% if false %>
-                <%= form_with url: user_project_reports_view_reports_log_path(current_user, @project), method: :get, local: true do |form| %>
-                  <%= form.hidden_field :search_type, :value => "you-report" %>
-                  <%= form.label :search, "報告日検索：", class: "mb-0" %>
-                  <%= form.date_field :value, class:'serach-box' %>
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
-                <% end %>
-              <% end %>
+            
+              <%= link_to "⇦前月", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
+              <%= link_to "次月⇨", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.next_month), class: "btn btn-outline-orange" %>
             </div>
             <div class="table-header">
               <div class="subject-name col-md-4">
                 報告日
               </div>
               <div class="reported-date col-md-4">
-                報告割合(%)
+                <% if @display == "percent" %>
+                  報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people" ), class: "text-white  ml-5" %>
+                <% elsif @display == "people" %>
+                  報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent" ), class: "text-white  ml-5" %>
+                <% end %>
               </div>
               <div class="report-action col-md-4">
                 未報告者
@@ -40,34 +39,56 @@
             <div class="table-body">
               <% line_num = 0%>
               <% i = 0 %>
+              
               <% @report_days.each do |report_deadline|%>
+
                 <% line_num += 1%>
                 <% report_users = report_users(@project, report_deadline) %>
                 <% not_report_users = @project.users.all - report_users %>
                 <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
+                              
                   <div class="subject-name col-md-4">
                     <%= l(report_deadline.day, format: :long) %>
                   </div>
                   <div class="reported-date col-md-4">
-                    <%= report_users.count * 100 / @project.users.all.count %>
-                    %
+                    <% if @display == "percent" %>
+                      <%= report_users.count * 100 / @project.users.all.count %>%
+                    <% elsif @display == "people" %>
+                      <%= report_users.count %>
+                      人 /
+                      <%= @project.users.all.count %>
+                      人
+                    <% end %>
                   </div>
                   <div class="report-action col-md-4">
-                    <% if not_report_users.count > 2 %>
-                      <button type="button" class="btn btn-outline-orange btn-sm" data-toggle="collapse" data-target="#list<%="#{line_num}"%>">未報告者</button>
-                      (<%= not_report_users.count %>人)
-                      <div id="list<%="#{line_num}"%>" class="collapse">
-                        <% not_report_users.each do |user| %>
-                          <%= user.user_name %>
-                          <br>
-                        <% end %>
+                    <%= not_report_users.count %>人
+                    <button type="button" class="btn btn-outline-orange rounded-circle p-1" data-toggle="modal" data-target="#not-report-user<%= line_num %>">
+                      ▼
+                    </button>
+                    <div class="modal fade bd-example-modal-sm" id="not-report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel">
+                              <%= l(report_deadline.day, format: :short) %>
+                              未報告者
+                            </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <% not_report_users.each do |user| %>
+                              <%= user.user_name %>
+                              <br>
+                            <% end %>
+                          </div>
+                          <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
+                          </div>
+                        </div>
                       </div>
-                    <% else %>
-                      <% not_report_users.each do |user| %>
-                        <%= user.user_name %>
-                        <br>
-                      <% end %>
-                    <% end %>
+                    </div>
                   </div>
                 </div>
               <% end %>
