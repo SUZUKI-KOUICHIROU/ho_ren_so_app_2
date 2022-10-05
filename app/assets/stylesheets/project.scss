@@ -142,8 +142,11 @@
     background-color: $base-background-color;
     font-weight: 500;
     div {
-    background-color: $base-sub-color;
-    border-radius: 5px;
+      background-color: $base-sub-color;
+      border-radius: 5px;
+    }
+    .modal {
+      background-color: transparent;
     }
   }
 }
@@ -156,6 +159,9 @@
     // padding: 1rem;
     font-size: 1.2rem;
     padding: 0.75rem;
+  }
+  .modal {
+    padding: 0rem;
   }
 }
 

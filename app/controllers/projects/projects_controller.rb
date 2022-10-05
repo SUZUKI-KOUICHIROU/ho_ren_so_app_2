@@ -21,6 +21,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
       @project.update_deadline(@project.project_next_report_date)
+      @project.report_deadlines.create!(day: @project.project_next_report_date)
       @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
       flash[:success] = 'プロジェクトを新規登録しました。'
       redirect_to user_project_path(@user, @project)
