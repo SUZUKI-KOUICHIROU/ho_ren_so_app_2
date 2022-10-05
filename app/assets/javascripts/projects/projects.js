@@ -80,7 +80,7 @@ $(document).on('turbolinks:load', function(){
       console.log( "当日の日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
 
       // 取得した本日の日付をfrequencyの値分の加算した日付を取得
-      project_next_report_date.setDate( project_next_report_date.getDate() + Number( frequency ));
+      project_next_report_date.setDate( project_next_report_date.getDate() + Number( frequency ) - 1);
       console.log( "当日の日付をnumberfieldの値分進めた日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
 
       var yearNum = project_next_report_date.getFullYear();
@@ -107,7 +107,7 @@ $(document).on('turbolinks:load', function(){
       console.log( "セレクトフィールドの値だよ(*ﾟ▽ﾟ)ﾉ", weekday );
       // 取得した本日の日付を1日ずつ進めて、weekdayの値と比較し次回報告日を取得
       // for文で初期値と繰り返しの条件式を指定 for (var 初期値; 繰り返し条件; 繰り返し処理)
-      for (var i=1; i<8; i++) {
+      for (var i=0; i<7; i++) {
         // 本日の日付を取得しproject_next_report_date変数に代入
         var project_next_report_date = new Date();
         console.log( "当日の日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
