@@ -143,7 +143,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @reports = @project.reports.where(report_day: Date.today).page(params[:reports_page]).per(10)
+    @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).page(params[:reports_page]).per(10)
     report_users_id = []
     i = 0
     report_users = @project.reports.where(report_day: @project.report_deadlines.last.day).select(:user_id).distinct
@@ -160,12 +160,12 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @display = params[:display].nil??
     "percent" : params[:display]
-    @first_day = params[:date].nil??
-    Date.current.beginning_of_month : params[:date].to_date
+    @first_day = params[:date].blank??
+    Date.current.beginning_of_month : Date.strptime(params[:date], '%Y-%m')
     @last_day = @first_day.end_of_month
     one_month = [*@first_day..@last_day]
     @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
-    
+    @month_field_value = @first_day.strftime("%Y-%m")
     if params[:search].present? and params[:search] != ""
       @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       if @results.present?
