@@ -9,17 +9,14 @@
   </head>
   <%= render 'layouts/header' %>
   <body>
-    <div class="content-box">
-      <div class="row">
-        <% if user_signed_in? %>
-            <%= yield(:side_menu) if block_given? %>
-        <% end %>
-        <div class="container col-10 p-0">
-          <%= yield %>
-          <div class="col-6 offset-3"><%= debug(params) if Rails.env.development? %></div>
-        </div>
+    <div class="d-flex">
+      <% if user_signed_in? %>
+        <%= yield(:side_menu) if block_given? %>
+      <% end %>
+      <div class="page">
+        <%= yield %>
       </div>
     </div>
-    
+
   </body>
 </html>
