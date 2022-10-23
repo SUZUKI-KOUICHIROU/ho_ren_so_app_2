@@ -1,4 +1,4 @@
-<% provide(:title, '報告状況ログ') %>
+<% provide(:title, '報告状況履歴') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
@@ -6,20 +6,18 @@
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
   <h1 class="text-center">報告状況履歴
-    <%= @first_day.year %>年
-    <%= @first_day.month %>月
   </h1>
-  
-
-  
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
             <div class="d-flex justify-content-end mb-3">
-            
-              <%= link_to "⇦前月", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
-              <%= link_to "次月⇨", user_project_reports_view_reports_log_path(current_user, @project, date: @first_day.next_month), class: "btn btn-outline-orange" %>
+              <%= form_with url: user_project_reports_view_reports_log_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
+                <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
+                <%= f.submit "送信", class: "btn btn-outline-orange mr-4" %>
+              <% end %>
+              <%= link_to "⇦前月", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
+              <%= link_to "次月⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @first_day.next_month), class: "btn btn-outline-orange" %>
             </div>
             <div class="table-header">
               <div class="subject-name col-md-4">
@@ -27,13 +25,13 @@
               </div>
               <div class="reported-date col-md-4">
                 <% if @display == "percent" %>
-                  報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people" ), class: "text-white  ml-5" %>
+                  報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-5" %>
                 <% elsif @display == "people" %>
-                  報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent" ), class: "text-white  ml-5" %>
+                  報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-5" %>
                 <% end %>
               </div>
               <div class="report-action col-md-4">
-                未報告者
+                報告者数 / 未報告者数
               </div>
             </div>
             <div class="table-body">
@@ -46,7 +44,6 @@
                 <% report_users = report_users(@project, report_deadline) %>
                 <% not_report_users = @project.users.all - report_users %>
                 <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-                              
                   <div class="subject-name col-md-4">
                     <%= l(report_deadline.day, format: :long) %>
                   </div>
@@ -61,6 +58,34 @@
                     <% end %>
                   </div>
                   <div class="report-action col-md-4">
+                    <%= report_users.count %>人
+                    <button type="button" class="btn btn-outline-orange rounded-circle p-1 mr-4" data-toggle="modal" data-target="#report-user<%= line_num %>">
+                      ▼
+                    </button>
+                    <div class="modal fade bd-example-modal-sm" id="report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel">
+                              <%= l(report_deadline.day, format: :short) %>
+                              報告者
+                            </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <% report_users.each do |user| %>
+                              <%= user.user_name %>
+                              <br>
+                            <% end %>
+                          </div>
+                          <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <%= not_report_users.count %>人
                     <button type="button" class="btn btn-outline-orange rounded-circle p-1" data-toggle="modal" data-target="#not-report-user<%= line_num %>">
                       ▼
