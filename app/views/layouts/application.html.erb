@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= full_title(yield(:title)) %></title>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag 'application', media: 'all','data-turbolinks-track': 'reload' %>
@@ -9,14 +10,20 @@
   </head>
   <%= render 'layouts/header' %>
   <body>
-    <div class="d-flex">
-      <% if user_signed_in? %>
-        <%= yield(:side_menu) if block_given? %>
-      <% end %>
-      <div class="page">
-        <%= yield %>
+    <%# サイドバーとページのバランス調整用 %>
+    <main>
+      <div class="d-flex">
+        <% if user_signed_in? %>
+          <%= yield(:side_menu) if block_given? %>
+        <% end %>
+        <%# サイドバーとページのバランス調整用 %>
+        <div class="page">
+          <%= yield %>
+        </div>
       </div>
-    </div>
-
+    </main>
+    <footer>
+      <div class="col-6 offset-3"><%= debug(params) if Rails.env.development? %></div>
+    </footer>
   </body>
 </html>

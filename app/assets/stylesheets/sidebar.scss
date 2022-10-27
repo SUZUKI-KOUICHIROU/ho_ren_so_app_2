@@ -1,5 +1,9 @@
 #nav-drawer {
   position: relative;
+  @media (min-width: 800px) {
+    display: none;
+    position: absolute;
+  }
 }
 
 /*チェックボックス等は非表示に*/
@@ -7,30 +11,14 @@
   display:none !important;
 }
 
-/*アイコンのスペース*/
-#nav-open {
-  display: inline-block;
-  width: 30px;
-  height: 22px;
-  vertical-align: middle;
-}
-
 /*ハンバーガーの形をCSSで表現*/
-#nav-open span, #nav-open span:before, #nav-open span:after {
-  position: absolute;
-  height: 3px;/*線の太さ*/
-  width: 25px;/*長さ*/
-  border-radius: 3px;
-  background: #555;
+#nav-open {
+  position: fixed;
+  top: 30;
+  left: 0;
   display: block;
-  content: '';
-  cursor: pointer;
-}
-#nav-open span:before {
-  bottom: -8px;
-}
-#nav-open span:after {
-  bottom: -16px;
+  font-size: 60px;
+  color: rgb(182, 182, 182);
 }
 
 /*閉じる用の薄黒箇所*/
@@ -54,8 +42,7 @@
   top: 0;
   left: 0;
   z-index: 9999;
-  width: 90%;
-  max-width: 50%;/*最大幅（お好みで調整を）*/
+  font-size: 150%;
   height: 100%;
   background: #fff;
   transition: .3s ease-in-out;
@@ -75,44 +62,20 @@
   box-shadow: 6px 0 25px rgba(0,0,0,.15);
 }
 
-.header-logo-menu{
- display: flex;
- display: -moz-flex;
- display: -o-flex;
- display: -webkit-flex;
- display: -ms-flex;
- flex-direction: row;
- -moz-flex-direction: row;
- -o-flex-direction: row;
- -webkit-flex-direction: row;
- -ms-flex-direction: row;
-}
-
-/*ロゴやサイトタイトルをセンタリング*/
-.menu-content {
-  font-size: 19px;
+#menu-content {
   height: 100vh;
-  -webkit-flex-basis: 220px;
-  flex-basis: 220px;
-  position: sticky;
-  margin-top: -58px;
-  padding-top: 58px;
-  top: 0px;
+  font-size: 20px;
+  min-width: 220px;
+  position: fixed;
   left: 0;
-  bottom: -20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  @media screen and (max-width: 670px) {
+  padding-top: 2rem;
+  @media (max-width: 800px) {
     display: none;
     position: absolute;
-    &.show {
-      display: block;
-    }
   }
 }
 
 .menu.active {
-  // border-radius: 20px;
   a {
     color: $base-sub-color;
     background: $base-color;
@@ -123,13 +86,11 @@
   text-align: left;
   text-indent: 1.5em;
   a {
-    // background: #ffffee;
     color: $base-title-font-color;
-    // border-radius: 20px;
     text-decoration: none;
     font-weight: bolder;
     display: block;
-    padding: 5px 0px;
+    padding: 5px 10px 5px 0;
   }
 }
 
@@ -139,5 +100,3 @@
   }
   background: $base-color;
 }
-
-// border: thin solid;

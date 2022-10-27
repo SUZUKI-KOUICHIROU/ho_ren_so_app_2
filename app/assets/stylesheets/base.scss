@@ -16,6 +16,9 @@ $base-form-color:#fff5ee;
 .page {
   -webkit-flex-grow: 1;
   flex-grow: 1;
+  @media (min-width: 800px) {
+  padding-left: 220px;
+  }
 }
 //文字サイズ
 h1, .h1 {
