@@ -118,6 +118,26 @@
   vertical-align: middle ;
 }
 
+////////// 報告状況ページページネーション ///////////
+.table-paginate {
+  font-weight: 700;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  background-color: $base-background-color;
+  border-radius: 10px 10px 0 0;
+}
+
+////////// 報告状況ページ ヘッダー //////////
+.table-header-view-reports {
+  font-weight: 700;
+  padding: 0 1.5rem 0 1.5rem;
+  background-color: $base-background-color;
+  div {
+    border-radius: 5px;
+    background-color: $base-color;
+    color: $base-sub-color;
+  }
+}
+
 ////////// 一覧のヘッダーのデザイン //////////
 .table-header {
   font-weight: 700;
@@ -152,7 +172,7 @@
 }
 
 ////////// 一覧の行のデザイン //////////
-.table-header, .table-line {
+.table-header, .table-line, .table-header-view-reports {
   display: flex;
   div {
     // font-size: 1.3rem;
