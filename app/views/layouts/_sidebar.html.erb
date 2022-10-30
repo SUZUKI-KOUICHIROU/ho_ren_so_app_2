@@ -1,5 +1,8 @@
-<div class="container col-2 p-0">
-  <div class="menu-content shadow">
+<div id="nav-drawer">
+  <input id="nav-input" type="checkbox" class="nav-unshown">
+  <label id="nav-open" for="nav-input">></label>
+  <label id="nav-close" for="nav-input"></label>
+  <div id="nav-content">
     <% if project.nil? %>
       <%= sidebar_link_item('プロジェクト登録', new_user_project_path(user)) %>
     <% else %>
@@ -10,10 +13,10 @@
       <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
       <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
       <% if project_leader? %>
-        <% if project.project_next_report_date - @project.project_report_frequency == Date.today %>
-          <%= sidebar_link_item('本日の報告状況(報告日)', user_project_reports_view_reports_path(user, project)) %>
-        <% else %>
+        <% if project.project_next_report_date == Date.today %>
           <%= sidebar_link_item('本日の報告状況', user_project_reports_view_reports_path(user, project)) %>
+        <% else %>
+          <%= sidebar_link_item('今週の報告状況', user_project_reports_view_reports_path(user, project)) %>
         <% end %>
         <%= sidebar_link_item('報告状況履歴', user_project_reports_view_reports_log_path(user, project)) %>
         <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(user, project)) %>
@@ -26,3 +29,31 @@
     <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
   </div>
 </div>
+
+<div class="shadow" id="menu-content">
+  <% if project.nil? %>
+    <%= sidebar_link_item('プロジェクト登録', new_user_project_path(user)) %>
+  <% else %>
+    <%= sidebar_link_item('報告', new_user_project_report_path(user, project)) %>
+    <%= sidebar_link_item('連絡', new_user_project_message_path(user, project)) %>
+    <%= sidebar_link_item('相談', new_user_project_counseling_path(user, project)) %>
+    <%= sidebar_link_item('報告一覧', user_project_reports_path(user, project)) %>
+    <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
+    <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
+    <% if project_leader? %>
+      <% if project.project_next_report_date == Date.today %>
+        <%= sidebar_link_item('本日の報告状況', user_project_reports_view_reports_path(user, project)) %>
+      <% else %>
+        <%= sidebar_link_item('今週の報告状況', user_project_reports_view_reports_path(user, project)) %>
+      <% end %>
+      <%= sidebar_link_item('報告状況履歴', user_project_reports_view_reports_log_path(user, project)) %>
+      <%= sidebar_link_item('プロジェクト編集', edit_user_project_path(user, project)) %>
+      <%= sidebar_link_item('フォーマット編集', edit_project_report_format_path(user, project)) %>
+      <%= sidebar_link_item('メンバーを招待', new_invitation_path(user, project)) %>
+    <% end %>
+    <%= sidebar_link_item('メンバー一覧', project_member_index_path(user, project)) %>
+    <%= sidebar_link_item('プロジェクト詳細', user_project_path(user, project)) %>
+  <% end %>
+  <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
+</div>
+

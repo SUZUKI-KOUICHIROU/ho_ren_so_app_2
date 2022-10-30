@@ -12,7 +12,14 @@ $base-sub-color: #fff;
 
 // 基本フォーム色
 $base-form-color:#fff5ee;
-
+//ページ内の横幅指定
+.page {
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  @media (min-width: 800px) {
+  padding-left: 220px;
+  }
+}
 //文字サイズ
 h1, .h1 {
   font-size: 1.7rem;
