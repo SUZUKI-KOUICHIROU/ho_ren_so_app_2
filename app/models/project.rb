@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   has_many :joins
   has_many :tokens, through: :joins
   has_many :report_statuses, dependent: :destroy
-  has_many :delegations
+  has_many :delegations, dependent: :destroy 
   has_many :report_deadlines, dependent: :destroy
 
   validates :project_name, presence: true, length: { maximum: 20 }
