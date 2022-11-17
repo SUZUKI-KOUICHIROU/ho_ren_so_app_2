@@ -37,9 +37,7 @@
             <div class="table-body">
               <% line_num = 0%>
               <% i = 0 %>
-              
               <% @report_days.each do |report_deadline|%>
-
                 <% line_num += 1%>
                 <% report_users = report_users(@project, report_deadline) %>
                 <% not_report_users = @project.users.all - report_users %>
