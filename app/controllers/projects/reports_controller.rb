@@ -143,10 +143,10 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).page(params[:reports_page]).per(10)
+    @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).page(params[:reports_page]).per(10)
     report_users_id = []
     i = 0
-    report_users = @project.reports.where(report_day: @project.report_deadlines.last.day).select(:user_id).distinct
+    report_users = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).select(:user_id).distinct
     report_users.each do |user|
       report_users_id[i] = user.user_id
       i += 1
