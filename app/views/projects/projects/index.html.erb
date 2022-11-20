@@ -45,7 +45,7 @@
             <% if @report_statuses.find_by(project_id: project.id).has_submitted %>
               <span class="text-success font-weight-bold">報告済み</span>
             <% else %>
-              <span class="text-danger font-weight-bold">未報告</span>
+              <span><%= link_to '未報告', new_user_project_report_path(@user, project), class: "text-danger font-weight-bold" %></span>
             <% end %>
           </div>
           
