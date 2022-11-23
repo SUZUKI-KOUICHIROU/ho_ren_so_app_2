@@ -110,18 +110,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to user_project_reports_path(@user,@project)
   end
 
-  def destroy
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = Report.find(params[:id])
-    if @report.destroy
-      flash[:success] = "報告を削除しました。"
-    else
-      flash[:danger] = "報告の削除に失敗しました。"
-    end
-    redirect_to user_project_reports_path(@user,@project)
-  end
-
   # 再提出を求める。
   def reject
     @report = Report.find(params[:id])
