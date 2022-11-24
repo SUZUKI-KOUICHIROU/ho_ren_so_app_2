@@ -11,11 +11,6 @@ class User < ApplicationRecord
     UserMailer.invitation(self, token, project_name, password).deliver_now
   end
 
-  # 招待の期限が切れている場合はtrueを返す
-  def invitation_expired?
-    self.invite_sent_at < 24.hours.ago
-  end
-
   # 現在のパスワードなしでユーザー情報を変更
   def update_without_current_password(params, *options)
     params.delete(:current_password)

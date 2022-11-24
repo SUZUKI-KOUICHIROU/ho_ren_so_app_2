@@ -5,9 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     create_table :users do |t|
 
       t.boolean :has_editted, default: true # ユーザー情報の編集が行われたかを管理
-      t.string :invite_digest
       t.integer :invited_by
-      t.datetime :invite_sent_at
       t.string :user_name, null: false, default: '' # ユーザー名
       t.boolean :admin, null: false, default: false # 管理者フラグ
       
