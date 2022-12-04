@@ -23,14 +23,14 @@ Project.create!( project_name: 'プロジェクトA',
                  report_frequency: 1,
                  next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
-                 project_reported_flag: false )
+                 reported_flag: false )
 
 Project.create!( project_name: 'プロジェクトB',
                  leader_id: 1,
                  report_frequency: 7,
                  next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトBです。',
-                 project_reported_flag: false )
+                 reported_flag: false )
 
 ########## 最初の報告日を登録する ###########
 projects = Project.all

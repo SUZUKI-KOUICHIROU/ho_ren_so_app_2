@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_04_041717) do
+ActiveRecord::Schema.define(version: 2022_12_04_043226) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(version: 2022_12_04_041717) do
     t.integer "leader_id", null: false
     t.integer "report_frequency", default: 1, null: false
     t.date "next_report_date", null: false
-    t.boolean "project_reported_flag", default: false, null: false
+    t.boolean "reported_flag", default: false, null: false
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

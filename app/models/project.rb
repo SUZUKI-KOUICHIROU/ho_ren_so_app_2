@@ -18,7 +18,7 @@ class Project < ApplicationRecord
   validates :leader_id, presence: true
   validates :report_frequency, presence: true
   validates :next_report_date, presence: true
-  validates :project_reported_flag, inclusion: [true, false]
+  validates :reported_flag, inclusion: [true, false]
 
   # 報告の期限を更新。引数には新しい報告日を指定
   def update_deadline(next_deadline)

@@ -30,14 +30,14 @@ RSpec.describe Project, type: :model do
       expect(build(:project, next_report_date: '')).not_to be_valid
     end
 
-    context 'project_reported_flagカラム' do
+    context 'reported_flagカラム' do
       it 'trueとfalseは登録出来る' do
-        expect(project).to allow_value(true).for(:project_reported_flag)
-        expect(project).to allow_value(false).for(:project_reported_flag)
+        expect(project).to allow_value(true).for(:reported_flag)
+        expect(project).to allow_value(false).for(:reported_flag)
       end
 
       it 'nilは登録出来ない' do
-        expect(project).not_to allow_value(nil).for(:project_reported_flag)
+        expect(project).not_to allow_value(nil).for(:reported_flag)
       end
     end
   end
