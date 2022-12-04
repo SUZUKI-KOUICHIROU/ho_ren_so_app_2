@@ -42,7 +42,7 @@
             </div>
             <% if project_leader? %>
             <div class="w-50 mr-2 mb-2">
-              <% unless @project.project_leader_id == member.id %>
+              <% unless @project.leader_id == member.id %>
                 <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.user_name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
                 <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
                 <% if delegate.present? %>

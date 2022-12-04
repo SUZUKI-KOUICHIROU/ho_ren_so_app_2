@@ -1,5 +1,5 @@
 <%= form_with(model: @project, url: user_project_path(@user, @project), local: true, method: :patch, id: "project-form") do |f| %>
-  <%= f.hidden_field :project_leader_id, :value => current_user.id %>
+  <%= f.hidden_field :leader_id, :value => current_user.id %>
   <div class="project form-body">
     <div class="project-detail">
       <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
@@ -12,26 +12,26 @@
     </div>
 
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告頻度" %><span class="pl-2 font-weight-bold text-danger">必須</span><br>
+      <%= f.label :report_frequency, "報告頻度" %><span class="pl-2 font-weight-bold text-danger">必須</span><br>
       <%= f.radio_button :report_frequency_selection, :edit_day, checked: true, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
       <%= f.label :report_frequency_selection_edit_day, "日数で設定", class: "project-radio-label" %>
       <%= f.radio_button :report_frequency_selection, :edit_week, class: "project-radio", data: { user_id: "#{@user.id}", project_id: "#{@project.id}" } %>
       <%= f.label :report_frequency_selection_edit_week, "曜日で設定", class: "project-radio-label" %>
     </div>
     <div class="project-detail">
-      <%= f.label :project_report_frequency, "報告回数" %><span class="pl-2 font-weight-bold text-danger">必須</span>
+      <%= f.label :report_frequency, "報告回数" %><span class="pl-2 font-weight-bold text-danger">必須</span>
       <div class="d-flex project-report-frequency">
-        <%= f.number_field :project_report_frequency, min: 1, class: "form-control box-number form-color", id: "project_project_report_frequency", required: true %>
+        <%= f.number_field :report_frequency, min: 1, class: "form-control box-number form-color", id: "report_frequency", required: true %>
         <div>日に1回</div>
       </div>
     </div>
     <div class="project-detail">
       <div class="project-next-report-date">
         <a id="project-next-report-date">
-          <% week = ApplicationHelper.weeks[@project.project_next_report_date.wday]%>
-          <%= f.label :project_report_frequency, "次回報告日" %><br><%= @project.project_next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
+          <% week = ApplicationHelper.weeks[@project.next_report_date.wday]%>
+          <%= f.label :report_frequency, "次回報告日" %><br><%= @project.next_report_date.strftime("%Y年%-m月%d日(#{week})")%>
         </a>
-        <%= f.hidden_field :project_next_report_date, :value => @project.project_next_report_date %>
+        <%= f.hidden_field :next_report_date, :value => @project.next_report_date %>
       </div>
     </div>
     <div class="text-right mt-3">

@@ -24,13 +24,13 @@
       <p class="card-text"><%= @project.description %></p>
     
       <div class="text-secondary">リーダー</div>
-      <p class="card-text"><%= User.find(@project.project_leader_id).user_name %></p>
+      <p class="card-text"><%= User.find(@project.leader_id).user_name %></p>
     
       <div class="text-secondary">報告頻度</div>
-      <% if @project.project_report_frequency == 7 %>
-        <p class="card-text">毎週<%= ApplicationHelper.weeks[@project.project_next_report_date.wday] %>曜日</p>
+      <% if @project.report_frequency == 7 %>
+        <p class="card-text">毎週<%= ApplicationHelper.weeks[@project.next_report_date.wday] %>曜日</p>
       <% else %>
-        <p class="card-text"><%= @project.project_report_frequency %>日に１回</p>
+        <p class="card-text"><%= @project.report_frequency %>日に１回</p>
       <% end %>
       <div class="text-secondary">メンバー数</div>
       <% if @member.empty? %>

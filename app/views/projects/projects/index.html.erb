@@ -41,7 +41,7 @@
 
           <%# === 次回報告日 === %>
           <div class="project-next-report-date">
-            <%= l(project.project_next_report_date, format: :long) %>
+            <%= l(project.next_report_date, format: :long) %>
             <% if @report_statuses.find_by(project_id: project.id).has_submitted %>
               <span class="text-success font-weight-bold">報告済み</span>
             <% else %>

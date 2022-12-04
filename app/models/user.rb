@@ -26,7 +26,7 @@ class User < ApplicationRecord
   end
   
   def project_leader?
-    return Project.exists?(project_leader_id: self.id)
+    return Project.exists?(leader_id: self.id)
   end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

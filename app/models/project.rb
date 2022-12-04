@@ -15,10 +15,10 @@ class Project < ApplicationRecord
   has_many :report_deadlines, dependent: :destroy
 
   validates :project_name, presence: true, length: { maximum: 20 }
-  validates :project_leader_id, presence: true
-  validates :project_report_frequency, presence: true
-  validates :project_next_report_date, presence: true
-  validates :project_reported_flag, inclusion: [true, false]
+  validates :leader_id, presence: true
+  validates :report_frequency, presence: true
+  validates :next_report_date, presence: true
+  validates :reported_flag, inclusion: [true, false]
 
   # 報告の期限を更新。引数には新しい報告日を指定
   def update_deadline(next_deadline)
@@ -69,7 +69,7 @@ class Project < ApplicationRecord
   end
 
   def join_new_member(user_id)
-    self.report_statuses.create(user_id: user_id, deadline: self.project_next_report_date)
+    self.report_statuses.create(user_id: user_id, deadline: self.next_report_date)
   end
 
   # リーダー権限譲渡アクション。引数に元リーダーと次リーダーのユーザーIDを指定。

@@ -59,32 +59,26 @@ $(document).on('turbolinks:load', function(){
 
   // プロジェクト登録、編集モーダルウインドウ(報告頻度のnumberfieldが変化したら、次回報告日を動的に算出する処理)
   $(function($) {
-    $('#project-new-edit').on('change', '#project_project_report_frequency', function(){
-      console.log( "チェンジイベントを感知しました(￣^￣)ゞ" )
+    $('#project-new-edit').on('change', '#report_frequency', function(){
 
       // numberfieldの値を取得しfrequencyに代入
       var frequency = $(this).val();
-      console.log( "numberfieldの値だよ(*ﾟ▽ﾟ)ﾉ", frequency );
 
-      // 本日の日付を取得しproject_next_report_date変数に代入
-      var project_next_report_date = new Date();
-      console.log( "当日の日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
+      // 本日の日付を取得しnext_report_date変数に代入
+      var next_report_date = new Date();
 
       // 取得した本日の日付をfrequencyの値分の加算した日付を取得
-      project_next_report_date.setDate( project_next_report_date.getDate() + Number( frequency ) - 1);
-      console.log( "当日の日付をnumberfieldの値分進めた日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
+      next_report_date.setDate( next_report_date.getDate() + Number( frequency ) - 1);
 
-      var yearNum = project_next_report_date.getFullYear();
-      var monthNum = project_next_report_date.getMonth() + 1;
-      var dayNum = project_next_report_date.getDate();
-      var weekNum = project_next_report_date.getDay();
+      var yearNum = next_report_date.getFullYear();
+      var monthNum = next_report_date.getMonth() + 1;
+      var dayNum = next_report_date.getDate();
+      var weekNum = next_report_date.getDay();
       var week = [ "日", "月", "火", "水", "木", "金", "土" ][weekNum];
       var aDateStr = String( yearNum ) + "年" + String( monthNum ) + "月" + String( dayNum ) + "日" + "(" + String( week ) + ")";
       var inputvalDate = String( yearNum ) + "-" + String( monthNum ) + "-" + String( dayNum );
-      console.log( "a要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project-next-report-date").innerHTML = `<label for="project_project_report_frequency">次回報告日</label><br>${aDateStr}`;
-      console.log( "input要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project_project_next_report_date").value = inputvalDate;
+      document.getElementById("project-next-report-date").innerHTML = `<label for="report_frequency">次回報告日</label><br>${aDateStr}`;
+      document.getElementById("next_report_date").value = inputvalDate;
     });
   });
 
@@ -92,23 +86,16 @@ $(document).on('turbolinks:load', function(){
   $(function($) {
     // モーダルウインドウは追加される元のhtmlのに追加される処理なので、親となる要素にonメソッド繋げる形で記述
     $('#project-new-edit').on('change', '#project_week_select', function(){
-      console.log( "チェンジイベントを感知しました(￣^￣)ゞ" )
       // セレクトフィールドの値を取得
       var weekday = $(this).val();
-      console.log( "セレクトフィールドの値だよ(*ﾟ▽ﾟ)ﾉ", weekday );
       // 取得した本日の日付を1日ずつ進めて、weekdayの値と比較し次回報告日を取得
       // for文で初期値と繰り返しの条件式を指定 for (var 初期値; 繰り返し条件; 繰り返し処理)
       for (var i=0; i<7; i++) {
-        // 本日の日付を取得しproject_next_report_date変数に代入
-        var project_next_report_date = new Date();
-        console.log( "当日の日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
-        console.log( "iの値だよ(*ﾟ▽ﾟ)ﾉ", i );
-        project_next_report_date.setDate( project_next_report_date.getDate() + i);
-        console.log( "当日の日付をiの値分進めるよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
-        var weekNum = project_next_report_date.getDay();
-        console.log( "weekNumの値だよ(*ﾟ▽ﾟ)ﾉ", weekNum );
+        // 本日の日付を取得しnext_report_date変数に代入
+        var next_report_date = new Date();
+        next_report_date.setDate( next_report_date.getDate() + i);
+        var weekNum = next_report_date.getDay();
         var week = [ "日", "月", "火", "水", "木", "金", "土" ][weekNum];
-        console.log( "weekの値だよ(*ﾟ▽ﾟ)ﾉ", week );
         //if文でweekdayとweekが同じ値時の条件分岐を指定
         if (weekday == week) {
           //weekdayとweekの値が同じならbreakで繰り返し処理を中止
@@ -116,19 +103,16 @@ $(document).on('turbolinks:load', function(){
         }
       }
 
-      console.log( "算出した次回報告日の日付だよ(*ﾟ▽ﾟ)ﾉ", project_next_report_date );
 
-      var yearNum = project_next_report_date.getFullYear();
-      var monthNum = project_next_report_date.getMonth() + 1;
-      var dayNum = project_next_report_date.getDate();
-      var weekNum = project_next_report_date.getDay();
+      var yearNum = next_report_date.getFullYear();
+      var monthNum = next_report_date.getMonth() + 1;
+      var dayNum = next_report_date.getDate();
+      var weekNum = next_report_date.getDay();
       var week = [ "日", "月", "火", "水", "木", "金", "土" ][weekNum];
       var aDateStr = String( yearNum ) + "年" + String( monthNum ) + "月" + String( dayNum ) + "日" + "(" + String( week ) + ")";
       var inputvalDate = String( yearNum ) + "-" + String( monthNum ) + "-" + String( dayNum );
-      console.log( "a要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project-next-report-date").innerHTML = `<label for="project_project_report_frequency">次回報告日</label><br>${aDateStr}`;
-      console.log( "input要素にセットする日付だよ(*ﾟ▽ﾟ)ﾉ", aDateStr );
-      document.getElementById("project_project_next_report_date").value = inputvalDate;
+      document.getElementById("project-next-report-date").innerHTML = `<label for="report_frequency">次回報告日</label><br>${aDateStr}`;
+      document.getElementById("next_report_date").value = inputvalDate;
     });
   });
 });

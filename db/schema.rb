@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_01_034826) do
+ActiveRecord::Schema.define(version: 2022_12_04_043226) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -127,10 +127,10 @@ ActiveRecord::Schema.define(version: 2022_09_01_034826) do
 
   create_table "projects", force: :cascade do |t|
     t.string "project_name", default: "", null: false
-    t.integer "project_leader_id", null: false
-    t.integer "project_report_frequency", default: 1, null: false
-    t.date "project_next_report_date", null: false
-    t.boolean "project_reported_flag", default: false, null: false
+    t.integer "leader_id", null: false
+    t.integer "report_frequency", default: 1, null: false
+    t.date "next_report_date", null: false
+    t.boolean "reported_flag", default: false, null: false
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -244,9 +244,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_034826) do
 
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
-    t.string "invite_digest"
     t.integer "invited_by"
-    t.datetime "invite_sent_at"
     t.string "user_name", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false

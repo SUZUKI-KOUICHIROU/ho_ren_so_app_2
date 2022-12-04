@@ -1,6 +1,6 @@
 module Projects::ProjectsHelper
   def project_leader?
-    return current_user.id == @project.project_leader_id
+    return current_user.id == @project.leader_id
   end
   def report_users(project, report_deadline)
     report_users_id = []

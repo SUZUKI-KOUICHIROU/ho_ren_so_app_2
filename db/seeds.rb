@@ -19,23 +19,23 @@ end
 
 ########## プロジェクトを2件作成 ##########
 Project.create!( project_name: 'プロジェクトA',
-                 project_leader_id: 1,
-                 project_report_frequency: 1,
-                 project_next_report_date: Date.current,
+                 leader_id: 1,
+                 report_frequency: 1,
+                 next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
-                 project_reported_flag: false )
+                 reported_flag: false )
 
 Project.create!( project_name: 'プロジェクトB',
-                 project_leader_id: 1,
-                 project_report_frequency: 7,
-                 project_next_report_date: Date.current,
+                 leader_id: 1,
+                 report_frequency: 7,
+                 next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトBです。',
-                 project_reported_flag: false )
+                 reported_flag: false )
 
 ########## 最初の報告日を登録する ###########
 projects = Project.all
 projects.each do |project|
-  project.report_deadlines.create!(day: project.project_next_report_date)
+  project.report_deadlines.create!(day: project.next_report_date)
 end
 
 ########## idが1~3のユーザーをプロジェクトAに参画 ##########
@@ -55,7 +55,7 @@ end
 ########## 報告済/未済管理用レコードを作成 ##########
 projects = Project.all
 projects.each do |project|
-  project.update_deadline(project.project_next_report_date)
+  project.update_deadline(project.next_report_date)
 end
 
 ########## プロジェクトAに報告フォーマットを登録 ##########
@@ -214,5 +214,5 @@ Format.create!( title: '件名',
 ########## 報告済/未済管理用レコードを作成 ##########
 projects = Project.all
 projects.each do |project|
-  project.update_deadline(project.project_next_report_date)
+  project.update_deadline(project.next_report_date)
 end

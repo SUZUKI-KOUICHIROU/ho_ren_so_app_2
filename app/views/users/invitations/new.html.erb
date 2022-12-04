@@ -14,7 +14,7 @@
               <%= f.label :email, "招待メールアドレス", class: "email-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
               <div>
                 <%= f.email_field :email, class: 'form-control', required: true %>
-                <%= f.hidden_field :project_leader_id, :value => @user.id %>
+                <%= f.hidden_field :leader_id, :value => @user.id %>
                 <%= f.hidden_field :project_id, :value => @project.id %>
               </div>
             </div>
