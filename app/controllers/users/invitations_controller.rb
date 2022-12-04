@@ -16,7 +16,7 @@ class Users::InvitationsController < BaseController
     else
       if User.exists?(email: params[:invitee][:email])  
         @user = User.find_by(email: params[:invitee][:email])
-        @user.update(invited_by: params[:invitee][:project_leader_id])
+        @user.update(invited_by: params[:invitee][:leader_id])
       else
         require 'securerandom'
         mypassword = SecureRandom.alphanumeric.downcase

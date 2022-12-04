@@ -1,5 +1,5 @@
 <%= form_with(model: @project, url: user_project_path(@user, @project), local: true, method: :patch, id: "project-form") do |f| %>
-  <%= f.hidden_field :project_leader_id, :value => current_user.id %>
+  <%= f.hidden_field :leader_id, :value => current_user.id %>
   <div class="project form-body">
     <div class="project-detail">
       <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>

@@ -24,7 +24,7 @@
       <p class="card-text"><%= @project.description %></p>
     
       <div class="text-secondary">リーダー</div>
-      <p class="card-text"><%= User.find(@project.project_leader_id).user_name %></p>
+      <p class="card-text"><%= User.find(@project.leader_id).user_name %></p>
     
       <div class="text-secondary">報告頻度</div>
       <% if @project.project_report_frequency == 7 %>

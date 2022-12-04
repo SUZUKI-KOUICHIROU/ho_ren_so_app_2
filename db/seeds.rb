@@ -19,7 +19,7 @@ end
 
 ########## プロジェクトを2件作成 ##########
 Project.create!( project_name: 'プロジェクトA',
-                 project_leader_id: 1,
+                 leader_id: 1,
                  project_report_frequency: 1,
                  project_next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',

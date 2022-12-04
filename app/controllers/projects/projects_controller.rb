@@ -55,7 +55,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all.where.not(id: @project.project_leader_id)
+    @member = @project.users.all.where.not(id: @project.leader_id)
     @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
@@ -116,7 +116,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # リーダー権限委譲リクエスト受認クリック時アクション
   def accept_request
     @delegate = @project.delegations.find(params[:delegate_id])
-    @project.update(project_leader_id: params[:user_id])
+    @project.update(leader_id: params[:user_id])
     @delegate.update(is_valid: false)
     flash[:success] = "あなたがリーダーになりました。"
     redirect_to user_project_path(@user, @project)
@@ -133,6 +133,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date, :description)
+    params.require(:project).permit(:project_name, :leader_id, :project_report_frequency, :project_next_report_date, :description)
   end
 end

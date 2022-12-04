@@ -18,8 +18,8 @@ RSpec.describe Project, type: :model do
       end
     end
 
-    it 'project_leader_idがなければ登録できない' do
-      expect(build(:project, project_leader_id: '')).not_to be_valid
+    it 'leader_idがなければ登録できない' do
+      expect(build(:project, leader_id: '')).not_to be_valid
     end
 
     it 'project_report_frequencyがなければ登録できない' do

@@ -15,7 +15,7 @@ class Project < ApplicationRecord
   has_many :report_deadlines, dependent: :destroy
 
   validates :project_name, presence: true, length: { maximum: 20 }
-  validates :project_leader_id, presence: true
+  validates :leader_id, presence: true
   validates :project_report_frequency, presence: true
   validates :project_next_report_date, presence: true
   validates :project_reported_flag, inclusion: [true, false]
