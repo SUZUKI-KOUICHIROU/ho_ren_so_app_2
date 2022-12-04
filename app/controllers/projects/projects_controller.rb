@@ -20,8 +20,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = current_user
     if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
-      @project.update_deadline(@project.project_next_report_date)
-      @project.report_deadlines.create!(day: @project.project_next_report_date)
+      @project.update_deadline(@project.next_report_date)
+      @project.report_deadlines.create!(day: @project.next_report_date)
       @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
       flash[:success] = 'プロジェクトを新規登録しました。'
       redirect_to user_project_path(@user, @project)
@@ -43,8 +43,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def edit
     if @project.report_frequency == 7
       @report_frequency_type = 'week'
-      project_next_report_date_wday = @project.project_next_report_date.wday
-      @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+      next_report_date_wday = @project.next_report_date.wday
+      @next_report_date_week = ApplicationHelper.weeks[next_report_date_wday]
     else
       @report_frequency_type = 'day'
     end
@@ -62,7 +62,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト内容編集アクション
   def update
     if @project.update(project_params)
-      @project.report_deadlines.last.update(day: @project.project_next_report_date)
+      @project.report_deadlines.last.update(day: @project.next_report_date)
       flash[:success] = "#{@project.project_name}の内容を更新しました。"
     else
       flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
@@ -107,8 +107,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
       @project = @user.projects.find(params[:project_id])
       @project.project_name = params[:project_name]
       if @project.report_frequency == 7
-        project_next_report_date_wday = @project.project_next_report_date.wday
-        @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+        next_report_date_wday = @project.next_report_date.wday
+        @next_report_date_week = ApplicationHelper.weeks[next_report_date_wday]
       end
     end
   end
@@ -133,6 +133,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :leader_id, :report_frequency, :project_next_report_date, :description)
+    params.require(:project).permit(:project_name, :leader_id, :report_frequency, :next_report_date, :description)
   end
 end

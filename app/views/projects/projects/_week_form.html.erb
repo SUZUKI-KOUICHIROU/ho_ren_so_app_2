@@ -35,7 +35,7 @@
           <% week = ApplicationHelper.weeks[Date.current.next_week(:monday).wday]%>
           <%= f.label :report_frequency, "次回報告日" %><br><%= Date.current.next_week(:monday).strftime("%Y年%-m月%d日(#{week})")%>
         </a>
-        <%= f.hidden_field :project_next_report_date, :value => Date.current.next_week(:monday) %>
+        <%= f.hidden_field :next_report_date, :value => Date.current.next_week(:monday) %>
       </div>
     </div>
     <div class="text-right mt-3">

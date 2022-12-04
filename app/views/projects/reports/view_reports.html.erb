@@ -5,7 +5,7 @@
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
-  <h1 class="text-center">報告状況確認 ：次回報告日は<%= l(@project.project_next_report_date, format: :long) %></h1>
+  <h1 class="text-center">報告状況確認 ：次回報告日は<%= l(@project.next_report_date, format: :long) %></h1>
   <div class="container">
     <div class="row">
       <div class="col-md-10 offset-md-1">

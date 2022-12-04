@@ -26,8 +26,8 @@ RSpec.describe Project, type: :model do
       expect(build(:project, report_frequency: '')).not_to be_valid
     end
 
-    it 'project_next_report_dateがなければ登録できない' do
-      expect(build(:project, project_next_report_date: '')).not_to be_valid
+    it 'next_report_dateがなければ登録できない' do
+      expect(build(:project, next_report_date: '')).not_to be_valid
     end
 
     context 'project_reported_flagカラム' do
