@@ -20,14 +20,14 @@ end
 ########## プロジェクトを2件作成 ##########
 Project.create!( project_name: 'プロジェクトA',
                  leader_id: 1,
-                 project_report_frequency: 1,
+                 report_frequency: 1,
                  project_next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
                  project_reported_flag: false )
 
 Project.create!( project_name: 'プロジェクトB',
-                 project_leader_id: 1,
-                 project_report_frequency: 7,
+                 leader_id: 1,
+                 report_frequency: 7,
                  project_next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトBです。',
                  project_reported_flag: false )

@@ -22,8 +22,8 @@ RSpec.describe Project, type: :model do
       expect(build(:project, leader_id: '')).not_to be_valid
     end
 
-    it 'project_report_frequencyがなければ登録できない' do
-      expect(build(:project, project_report_frequency: '')).not_to be_valid
+    it 'report_frequencyがなければ登録できない' do
+      expect(build(:project, report_frequency: '')).not_to be_valid
     end
 
     it 'project_next_report_dateがなければ登録できない' do

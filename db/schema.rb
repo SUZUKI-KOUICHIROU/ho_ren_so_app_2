@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_04_014644) do
+ActiveRecord::Schema.define(version: 2022_12_04_022225) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 2022_12_04_014644) do
   create_table "projects", force: :cascade do |t|
     t.string "project_name", default: "", null: false
     t.integer "leader_id", null: false
-    t.integer "project_report_frequency", default: 1, null: false
+    t.integer "report_frequency", default: 1, null: false
     t.date "project_next_report_date", null: false
     t.boolean "project_reported_flag", default: false, null: false
     t.string "description"
