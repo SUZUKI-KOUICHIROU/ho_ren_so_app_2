@@ -244,9 +244,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_034826) do
 
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
-    t.string "invite_digest"
     t.integer "invited_by"
-    t.datetime "invite_sent_at"
     t.string "user_name", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false
