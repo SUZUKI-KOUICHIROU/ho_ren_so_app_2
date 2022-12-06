@@ -1,42 +1,41 @@
 
 <% provide(:title, 'ユーザー新規登録') %>
+<div class="not_padding">
+  <%= render "users/shared/error_messages", resource: resource %>
+  <div class="user-format col-lg-6 mx-auto" style="margin:3rem auto auto auto;">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource),html: { id:'register-form'}) do |f| %>
+      <div class="form-content">
+        <h1 class="text-center my-3">ユーザー新規登録</h1>
+        <div class="project form-body">
+          <div class="project-detail">
+            <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="pl-2 font-weight-bold text-danger">必須</span>
+            <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control form-color", id: 'users_name' %>
+            <div id="name-error-message" class="text-danger pt-2"></div>
+          </div>
+          <div class="project-detail">
+            <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-color", id:'users_email' %>
+            <div id="email-error-message" class="text-danger pt-2"></div>
+          </div>
 
-<%= render "users/shared/error_messages", resource: resource %>
-<div class="user-format col-lg-6 mx-auto" style="margin:3rem auto auto auto;">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource),html: { id:'register-form'}) do |f| %>
-    <div class="form-content">
-      <h1 class="text-center my-3">ユーザー新規登録</h1>
-      <div class="project form-body">
-        <div class="project-detail">
-          <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control form-color", id: 'users_name' %>
-          <div id="name-error-message" class="text-danger pt-2"></div>
-        </div>
-        <div class="project-detail">
-          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-color", id:'users_email' %>
-          <div id="email-error-message" class="text-danger pt-2"></div>
-        </div>
+          <div class="project-detail">
+            <%= f.label :password, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
+            <%= f.password_field :password, class: "form-control form-color", id:'user_password' %>
+            <div id="password-error-message" class="text-danger pt-2"></div>
+          </div>
 
-        <div class="project-detail">
-          <%= f.label :password, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.password_field :password, class: "form-control form-color", id:'user_password' %>
-          <div id="password-error-message" class="text-danger pt-2"></div>
-        </div>
+          <div class="project-detail">
+            <%= f.label :password_confirmation, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
+            <%= f.password_field :password_confirmation, class: "form-control form-color", id:'user_password_confirm' %>
+            <div id="password-confirm-error-message" class="text-danger pt-2"></div>
+          </div>
 
-        <div class="project-detail">
-          <%= f.label :password_confirmation, class:'project-description-label' %><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.password_field :password_confirmation, class: "form-control form-color", id:'user_password_confirm' %>
-          <div id="password-confirm-error-message" class="text-danger pt-2"></div>
-        </div>
-
-        <div class="text-center">
-          <%= f.submit "新規作成", class: "btn btn-outline-orange", id: "button_create-user" %>
-          <%= link_to "戻る", new_user_session_path, class: "btn btn-secondary ml-3" %>
+          <div class="text-center">
+            <%= f.submit "新規作成", class: "btn btn-outline-orange", id: "button_create-user" %>
+            <%= link_to "戻る", new_user_session_path, class: "btn btn-secondary ml-3" %>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
-
-
