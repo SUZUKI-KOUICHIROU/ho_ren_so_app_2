@@ -2,7 +2,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 <div class="box-project-report">
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告編集</h1>
   <% cnt = 1 %>
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>

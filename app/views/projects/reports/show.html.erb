@@ -16,7 +16,7 @@ function changeForm() {
 <% end %>
 
 <div class="box-project-report">
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告詳細</h1>
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
     <div class="btn btn-danger font-weight-bold mb-2" style="pointer-events: none;">

@@ -23,7 +23,7 @@ $(document).on('turbolinks:load', function(){
 
       // nameTextが定義されていない場合、nameTextを定義
       if (typeof nameText == 'undefined') {
-        nameText = $('input:text[name="project[project_name]"]').val();
+        nameText = $('input:text[name="project[name]"]').val();
       }
 
       // descriptionTextが定義されていない場合、descriptionTextを定義
@@ -47,7 +47,7 @@ $(document).on('turbolinks:load', function(){
 
       $.ajax({
         url: '/input_forms/frequency_input_form_switching',
-        data: { project_name: nameText,
+        data: { name: nameText,
                 project_description: descriptionText,
                 form_type: form_type,
                 user_id: user_id,

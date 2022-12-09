@@ -9,7 +9,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
     @projects =
       if params[:search].present?
-        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
+        @user.projects.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
       else
         @user.projects.all.page(params[:page]).per(10)
       end
@@ -63,9 +63,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
   def update
     if @project.update(project_params)
       @project.report_deadlines.last.update(day: @project.next_report_date)
-      flash[:success] = "#{@project.project_name}の内容を更新しました。"
+      flash[:success] = "#{@project.name}の内容を更新しました。"
     else
-      flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
+      flash[:danger] = "#{@project.name}の更新は失敗しました。"
     end
     redirect_to user_project_path(@user, @project)
   end
@@ -73,9 +73,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト削除アクション
   def destroy
     if @project.destroy
-      flash[:success] = "#{@project.project_name}を削除しました。"
+      flash[:success] = "#{@project.name}を削除しました。"
     else
-      flash[:success] = "#{@project.project_name}の削除に失敗しました。"
+      flash[:success] = "#{@project.name}の削除に失敗しました。"
     end
     redirect_to user_projects_path(@user.id)
   end
@@ -90,7 +90,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     unless @project.users.exists?(id: @user)
       @project.users << @user
       @project.join_new_member(@user.id)
-      flash[:success] = "#{@project.project_name}に参加しました。"
+      flash[:success] = "#{@project.name}に参加しました。"
     else
       flash[:success] = '参加済みプロジェクトです。'
     end
@@ -102,10 +102,10 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     case params[:form_type]
     when 'day', 'week'
-      @project = @user.projects.new(project_name: params[:project_name], description: params[:project_description])
+      @project = @user.projects.new(name: params[:name], description: params[:project_description])
     when 'edit_day', 'edit_week'
       @project = @user.projects.find(params[:project_id])
-      @project.project_name = params[:project_name]
+      @project.name = params[:name]
       if @project.report_frequency == 7
         next_report_date_wday = @project.next_report_date.wday
         @next_report_date_week = ApplicationHelper.weeks[next_report_date_wday]
@@ -133,6 +133,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :leader_id, :report_frequency, :next_report_date, :description)
+    params.require(:project).permit(:name, :leader_id, :report_frequency, :next_report_date, :description)
   end
 end

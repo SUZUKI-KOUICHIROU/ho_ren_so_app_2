@@ -25,7 +25,7 @@ class Users::InvitationsController < BaseController
         @user.save!(validate: false) # 招待ユーザーの初期ネームを空欄にするためにバリデーションを無視
       end
         @join = Join.create(project_id: @project.id, user_id: @user.id)
-        @user.send_invite_email(@join.token, @project.project_name, mypassword)
+        @user.send_invite_email(@join.token, @project.name, mypassword)
         flash[:success] = '招待メールを送信しました！'
     end
     redirect_to user_project_path(current_user, @project)

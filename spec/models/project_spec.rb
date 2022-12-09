@@ -8,13 +8,13 @@ RSpec.describe Project, type: :model do
       expect(project).to be_valid
     end
 
-    context 'project_nameカラム' do
-      it 'project_nameがなければ登録できない' do
-        expect(build(:project, project_name: '')).not_to be_valid
+    context 'nameカラム' do
+      it 'nameがなければ登録できない' do
+        expect(build(:project, name: '')).not_to be_valid
       end
 
       it '20文字以下であること' do
-        expect(build(:project, project_name: 'a' * 21)).not_to be_valid
+        expect(build(:project, name: 'a' * 21)).not_to be_valid
       end
     end
 

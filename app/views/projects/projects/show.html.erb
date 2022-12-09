@@ -1,4 +1,4 @@
-<% provide(:title, @project.project_name) %>
+<% provide(:title, @project.name) %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
@@ -6,7 +6,7 @@
 <div class="card-box">
   <h1 class="text-center">プロジェクト詳細</h1>
   <div class="card">
-    <div class="card-header card-header-radius"><%= @project.project_name %></div>
+    <div class="card-header card-header-radius"><%= @project.name %></div>
     <div class="card-body">
       <%# リーダー交代リクエストが来ている場合にメッセージを表示 %>
       <% if @delegate.present? %>

@@ -2,8 +2,8 @@
   <%= f.hidden_field :leader_id, :value => current_user.id %>
   <div class="project form-body">
     <div class="project-detail">
-      <%= f.label :project_name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-      <%= f.text_field :project_name, class: "form-control project-name-text-box form-color", placeholder: "最大20文字", maxlength: 20, required: true %>
+      <%= f.label :name, "プロジェクト名", class: "project-name-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
+      <%= f.text_field :name, class: "form-control project-name-text-box form-color", placeholder: "最大20文字", maxlength: 20, required: true %>
     </div>
 
     <div class="project-detail">

@@ -18,14 +18,14 @@ User.create!( user_name: 'Admin User',
 end
 
 ########## プロジェクトを2件作成 ##########
-Project.create!( project_name: 'プロジェクトA',
+Project.create!( name: 'プロジェクトA',
                  leader_id: 1,
                  report_frequency: 1,
                  next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
                  reported_flag: false )
 
-Project.create!( project_name: 'プロジェクトB',
+Project.create!( name: 'プロジェクトB',
                  leader_id: 1,
                  report_frequency: 7,
                  next_report_date: Date.current,
