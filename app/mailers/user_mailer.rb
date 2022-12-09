@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
   def invitation(user, token, name, password)
     @user = user
-    @inviter = User.find(@user.invited_by).user_name
+    @inviter = User.find(@user.invited_by).name
     @token = token
     @project_name = name
     @password = password

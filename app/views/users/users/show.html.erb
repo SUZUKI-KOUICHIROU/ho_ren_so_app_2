@@ -1,4 +1,4 @@
-<% provide(:title, (@user.user_name)) %>
+<% provide(:title, (@user.name)) %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
@@ -10,7 +10,7 @@
     <h1 class="text-center">ユーザー情報</h1>
     <div class="card">
       <div class="card-header card-header-radius">
-        <%= current_user.user_name %>
+        <%= current_user.name %>
       </div>
       <div class="card-body">
         <div>
@@ -19,7 +19,7 @@
           </span>
         </div>
         <div class="card-text ml-0">
-          <%= @user.user_name %>
+          <%= @user.name %>
         </div>
         <div>
           <span class="report-item-title font-weight-bold">

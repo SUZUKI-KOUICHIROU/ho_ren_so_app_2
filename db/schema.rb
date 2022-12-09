@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_09_140504) do
+ActiveRecord::Schema.define(version: 2022_12_09_151104) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 2022_12_09_140504) do
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
     t.integer "invited_by"
-    t.string "user_name", default: "", null: false
+    t.string "name", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false

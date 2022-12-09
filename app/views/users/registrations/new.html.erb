@@ -8,8 +8,8 @@
       <h1 class="text-center my-3">ユーザー新規登録</h1>
       <div class="project form-body">
         <div class="project-detail">
-          <%= f.label :user_name, "氏名", class:'project-description-label'%><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.text_field :user_name, autofocus: true, autocomplete: "name", class: "form-control form-color", id: 'users_name' %>
+          <%= f.label :name, "氏名", class:'project-description-label'%><span class="pl-2 font-weight-bold text-danger">必須</span>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control form-color", id: 'users_name' %>
           <div id="name-error-message" class="text-danger pt-2"></div>
         </div>
         <div class="project-detail">
