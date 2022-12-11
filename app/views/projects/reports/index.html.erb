@@ -22,15 +22,15 @@
         <!-- あなたの報告一覧 -->
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
+            <div class="d-flex justify-content-end mb-3">
+              <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
+                <%= form.hidden_field :search_type, :value => "you-report" %>
+                <%= form.label :search, "報告検索：", class: "mb-0" %>
+                <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                <%= form.submit "検索", class: "btn btn-outline-orange" %>
+              <% end %>
+            </div>
             <% if @you_reports.present? %>
-              <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
-                  <%= form.hidden_field :search_type, :value => "you-report" %>
-                  <%= form.label :search, "報告検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
-                <% end %>
-              </div>
               <div class="table-header">
                 <div class="subject-name col-md-4">
                   <%=@project.format.title%>
@@ -67,7 +67,9 @@
                 <% end %>
               </div>
             <% else @you_reports.blank?%>
-              <P>あなたの報告履歴がありません。</P>
+              <div class="d-flex justify-content-end">
+                <p class="report-none">あなたの報告履歴がありません。</p>
+              </div>
             <% end %>
             <div class="d-flex">
               <% if @you_reports.present?%>
@@ -81,15 +83,15 @@
         <!-- 他メンバーの報告一覧 -->
         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
           <div class="box-report-index">
+            <div class="d-flex justify-content-end mb-3">
+              <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
+                <%= form.hidden_field :search_type, :value => "report" %>
+                <%= form.label :search, "件名検索：", class: "mb-0" %>
+                <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                <%= form.submit "検索", class: "btn btn-outline-orange" %>
+              <% end %>
+            </div>
             <% if @reports.present? %>
-              <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
-                  <%= form.hidden_field :search_type, :value => "report" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
-                <% end %>
-              </div>
               <div class="table-header">
                 <div class="subject-name col-md-4">
                   <%=@project.format.title%>
@@ -126,7 +128,9 @@
                 <% end %>
               </div>
             <% else @reports.blank?%>
-              <P>他メンバーの報告履歴がありません。</P>
+              <div class="d-flex justify-content-end">
+                <P class="report-none">他メンバーの報告履歴がありません</P>
+              </div>
             <% end %>
             <div class="d-flex">
               <% if @reports.present?%>
