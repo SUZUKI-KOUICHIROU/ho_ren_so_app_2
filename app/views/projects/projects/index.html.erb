@@ -22,9 +22,6 @@
     <div class="project-news">
       お知らせ
     </div>
-    <div class="project-action">
-      アクション
-    </div>
   </div>
 
   <div class="table-body">
@@ -36,7 +33,10 @@
 
           <%# === プロジェクト名 === %>
           <div class="project-name">
-            <%= link_to "#{project.name}", user_project_path(@user, project.id), class: "project-detail-link" %>
+            <%= link_to "#{project.name}", user_project_path(@user, project.id), class: "project-detail-link" %></br>
+            <% if current_user.id == project.leader_id %>
+              <%= link_to "編集", edit_user_project_path(@user, project), class: "btn btn-outline-orange" %>
+            <% end %>
           </div>
 
           <%# === 次回報告日 === %>
@@ -73,11 +73,6 @@
                 <p>無し</p>
             <% end %>
           </div>
-          <%# === アクション === %>
-            <div class="project-action">
-              <%= link_to "編集", edit_user_project_path(@user, project), class: "btn btn-outline-orange" %>
-              <%= link_to "削除", user_project_path(@user, project), method: :delete, data: { confirm: "このプロジェクトを削除します。よろしいですか？" }, class: "btn btn-danger" %>
-            </div>
         </div>
       <% end %>
     <% end %>

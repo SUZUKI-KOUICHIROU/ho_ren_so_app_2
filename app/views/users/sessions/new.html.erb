@@ -1,49 +1,49 @@
 <% provide(:title, "Top") %>
 
-<%= render "users/shared/error_messages", resource: resource %>
-<div class="user-format col-lg-6 mx-auto">
-  <%= form_for(resource, as: resource_name, url: user_session_path(resource), html: { id:'login-form'}) do |f| %>
-    <div class="form-content">
-      <h1 class="text-center my-3 mt-5">ログイン</h1>
-      <div class="project form-body">
+<div class="not_padding">
+  <%= render "users/shared/error_messages", resource: resource %>
+  <div class="user-format col-lg-6 mx-auto">
+    <%= form_for(resource, as: resource_name, url: user_session_path(resource), html: { id:'login-form'}) do |f| %>
+      <div class="form-content">
+        <h1 class="text-center my-3 mt-5">ログイン</h1>
+        <div class="project form-body">
 
-        <div class="project-detail">
-          <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-color", id: "email-form" %>
-          <div id="email-error-message" class="text-danger pt-2"></div>
-        </div>
+          <div class="project-detail">
+            <%= f.label :email, "メールアドレス", class: "email-label, project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-color", id: "email-form" %>
+            <div id="email-error-message" class="text-danger pt-2"></div>
+          </div>
 
-        
-        <div class="project-detail">
-          <%= f.label :password, "パスワード", class: "password-label project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span><br />
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-color", id: "password-form" %>
-          <div id="password-error-message" class="text-danger pt-2"></div>
-        </div>
 
-        <div class="a-row project-detail">
-          <% if devise_mapping.rememberable? %>
-            <span>
-              <%= f.check_box :remember_me %>
-              <span class='mb-0'>ログインしたままにする</span>
-            </span>
-          <% end %>
-          <div class="text-right">
-            <%= link_to "パスワードを忘れた場合", new_user_password_path, data: {"turbolinks" => false} %>
+          <div class="project-detail">
+            <%= f.label :password, "パスワード", class: "password-label project-description-label" %><span class="pl-2 font-weight-bold text-danger">必須</span><br />
+            <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-color", id: "password-form" %>
+            <div id="password-error-message" class="text-danger pt-2"></div>
+          </div>
+
+          <div class="a-row project-detail">
+            <% if devise_mapping.rememberable? %>
+              <span>
+                <%= f.check_box :remember_me %>
+                <span class='mb-0'>ログインしたままにする</span>
+              </span>
+            <% end %>
+            <div class="text-right">
+              <%= link_to "パスワードを忘れた場合", new_user_password_path, data: {"turbolinks" => false} %>
+            </div>
+          </div>
+
+
+          <div class="text-center">
+            <%= f.submit "ログイン", class: "btn btn-block btn-outline-orange" %>
           </div>
         </div>
-
-
-        <div class="text-center">
-          <%= f.submit "ログイン", class: "btn btn-block btn-outline-orange" %>
-        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <div class="text-center m-3">
-    <h5><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h5>
-    <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block", data: {"turbolinks" => false} %>
+    <div class="text-center m-3">
+      <h5><span>-----</span> Horenso_Appの新しいお客様ですか？ <span>-----</span></h5>
+      <%= link_to "Horenso_Appアカウントを作成",new_user_registration_path, class: "btn btn-outline-orange btn-block", data: {"turbolinks" => false} %>
+    </div>
   </div>
 </div>
-
-
