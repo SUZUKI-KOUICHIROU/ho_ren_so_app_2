@@ -1,11 +1,11 @@
-<% provide(:title, @project.project_name) %>
+<% provide(:title, @project.name) %>
 
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="projects-format" id="project-new-edit">
-  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">プロジェクト編集</h1>
   <div class="form-content ">
     <% if @report_frequency_type == "week" %>

@@ -39,7 +39,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
-    @report.sender_name = @user.user_name
+    @report.sender_name = @user.name
     if @report.save
       flash[:success] = '報告を登録しました。'
     else

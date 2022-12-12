@@ -175,7 +175,7 @@ $(function() {
 // ユーザー編集画面
 $(function() {
   $('#user-edit-form').submit(function() {
-    const editNameValue = $('#edit_user_name').val();
+    const editNameValue = $('#edit_name').val();
     const editEmailValue = $('#edit_user_email').val();
     const editPasswordValue = $('#edit_user_password').val();
     const editPasswordConfirmValue = $('#edit_user_password_confirm').val();

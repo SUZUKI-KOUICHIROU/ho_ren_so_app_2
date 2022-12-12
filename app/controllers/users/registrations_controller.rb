@@ -111,9 +111,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.update_without_current_password(params)
   end
 
-  # ユーザー新規登録の際にパラメーターを追加(user_nameを追加)
+  # ユーザー新規登録の際にパラメーターを追加(nameを追加)
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name, :has_editted])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name, :has_editted])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :has_editted])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :has_editted])
   end
 end

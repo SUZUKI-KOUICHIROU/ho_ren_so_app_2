@@ -10,7 +10,7 @@ namespace :send_remind do
 				members = project.report_statuses.where(has_reminded: false, has_submitted: false, deadline: targetDate).pluck(:user_id)
 				users = project.users.where(id: members)
 				users.each do |user|
-					UserMailer.send_remind(project.project_name, user.email).deliver
+					UserMailer.send_remind(project.name, user.email).deliver
 				end
 			end
 		end

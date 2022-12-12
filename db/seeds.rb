@@ -1,6 +1,6 @@
 # coding: utf-8
 ########## 管理者を作成 ##########
-User.create!( user_name: 'Admin User',
+User.create!( name: 'Admin User',
               email: 'admin@email.com',
               password: 'password',
               password_confirmation: 'password',
@@ -8,24 +8,24 @@ User.create!( user_name: 'Admin User',
 
 ########## 一般ユーザーを5人作成 ##########
 (0..4).each do |n|
-  user_name = Faker::Name.name
+  name = Faker::Name.name
   email = "sample#{n + 1}@email.com"
   password = 'password'
-  User.create!( user_name: user_name,
+  User.create!( name: name,
                 email: email,
                 password: password,
                 password_confirmation: password )
 end
 
 ########## プロジェクトを2件作成 ##########
-Project.create!( project_name: 'プロジェクトA',
+Project.create!( name: 'プロジェクトA',
                  leader_id: 1,
                  report_frequency: 1,
                  next_report_date: Date.current,
                  description: 'テスト用に作成したプロジェクトAです。',
                  reported_flag: false )
 
-Project.create!( project_name: 'プロジェクトB',
+Project.create!( name: 'プロジェクトB',
                  leader_id: 1,
                  report_frequency: 7,
                  next_report_date: Date.current,

@@ -33,7 +33,7 @@
 
           <%# === プロジェクト名 === %>
           <div class="project-name">
-            <%= link_to "#{project.project_name}", user_project_path(@user, project.id), class: "project-detail-link" %></br>
+            <%= link_to "#{project.name}", user_project_path(@user, project.id), class: "project-detail-link" %></br>
             <% if current_user.id == project.leader_id %>
               <%= link_to "編集", edit_user_project_path(@user, project), class: "btn btn-outline-orange" %>
             <% end %>

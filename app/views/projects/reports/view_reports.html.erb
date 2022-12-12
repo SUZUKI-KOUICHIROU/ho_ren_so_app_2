@@ -4,7 +4,7 @@
 <% end %>
 
 <div class="card-box">
-  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">報告状況確認 ：次回報告日は<%= l(@project.next_report_date, format: :long) %></h1>
   <div class="container">
     <div class="row">
@@ -35,12 +35,12 @@
                       <div class="table-line" , data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                         <% unless report_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= report_user.user_name %>
+                            <%= report_user.name %>
                           </div>
                         <% end %>
                         <% unless not_report_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.user_name %>
+                            <%= not_report_user.name %>
                           </div>
                         <% end %>
                       </div>
@@ -51,16 +51,16 @@
                       <div class="table-line" , data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                         <% unless report_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= report_user.user_name %>
+                            <%= report_user.name %>
                           </div>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.user_name %>
+                            <%= not_report_user.name %>
                           </div>
                         <% else %>
                           <div class="reported-date col-md-6" style="background-color: transparent;">
                           </div>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.user_name %>
+                            <%= not_report_user.name %>
                           </div>
                         <% end %>
                       </div>
@@ -101,7 +101,7 @@
                     <% line_num += 1%>
                     <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                       <div class="subject-name col-md-6">
-                        <%= User.find(report.user_id).user_name %>
+                        <%= User.find(report.user_id).name %>
                       </div>
                       <div class="reported-date col-md-6">
                         <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>

@@ -2,16 +2,16 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<% provide(:title, "#{@project.project_name}_相談") %>
+<% provide(:title, "#{@project.name}_相談") %>
 <%= form_with(model: @counseling, url: user_project_counselings_path(current_user,@project), local: true, method: :post) do |f| %>
-  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">相談作成</h1>
   <div class="col-6 container offset-3 box-counseling-format-new pb-2 my-5">
     <%= f.label :sent_to, "送信対象", class:"font-weight-bold counseling-title-box" %>
     <div class="ml-3 mb-3 form col-11">
       <% if @members.present? %>
         <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
-        <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
+        <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", required: true %>
       <% else %>
         <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
       <% end %>

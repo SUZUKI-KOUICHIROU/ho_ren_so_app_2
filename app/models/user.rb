@@ -7,8 +7,8 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
 
   # 招待メールを送信する
-  def send_invite_email(token, project_name, password)
-    UserMailer.invitation(self, token, project_name, password).deliver_now
+  def send_invite_email(token, name, password)
+    UserMailer.invitation(self, token, name, password).deliver_now
   end
 
   # 現在のパスワードなしでユーザー情報を変更
@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
 
-  validates :user_name, presence: true, length: { maximum: 20 }
+  validates :name, presence: true, length: { maximum: 20 }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email, presence: true, length: { maximum: 100 },

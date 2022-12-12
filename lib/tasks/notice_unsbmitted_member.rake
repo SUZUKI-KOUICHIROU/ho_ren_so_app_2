@@ -10,8 +10,8 @@ namespace :notice_unsbmitted_member do
 				members = project.report_statuses.where(has_reminded: false, has_submitted: false, deadline: targetDate).pluck(:user_id)
 				if members.count > 0
 					leaderEmail = project.users.find(project.leader_id).email
-					users = project.users.where(id: members).pluck(:user_name)
-					UserMailer.notice_not_submitted_members(project.project_name,users,leaderEmail).deliver
+					users = project.users.where(id: members).pluck(:name)
+					UserMailer.notice_not_submitted_members(project.name,users,leaderEmail).deliver
 				end
 			end
 		end
