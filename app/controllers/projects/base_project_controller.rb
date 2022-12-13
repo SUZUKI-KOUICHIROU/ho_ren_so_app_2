@@ -30,7 +30,7 @@ class Projects::BaseProjectController < BaseController
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   # # プロジェクトリーダーを許可
   def project_leader_user
-    return if current_user.id == @project.project_leader_id
+    return if current_user.id == @project.leader_id
     flash[:danger] = 'リーダーではない為、権限がありません。'
     redirect_to user_project_path(@user, @project)
   end

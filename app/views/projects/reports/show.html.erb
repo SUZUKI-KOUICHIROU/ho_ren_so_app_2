@@ -16,7 +16,7 @@ function changeForm() {
 <% end %>
 
 <div class="box-project-report">
-  <p>プロジェクト：<%= @project.project_name %></p>
+  <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告詳細</h1>
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
     <div class="btn btn-danger font-weight-bold mb-2" style="pointer-events: none;">
@@ -29,7 +29,7 @@ function changeForm() {
   <div>
     <div class="card">
       <div class="card-header card-header-radius">
-        <%= @user.user_name %>さんの報告
+        <%= @user.name %>さんの報告
       </div>
       <div class="card-body">
         <div class="container mb-4">
@@ -109,7 +109,7 @@ function changeForm() {
           <% end %>
         </div>
         <% end %>
-        <% if @project.project_leader_id == @user.id && @report.sender_id != @project.project_leader_id %>
+        <% if @project.leader_id == @user.id && @report.sender_id != @project.leader_id %>
           <div class="text-center"><label onclick="changeForm()" class="btn btn-danger mb-3">手直ししてもらう</label></div>
         <% end %>
         <div id="formblock" style="display: none">

@@ -5,7 +5,7 @@
 <% end %>
 <%= form_with url: update_project_report_format_path(@user, @project), local: true, method: :patch  do |f| %>
   <div class="box-reprot-format">
-    <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+    <p class="project-name-text">プロジェクト：<%= @project.name %></p>
     <h1 class="text-center">フォーマット編集</h1>
     <div class="box-reprot-format-edit pb-3">
       <div class="edit-report-format-header">

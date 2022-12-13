@@ -13,7 +13,7 @@
       <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
       <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
       <% if project_leader? %>
-        <% if project.project_next_report_date == Date.today %>
+        <% if project.next_report_date == Date.today %>
           <%= sidebar_link_item('本日の報告状況', user_project_reports_view_reports_path(user, project)) %>
         <% else %>
           <%= sidebar_link_item('今週の報告状況', user_project_reports_view_reports_path(user, project)) %>
@@ -41,7 +41,7 @@
     <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
     <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
     <% if project_leader? %>
-      <% if project.project_next_report_date == Date.today %>
+      <% if project.next_report_date == Date.today %>
         <%= sidebar_link_item('本日の報告状況', user_project_reports_view_reports_path(user, project)) %>
       <% else %>
         <%= sidebar_link_item('今週の報告状況', user_project_reports_view_reports_path(user, project)) %>

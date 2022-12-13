@@ -187,7 +187,7 @@
 
 ////////// 一覧の列のデザイン //////////
 .project-name, .subject-name, .member-name, .project-next-report-date,
-.reported-date, .report-confirmer, .report-person, .report-action, .project-action,
+.reported-date, .report-confirmer, .report-person, .report-action, 
 .message-date, .message-confirmer, .message-person, .message-action,
 .counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
   width: 25%;
@@ -196,7 +196,7 @@
 
 ////////// お知らせの列のデザイン //////////
 .project-news {
-  width: 25%;
+  width: 50%;
   margin: 0rem 0.5rem 0.5rem 0rem;
   p:last-child {
     margin-bottom: 0rem;

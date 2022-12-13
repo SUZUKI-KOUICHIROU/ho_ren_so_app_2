@@ -16,16 +16,16 @@ class Users::InvitationsController < BaseController
     else
       if User.exists?(email: params[:invitee][:email])  
         @user = User.find_by(email: params[:invitee][:email])
-        @user.update(invited_by: params[:invitee][:project_leader_id])
+        @user.update(invited_by: params[:invitee][:leader_id])
       else
         require 'securerandom'
         mypassword = SecureRandom.alphanumeric.downcase
         # mypassword = Devise.friendly_token.first(10) # 半角小大英数記号生成
-        @user = User.new(user_name: "", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id, has_editted: false)
+        @user = User.new(name: "", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id, has_editted: false)
         @user.save!(validate: false) # 招待ユーザーの初期ネームを空欄にするためにバリデーションを無視
       end
         @join = Join.create(project_id: @project.id, user_id: @user.id)
-        @user.send_invite_email(@join.token, @project.project_name, mypassword)
+        @user.send_invite_email(@join.token, @project.name, mypassword)
         flash[:success] = '招待メールを送信しました！'
     end
     redirect_to user_project_path(current_user, @project)

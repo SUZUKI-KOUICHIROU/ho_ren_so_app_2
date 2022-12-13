@@ -2,8 +2,8 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<% provide(:title, "#{@project.project_name}_連絡") %>
-<p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+<% provide(:title, "#{@project.name}_連絡") %>
+<p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">連絡作成</h1>
 <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
   <div class="col-6 container offset-3 box-message-format-new pb-2 my-5">
@@ -11,7 +11,7 @@
     <div class="ml-3 mb-3 form col-11">
       <% if @members.present? %>
         <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
-        <%= f.collection_check_boxes :send_to, @members, :id, :user_name, include_hidden: false, class: "form-control", required: true %>
+        <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", required: true %>
       <% else %>
         <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
       <% end %>

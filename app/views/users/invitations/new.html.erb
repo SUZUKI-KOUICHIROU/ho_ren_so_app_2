@@ -6,7 +6,7 @@
 
 <div class="projects-format col-md-6 offset-md-3">
   <div class="form-content">
-    <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+    <p class="project-name-text">プロジェクト：<%= @project.name %></p>
       <h1 class="text-center">メンバーを招待する</h1>
       <%= form_for(:invitee, url: create_invitation_path(@user, @project)) do |f| %>
         <div class="project form-body">
@@ -14,7 +14,7 @@
               <%= f.label :email, "招待メールアドレス", class: "email-label" %><span class="pl-2 font-weight-bold text-danger">必須</span>
               <div>
                 <%= f.email_field :email, class: 'form-control', required: true %>
-                <%= f.hidden_field :project_leader_id, :value => @user.id %>
+                <%= f.hidden_field :leader_id, :value => @user.id %>
                 <%= f.hidden_field :project_id, :value => @project.id %>
               </div>
             </div>

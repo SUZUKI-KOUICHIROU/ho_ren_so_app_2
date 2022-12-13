@@ -8,11 +8,11 @@
   <!-- div class="box-project-select">
     <%#= form_with do |form| %>
       <%#= form.label :project_id, "プロジェクト選択：" %>
-      <%#= form.collection_select(:project_id, @projects, :id, :project_name, {selected: @project.id},
+      <%#= form.collection_select(:project_id, @projects, :id, :name, {selected: @project.id},
       {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "counseling"}}) %>
     <%# end %>
   </div -->
-  <p class="project-name-text">プロジェクト：<%= @project.project_name %></p>
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">相談一覧</h1>
   <div class="card">
     <div class="card-header">

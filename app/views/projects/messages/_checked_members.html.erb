@@ -1,4 +1,4 @@
 <% @checked_members.each do |checker| %>
-  <%= "#{checker.user_name}さん" %>
+  <%= "#{checker.name}さん" %>
 <% end %>
 <%= buf = @checked_members.count == 0 ? ' ' : 'が確認しました' %>

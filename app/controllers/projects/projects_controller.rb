@@ -2,14 +2,14 @@ class Projects::ProjectsController < Projects::BaseProjectController
   before_action :authenticate_user!, only: %i[index new create]
   before_action :project_authorization, only: %i[show edit update destroy delegate_leader accept_request disown_request]
   before_action :project_leader_user, only: %i[edit update destroy]
-  
+
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
     @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
     @projects =
       if params[:search].present?
-        @user.projects.where('project_name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
+        @user.projects.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
       else
         @user.projects.all.page(params[:page]).per(10)
       end
@@ -20,8 +20,8 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = current_user
     if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
-      @project.update_deadline(@project.project_next_report_date)
-      @project.report_deadlines.create!(day: @project.project_next_report_date)
+      @project.update_deadline(@project.next_report_date)
+      @project.report_deadlines.create!(day: @project.next_report_date)
       @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
       flash[:success] = 'プロジェクトを新規登録しました。'
       redirect_to user_project_path(@user, @project)
@@ -41,10 +41,10 @@ class Projects::ProjectsController < Projects::BaseProjectController
 
   # プロジェクト編集ページ表示アクション
   def edit
-    if @project.project_report_frequency == 7
+    if @project.report_frequency == 7
       @report_frequency_type = 'week'
-      project_next_report_date_wday = @project.project_next_report_date.wday
-      @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+      next_report_date_wday = @project.next_report_date.wday
+      @next_report_date_week = ApplicationHelper.weeks[next_report_date_wday]
     else
       @report_frequency_type = 'day'
     end
@@ -55,17 +55,17 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
     @counselings = @project.counselings.my_counselings(current_user)
     @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all.where.not(id: @project.project_leader_id)
+    @member = @project.users.all.where.not(id: @project.leader_id)
     @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
   # プロジェクト内容編集アクション
   def update
     if @project.update(project_params)
-      @project.report_deadlines.last.update(day: @project.project_next_report_date)
-      flash[:success] = "#{@project.project_name}の内容を更新しました。"
+      @project.report_deadlines.last.update(day: @project.next_report_date)
+      flash[:success] = "#{@project.name}の内容を更新しました。"
     else
-      flash[:danger] = "#{@project.project_name}の更新は失敗しました。"
+      flash[:danger] = "#{@project.name}の更新は失敗しました。"
     end
     redirect_to user_project_path(@user, @project)
   end
@@ -73,9 +73,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト削除アクション
   def destroy
     if @project.destroy
-      flash[:success] = "#{@project.project_name}を削除しました。"
+      flash[:success] = "#{@project.name}を削除しました。"
     else
-      flash[:success] = "#{@project.project_name}の削除に失敗しました。"
+      flash[:success] = "#{@project.name}の削除に失敗しました。"
     end
     redirect_to user_projects_path(@user.id)
   end
@@ -90,7 +90,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     unless @project.users.exists?(id: @user)
       @project.users << @user
       @project.join_new_member(@user.id)
-      flash[:success] = "#{@project.project_name}に参加しました。"
+      flash[:success] = "#{@project.name}に参加しました。"
     else
       flash[:success] = '参加済みプロジェクトです。'
     end
@@ -102,13 +102,13 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     case params[:form_type]
     when 'day', 'week'
-      @project = @user.projects.new(project_name: params[:project_name], description: params[:project_description])
+      @project = @user.projects.new(name: params[:name], description: params[:project_description])
     when 'edit_day', 'edit_week'
       @project = @user.projects.find(params[:project_id])
-      @project.project_name = params[:project_name]
-      if @project.project_report_frequency == 7
-        project_next_report_date_wday = @project.project_next_report_date.wday
-        @project_next_report_date_week = ApplicationHelper.weeks[project_next_report_date_wday]
+      @project.name = params[:name]
+      if @project.report_frequency == 7
+        next_report_date_wday = @project.next_report_date.wday
+        @next_report_date_week = ApplicationHelper.weeks[next_report_date_wday]
       end
     end
   end
@@ -116,7 +116,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # リーダー権限委譲リクエスト受認クリック時アクション
   def accept_request
     @delegate = @project.delegations.find(params[:delegate_id])
-    @project.update(project_leader_id: params[:user_id])
+    @project.update(leader_id: params[:user_id])
     @delegate.update(is_valid: false)
     flash[:success] = "あなたがリーダーになりました。"
     redirect_to user_project_path(@user, @project)
@@ -133,6 +133,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:project_name, :project_leader_id, :project_report_frequency, :project_next_report_date, :description)
+    params.require(:project).permit(:name, :leader_id, :report_frequency, :next_report_date, :description)
   end
 end

@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2022_12_05_182803) do
+=======
+ActiveRecord::Schema.define(version: 2022_12_09_151104) do
+>>>>>>> origin
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -127,11 +131,11 @@ ActiveRecord::Schema.define(version: 2022_12_05_182803) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "project_name", default: "", null: false
-    t.integer "project_leader_id", null: false
-    t.integer "project_report_frequency", default: 1, null: false
-    t.date "project_next_report_date", null: false
-    t.boolean "project_reported_flag", default: false, null: false
+    t.string "name", default: "", null: false
+    t.integer "leader_id", null: false
+    t.integer "report_frequency", default: 1, null: false
+    t.date "next_report_date", null: false
+    t.boolean "reported_flag", default: false, null: false
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -246,7 +250,11 @@ ActiveRecord::Schema.define(version: 2022_12_05_182803) do
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
     t.integer "invited_by"
+<<<<<<< HEAD
     t.string "user_name", default: "", null: false
+=======
+    t.string "name", default: "", null: false
+>>>>>>> origin
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
