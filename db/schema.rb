@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_01_034826) do
+ActiveRecord::Schema.define(version: 2022_12_05_182803) do
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_034826) do
     t.string "value"
     t.text "array_value"
     t.integer "report_id"
+    t.string "question_name"
     t.index ["report_id"], name: "index_answers_on_report_id"
   end
 
@@ -244,9 +245,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_034826) do
 
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
-    t.string "invite_digest"
     t.integer "invited_by"
-    t.datetime "invite_sent_at"
     t.string "user_name", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false

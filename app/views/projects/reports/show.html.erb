@@ -57,37 +57,37 @@ function changeForm() {
               <% if !TextField.find_by(question_id: answer.question_id).nil?%>
                 <%= TextField.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% when 'text_area' %>
               <% if !TextArea.find_by(question_id: answer.question_id).nil?%>
                 <%= TextArea.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% when 'radio_button' %>
               <% if !RadioButton.find_by(question_id: answer.question_id).nil?%>
                 <%= RadioButton.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% when 'date_field' %>
               <% if !DateField.find_by(question_id: answer.question_id).nil?%>
                 <%= DateField.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% when 'check_box' %>
               <% if !CheckBox.find_by(question_id: answer.question_id).nil?%>
                 <%= CheckBox.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% when 'select' %>
               <% if !Select.find_by(question_id: answer.question_id).nil?%>
                 <%= Select.find_by(question_id: answer.question_id).label_name %>
               <% else %>
-                この質問は削除されました
+                <%= answer.question_name %>
               <% end %>
             <% end %>
             </span>
