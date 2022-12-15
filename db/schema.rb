@@ -246,11 +246,7 @@ ActiveRecord::Schema.define(version: 2022_12_09_151104) do
   create_table "users", force: :cascade do |t|
     t.boolean "has_editted", default: true
     t.integer "invited_by"
-<<<<<<< HEAD
-    t.string "user_name", default: "", null: false
-=======
     t.string "name", default: "", null: false
->>>>>>> origin
     t.boolean "admin", default: false, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
