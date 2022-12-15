@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2022_12_05_182803) do
-=======
 ActiveRecord::Schema.define(version: 2022_12_09_151104) do
->>>>>>> origin
 
   create_table "answers", force: :cascade do |t|
     t.string "question_type"

@@ -39,14 +39,10 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
-<<<<<<< HEAD
-    @report.sender_name = @user.user_name
+    @report.sender_name = @user.name
     @report.answers.each do |answer|
       answer.question_name = answer.question_type.camelize.constantize.find_by(question_id: answer.question_id).label_name
     end
-=======
-    @report.sender_name = @user.name
->>>>>>> origin
     if @report.save
       flash[:success] = '報告を登録しました。'
     else
