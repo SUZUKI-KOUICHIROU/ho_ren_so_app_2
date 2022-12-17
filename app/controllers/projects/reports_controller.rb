@@ -40,12 +40,14 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
     @report.sender_name = @user.name
+    @report.answers.each do |answer|
+      answer.question_name = answer.question_type.camelize.constantize.find_by(question_id: answer.question_id).label_name
+    end
     if @report.save
       flash[:success] = '報告を登録しました。'
     else
       flash[:danger] = '報告の登録に失敗しました。'
     end
-    @report.save
     @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
     flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
@@ -71,19 +73,45 @@ class Projects::ReportsController < Projects::BaseProjectController
       if params[:answer]
         case answer.question_type
         when 'text_field'
-          answer.update(value: params[:answer][cnt_num][:value])
-        when 'text_area'
-          answer.update(value: params[:answer][cnt_num][:value])
-        when 'radio_button'
-          if params[:answer][cnt_num].nil?
-            answer.update(value: "")
+          if TextField.find_by(question_id: answer.question_id).nil?
+            answer.destroy
           else
-            answer.update(value: params[:answer][cnt_num][:value]) 
+            answer.update(value: params[:answer][cnt_num][:value])
+          end
+        when 'text_area'
+          if TextArea.find_by(question_id: answer.question_id).nil?
+            answer.destroy
+          else
+            answer.update(value: params[:answer][cnt_num][:value])
+          end
+        when 'date_field'
+          if DateField.find_by(question_id: answer.question_id).nil?
+            answer.destroy
+          else
+            answer.update(value: params[:answer][cnt_num][:value])
+          end
+        when 'radio_button'
+          if RadioButton.find_by(question_id: answer.question_id).nil?
+            answer.destroy
+          else
+            if params[:answer][cnt_num].nil?
+              answer.update(value: "")
+            else
+              answer.update(value: params[:answer][cnt_num][:value]) 
+            end
           end
         when 'check_box'
-          answer.update(array_value: params[:answer][cnt_num])
+          if CheckBox.find_by(question_id: answer.question_id).nil?
+            answer.destroy
+          else
+            answer.update(array_value: params[:answer][cnt_num])
+          end
         when 'select'
-          answer.update(value: params[:answer][cnt_num][:value])
+          if Select.find_by(question_id: answer.question_id).nil?
+            answer.destroy
+          else
+            answer.update(value: params[:answer][cnt_num][:value])
+          end
         end
       end
       cnt += 1

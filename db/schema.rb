@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2022_12_09_151104) do
     t.string "value"
     t.text "array_value"
     t.integer "report_id"
+    t.string "question_name"
     t.index ["report_id"], name: "index_answers_on_report_id"
   end
 

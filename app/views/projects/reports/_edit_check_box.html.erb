@@ -1,9 +1,25 @@
 <div class="report-form">
-  <% c -= 1 %>
-  <span class="report-item-title mb-2 font-weight-bold"><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
-  <br>
-  <% CheckBox.find_by(question_id: answer.question_id).check_box_option_strings.each do |box| %>
-    <% boolExists = @answers[c][:array_value].include? box.option_string %>
-      <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists, required: Question.find_by(id: answer.question_id).required}, box[:option_string] %><%= box.option_string %>
-  <% end %> 
+  <% if CheckBox.find_by(question_id: answer.question_id).nil? %>
+    <span class="report-item-title mb-2 font-weight-bold"><%= answer.question_name %></span><span class="pl-2 font-weight-bold text-danger">※削除された質問です。この項目は削除されます。</span>
+    <br>
+    <% if answer.array_value.count != 0 %>
+      <% answer.array_value.each do |buf| %>
+        <div class="card-text ml-0 test">
+          <%= buf %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="card-text ml-0">
+        回答なし
+      </div>
+    <% end %>
+  <% else %>
+    <% c -= 1 %>
+    <span class="report-item-title mb-2 font-weight-bold"><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
+    <br>
+    <% CheckBox.find_by(question_id: answer.question_id).check_box_option_strings.each do |box| %>
+      <% boolExists = @answers[c][:array_value].include? box.option_string %>
+        <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists, required: Question.find_by(id: answer.question_id).required}, box[:option_string] %><%= box.option_string %>
+    <% end %> 
+  <% end %>
 </div>
