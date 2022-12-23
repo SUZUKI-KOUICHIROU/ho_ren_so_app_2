@@ -20,3 +20,10 @@ $(document).on('turbolinks:load', function(){
     });
   });
 });
+
+jQuery(document).on("turbolinks:load", function () {
+  // 報告状況履歴ページのモーダル表示時に行クリックで報告詳細に飛ばす処理
+  $(".view-report-log-link").on('click', function() {
+      window.location = $(this).data("href");
+  });
+});
