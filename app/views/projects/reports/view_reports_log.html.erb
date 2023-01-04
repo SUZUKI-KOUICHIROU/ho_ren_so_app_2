@@ -2,7 +2,6 @@
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
-
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">報告状況履歴
@@ -61,88 +60,12 @@
                     <button type="button" class="btn btn-outline-orange rounded-circle p-1 mr-4" data-toggle="modal" data-target="#report-user<%= line_num %>">
                       ▼
                     </button>
-                    <div class="modal fade bd-example-modal-xl" id="report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-xl bg-transparent">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">
-                              <%= l(report_deadline.day, format: :short) %>
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container">
-                              <div class="row">
-                                <table class="table table-hover">
-                                  <thead>
-                                    <tr>
-                                      <th class="border-top-0">報告者名</th>
-                                      <th class="border-top-0">件名</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <% reports.each do |report| %>
-                                      <tr class="view-report-log-link" data-href="/users/<%= report.user_id %>/projects/<%= @project.id %>/reports/<%= report.id %>">
-                                        <td class="border-top-0"><%= User.find(report.user_id).name %></td>
-                                        <td class="border-top-0 report-title text-primary"><%= report.title %></td>
-                                      </tr>
-                                    <% end %>
-                                  </tbody>
-                                 </table>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <%= render partial: 'report_users', locals: { line_num: line_num, report_deadline: report_deadline, reports: reports} %>
                     <%= not_report_users.count %>人
                     <button type="button" class="btn btn-outline-orange rounded-circle p-1" data-toggle="modal" data-target="#not-report-user<%= line_num %>">
                       ▼
                     </button>
-                    <div class="modal fade bd-example-modal-xl" id="not-report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-xl bg-transparent">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">
-                              <%= l(report_deadline.day, format: :short) %>
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container">
-                              <div class="row">
-                                <table class="table table-hover">
-                                  <thead>
-                                    <tr>
-                                      <th class="border-top-0">未報告者名</th>
-                                      <th class="border-top-0">リマインド通知</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <% not_report_users.each do |user| %>
-                                      <tr>
-                                        <td class="border-top-0"><%= user.name %></td>
-                                        <td class="border-top-0"><button type="button" class="btn btn-outline-orange">送信</button></td>
-                                      </tr>
-                                    <% end %>
-                                  </tbody>
-                                 </table>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer ">
-                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <%= render partial: 'not_report_users', locals: { line_num: line_num, report_deadline: report_deadline, not_report_users: not_report_users} %>
                   </div>
                 </div>
               <% end %>
