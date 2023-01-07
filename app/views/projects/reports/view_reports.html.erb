@@ -15,8 +15,8 @@
               <div class="box-report-index">
                 <div class="table-paginate">
                   <div class="row ">
-                    <div class="col-md-6"><%= paginate @report_users, :param_name => 'report_users_page' %></div>
-                    <div class="col-md-6"><%= paginate @not_report_users, :param_name => 'not_report_users_page' %></div>
+                    <div class="col-md-6"><%= paginate @reported_users, :param_name => 'reported_users_page' %></div>
+                    <div class="col-md-6"><%= paginate @unreported_users, :param_name => 'unreported_users_page' %></div>
                   </div>
                 </div>
                 <div class="table-header-view-reports">
@@ -29,38 +29,38 @@
                 </div>
                 <div class="table-body">
                   <% line_num = 0%>     
-                  <% if @report_users.count >= @not_report_users.count %>
-                    <% @report_users.zip(@not_report_users) do |report_user, not_report_user| %>
+                  <% if @reported_users.count >= @unreported_users.count %>
+                    <% @reported_users.zip(@unreported_users) do |reported_user, unreported_user| %>
                       <% line_num += 1%>
                       <div class="table-line" , data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-                        <% unless report_user.nil? %>
+                        <% unless reported_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= report_user.name %>
+                            <%= reported_user.name %>
                           </div>
                         <% end %>
-                        <% unless not_report_user.nil? %>
+                        <% unless unreported_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.name %>
+                            <%= unreported_user.name %>
                           </div>
                         <% end %>
                       </div>
                     <% end %>
-                  <% elsif @report_users.count < @not_report_users.count %>
-                    <% @not_report_users.zip(@report_users) do |not_report_user, report_user| %>
+                  <% elsif @reported_users.count < @unreported_users.count %>
+                    <% @unreported_users.zip(@reported_users) do |unreported_user, reported_user| %>
                       <% line_num += 1%>
                       <div class="table-line" , data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-                        <% unless report_user.nil? %>
+                        <% unless reported_user.nil? %>
                           <div class="reported-date col-md-6">
-                            <%= report_user.name %>
+                            <%= reported_user.name %>
                           </div>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.name %>
+                            <%= unreported_user.name %>
                           </div>
                         <% else %>
                           <div class="reported-date col-md-6" style="background-color: transparent;">
                           </div>
                           <div class="reported-date col-md-6">
-                            <%= not_report_user.name %>
+                            <%= unreported_user.name %>
                           </div>
                         <% end %>
                       </div>
