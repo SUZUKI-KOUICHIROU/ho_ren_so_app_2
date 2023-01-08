@@ -2,7 +2,6 @@
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
-
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">報告状況履歴
@@ -39,79 +38,34 @@
               <% i = 0 %>
               <% @report_days.each do |report_deadline|%>
                 <% line_num += 1%>
-                <% report_users = report_users(@project, report_deadline) %>
-                <% not_report_users = @project.users.all - report_users %>
+                <% reported_users = reported_users(@project, report_deadline) %>
+                <% unreported_users = @project.users.all - reported_users %>
+                <% reports = Report.where(report_day: report_deadline.day).where(remanded: false) %>
                 <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
                   <div class="subject-name col-md-4">
                     <%= l(report_deadline.day, format: :long) %>
                   </div>
                   <div class="reported-date col-md-4">
                     <% if @display == "percent" %>
-                      <%= report_users.count * 100 / @project.users.all.count %>%
+                      <%= reported_users.count * 100 / @project.users.all.count %>%
                     <% elsif @display == "people" %>
-                      <%= report_users.count %>
+                      <%= reported_users.count %>
                       人 /
                       <%= @project.users.all.count %>
                       人
                     <% end %>
                   </div>
                   <div class="report-action col-md-4">
-                    <%= report_users.count %>人
+                    <%= reported_users.count %>人
                     <button type="button" class="btn btn-outline-orange rounded-circle p-1 mr-4" data-toggle="modal" data-target="#report-user<%= line_num %>">
                       ▼
                     </button>
-                    <div class="modal fade bd-example-modal-sm" id="report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">
-                              <%= l(report_deadline.day, format: :short) %>
-                              報告者
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <% report_users.each do |user| %>
-                              <%= user.name %>
-                              <br>
-                            <% end %>
-                          </div>
-                          <div class="modal-footer ">
-                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <%= not_report_users.count %>人
+                    <%= render partial: 'reported_users', locals: { line_num: line_num, report_deadline: report_deadline, reports: reports} %>
+                    <%= unreported_users.count %>人
                     <button type="button" class="btn btn-outline-orange rounded-circle p-1" data-toggle="modal" data-target="#not-report-user<%= line_num %>">
                       ▼
                     </button>
-                    <div class="modal fade bd-example-modal-sm" id="not-report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">
-                              <%= l(report_deadline.day, format: :short) %>
-                              未報告者
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <% not_report_users.each do |user| %>
-                              <%= user.name %>
-                              <br>
-                            <% end %>
-                          </div>
-                          <div class="modal-footer ">
-                            <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <%= render partial: 'unreported_users', locals: { line_num: line_num, report_deadline: report_deadline, unreported_users: unreported_users} %>
                   </div>
                 </div>
               <% end %>

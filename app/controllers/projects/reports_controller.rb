@@ -160,15 +160,15 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).page(params[:reports_page]).per(10)
-    report_users_id = []
+    reported_users_id = []
     i = 0
-    report_users = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).select(:user_id).distinct
-    report_users.each do |user|
-      report_users_id[i] = user.user_id
+    reported_users = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).select(:user_id).distinct
+    reported_users.each do |user|
+      reported_users_id[i] = user.user_id
       i += 1
     end
-    @report_users = @project.users.all.where(id: report_users_id).page(params[:report_users_page]).per(10)
-    @not_report_users = @project.users.all.where.not(id: report_users_id).page(params[:not_report_users_page]).per(10)
+    @reported_users = @project.users.all.where(id: reported_users_id).page(params[:reported_users_page]).per(10)
+    @unreported_users = @project.users.all.where.not(id: reported_users_id).page(params[:unreported_users_page]).per(10)
   end
 
   def view_reports_log

@@ -5,6 +5,7 @@ class Report < ApplicationRecord
   has_many :report_confirmers, dependent: :destroy
 
   accepts_nested_attributes_for :answers, allow_destroy: true
+  attribute :remanded, default: false
 
   # validates :report_detail, presence: true
 end

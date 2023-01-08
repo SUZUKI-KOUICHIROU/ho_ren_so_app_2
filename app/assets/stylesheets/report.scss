@@ -94,3 +94,17 @@
   margin-right: auto;
   font-size: 1.5rem;
 }
+
+.view-report-log-link {
+  .report-title {
+    text-decoration: none;
+  }
+}
+
+.view-report-log-link:hover {
+  cursor: pointer;
+  cursor: hand;
+  .report-title{
+    text-decoration: underline;
+  }
+}

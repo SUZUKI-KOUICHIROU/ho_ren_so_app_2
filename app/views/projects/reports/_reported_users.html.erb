@@ -1,0 +1,39 @@
+<div class="modal fade bd-example-modal-xl" id="report-user<%= line_num %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl bg-transparent">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">
+          <%= l(report_deadline.day, format: :short) %>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="border-top-0">報告者名</th>
+                  <th class="border-top-0">件名</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% reports.each do |report| %>
+                  <tr class="view-report-log-link" data-href="/users/<%= report.user_id %>/projects/<%= @project.id %>/reports/<%= report.id %>">
+                    <td class="border-top-0"><%= User.find(report.user_id).name %></td>
+                    <td class="border-top-0 report-title text-primary"><%= report.title %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary align-bottom" data-dismiss="modal">戻る</button>
+      </div>
+    </div>
+  </div>
+</div>
