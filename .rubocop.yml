@@ -1,18 +1,17 @@
+#「inherit_from:」の記述によりrubocop_todo.ymlのファイルもrubocopコマンド実行時に参照する
 inherit_from: .rubocop_todo.yml
 
+#gemでインストールしたrubocopの設定をrubocopに適用する
 require:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
 
-# 標準の規約 + Railsの規約
-Rails:
-  Enabled: true
-
 AllCops:
+  #デフォルト値をすべて無効に設定
+  DisabledByDefault: true
   # ルールをバージョンアップと同時に有効化
   NewCops: enable
-  # Rubyのバージョンを指定
   TargetRubyVersion: 2.6.3p62
   # 指摘に対応するスタイルガイドのリンクを表示
   DisplayStyleGuide: true
@@ -25,69 +24,82 @@ AllCops:
     - db/**/*
     - config/**/*
 
-# Missing magic comment # frozen_string_literal: true. を無視
-Style/FrozenStringLiteralComment:
-  Enabled: false
+#Rails関係のルールを有効
+Rails:
+  Enabled: true
 
-# Use nested module/class definitions instead of compact style. を無視
-Style/ClassAndModuleChildren:
-  Enabled: false
+#bundler関係のルールを有効。
+Bundler:
+  Enabled: true
 
-# Use only ascii symbols in comments. を無視
-Style/AsciiComments:
-  Enabled: false
+#Gemspec関係のルールを有効。
+Gemspec:
+  Enabled: true
 
-# Unused method argument. を無視
-Lint/UnusedMethodArgument:
-  Enabled: false
+#Layout関係のルールを有効。
+Layout:
+  Enabled: true
 
-# Missing top-level class documentation comment. を無視
-Style/Documentation:
-  Enabled: false
+#Lint関係のルールを有効。
+Lint:
+  Enabled: true
 
-# hadowing outer local variable.  を無視
-Lint/ShadowingOuterLocalVariable:
-  Enabled: false
+#Metrics関係のルールを有効。
+Metrics:
+  Enabled: true
 
-# Do not use block comments. を無視
-Style/BlockComments:
-  Enabled: false
+#Performance関係のルールを有効。
+Performance:
+  Enabled: true
 
-# is not explicitly defined on the class. を無視
-Rails/LexicallyScopedActionFilter:
-  Enabled: false
+Security:
+  Enabled: true
 
-# Do not write to stdout. Use Rails's logger if you want to log. を無視
-Rails/Output:
-  Enabled: false
+#一行の最大文字数設定
+Layout/LineLength:
+  Enabled: true
+  Max: 120
 
-# Block has too many lines. を無視
+#|ABC|の値を最大30とする設定ABCSizeとは以下。https://qiita.com/yhorikawa/items/0fee9a380934fb29b016
+Metrics/AbcSize:
+  Max: 30
+
+#モジュール内の最大行数
+Metrics/ModuleLength:
+  Max: 500
+
+#メソッド内の最大行数
+Metrics/MethodLength:
+  CountComments: false
+  Max: 50
+
+#クラス内の最大行数
+Metrics/ClassLength:
+  CountComments: false
+  Max: 500
+
+#循環的複雑度の設定 デフォルトだと小さいので変更 Max20以下が適切か
+#1~10 リクスなし/ 11~20 中リスク / 21~50 高リクス / 51以上 非常に高いリスク
+#https://qiita.com/yut_arrows/items/16749e02313109071338
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+#if/caseなどのガード節を用いた複雑度の設定
+#特に基準値がなかったため、循環的複雑度と同じ設定を適応
+#詳しくはhttps://docs.rubocop.org/rubocop/cops_metrics.html
+#ガード節とはhttps://ichi-station.com/%E3%82%AC%E3%83%BC%E3%83%89%E7%AF%80%E3%81%AB%E9%96%A2%E3%81%97%E3%81%A6/
+Metrics/PerceivedComplexity:
+  Max: 15
+
+#ブロック内の行数を最大値以下とする設定をspec/**/*は除外
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 
-# Maximum example group nesting exceeded. を無視
-RSpec/NestedGroups:
+#befor_action等のonly、exceptオプションで指定されているメソッドが存在していなければならない設定を無効
+Rails/LexicallyScopedActionFilter:
   Enabled: false
 
-# Do not use expect() without .to or .not_to. Chain the methods or remove it. を無視
-RSpec/VoidExpect:
-  Enabled: false
-
-# Useless assignment to variable - user. Did you mean user2? を無視
-Lint/UselessAssignment:
-  Exclude:
-  - 'spec/**/*'
-
-# Start context description with 'when', 'with', or 'without'. を無視
-RSpec/ContextWording:
-  Exclude:
-  - 'spec/**/*'
-
-# Example has too many lines. を無視
-RSpec/ExampleLength:
-  Enabled: false
-
-# Example has too many expectations. を無視
-RSpec/MultipleExpectations:
+#putsやprintなどの出力はRailsのロガーを使わなければいけない設定を無効にする
+Rails/Output:
   Enabled: false
