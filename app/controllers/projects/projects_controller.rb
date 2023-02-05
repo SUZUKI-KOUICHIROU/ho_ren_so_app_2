@@ -30,7 +30,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
       flash[:danger] = 'プロジェクト新規登録に失敗しました。'
       redirect_to user_projects_path(@user)
     end
-    
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -95,7 +94,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
       flash[:success] = '参加済みプロジェクトです。'
     end
     bypass_sign_in @user
-    redirect_to user_project_path(@user,@project) 
+    redirect_to user_project_path(@user, @project)
   end
 
   def frequency_input_form_switching

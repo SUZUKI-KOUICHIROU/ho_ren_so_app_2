@@ -1,12 +1,12 @@
 class Projects::CounselingsController < Projects::BaseProjectController
-
   def index
     set_project_and_members
     @counselings = @project.counselings.all.order(updated_at: 'DESC').page(params[:page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids)
+                                         .order(updated_at: 'DESC').page(params[:page]).per(5)
   end
-  
+
   def show
     set_project_and_members
     @counseling = Counseling.find(params[:id])
@@ -24,9 +24,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.sender_name = current_user.name
-    #ActiveRecord::Type::Boolean：値の型をboolean型に変更
+    # ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
-      #TO ALLが選択されている時
+      # TO ALLが選択されている時
       if @counseling.save
         @members.each do |member|
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
@@ -39,7 +39,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
         render action: :new
       end
     else
-      #TO ALLが選択されていない時
+      # TO ALLが選択されていない時
       if @counseling.save
         @counseling.send_to.each do |t|
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
@@ -68,5 +68,4 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
   end
-
 end

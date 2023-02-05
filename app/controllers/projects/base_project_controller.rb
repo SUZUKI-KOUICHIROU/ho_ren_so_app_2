@@ -1,6 +1,5 @@
 class Projects::BaseProjectController < BaseController
   before_action :temporarily_user?
-  
 
   # ユーザー、プロジェクト、送信先を取得
   def set_project_and_members
@@ -17,20 +16,23 @@ class Projects::BaseProjectController < BaseController
       redirect_to user_projects_path(@user)
     end
   end
-  
+
   # 仮登録のままのユーザーを編集画面へ飛ばす
   def temporarily_user?
     return if current_user.nil?
     return if current_user.has_editted
+
     flash[:success] = 'ユーザー名を入力してください。'
     redirect_to edit_user_registration_path(current_user)
   end
+
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   # # プロジェクトリーダーを許可
   def project_leader_user
     return if current_user.id == @project.leader_id
+
     flash[:danger] = 'リーダーではない為、権限がありません。'
     redirect_to user_project_path(@user, @project)
   end

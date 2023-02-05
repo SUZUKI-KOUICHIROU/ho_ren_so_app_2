@@ -18,7 +18,6 @@ module ApplicationHelper
   ApplicationHelper.form_option = { '記述式' => 'text_field', '段落式' => 'text_area', 'ラジオボタン' => 'radio_button',
                                     'チェックボックス(複数選択可)' => 'check_box', 'プルダウン' => 'select', '日付' => 'date_field' }
 
-
   # サイドバーのヘルパーメソッド
   def sidebar_link_item(name, path, options = {})
     class_name = 'menu'

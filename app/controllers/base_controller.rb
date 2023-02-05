@@ -1,5 +1,5 @@
 class BaseController < ApplicationController
-  #before_action :authenticate_user!
+  # before_action :authenticate_user!
 
   # 報告、連絡、相談の一覧を選択されたプロジェクトによって切り替える
   def index_switching
@@ -15,11 +15,13 @@ class BaseController < ApplicationController
     when 'message'
       @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
       you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids)
+                                        .order(updated_at: 'DESC').page(params[:page]).per(5)
     when 'counseling'
       @counselings = @project.counselings.all.order(updated_at: 'DESC').page(params[:page]).per(5)
       you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids)
+                                           .order(updated_at: 'DESC').page(params[:page]).per(5)
     end
   end
 end

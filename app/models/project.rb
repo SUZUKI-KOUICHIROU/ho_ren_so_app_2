@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   has_many :joins
   has_many :tokens, through: :joins
   has_many :report_statuses, dependent: :destroy
-  has_many :delegations, dependent: :destroy 
+  has_many :delegations, dependent: :destroy
   has_many :report_deadlines, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 20 }
@@ -28,7 +28,7 @@ class Project < ApplicationRecord
     end
 
     self.report_statuses.where(is_newest: true).update_all(is_newest: false) # "最新である"フラグをfalseに
-    self.users.all.each do |user|
+    self.users.all.find_each do |user|
       unless self.report_statuses.exists?(user_id: user.id, deadline: next_deadline, is_newest: true)
         self.report_statuses.create(user_id: user.id, deadline: next_deadline)
       end
@@ -59,10 +59,11 @@ class Project < ApplicationRecord
     text_area.build_question(
       position: 4,
       form_table_type: text_area.field_type,
-      project_id: self.id)
+      project_id: self.id
+    )
     text_area.save
   end
-  
+
   # 引数に指定したIDを除く、プロジェクトメンバーを取得
   def other_members(my_id)
     return self.users.where.not(id: my_id)

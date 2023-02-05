@@ -7,7 +7,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     @projects = @user.projects.all
     @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids)
+                                      .order(updated_at: 'DESC').page(params[:page]).per(5)
   end
 
   def show
@@ -27,9 +28,9 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
     @message.sender_name = current_user.name
-    #ActiveRecord::Type::Boolean：値の型をboolean型に変更
+    # ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:message][:send_to_all])
-      #TO ALLが選択されているとき
+      # TO ALLが選択されているとき
       if @message.save
         @members.each do |member|
           @send = @message.message_confirmers.new(message_confirmer_id: member.id)
@@ -42,7 +43,7 @@ class Projects::MessagesController < Projects::BaseProjectController
         render action: :new
       end
     else
-      #TO ALLが選択されていない時
+      # TO ALLが選択されていない時
       if @message.save
         @message.send_to.each do |t|
           @send = @message.message_confirmers.new(message_confirmer_id: t)
@@ -56,6 +57,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       end
     end
   end
+
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])

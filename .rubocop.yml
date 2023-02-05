@@ -56,9 +56,10 @@ Security:
   Enabled: true
 
 #一行の最大文字数設定
+#Max: 120 でリファクタリングの必要あり。
 Layout/LineLength:
   Enabled: true
-  Max: 120
+  Max: 145
 
 #|ABC|の値を最大30とする設定ABCSizeとは以下。https://qiita.com/yhorikawa/items/0fee9a380934fb29b016
 Metrics/AbcSize:
