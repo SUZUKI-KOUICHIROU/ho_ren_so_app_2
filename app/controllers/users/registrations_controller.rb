@@ -36,6 +36,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # PUT /resource
   # We need to use a copy of the resource because we don't want to change
   # the current user in place.
+
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
@@ -53,6 +56,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   # DELETE /resource
   def destroy

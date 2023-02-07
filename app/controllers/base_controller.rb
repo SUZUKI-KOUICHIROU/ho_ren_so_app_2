@@ -2,6 +2,8 @@ class BaseController < ApplicationController
   # before_action :authenticate_user!
 
   # 報告、連絡、相談の一覧を選択されたプロジェクトによって切り替える
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def index_switching
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -24,4 +26,5 @@ class BaseController < ApplicationController
                                            .order(updated_at: 'DESC').page(params[:page]).per(5)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 end

@@ -1,4 +1,6 @@
 class Projects::ReportsController < Projects::BaseProjectController
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def index
     set_project_and_members
     @first_question = @project.questions.first
@@ -17,6 +19,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -34,6 +37,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -53,6 +58,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def edit
     @user = current_user
@@ -62,6 +68,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @answers = @report.answers
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -126,6 +134,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を編集しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 
   def destroy
     @user = current_user
@@ -157,6 +166,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -171,7 +182,10 @@ class Projects::ReportsController < Projects::BaseProjectController
     @reported_users = @project.users.all.where(id: reported_users_id).page(params[:reported_users_page]).per(10)
     @unreported_users = @project.users.all.where.not(id: reported_users_id).page(params[:unreported_users_page]).per(10)
   end
+  # rubocop:enable Metrics/AbcSize
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -194,6 +208,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def report_form_switching
     @user = User.find(params[:user_id])

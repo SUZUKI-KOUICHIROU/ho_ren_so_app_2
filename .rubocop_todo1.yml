@@ -54,6 +54,7 @@ Lint/UselessAssignment:
 
 # Offense count: 11
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
+
 Metrics/AbcSize:
   Max: 89
 

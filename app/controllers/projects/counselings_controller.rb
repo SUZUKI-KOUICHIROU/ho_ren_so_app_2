@@ -19,6 +19,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counseling = @project.counselings.new
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     set_project_and_members
     @counseling = @project.counselings.new(counseling_params)
@@ -53,6 +55,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read

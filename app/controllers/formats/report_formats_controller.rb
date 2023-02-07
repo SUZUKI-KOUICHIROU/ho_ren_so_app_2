@@ -69,6 +69,8 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
   end
 
   # 入力フォーム新規登録用モーダルウインドウ内のコンテンツを動的に変化させる処理に関連するajaxアクション
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def replacement_input_forms
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -112,6 +114,7 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
       @form_table_type_value = 'select'
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

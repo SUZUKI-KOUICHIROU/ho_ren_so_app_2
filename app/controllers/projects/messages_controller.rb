@@ -23,6 +23,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = @project.messages.new
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     set_project_and_members
     @message = @project.messages.new(message_params)
@@ -57,6 +59,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read

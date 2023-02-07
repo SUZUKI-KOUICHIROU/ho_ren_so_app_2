@@ -8,6 +8,8 @@ class Users::InvitationsController < BaseController
     @project = Project.find(params[:project_id])
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     @project = Project.find(params[:project_id])
     if params[:invitee][:email].blank?
@@ -31,6 +33,7 @@ class Users::InvitationsController < BaseController
     end
     redirect_to user_project_path(current_user, @project)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def edit
     @user.name = nil if @user
