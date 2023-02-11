@@ -31,7 +31,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :trackable, :rememberable, :validatable
+    :recoverable, :trackable, :rememberable, :validatable
 
   before_save { self.email = email.downcase }
 
@@ -39,23 +39,23 @@ class User < ApplicationRecord
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email, presence: true, length: { maximum: 100 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: true
+    format: { with: VALID_EMAIL_REGEX },
+    uniqueness: true
 
   # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
   VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
   MESSAGE_WITH_INVALID_PASSWORD = 'は半角英数（英字は小文字のみ）で入力して下さい'
   validates :password,
-            allow_blank: true,
-            presence: true,
-            length: { maximum: 30, minimum: 8 },
-            format: { with: VALID_PASSWORD_REGEX,
-                      message: MESSAGE_WITH_INVALID_PASSWORD }
+    allow_blank: true,
+    presence: true,
+    length: { maximum: 30, minimum: 8 },
+    format: { with: VALID_PASSWORD_REGEX,
+              message: MESSAGE_WITH_INVALID_PASSWORD }
 
   validates :password_confirmation,
-            allow_blank: true,
-            presence: true,
-            length: { maximum: 30, minimum: 8 },
-            format: { with: VALID_PASSWORD_REGEX,
-                      message: MESSAGE_WITH_INVALID_PASSWORD }
+    allow_blank: true,
+    presence: true,
+    length: { maximum: 30, minimum: 8 },
+    format: { with: VALID_PASSWORD_REGEX,
+              message: MESSAGE_WITH_INVALID_PASSWORD }
 end

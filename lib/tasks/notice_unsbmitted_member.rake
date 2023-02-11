@@ -6,8 +6,7 @@ namespace :notice_unsbmitted_member do
     targetDate = Date.yesterday
     Project.all.each do |project|
       if project.next_report_date == targetDate
-        members = project.report_statuses.where(has_reminded: false, has_submitted: false,
-                                                deadline: targetDate).pluck(:user_id)
+        members = project.report_statuses.where(has_reminded: false, has_submitted: false, deadline: targetDate).pluck(:user_id)
         if members.count > 0
           leaderEmail = project.users.find(project.leader_id).email
           users = project.users.where(id: members).pluck(:name)

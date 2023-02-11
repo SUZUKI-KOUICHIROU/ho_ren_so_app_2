@@ -11,14 +11,12 @@ class Message < ApplicationRecord
 
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
-    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user,
-                                                           message_confirmation_flag: false }).order(created_at: :desc)
+    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user, message_confirmation_flag: false }).order(created_at: :desc)
   end
 
   # ログインユーザー宛メッセージ最新の５件を取得
   def self.my_recent_messages(user_id)
-    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user_id })
-                              .order(created_at: :desc).limit(5)
+    joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user_id }).order(created_at: :desc).limit(5)
   end
 
   def checked_members

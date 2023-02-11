@@ -121,18 +121,18 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
   # フォーム新規登録並びに編集用/create
   def create_formats_params
     params.require(:question).permit(:id, :form_table_type, :position,
-                                     text_field_attributes: %i[id label_name field_type],
-                                     text_area_attributes: %i[id label_name field_type],
-                                     date_field_attributes: %i[id label_name field_type],
-                                     radio_button_attributes: [:id, :label_name, :field_type, {
-                                       radio_button_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }],
-                                     check_box_attributes: [:id, :label_name, :field_type, {
-                                       check_box_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }],
-                                     select_attributes: [:id, :label_name, :field_type, {
-                                       select_option_strings_attributes: [%i[id option_string _destroy]]
-                                     }])
+      text_field_attributes: %i[id label_name field_type],
+      text_area_attributes: %i[id label_name field_type],
+      date_field_attributes: %i[id label_name field_type],
+      radio_button_attributes: [:id, :label_name, :field_type, {
+        radio_button_option_strings_attributes: [%i[id option_string _destroy]]
+      }],
+      check_box_attributes: [:id, :label_name, :field_type, {
+        check_box_option_strings_attributes: [%i[id option_string _destroy]]
+      }],
+      select_attributes: [:id, :label_name, :field_type, {
+        select_option_strings_attributes: [%i[id option_string _destroy]]
+      }])
   end
 
   def update_formats_params

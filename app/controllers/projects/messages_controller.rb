@@ -7,8 +7,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @projects = @user.projects.all
     @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids)
-                                      .order(updated_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
   end
 
   def show

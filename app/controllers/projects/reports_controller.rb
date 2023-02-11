@@ -14,8 +14,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       else
         @report_ids = 0
       end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids)
-                         .order(updated_at: 'DESC').page(params[:page]).per(10)
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
   end
@@ -46,8 +45,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report.sender_id = @user.id
     @report.sender_name = @user.name
     @report.answers.each do |answer|
-      answer.question_name = answer.question_type.camelize.constantize
-                                   .find_by(question_id: answer.question_id).label_name
+      answer.question_name = answer.question_type.camelize.constantize.find_by(question_id: answer.question_id).label_name
     end
     if @report.save
       flash[:success] = '報告を登録しました。'
@@ -224,8 +222,8 @@ class Projects::ReportsController < Projects::BaseProjectController
   # フォーム新規登録並びに編集用/create
   def create_reports_params
     params.require(:report).permit(:id, :user_id, :project_id, :title, :report_day,
-                                   answers_attributes: [
-                                     :id, :question_type, :question_id, :value, array_value: []
-                                   ])
+      answers_attributes: [
+        :id, :question_type, :question_id, :value, array_value: []
+      ])
   end
 end

@@ -17,13 +17,11 @@ class BaseController < ApplicationController
     when 'message'
       @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
       you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids)
-                                        .order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
     when 'counseling'
       @counselings = @project.counselings.all.order(updated_at: 'DESC').page(params[:page]).per(5)
       you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids)
-                                           .order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
     end
   end
   # rubocop:enable Metrics/AbcSize
