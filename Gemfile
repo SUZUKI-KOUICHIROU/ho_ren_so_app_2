@@ -32,6 +32,7 @@ gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.6'
 gem 'rails-i18n'
 gem 'ransack'
+gem 'rinku'
 gem 'rolify'
 gem 'rounding'
 gem 'sass-rails', '~> 5.0'
@@ -40,7 +41,6 @@ gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever', require: false
-gem 'rinku'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -61,8 +61,8 @@ group :development do
   # gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
   gem 'letter_opener_web', '~> 1.0'
+  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
@@ -74,8 +74,8 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers',
-      git: 'https://github.com/thoughtbot/shoulda-matchers.git',
-      branch: 'rails-5'
+    git: 'https://github.com/thoughtbot/shoulda-matchers.git',
+    branch: 'rails-5'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'webdrivers'
 end

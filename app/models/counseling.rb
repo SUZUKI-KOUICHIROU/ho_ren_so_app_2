@@ -3,6 +3,7 @@ class Counseling < ApplicationRecord
   has_many :counseling_confirmers, dependent: :destroy
 
   attr_accessor :send_to
+
   attribute :send_to_all
 
   validates :counseling_detail, presence: true
@@ -11,7 +12,8 @@ class Counseling < ApplicationRecord
 
   # ログインユーザー宛のメッセージを取得
   def self.my_counselings(user)
-    joins(:counseling_confirmers).where(counseling_confirmers: { counseling_confirmer_id: user, counseling_confirmation_flag: false }).order(created_at: :desc)
+    joins(:counseling_confirmers).where(counseling_confirmers:
+      { counseling_confirmer_id: user, counseling_confirmation_flag: false }).order(created_at: :desc)
   end
 
   # ログインユーザー宛メッセージ最新の５件を取得

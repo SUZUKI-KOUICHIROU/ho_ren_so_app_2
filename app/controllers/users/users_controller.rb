@@ -4,5 +4,4 @@ class Users::UsersController < Users::BaseUserController
     @user = User.find(params[:id])
     @projects = @user.projects.all
   end
-  
 end

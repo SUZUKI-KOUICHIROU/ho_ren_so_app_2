@@ -1,5 +1,6 @@
 class Projects::ReportsController < Projects::BaseProjectController
-
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def index
     set_project_and_members
     @first_question = @project.questions.first
@@ -9,7 +10,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     if params[:search].present? and params[:search] != ""
       @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       if @results.present?
-        @report_ids = @results.map { |r| r[:report_id] }.uniq
+        @report_ids = @results.pluck(:report_id).uniq
       else
         @report_ids = 0
       end
@@ -17,6 +18,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -34,6 +36,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -52,6 +56,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def edit
     @user = current_user
@@ -61,6 +66,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @answers = @report.answers
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -97,7 +104,7 @@ class Projects::ReportsController < Projects::BaseProjectController
             if params[:answer][cnt_num].nil?
               answer.update(value: "")
             else
-              answer.update(value: params[:answer][cnt_num][:value]) 
+              answer.update(value: params[:answer][cnt_num][:value])
             end
           end
         when 'check_box'
@@ -125,6 +132,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を編集しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 
   def destroy
     @user = current_user
@@ -135,7 +143,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     else
       flash[:danger] = "報告の削除に失敗しました。"
     end
-    redirect_to user_project_reports_path(@user,@project)
+    redirect_to user_project_reports_path(@user, @project)
   end
 
   # 再提出を求める。
@@ -156,6 +164,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def view_reports
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -170,13 +180,16 @@ class Projects::ReportsController < Projects::BaseProjectController
     @reported_users = @project.users.all.where(id: reported_users_id).page(params[:reported_users_page]).per(10)
     @unreported_users = @project.users.all.where.not(id: reported_users_id).page(params[:unreported_users_page]).per(10)
   end
+  # rubocop:enable Metrics/AbcSize
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @display = params[:display].nil??
+    @display = params[:display].nil? ?
     "percent" : params[:display]
-    @first_day = params[:date].blank??
+    @first_day = params[:date].blank? ?
     Date.current.beginning_of_month : Date.strptime(params[:date], '%Y-%m')
     @last_day = @first_day.end_of_month
     one_month = [*@first_day..@last_day]
@@ -185,15 +198,15 @@ class Projects::ReportsController < Projects::BaseProjectController
     if params[:search].present? and params[:search] != ""
       @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       if @results.present?
-        @report_ids = @results.map { |r| r[:report_id] }.uniq
+        @report_ids = @results.pluck(:report_id).uniq
       else
         @report_ids = 0
       end
       @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
-    
   end
+  # rubocop:enable Metrics/AbcSize
 
   def report_form_switching
     @user = User.find(params[:user_id])
@@ -211,7 +224,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     params.require(:report).permit(:id, :user_id, :project_id, :title, :report_day,
       answers_attributes: [
         :id, :question_type, :question_id, :value, array_value: []
-      ]
-    )
+      ])
   end
 end

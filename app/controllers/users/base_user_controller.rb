@@ -1,6 +1,6 @@
 class Users::BaseUserController < BaseController
   before_action :correct_user
-  
+
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓

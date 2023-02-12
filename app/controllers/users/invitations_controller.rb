@@ -1,20 +1,22 @@
 class Users::InvitationsController < BaseController
-  #before_action :get_user,         only: [:edit, :update]
-  #before_action :valid_user,       only: [:edit, :update]
-  #before_action :check_expiration, only: [:edit, :update]
+  # before_action :get_user,         only: [:edit, :update]
+  # before_action :valid_user,       only: [:edit, :update]
+  # before_action :check_expiration, only: [:edit, :update]
 
   def new
     @user = User.find(current_user.id)
     @project = Project.find(params[:project_id])
   end
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def create
     @project = Project.find(params[:project_id])
     if params[:invitee][:email].blank?
-      flash[:danger] = 'メールアドレスを入力してください。' 
+      flash[:danger] = 'メールアドレスを入力してください。'
       render 'new'
     else
-      if User.exists?(email: params[:invitee][:email])  
+      if User.exists?(email: params[:invitee][:email])
         @user = User.find_by(email: params[:invitee][:email])
         @user.update(invited_by: params[:invitee][:leader_id])
       else
@@ -24,12 +26,13 @@ class Users::InvitationsController < BaseController
         @user = User.new(name: "", email: params[:invitee][:email].downcase, password: mypassword, invited_by: current_user.id, has_editted: false)
         @user.save!(validate: false) # 招待ユーザーの初期ネームを空欄にするためにバリデーションを無視
       end
-        @join = Join.create(project_id: @project.id, user_id: @user.id)
-        @user.send_invite_email(@join.token, @project.name, mypassword)
-        flash[:success] = '招待メールを送信しました！'
+      @join = Join.create(project_id: @project.id, user_id: @user.id)
+      @user.send_invite_email(@join.token, @project.name, mypassword)
+      flash[:success] = '招待メールを送信しました！'
     end
     redirect_to user_project_path(current_user, @project)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def edit
     @user.name = nil if @user

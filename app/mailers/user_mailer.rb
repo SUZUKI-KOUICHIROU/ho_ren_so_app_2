@@ -9,14 +9,14 @@ class UserMailer < ApplicationMailer
   end
 
   # プロジェクト内の未報告メンバーをリーダーに報告
-  def notice_not_submitted_members(project_name,users,to_address)
+  def notice_not_submitted_members(_project_name, users, to_address)
     @project_name = name
     @users = users
     mail to: to_address, subject: "#{name}未報告者のご連絡"
   end
 
   # 未報告メンバーにリマインドメールを送信
-  def send_remind(name,to_address)
+  def send_remind(name, to_address)
     @project = name
     mail to: to_address, subject: "【リマインド】#{name}の報告期限が迫っています。"
   end

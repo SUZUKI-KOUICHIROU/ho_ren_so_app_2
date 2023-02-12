@@ -1,12 +1,12 @@
 class Join < ApplicationRecord
-	validates_uniqueness_of :token
-  validates_presence_of :token
+  validates :token, uniqueness: true
+  validates :token, presence: true
   after_initialize :set_token
 
   private
 
   def set_token
-    self.token = self.token.blank? ? generate_token : self.token
+    self.token = self.token.presence || generate_token
   end
 
   def generate_token

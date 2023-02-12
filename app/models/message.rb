@@ -3,7 +3,8 @@ class Message < ApplicationRecord
   has_many :message_confirmers, dependent: :destroy
 
   attr_accessor :send_to
-  attribute :send_to_all#, default: false
+
+  attribute :send_to_all # , default: false
 
   validates :message_detail, presence: true
   validate :no_check_become_invalid

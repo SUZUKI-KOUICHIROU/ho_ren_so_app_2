@@ -1,5 +1,5 @@
 class Formats::ReportFormatsController < Formats::BaseFormatController
-before_action :project_authorization, only: %i[edit]
+  before_action :project_authorization, only: %i[edit]
 
   # 入力フォーム新規登録アクション
   def create
@@ -69,6 +69,8 @@ before_action :project_authorization, only: %i[edit]
   end
 
   # 入力フォーム新規登録用モーダルウインドウ内のコンテンツを動的に変化させる処理に関連するajaxアクション
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def replacement_input_forms
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -112,6 +114,7 @@ before_action :project_authorization, only: %i[edit]
       @form_table_type_value = 'select'
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -121,33 +124,34 @@ before_action :project_authorization, only: %i[edit]
       text_field_attributes: %i[id label_name field_type],
       text_area_attributes: %i[id label_name field_type],
       date_field_attributes: %i[id label_name field_type],
-      radio_button_attributes: [:id, :label_name, :field_type, { 
+      radio_button_attributes: [:id, :label_name, :field_type, {
         radio_button_option_strings_attributes: [%i[id option_string _destroy]]
       }],
-      check_box_attributes: [:id, :label_name, :field_type, { 
+      check_box_attributes: [:id, :label_name, :field_type, {
         check_box_option_strings_attributes: [%i[id option_string _destroy]]
       }],
-      select_attributes: [:id, :label_name, :field_type, { 
+      select_attributes: [:id, :label_name, :field_type, {
         select_option_strings_attributes: [%i[id option_string _destroy]]
       }])
   end
 
   def update_formats_params
     params.permit(
-      format_attribute: [:id,[:title]],
+      format_attribute: [:id, [:title]],
       question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, :required, {
-      text_field_attributes: %i[id label_name field_type],
-      text_area_attributes: %i[id label_name field_type],
-      date_field_attributes: %i[id label_name field_type],
-      radio_button_attributes: [:id, :label_name, :field_type, {
-        radio_button_option_strings_attributes: %i[id option_string _destroy]
-      }],
-      check_box_attributes: [:id, :label_name, :field_type, {
-        check_box_option_strings_attributes: %i[id option_string _destroy]
-      }],
-      select_attributes: [:id, :label_name, :field_type, {
-        select_option_strings_attributes: %i[id option_string _destroy]
-      }]
-    }]])
+        text_field_attributes: %i[id label_name field_type],
+        text_area_attributes: %i[id label_name field_type],
+        date_field_attributes: %i[id label_name field_type],
+        radio_button_attributes: [:id, :label_name, :field_type, {
+          radio_button_option_strings_attributes: %i[id option_string _destroy]
+        }],
+        check_box_attributes: [:id, :label_name, :field_type, {
+          check_box_option_strings_attributes: %i[id option_string _destroy]
+        }],
+        select_attributes: [:id, :label_name, :field_type, {
+          select_option_strings_attributes: %i[id option_string _destroy]
+        }]
+      }]]
+    )
   end
 end
