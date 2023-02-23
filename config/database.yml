@@ -65,3 +65,6 @@ development:
   <<: *default
   database: myproject_development
 
+test:
+  <<: *default
+  database: myproject_test
