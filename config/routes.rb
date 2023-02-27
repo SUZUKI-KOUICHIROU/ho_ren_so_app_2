@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         resources :reports do
           member do
             post 'reject'
+            post 'resubmitted'
           end
         end
       end
