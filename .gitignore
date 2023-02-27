@@ -34,3 +34,5 @@ vendor/bundle
 
 # myapp_development 追跡除外
 /myapp_development
+# databaseを除外
+/postgresql

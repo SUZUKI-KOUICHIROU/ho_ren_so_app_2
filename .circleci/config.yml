@@ -25,7 +25,7 @@ jobs:
           DB_HOST: 127.0.0.1
           RAILS_ENV: test
           BUNDLER_VERSION: 2.3.11
-          TZ: "Japan" 
+          TZ: "Japan"
     steps:
       - setup
   test:
@@ -35,8 +35,8 @@ jobs:
         name: "db"
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_DB: myapp_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: myproject_test
+          POSTGRES_PASSWORD: password
     environment:
       BUNDLE_JOBS: "4"
       BUNDLE_RETRY: "3"
