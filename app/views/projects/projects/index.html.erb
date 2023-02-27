@@ -51,10 +51,20 @@
           
           <%# === お知らせ === %>
           <div class="project-news">
-            <% remanded_reports = project.reports.where(user_id: @user.id, remanded: true) %>
+            <% remanded_reports = project.reports.where(user_id: @user.id, remanded: "true", resubmitted: "false") %>
+            <% resubmitted_reports = project.reports.where(resubmitted: "true") %>
+            <% if current_user.id == project.leader_id %>              
+              <% if resubmitted_reports.count > 0 %>
+                <% resubmitted_reports.each do |report| %>
+                  <p><%= link_to "#{report.sender_name} #{report.created_at.strftime("%Y年%m月%d日")}報告分", user_project_report_path(report.user_id, project, report) %>
+                  <span>報告手直しされました</span></p>
+                <% end %>
+              <% end %>
+            <% end %>
+            
             <% if remanded_reports.count > 0 %>
                 <% remanded_reports.each do |report| %>
-                  <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(@user, project, report) %>
+                  <p><%= link_to "#{report.created_at.strftime("%Y年%m月%d日")}報告分", edit_user_project_report_path(report.user_id, project, report) %>
                   <span>に修正依頼が来ています。</span></p>
                 <% end %>
             <% end %>
@@ -69,7 +79,7 @@
                 <span>が<%= "#{counselings.count}件あります。" %></span></p>
             <% end %>
             <% counselings = project.counselings.my_counselings(@user) %>
-            <% if remanded_reports.empty? && messages.empty? && counselings.empty? %>
+            <% if remanded_reports.empty? && messages.empty? && counselings.empty? && resubmitted_reports.empty? %>
                 <p>無し</p>
             <% end %>
           </div>

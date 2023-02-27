@@ -6,6 +6,7 @@ class Report < ApplicationRecord
 
   accepts_nested_attributes_for :answers, allow_destroy: true
   attribute :remanded, default: false
+  attribute :resubmitted, default: false
 
   # validates :report_detail, presence: true
 end
