@@ -5,7 +5,7 @@ class CreateQuestions < ActiveRecord::Migration[5.2]
       t.string :form_table_type, null: false, default: '' # アソシエーション名
       t.references :project, foreign_key: true
       t.boolean :using_flag, null: false, default: true # 使用フラグ
-
+      t.boolean :required, null: false, default: false
       t.timestamps
     end
   end

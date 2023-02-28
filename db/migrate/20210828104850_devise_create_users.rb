@@ -6,8 +6,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
 
       t.boolean :has_editted, default: true # ユーザー情報の編集が行われたかを管理
       t.integer :invited_by
-      t.string :user_name, null: false, default: '' # ユーザー名
+      t.string :name, null: false, default: '' # ユーザー名
       t.boolean :admin, null: false, default: false # 管理者フラグ
+      t.string :remember_token
       
       ## Database authenticatable
       t.string :email,              null: false, default: ''

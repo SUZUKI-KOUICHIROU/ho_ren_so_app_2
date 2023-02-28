@@ -6,6 +6,7 @@ class CreateAnswer < ActiveRecord::Migration[5.2]
       t.string :value #回答内容
       t.text :array_value, array: true #チェックボックス回答
       t.references :report, foreign_key: true
+      t.string :question_name
     end
   end
 end
