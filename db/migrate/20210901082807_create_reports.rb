@@ -7,6 +7,9 @@ class CreateReports < ActiveRecord::Migration[5.2]
       t.string :remanded_reason, defalut: "" #要再提出の理由
       t.integer :sender_id # 報告者ID
       t.string :sender_name # 報告者名
+      add_column :reports, :title, :string
+      add_column :reports, :report_day, :date
+      add_column :reports, :resubmitted, :boolean, defalut: false
       t.timestamps
     end
   end
