@@ -63,7 +63,7 @@ default: &default
 
 development:
   <<: *default
-  database: myproject_development
+  database: ho_ren_so_test_db
 
 test:
   <<: *default
