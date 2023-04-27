@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: "Dockerfile"
-    container_name: ho_ren_so_app
+    container_name: horen_so_app
     # command = コンテナ起動時にコンテナ内で実行するコマンド（railsのサービスなのでrailsの起動コマンドを実行）
     # command: bash -c "rm -f tmp/pids/server.pid && ./bin/dev"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -34,9 +34,11 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./postgresql/data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     restart: always
   chrome:
     image: selenium/standalone-chrome:latest
     ports:
       - 4444:4444
+volumes:
+  postgres-data:
