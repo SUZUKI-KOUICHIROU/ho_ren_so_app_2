@@ -36,7 +36,6 @@ gem 'rinku'
 gem 'rolify'
 gem 'rounding'
 gem 'sass-rails', '~> 5.0'
-gem 'spring-commands-rspec'
 gem 'trix'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
@@ -64,6 +63,8 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'letter_opener_web', '~> 1.0'
   gem 'web-console', '>= 3.3.0'
+  gem 'spring-commands-rspec'
+  gem 'rspec-queue'
 end
 
 group :test do

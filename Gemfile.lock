@@ -200,12 +200,16 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.15.0)
     momentjs-rails (2.29.1.1)
       railties (>= 3.1)
     msgpack (1.5.2)
     netrc (0.11.0)
     nio4r (2.5.8)
+    nokogiri (1.13.6)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.6-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.6-x86_64-linux)
@@ -294,6 +298,8 @@ GEM
     rspec-mocks (3.11.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
+    rspec-queue (0.3.0)
+      rspec-core (>= 3.2)
     rspec-rails (5.1.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -402,6 +408,7 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
+  ruby
   x86_64-darwin-21
   x86_64-darwin-22
   x86_64-linux
@@ -448,6 +455,7 @@ DEPENDENCIES
   rinku
   rolify
   rounding
+  rspec-queue
   rspec-rails
   rspec_junit_formatter
   rubocop
@@ -474,4 +482,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.2.21
+   2.4.8
