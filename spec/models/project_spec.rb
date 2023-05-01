@@ -1,44 +1,60 @@
 require 'rails_helper'
 
-RSpec.describe Project, type: :model do
-  subject(:project) { FactoryBot.build(:project) }
+RSpec.describe "Projectモデルのテスト", type: :model do
+  let(:project) { FactoryBot.create(:project) }
 
-  describe 'プロジェクト新規登録' do
-    it '全てのカラムに値があれば登録出来る' do
+  describe "各項目が有効な場合" do  
+    it "Projectが保存されるか" do
       expect(project).to be_valid
     end
+  end
 
-    context 'nameカラム' do
-      it 'nameがなければ登録できない' do
-        expect(build(:project, name: '')).not_to be_valid
-      end
-
-      it '20文字以下であること' do
-        expect(build(:project, name: 'a' * 21)).not_to be_valid
+  describe "バリデーションのテスト" do 
+    context "leader_id(リーダーid)" do
+      it "リーダ-のみ登録できる（leader_idがなければ登録できない）" do
+        expect(build(:project, leader_id: nil)).to be_invalid
       end
     end
-
-    it 'leader_idがなければ登録できない' do
-      expect(build(:project, leader_id: '')).not_to be_valid
-    end
-
-    it 'report_frequencyがなければ登録できない' do
-      expect(build(:project, report_frequency: '')).not_to be_valid
-    end
-
-    it 'next_report_dateがなければ登録できない' do
-      expect(build(:project, next_report_date: '')).not_to be_valid
-    end
-
-    context 'reported_flagカラム' do
-      it 'trueとfalseは登録出来る' do
-        expect(project).to allow_value(true).for(:reported_flag)
-        expect(project).to allow_value(false).for(:reported_flag)
+    context "name(プロジェクト名)" do
+      it "空白の場合登録できない" do
+        expect(build(:project, name: nil)).to be_invalid
       end
-
-      it 'nilは登録出来ない' do
-        expect(project).not_to allow_value(nil).for(:reported_flag)
+      it "21文字以上の場合登録できない" do
+        expect(build(:project, name: 'あ' * 21)).to be_invalid
       end
+    end
+    context "description(概要)" do
+      it "空白の場合登録できない" do
+        expect(build(:project, description: nil)).to be_invalid
+      end
+      it "201文字以上の場合登録できない" do
+        expect(build(:project, description: 'あ' * 201)).to be_invalid
+      end  
+    end
+    context "report_frequency(報告回数・報告日)" do
+      it "report_frequencyがなければ登録できない" do
+        expect(build(:project, report_frequency: nil)).to be_invalid
+      end  
+    end
+    context "next_report_date(次回報告日)" do
+      it "next_report_dateがなければ登録できない" do
+        expect(build(:project, next_report_date: nil)).to be_invalid
+      end  
+    end
+  end
+  
+  describe "reported_flag" do 
+    it "trueは登録できる" do
+      project.reported_flag = true
+      expect(project).to be_valid
+    end
+    it "falseは登録できる" do
+      project.reported_flag = false
+      expect(project).to be_valid
+    end
+    it "nilは登録できない" do
+      project.reported_flag = nil
+      expect(project).to be_invalid
     end
   end
 end
