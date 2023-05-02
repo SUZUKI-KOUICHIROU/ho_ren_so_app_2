@@ -15,7 +15,7 @@ WORKDIR /myproject
 COPY Gemfile /myproject/Gemfile
 COPY Gemfile.lock /myproject/Gemfile.lock
 RUN gem install bundler
-RUN bundle install -j 10
+RUN bundle install -j4
 #既存railsプロジェクトをコンテナ内にコピー
 COPY . /myproject
 # entrypoint.shをコピーし、実行権限を与える
