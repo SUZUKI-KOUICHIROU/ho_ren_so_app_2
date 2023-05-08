@@ -9,4 +9,7 @@ class Report < ApplicationRecord
   attribute :resubmitted, default: false
 
   # validates :report_detail, presence: true
+  validates :title, presence: true, length: { maximum: 30 }
+  validates :report_day, presence: true
+  validates :sender_name, presence: true
 end
