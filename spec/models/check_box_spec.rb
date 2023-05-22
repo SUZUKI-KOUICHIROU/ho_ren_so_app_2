@@ -1,0 +1,19 @@
+require 'rails_helper'
+
+RSpec.describe CheckBox, type: :model do
+  subject(:check_box) { FactoryBot.build(:check_box) }
+
+  describe 'date_fieldの登録' do
+    context 'label_nameカラム' do
+      it 'label_nameがなければ登録できない' do
+        expect(build(:check_box, label_name: '')).to be_invalid
+      end
+    end
+
+    context 'field_typeカラム' do
+      it 'field_typeがなければ登録できない' do
+        expect(build(:check_box, field_type: '')).to be_invalid
+      end
+    end
+  end
+end
