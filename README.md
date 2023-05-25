@@ -34,10 +34,10 @@ docker-compose run --rm app bundle install
 docker-compose run --rm app yarn install
 
 # db:setup
-docker-compose run --rm app rails db:setup
+docker-compose run --rm app bin/rails db:setup
 
 # railsサーバー起動(ローカルPC用)
-bin/dev
+docker-compose up
 
 # railsサーバー起動(cloud9の方)
 bin/dev 8080
@@ -66,16 +66,16 @@ docker-compose down
 docker-compose run --rm app bundle install
 
 # rails db:create
-docker-compose run --rm app rails db:create
+docker-compose run --rm app bin/rails db:create
 
 # rails db:migrate
-docker-compose run --rm app rails db:migrate
+docker-compose run --rm app bin/rails db:migrate
 
 # rails db:seed
-docker-compose run --rm app rails db:seed
+docker-compose run --rm app bin/rails db:seed
 
 # rails db:seed_fu
-docker-compose run --rm app rails db:seed_fu
+docker-compose run --rm app bin/rails db:seed_fu
 ```
 
 ---
