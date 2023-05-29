@@ -5,20 +5,23 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.6.3  # Use the version of Ruby you want
-
-    - name: Install dependencies
+    - name: Setup docker
+      shell: bash
       run: |
-        bundle install
+        # イメージのビルド
+        docker-compose build
+        # 必要なアップデート
+        docker-compose run app yarn install
+        # データベースの作成
+        docker-compose run app rake db:create
+      env:
+        RAILS_ENV: test
 
-    - name: Run tests
-      run: bundle exec rspec
+    - name: Run Test
+      shell: bash
+      run:  |
+        bin/test
