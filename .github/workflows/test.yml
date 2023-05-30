@@ -14,8 +14,6 @@ jobs:
       run: |
         # イメージのビルド
         docker-compose build
-        # 必要なアップデート
-        docker-compose run app yarn install
         # データベースの作成
         docker-compose run app rake db:create
       env:
