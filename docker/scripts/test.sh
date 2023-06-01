@@ -13,9 +13,6 @@ export RAILS_ENV="test";
 bundle exec rspec $*;
 bundle exec rubocop;
 
-# erdの生成
-bundle exec erd;
-
 # テストの終了
 echo "\e[32m";
 echo "\n  =========================\n";
