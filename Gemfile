@@ -46,21 +46,21 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'sqlite3', '1.3.13'
-end
-
-group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'letter_opener_web', '~> 1.0'
   gem 'rubocop', require: false
   gem 'rubocop-discourse'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec'
+end
+
+group :development do
+  gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   # gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'letter_opener_web', '~> 1.0'
   gem 'web-console', '>= 3.3.0'
   gem 'spring-commands-rspec'
   gem 'rspec-queue'
