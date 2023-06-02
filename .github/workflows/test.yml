@@ -22,5 +22,5 @@ jobs:
     - name: Run Test
       shell: bash
       run:  |
-        docker-compose run --rm app rubocop
-        docker-compose run --rm app rspec
+        docker-compose run --rm app bundle exec rubocop
+        docker-compose run --rm app rbundle exec spec
