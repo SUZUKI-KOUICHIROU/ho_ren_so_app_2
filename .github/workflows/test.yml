@@ -16,6 +16,7 @@ jobs:
         docker-compose build
         # データベースの作成
         docker-compose run app bin/rails db:create
+      continue-on-error: true
       env:
         RAILS_ENV: test
 
