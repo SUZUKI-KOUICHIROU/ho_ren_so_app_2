@@ -16,12 +16,12 @@ jobs:
         docker-compose build
         # データベースの作成
         docker-compose run app bin/rails db:create
-      continue-on-error: true
       env:
         RAILS_ENV: test
 
     - name: Run Test
       shell: bash
       run:  |
-        # docker-compose run --rm app bundle exec rubocop
+        docker-compose run --rm app bundle exec rubocop
         docker-compose run --rm app bundle exec rspec
+      continue-on-error: true
