@@ -78,7 +78,7 @@ group :test do
     git: 'https://github.com/thoughtbot/shoulda-matchers.git',
     branch: 'rails-5'
   # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'webdrivers'
+  gem 'webdrivers', require: !ENV['SELENIUM_DRIVER_URL']
 end
 
 group :production do
