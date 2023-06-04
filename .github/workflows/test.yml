@@ -24,4 +24,3 @@ jobs:
       run:  |
         docker-compose run --rm app bundle exec rubocop
         docker-compose run --rm app bundle exec rspec
-      continue-on-error: true
