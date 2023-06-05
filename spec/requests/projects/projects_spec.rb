@@ -1,11 +1,11 @@
 # require 'rails_helper'
 
 # RSpec.describe 'Projects', type: :request do
-#   describe "アクションテスト" do 
-    
+#   describe "アクションテスト" do
+
 #     describe 'index' do
-#       let(:user) { FactoryBot.create(:user) }     
-#       context 'ログインユーザーの場合' do       
+#       let(:user) { FactoryBot.create(:user) }
+#       context 'ログインユーザーの場合' do
 #         it 'indexリクエストが成功すること' do
 #           sign_in user
 #           get user_projects_path user
@@ -26,7 +26,7 @@
 #       let(:user) { FactoryBot.create(:user, :user_with_projects) }
 #       let(:user_2) { FactoryBot.create(:user, :user_2) }
 #       let(:project) { user.projects.first }
-      
+
 #       context 'プロジェクトリーダーの場合' do
 #         it 'showリクエストが成功すること' do
 #           sign_in user
@@ -34,7 +34,7 @@
 #           expect(response).to have_http_status 200
 #         end
 #       end
-      
+
 #       context 'プロジェクトメンバーの場合' do
 #         it 'showリクエストが成功すること' do
 #           sign_in user_2
@@ -103,7 +103,7 @@
 #           expect(flash[:success]).to eq 'プロジェクトを新規登録しました。'
 #         end
 #       end
-        
+
 #       context '無効な属性の場合' do
 #         before do
 #           sign_in user
@@ -163,17 +163,17 @@
 #         before do
 #           sign_in user
 #           get edit_user_project_path(user, project), params: { id: project.id }
-#         end 
+#         end
 #         it 'editリクエストが成功すること' do
 #           get edit_user_project_path(user, project)
 #           expect(response).to have_http_status 200
 #         end
 #       end
-      
+
 #       context 'ユーザーがプロジェクトのリーダーでない場合' do
 #         before do
 #           sign_in user_2
-#           project.users << user_2 
+#           project.users << user_2
 #           get edit_user_project_path(user_2, project), params: { id: project.id }
 #         end
 #         it 'projects/showにリダイレクトし、「リーダーではない為、権限がありません。」が表示されていること' do
@@ -195,12 +195,12 @@
 #     describe 'update' do
 #       let(:user) { FactoryBot.create(:user, :user_with_projects) }
 #       let(:project) { user.projects.first }
-#       let(:user_2) { FactoryBot.create(:user, :user_2) }    
+#       let(:user_2) { FactoryBot.create(:user, :user_2) }
 #       context 'ユーザーがプロジェクトのリーダーである場合' do
 #         before do
 #           sign_in user
 #         end
-#         it 'updateリクエストは302リダイレクトとなること' do         
+#         it 'updateリクエストは302リダイレクトとなること' do
 #           patch user_project_path(user, project),  params: { project: { name: 'プロジェクトB' } }
 #           expect(response).to have_http_status 302
 #         end
@@ -268,7 +268,7 @@
 #           project.users << user_2
 #           patch user_project_path(user_2, project), params: { project: { name: 'プロジェクトB' } }
 #         end
-#         it 'projects/showにリダイレクトし、「リーダーではない為、権限がありません。」が表示されていること' do 
+#         it 'projects/showにリダイレクトし、「リーダーではない為、権限がありません。」が表示されていること' do
 #           expect(response).to redirect_to user_project_path(user_2, project)
 #           expect(flash[:danger]).to eq 'リーダーではない為、権限がありません。'
 #         end
@@ -281,13 +281,13 @@
 #       let(:user_2) { FactoryBot.create(:user, :user_2) }
 #       before do
 #         sign_in user
-#       end    
+#       end
 #       context 'ユーザーがプロジェクトのリーダーである場合' do
 #         it 'プロジェクトが削除されること' do
 #           expect do
 #             delete user_project_path(user, project)
 #           end.to change(Project, :count).by(-1)
-#         end      
+#         end
 #         it 'projects/indexにリダイレクトし、「プロジェクトAを削除しました。」が表示されていること' do
 #           expect do
 #             delete user_project_path(user, project)
@@ -296,14 +296,14 @@
 #           expect(flash[:success]).to eq 'プロジェクトAを削除しました。'
 #         end
 #       end
-      
+
 #       context 'ユーザーがプロジェクトメンバーである場合' do
 #         before do
 #           sign_in user_2
-#           project.users << user_2    
-#         end     
+#           project.users << user_2
+#         end
 #         it 'projects/showにリダイレクトすること' do
-#           delete user_project_path(user_2, project)       
+#           delete user_project_path(user_2, project)
 #           expect(response).to redirect_to user_project_path(user_2, project)
 #           expect(flash[:danger]).to eq 'リーダーではない為、権限がありません。'
 #         end
@@ -311,10 +311,10 @@
 
 #       context 'ユーザーがプロジェクトに参加していない場合' do
 #         before do
-#           sign_in user_2    
-#         end     
+#           sign_in user_2
+#         end
 #         xit 'projects/indexにリダイレクトすること' do
-#           delete user_project_path(user_2, project)       
+#           delete user_project_path(user_2, project)
 #           expect(response).to redirect_to user_projects_path user_2
 #           expect(flash[:danger]).to eq 'リーダーではない為、権限がありません。'
 #         end
@@ -323,37 +323,37 @@
 
 #     describe 'join' do
 #       let(:user) { FactoryBot.create(:user) }
-#       let(:project) { FactoryBot.create(:project) }  
-#       let(:token) { Join.create(user_id: user.id, project_id: project.id).token } 
+#       let(:project) { FactoryBot.create(:project) }
+#       let(:token) { Join.create(user_id: user.id, project_id: project.id).token }
 #       context 'ユーザーがまだプロジェクトのメンバーでない場合' do
 #         it 'プロジェクトに参加できること' do
 #           get join_path, params: { token: token }
 #           expect(project.users).to include(user)
-#           expect(response).to redirect_to(user_project_path(user, project)) 
+#           expect(response).to redirect_to(user_project_path(user, project))
 #         end
 #         it 'projects/showにリダイレクトすること' do
 #           get join_path, params: { token: token }
-#           expect(response).to redirect_to(user_project_path(user, project)) 
+#           expect(response).to redirect_to(user_project_path(user, project))
 #         end
 #         it 'フラッシュメッセージ「プロジェクトAに参加しました。」が表示されること' do
-#           get join_path, params: { token: token } 
-#           expect(flash[:success]).to eq('プロジェクトAに参加しました。') 
+#           get join_path, params: { token: token }
+#           expect(flash[:success]).to eq('プロジェクトAに参加しました。')
 #         end
 #       end
-  
+
 #       context 'ユーザーが既にプロジェクトのメンバーである場合' do
-#         before { project.users << user }  
+#         before { project.users << user }
 #         it 'プロジェクトに参加できないこと' do
 #           get join_path, params: { token: token }
-#           expect(project.users.count).to eq(1) 
-#         end 
+#           expect(project.users.count).to eq(1)
+#         end
 #         it 'projects/showにリダイレクトすること' do
 #           get join_path, params: { token: token }
-#           expect(response).to redirect_to(user_project_path(user, project)) 
+#           expect(response).to redirect_to(user_project_path(user, project))
 #         end
 #         it 'フラッシュメッセージ「参加済みプロジェクトです。」が表示されること' do
 #           get join_path, params: { token: token }
-#           expect(flash[:success]).to eq('参加済みプロジェクトです。') 
+#           expect(flash[:success]).to eq('参加済みプロジェクトです。')
 #         end
 #       end
 #     end
@@ -361,13 +361,13 @@
 #     describe 'accept_request' do
 #       let!(:user) { FactoryBot.create(:user, :user_with_projects) }
 #       let!(:project) { user.projects.first }
-#       let!(:user_2) { FactoryBot.create(:user, :user_2) } 
+#       let!(:user_2) { FactoryBot.create(:user, :user_2) }
 #       let!(:delegation) { FactoryBot.create(:delegation, project: project, user_to: user_2) }
 #       context 'リーダー権限委譲リクエスト受認' do
 #         before do
 #           sign_in user
 #           params = { delegate_id: 1, user_id: user.id, to: user_2.id }
-#           post delegate_leader_path(user, project, to: params[:to]), params: params         
+#           post delegate_leader_path(user, project, to: params[:to]), params: params
 #           #expect(response).to redirect_to(project_member_index_path(user.id, project.id))
 #           #expect(flash[:success]).to eq('ユーザー2さんに権限譲渡のリクエストを送信しました。')
 #         end
@@ -388,7 +388,7 @@
 #       let!(:user) { FactoryBot.create(:user, :user_with_projects) }
 #       let!(:project) { user.projects.first }
 #       let!(:user_2) { FactoryBot.create(:user, :user_2) }
-#       let!(:delegation) { FactoryBot.create(:delegation, project: project, user_to: user_2) } 
+#       let!(:delegation) { FactoryBot.create(:delegation, project: project, user_to: user_2) }
 #       context 'リーダー権限委譲リクエスト辞退' do
 #         before do
 #           sign_in user
