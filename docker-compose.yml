@@ -20,7 +20,7 @@ services:
       - db
       - chrome
     environment:
-      - "SELENIUM_DRIVER_URL=http://selenium_chrome:4444/wd/hub"
+      SELENIUM_REMOTE_URL: http://chrome:4444/wd/hub
     # (stdin_open,tty) = コンテナ内でデバックできるようにする
     stdin_open: true
     tty: true
