@@ -44,26 +44,26 @@ gem 'whenever', require: false
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
+  gem 'letter_opener_web', '~> 1.0'
+  gem 'rspec-queue'
   gem 'rspec-rails'
-  gem 'sqlite3', '1.3.13'
-end
-
-group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop', require: false
   gem 'rubocop-discourse'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec'
+  gem 'spring-commands-rspec'
+  gem 'sqlite3', '1.3.13'
+end
+
+group :development do
+  gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   # gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'letter_opener_web', '~> 1.0'
   gem 'web-console', '>= 3.3.0'
-  gem 'spring-commands-rspec'
-  gem 'rspec-queue'
 end
 
 group :test do
@@ -78,7 +78,7 @@ group :test do
     git: 'https://github.com/thoughtbot/shoulda-matchers.git',
     branch: 'rails-5'
   # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'webdrivers'
+  gem 'webdrivers', require: !ENV['SELENIUM_DRIVER_URL']
 end
 
 group :production do
