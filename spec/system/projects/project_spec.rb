@@ -10,7 +10,7 @@
 #         let!(:user_2) { FactoryBot.create(:user, :user_2) }
 #         before do
 #           sign_in user
-#           visit user_projects_path user  
+#           visit user_projects_path user
 #         end
 #         it '検索ボタンが表示されていること' do
 #           expect(page).to have_button '検索'
@@ -19,11 +19,11 @@
 #           expect(page).to have_link 'プロジェクトA'
 #         end
 #         it 'プロジェクト毎に編集ボタンが表示されていること' do
-#           expect(page).to have_link '編集'     
+#           expect(page).to have_link '編集'
 #         end
 #         it '次回報告日、報告または未報告が表示されていること' do
 #           expect(page).to have_content '2023年04月20日(木)'
-#           expect(page).to have_link '未報告' 
+#           expect(page).to have_link '未報告'
 #         end
 #         it 'お知らせ表示がある場合、表示されていること' do
 #           sign_in user_2
@@ -57,7 +57,7 @@
 #         before do
 #           sign_in user_2
 #           project.users << user_2
-#           visit user_projects_path user_2 
+#           visit user_projects_path user_2
 #         end
 #         it '検索ボタンが表示されていること' do
 #           expect(page).to have_button '検索'
@@ -67,11 +67,11 @@
 #         end
 #         it '編集ボタン非表示であること' do
 #           expect(page).to have_link 'プロジェクトA'
-#           expect(page).to have_no_link '編集' 
+#           expect(page).to have_no_link '編集'
 #         end
 #         it '次回報告日、報告または未報告が表示されていること' do
 #           expect(page).to have_content '2023年04月20日(木)'
-#           expect(page).to have_link '未報告' 
+#           expect(page).to have_link '未報告'
 #         end
 #         it 'お知らせ表示がある場合、表示されていること' do
 #           sign_in user
@@ -104,7 +104,7 @@
 #           visit user_projects_path user
 #           expect(page).to have_content '参画中のプロジェクトはありません。'
 #         end
-#       end 
+#       end
 #     end
 
 #     describe '検索機能のテスト' do
@@ -112,7 +112,7 @@
 #       let!(:project) { user.projects.first }
 #       before do
 #         sign_in user
-#         visit user_projects_path user  
+#         visit user_projects_path user
 #       end
 #       it '入力したワードでヒットすること' do
 #         fill_in 'プロジェクト名を入力', with: 'プロジェクトA'
@@ -136,7 +136,7 @@
 #         expect(page).to have_selector '.card-text', text: '1日に１回'
 #         expect(page).to have_selector '.card-text', text: 'メンバーはいません'
 #       end
-#       it 'リーダー交代のリクエストがある場合、重要なお知らせが表示されていること' do 
+#       it 'リーダー交代のリクエストがある場合、重要なお知らせが表示されていること' do
 #         project.users << user_2
 #         sign_in user
 #         visit project_member_index_path(user, project)
@@ -152,12 +152,12 @@
 #         expect(page).to have_link '辞退'
 #       end
 #     end
-#   end    
-      
+#   end
+
 #   describe 'プロジェクト新規登録' do
 #     let!(:user) { FactoryBot.create(:user) }
 #     before do
-#       sign_in user  
+#       sign_in user
 #     end
 #     context '表示のテスト' do
 #       it '新規作成ボタンが表示されていること' do
@@ -179,7 +179,7 @@
 #         expect(page).to have_content '毎週'
 #         expect(page).to have_select('project[week_select]', selected: '月')
 #         expect(page).to have_content '曜日'
-#       end 
+#       end
 #     end
 
 #     context '登録のテスト' do
@@ -199,16 +199,16 @@
 #   describe 'プロジェクト編集' do
 #     let!(:user) { FactoryBot.create(:user) }
 #     before do
-#       sign_in user 
+#       sign_in user
 #       visit new_user_project_path user
 #       fill_in 'project_name', with: 'プロジェクトA'
 #       fill_in 'project_description', with: '概要A'
 #       choose '日数で設定'
 #       fill_in 'report_frequency', with: 2
-#       click_button '新規作成' 
+#       click_button '新規作成'
 #     end
 #     context '表示のテスト' do
-#       it '保存ボタンが表示されていること' do      
+#       it '保存ボタンが表示されていること' do
 #         visit edit_user_project_path(user, user_id: user.id)
 #         expect(page).to have_button '保存'
 #       end
@@ -231,7 +231,7 @@
 #         expect(page).to have_content '毎週'
 #         expect(page).to have_select('project[week_select]', selected: '')
 #         expect(page).to have_content '曜日'
-#       end 
+#       end
 #     end
 
 #     context '編集のテスト' do

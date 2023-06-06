@@ -12,12 +12,12 @@ RUN apt-get update \
 # 作業用のディレクトリを作成(存在しない場合は勝手に作成してくれる)
 WORKDIR /myproject
 # ホストのGemfile達をコンテナ内にコピー
-COPY Gemfile /myproject/Gemfile
-COPY Gemfile.lock /myproject/Gemfile.lock
+ADD Gemfile /myproject/Gemfile
+ADD Gemfile.lock /myproject/Gemfile.lock
 RUN gem install bundler
 RUN bundle install -j4
 #既存railsプロジェクトをコンテナ内にコピー
-COPY . /myproject
+ADD . /myproject
 # entrypoint.shをコピーし、実行権限を与える
 COPY entrypoint.sh /usr/bin/
 # chmodコマンドはファイルやディレクトリに権限設定するコマンド。`+`は後に記述した権限を付加する。`x`は実行権限。

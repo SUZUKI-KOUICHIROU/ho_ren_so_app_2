@@ -44,16 +44,16 @@ gem 'whenever', require: false
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
-  gem 'rspec-rails'
-  gem 'sqlite3', '1.3.13'
   gem 'letter_opener_web', '~> 1.0'
+  gem 'rspec-queue'
+  gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-discourse'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec'
   gem 'spring-commands-rspec'
-  gem 'rspec-queue'
+  gem 'sqlite3', '1.3.13'
 end
 
 group :development do
