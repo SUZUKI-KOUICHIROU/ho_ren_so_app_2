@@ -3,7 +3,7 @@ FactoryBot.define do
     association :project
     id { 1 }
     project_id { 1 }
-    sender_id { 1 }    
+    sender_id { 1 }
     sender_name { 'MyText' }
     title { 'タイトル' }
     report_day { Date.current }

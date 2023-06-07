@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe "Projectモデルのテスト", type: :model do
   let(:project) { FactoryBot.create(:project) }
 
-  describe "各項目が有効な場合" do  
+  describe "各項目が有効な場合" do
     it "Projectが保存されるか" do
       expect(project).to be_valid
     end
   end
 
-  describe "バリデーションのテスト" do 
+  describe "バリデーションのテスト" do
     context "leader_id(リーダーid)" do
       it "リーダ-のみ登録できる（leader_idがなければ登録できない）" do
         expect(build(:project, leader_id: nil)).to be_invalid
@@ -29,21 +29,21 @@ RSpec.describe "Projectモデルのテスト", type: :model do
       end
       it "201文字以上の場合登録できない" do
         expect(build(:project, description: 'あ' * 201)).to be_invalid
-      end  
+      end
     end
     context "report_frequency(報告回数・報告日)" do
       it "report_frequencyがなければ登録できない" do
         expect(build(:project, report_frequency: nil)).to be_invalid
-      end  
+      end
     end
     context "next_report_date(次回報告日)" do
       it "next_report_dateがなければ登録できない" do
         expect(build(:project, next_report_date: nil)).to be_invalid
-      end  
+      end
     end
   end
-  
-  describe "reported_flag" do 
+
+  describe "reported_flag" do
     it "trueは登録できる" do
       project.reported_flag = true
       expect(project).to be_valid
