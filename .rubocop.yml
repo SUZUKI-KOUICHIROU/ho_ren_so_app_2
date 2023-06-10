@@ -1,5 +1,9 @@
+inherit_from:
+  - .rubocop_todo.yml
+  - .rubocop_todo1.yml
+
 #「inherit_from:」の記述によりrubocop_todo.ymlのファイルもrubocopコマンド実行時に参照する
-inherit_from: .rubocop_todo.yml
+
 inherit_from: .rubocop_todo1.yml
 
 #gemでインストールしたrubocopの設定をrubocopに適用する

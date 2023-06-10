@@ -36,6 +36,14 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  def edit
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @report = Report.find(params[:id])
+    @user = User.find(@report.user_id)
+    @answers = @report.answers
+  end
+
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def create
@@ -56,18 +64,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
-  # rubocop:enable Metrics/AbcSize
-
-  def edit
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = Report.find(params[:id])
-    @user = User.find(@report.user_id)
-    @answers = @report.answers
-  end
 
   # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
     @project = Project.find(params[:project_id])

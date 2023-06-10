@@ -15,21 +15,13 @@ class Projects::ProjectsController < Projects::BaseProjectController
       end
   end
 
-  # プロジェクト新規登録アクション
-  def create
-    @user = current_user
-    if @user.projects.new(project_params).valid?
-      @project = @user.projects.create(project_params)
-      @project.update_deadline(@project.next_report_date)
-      @project.report_deadlines.create!(day: @project.next_report_date)
-      @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
-      flash[:success] = 'プロジェクトを新規登録しました。'
-      redirect_to user_project_path(@user, @project)
-      @project.create_format(title: '件名')
-    else
-      flash[:danger] = 'プロジェクト新規登録に失敗しました。'
-      redirect_to user_projects_path(@user)
-    end
+  # プロジェクト詳細ページ表示アクション
+  def show
+    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
+    @counselings = @project.counselings.my_counselings(current_user)
+    @messages = @project.messages.my_recent_messages(current_user)
+    @member = @project.users.all.where.not(id: @project.leader_id)
+    @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -49,13 +41,21 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
-  # プロジェクト詳細ページ表示アクション
-  def show
-    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
-    @counselings = @project.counselings.my_counselings(current_user)
-    @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all.where.not(id: @project.leader_id)
-    @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
+  # プロジェクト新規登録アクション
+  def create
+    @user = current_user
+    if @user.projects.new(project_params).valid?
+      @project = @user.projects.create(project_params)
+      @project.update_deadline(@project.next_report_date)
+      @project.report_deadlines.create!(day: @project.next_report_date)
+      @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
+      flash[:success] = 'プロジェクトを新規登録しました。'
+      redirect_to user_project_path(@user, @project)
+      @project.create_format(title: '件名')
+    else
+      flash[:danger] = 'プロジェクト新規登録に失敗しました。'
+      redirect_to user_projects_path(@user)
+    end
   end
 
   # プロジェクト内容編集アクション

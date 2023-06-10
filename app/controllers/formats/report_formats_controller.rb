@@ -1,18 +1,6 @@
 class Formats::ReportFormatsController < Formats::BaseFormatController
   before_action :project_authorization, only: %i[edit]
 
-  # 入力フォーム新規登録アクション
-  def create
-    @project = Project.find(params[:project_id])
-    question = @project.questions.build(create_formats_params)
-    if question.save
-      flash[:notice] = '入力フォームを新規登録しました。'
-    else
-      flash[:alert] = '入力フォームの新規登録に失敗しました。'
-    end
-    redirect_to edit_project_report_format_path(@project)
-  end
-
   # 入力フォーム新規登録用モーダルウインドウ表示アクション
   def new
     @user = User.find(params[:user_id])
@@ -36,6 +24,18 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
     @questions = @project.questions.order(:position)
     @form_number = 0
     @format = @project.format
+  end
+
+  # 入力フォーム新規登録アクション
+  def create
+    @project = Project.find(params[:project_id])
+    question = @project.questions.build(create_formats_params)
+    if question.save
+      flash[:notice] = '入力フォームを新規登録しました。'
+    else
+      flash[:alert] = '入力フォームの新規登録に失敗しました。'
+    end
+    redirect_to edit_project_report_format_path(@project)
   end
 
   # 入力フォーム編集アクション
