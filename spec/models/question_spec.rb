@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   subject(:question) { FactoryBot.build(:question) }
 
-  describe 'バリデーション' do   
+  describe 'バリデーション' do
     context 'positionカラム' do
       it 'positionがなければ登録できない' do
         expect(build(:question, position: '')).to be_invalid
@@ -14,10 +14,10 @@ RSpec.describe Question, type: :model do
       it '質問形式がなければ登録できない' do
         expect(build(:question, form_table_type: '')).to be_invalid
       end
-    end    
+    end
   end
 
-  # describe "using_flag" do 
+  # describe "using_flag" do
   #   it "trueは登録できる" do
   #     question.using_flag == true
   #     expect(question).to be_valid
@@ -32,7 +32,7 @@ RSpec.describe Question, type: :model do
   #   end
   # end
 
-  # describe "required" do 
+  # describe "required" do
   #   it "trueは登録できる" do
   #     question.required == true
   #     expect(question).to be_valid

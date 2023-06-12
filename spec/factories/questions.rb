@@ -4,9 +4,9 @@ FactoryBot.define do
     id { 1 }
     position { 1 }
     form_table_type { 'text_field' }
-    project_id { 1 } 
+    project_id { 1 }
     using_flag { true }
-    required { true }     
+    required { true }
     created_at { Date.current }
     updated_at { Date.current }
   end

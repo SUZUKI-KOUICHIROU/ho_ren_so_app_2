@@ -8,6 +8,6 @@ RSpec.describe SelectOptionString, type: :model do
       it 'option_string（選択肢）がなければ登録できない' do
         expect(build(:select_option_string, option_string: '')).to be_invalid
       end
-    end   
+    end
   end
 end
