@@ -19,4 +19,5 @@ class Question < ApplicationRecord
   validates :position, presence: true
   validates :form_table_type, presence: true
   validates :using_flag, inclusion: [true, false]
+  validates :required, inclusion: [true, false]
 end
