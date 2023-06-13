@@ -15,6 +15,7 @@ WORKDIR /myproject
 COPY Gemfile /myproject/Gemfile
 COPY Gemfile.lock /myproject/Gemfile.lock
 RUN gem install bundler
+RUN gem update --system 3.2.3
 RUN bundle install -j 10
 #既存railsプロジェクトをコンテナ内にコピー
 COPY . /myproject
