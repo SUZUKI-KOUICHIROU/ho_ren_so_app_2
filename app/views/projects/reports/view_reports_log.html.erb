@@ -1,10 +1,10 @@
-<% provide(:title, '報告状況履歴') %>
+<% provide(:title, '報告集計') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
-  <h1 class="text-center">報告状況履歴
+  <h1 class="text-center">報告集計
   </h1>
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
