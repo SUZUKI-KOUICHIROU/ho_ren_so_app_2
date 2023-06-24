@@ -13,12 +13,11 @@
           <%= link_to "項目を追加", new_project_report_format_path(@user, @project), remote: true, class: "btn btn-outline-orange" %>
         </div>
       </div>
-      
         <%= f.fields_for 'format_attribute[]', @format do |format| %>
         <div class='form'>
           <div class='label-box'>
             <p><%= format.label :title, "タイトル項目", class: 'text-right report-item-title font-weight-bold mt-3 ml-3' %></p>
-            <%= format.text_field :title, class: 'ml-3 form-control' %>
+            <p class='ml-3'><%= @format.title %></p>
             <%= format.label "フォームの種類:", class: 'ml-3' %>
             <%= format.label '記述式', class: 'font-weight-bold'%>
           </div>
