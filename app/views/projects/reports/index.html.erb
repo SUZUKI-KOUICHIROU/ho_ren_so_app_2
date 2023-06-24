@@ -1,11 +1,11 @@
-<% provide(:title, '報告一覧') %>
+<% provide(:title, '報告履歴') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
-  <h1 class="text-center">報告一覧</h1>
+  <h1 class="text-center">報告履歴</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -19,7 +19,7 @@
     </div>
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
-        <!-- あなたの報告一覧 -->
+        <!-- あなたの報告履歴 -->
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
             <div class="d-flex justify-content-end mb-3">
@@ -80,7 +80,7 @@
             </div>
           </div>
         </div>
-        <!-- 他メンバーの報告一覧 -->
+        <!-- 他メンバーの報告履歴 -->
         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
           <div class="box-report-index">
             <div class="d-flex justify-content-end mb-3">
