@@ -12,4 +12,20 @@ class Report < ApplicationRecord
   validates :title, presence: true, length: { maximum: 30 }
   validates :report_day, presence: true
   validates :sender_name, presence: true
+
+  scope :sarch, -> (search_params) do # scopeでsearcでメソッドを定義。(search_paramsは引数) 
+    return if search_params.blank? # 検索フォームに値が無ければ以下の手順は行わない。
+  
+    title_like(search_params[:title])
+    .value_like(search_params[:value])
+    .updated_at(search_params[:updated_at])
+    .sender_name_like(searc_params[:sender_name])
+  end
+  
+  scope :title_like, -> (title){where('title LIKE ?', "%#{title}%")} if title.present?
+  scope :value_like, -> (value){where('value LIKE ?', "%#{value}%")} if value.present?
+  scope :updated_at, -> (updated_at){where('updated_at', "%#{updated_at}%")} if updated_at.present?
+  scope :sender_name_like, -> (sender_name){where('sender_name LIKE ?', "%#{sender_name}%")} if sender_name.present?
+  #scope :メソッド名 -> (引数) { SQL文 }
+  #if 引数.present?をつけることで、検索フォームに値がない場合は実行されない
 end
