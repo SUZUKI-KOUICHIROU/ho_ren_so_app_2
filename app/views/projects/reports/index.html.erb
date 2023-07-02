@@ -28,14 +28,14 @@
                 <%= form.hidden_field :search_type, :title => "you-report" %>
                 <%= form.hidden_field :search_type, :value => "you-report" %>
 
-                <%= form.label :updated_at, "報告日：", class: "mb-0" %>
-                <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params[:updated_at], class: "search-box" %>
+                <%= form.label :updated_at_eq, "報告日：", class: "mb-0" %>
+                <%= form.date_field :updated_at_eq, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
 
-                <%= form.label :title, "件名：", class: "mb-0" %>
-                <%= form.text_field :title, placeholder: "件名を入力", value: @search_params[:title], class: "search-box" %>
+                <%= form.label :title_cont, "件名：", class: "mb-0" %>
+                <%= form.text_field :title_cont, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
 
-                <%= form.label :value, "キーワード検索：", class: "mb-0" %>
-                <%= form.text_field :value, placeholder: "キーワードを入力", value: @search_params[:value], class: "search-box" %>
+                <%= form.label :value_cont, "キーワード検索：", class: "mb-0" %>
+                <%= form.text_field :value_cont, placeholder: "キーワードを入力", value: @search_params && @search_params[:value], class: "search-box" %>
 
                 <%= form.submit "検索", class: "btn btn-outline-orange" %>
               <% end %>
@@ -100,17 +100,17 @@
                 <%= form.hidden_field :search_type, :sender_name => "report" %>
                 <%= form.hidden_field :search_type, :value => "report" %>
 
-                <%= form.label :updated_at, "報告日：", class: "mb-0" %>
-                <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params[:updated_at], class: "search-box" %>
+                <%= form.label :updated_at_eq, "報告日：", class: "mb-0" %>
+                <%= form.date_field :updated_at_eq, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
                 
-                <%= form.label :title, "件名：", class: "mb-0" %>
-                <%= form.text_field :title, placeholder: "件名を入力", value: @search_params[:title], class: "search-box" %>
+                <%= form.label :title_cont, "件名：", class: "mb-0" %>
+                <%= form.text_field :title_cont, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
 
-                <%= form.label :sender_name, "報告者：", class: "mb-0" %>
-                <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params[:sender_name], class: "search-box" %>
+                <%= form.label :sender_name_cont, "報告者：", class: "mb-0" %>
+                <%= form.text_field :_cont, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
 
-                <%= form.label :value, "キーワード検索：", class: "mb-0" %>
-                <%= form.text_field :value, placeholder: "キーワードを入力", value: @search_params[:value], class: "search-box" %>
+                <%= form.label :value_cont, "キーワード検索：", class: "mb-0" %>
+                <%= form.text_field :value_cont, placeholder: "キーワードを入力", value: @search_params && @search_params[:value], class: "search-box" %>
 
                 <%= form.submit "検索", class: "btn btn-outline-orange" %>
               <% end %>

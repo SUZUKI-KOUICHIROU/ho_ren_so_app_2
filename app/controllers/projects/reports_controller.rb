@@ -1,8 +1,8 @@
 class Projects::ReportsController < Projects::BaseProjectController
 
-  def search
+  def search    
     @search_params = report_search_params
-    @reports = Report.search(@search_params).joins(:answer)
+    @q = Report.ransack(@search_params)
   end
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
@@ -11,12 +11,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)   
     if params[:search].present? and params[:search] != ""
       # @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
-      @results = Report.search(@search_params).joins(:answer)
+      @results = search
       if @results.present?
-        @report_ids = @results.pluck(:report_id).uniq
+        # @report_ids = @results.pluck(:report_id).uniq
+        @report_ids = @results.result       
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。'
         render :index
@@ -247,7 +248,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   def report_search_params
-    params.fetch(:search, {}).permit(:title, :value, :updated_at, :sender_name)
+    params.fetch(:search, {}).permit(:report_id, :title, :value, :updated_at, :sender_name)
     #fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
     #ここでの:searchには、フォームから送られてくるparamsの値が入っている
   end
