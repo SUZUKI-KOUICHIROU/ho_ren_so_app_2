@@ -20,6 +20,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
     @user = current_user
     if @user.projects.new(project_params).valid?
       @project = @user.projects.create(project_params)
+      @project.update_next_report_date(project_params[:report_frequency_selection], project_params[:week_select])
       @project.update_deadline(@project.next_report_date)
       @project.report_deadlines.create!(day: @project.next_report_date)
       @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
@@ -61,6 +62,7 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト内容編集アクション
   def update
     if @project.update(project_params)
+      @project.update_next_report_date(project_params[:report_frequency_selection], project_params[:week_select])
       @project.report_deadlines.last.update(day: @project.next_report_date)
       flash[:success] = "#{@project.name}の内容を更新しました。"
     else
@@ -132,6 +134,13 @@ class Projects::ProjectsController < Projects::BaseProjectController
   private
 
   def project_params
-    params.require(:project).permit(:name, :leader_id, :report_frequency, :next_report_date, :description)
+    params.require(:project).permit(
+      :name, :leader_id,
+      :report_frequency,
+      :next_report_date,
+      :description,
+      :report_frequency_selection,
+      :week_select
+    )
   end
 end
