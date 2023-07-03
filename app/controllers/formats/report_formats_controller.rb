@@ -42,8 +42,6 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
   def update
     # formatモデルの内容を更新する処理
     # paramsの代わりにupdate_formats_paramsが用いられているので注意
-    format_object = @project.format
-    format_object.update(title: update_formats_params[:format_attribute][@project.format.id.to_s][:title])
     params = update_formats_params[:question_attributes]
     params.each do |question_id, items|
       question_object = Question.find(question_id)
@@ -137,7 +135,6 @@ class Formats::ReportFormatsController < Formats::BaseFormatController
 
   def update_formats_params
     params.permit(
-      format_attribute: [:id, [:title]],
       question_attributes: [:id, [:id, :form_table_type, :position, :using_flag, :required, {
         text_field_attributes: %i[id label_name field_type],
         text_area_attributes: %i[id label_name field_type],
