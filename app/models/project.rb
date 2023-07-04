@@ -36,6 +36,34 @@ class Project < ApplicationRecord
     end
   end
 
+  # 日数か曜日によって次回報告日を更新する
+  def update_next_report_date(report_frequency_selection, week_select)
+    if report_frequency_selection == "edit_day"
+      # 一日に一回の次回報告日は今日であるため、昨日をベースにする
+      next_report_date_calc = Date.yesterday + self.report_frequency
+      self.update(next_report_date: next_report_date_calc) unless self.next_report_date == next_report_date_calc
+    else
+      next_report_date_week_update(week_select)
+    end
+  end
+
+  def next_report_date_week_update(week_select)
+    next_report_week = Date.today.next_occurring(week_selecter[week_select])
+    self.update(next_report_date: next_sunday) unless self.next_report_date == next_report_week
+  end
+
+  def week_selecter
+    return {
+      "日" => :sunday,
+      "月" => :monday,
+      "火" => :tuesday,
+      "水" => :wednesday,
+      "木" => :thursday,
+      "金" => :friday,
+      "土" => :saturday
+    }
+  end
+
   # デフォルト報告フォーマット作成アクション(projects/projects#create内で呼ばれる)
   def report_format_creation
     text_area = TextArea.new(label_name: '報告内容')
