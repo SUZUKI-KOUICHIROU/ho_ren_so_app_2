@@ -38,7 +38,7 @@ class Project < ApplicationRecord
 
   # 日数か曜日によって次回報告日を更新する
   def update_next_report_date(report_frequency_selection, week_select)
-    if report_frequency_selection == "edit_day"
+    if report_frequency_selection == "edit_day" || report_frequency_selection == "day"
       # 一日に一回の次回報告日は今日であるため、昨日をベースにする
       next_report_date_calc = Date.yesterday + self.report_frequency
       self.update(next_report_date: next_report_date_calc) unless self.next_report_date == next_report_date_calc
@@ -49,7 +49,7 @@ class Project < ApplicationRecord
 
   def next_report_date_week_update(week_select)
     next_report_week = Date.today.next_occurring(week_selecter[week_select])
-    self.update(next_report_date: next_sunday) unless self.next_report_date == next_report_week
+    self.update(next_report_date: next_report_week) unless self.next_report_date == next_report_week
   end
 
   def week_selecter
