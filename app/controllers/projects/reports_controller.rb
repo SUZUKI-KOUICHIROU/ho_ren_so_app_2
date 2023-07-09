@@ -2,7 +2,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def search    
     @search_params = report_search_params
-    @q = Report.ransack(@search_params)
+    @reports = Report.search(@search_params)  #Reportモデルのsearchを呼び出し、引数としてparamsを渡している。
   end
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
@@ -14,10 +14,10 @@ class Projects::ReportsController < Projects::BaseProjectController
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)   
     if params[:search].present? and params[:search] != ""
       # @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
-      @results = search
+      @results = Report.search(report_search_params)
       if @results.present?
         # @report_ids = @results.pluck(:report_id).uniq
-        @report_ids = @results.result       
+        @report_ids = @results.pluck(:id).uniq
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。'
         render :index
@@ -248,7 +248,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   def report_search_params
-    params.fetch(:search, {}).permit(:report_id, :title, :value, :updated_at, :sender_name)
+    params.fetch(:search, {}).permit(:report_id, :title, :updated_at, :sender_name)
     #fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
     #ここでの:searchには、フォームから送られてくるparamsの値が入っている
   end
