@@ -28,12 +28,18 @@ class Report < ApplicationRecord
   
     if search_params[:sender_name].present?
       reports = reports.sender_name_like(search_params[:sender_name])
-    end  
+    end
+
+    if search_params[:value].present?
+      reports = reports.answer_value_like(search_params[:value])
+      end
   
     reports
   end
   
   scope :title_like, -> (title) { where('title LIKE ?', "%#{title}%") }
   scope :updated_at, ->(updated_at) { where('updated_at BETWEEN ? AND ?', "#{updated_at} 00:00:00", "#{updated_at} 23:59:59") }
-  scope :sender_name_like, -> (sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") } 
+  scope :sender_name_like, -> (sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
+  scope :answer_value_like, -> (value) { joins(:answers).where('answers.value LIKE ?', "%#{value}%") }
+  # scope :answer_value_like, -> (value) { joins(:answers).select('reports.*, answers.value').where('answers.value LIKE ?', "%#{value}%") }
 end

@@ -41,9 +41,9 @@ Rails.application.routes.draw do
             post 'reject'
             post 'resubmitted'
           end
-          collection do
-            get :search
-          end
+          # collection do
+          #   get :search
+          # end
         end
       end
     end
