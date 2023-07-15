@@ -1,6 +1,5 @@
 class Projects::ReportsController < Projects::BaseProjectController
-
-  # def search    
+  # def search
   #   @search_params = report_search_params
   #   @reports = Report.search(@search_params)
   #   #Reportモデルのsearchを呼び出し、引数としてparamsを渡している。
@@ -12,7 +11,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)   
+    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     if params[:search].present? and params[:search] != ""
       # @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       @results = Report.search(report_search_params)
@@ -45,6 +44,14 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  def edit
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @report = Report.find(params[:id])
+    @user = User.find(@report.user_id)
+    @answers = @report.answers
+  end
+
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def create
@@ -65,18 +72,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     flash[:success] = "報告を登録しました。"
     redirect_to user_project_report_path(@user, @project, @report)
   end
-  # rubocop:enable Metrics/AbcSize
-
-  def edit
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = Report.find(params[:id])
-    @user = User.find(@report.user_id)
-    @answers = @report.answers
-  end
 
   # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
     @project = Project.find(params[:project_id])
@@ -248,9 +246,9 @@ class Projects::ReportsController < Projects::BaseProjectController
       ])
   end
 
-  def report_search_params    
+  def report_search_params
     params.fetch(:search, {}).permit(:title, :updated_at, :sender_name, :value)
-    #fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
-    #ここでの:searchには、フォームから送られてくるparamsの値が入っている
+    # fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
+    # ここでの:searchには、フォームから送られてくるparamsの値が入っている
   end
 end

@@ -163,3 +163,17 @@ Rails/UniqueValidationWithoutIndex:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 148
+
+# Offense count: 1
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: slashes, arguments
+Rails/FilePath:
+  Exclude:
+    - 'spec/rails_helper.rb'
+
+# Offense count: 2
+# This cop supports unsafe autocorrection (--autocorrect-all).
+Rails/RootPathnameMethods:
+  Exclude:
+    - 'app/helpers/projects/counselings_helper.rb'
+    - 'app/helpers/projects/messages_helper.rb'
