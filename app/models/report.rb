@@ -42,4 +42,11 @@ class Report < ApplicationRecord
   scope :sender_name_like, ->(sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
   scope :answer_value_like, ->(value) { joins(:answers).where('answers.value LIKE ?', "%#{value}%") }
   # scope :answer_value_like, -> (value) { joins(:answers).select('reports.*, answers.value').where('answers.value LIKE ?', "%#{value}%") }
+  def self.befor_deadline_reports_size(project_reports)
+    if project_reports.present?
+      return project_reports.map { |report| report.report_day == report.created_at.to_date ? report.user_id : nil }.compact.uniq.size
+    else
+      return 0
+    end
+  end
 end
