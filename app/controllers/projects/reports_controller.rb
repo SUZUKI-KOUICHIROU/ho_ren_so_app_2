@@ -201,9 +201,16 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @display = params[:display].nil? ?
     "percent" : params[:display]
-    @first_day = params[:date].blank? ?
-    Date.current.beginning_of_month : Date.strptime(params[:date], '%Y-%m')
-    @last_day = @first_day.end_of_month
+    @first_day = params[:date].blank? ? Date.current.beginning_of_week : Date.strptime(params[:date], '%Y-%m').to_date
+    @first_day -= 1.week if params[:monthly].nil? # 一週間表示の場合のみ1週間前に調整する
+    @last_day = @first_day + 6.days
+    if params[:monthly] == 'true'
+      @first_day = @first_day.beginning_of_month
+      @last_day = @first_day.end_of_month
+      @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
+    else
+      @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_week }
+    end
     one_month = [*@first_day..@last_day]
     @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
     @month_field_value = @first_day.strftime("%Y-%m")
