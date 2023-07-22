@@ -1,5 +1,6 @@
----
 ja:
+  flash:
+    not_logined: 'ログインもしくはアカウント登録してください。'
   date:
     abbr_day_names:
     - 日

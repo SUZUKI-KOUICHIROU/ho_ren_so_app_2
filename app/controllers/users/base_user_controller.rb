@@ -27,7 +27,7 @@ class Users::BaseUserController < BaseController
             end
     return if current_user?(@user)
 
-    # flash[:danger] = '権限がありません。'
+    flash[:danger] = t('flash.not_logined')
     redirect_to root_path
   end
 end
