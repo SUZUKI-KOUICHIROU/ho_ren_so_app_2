@@ -1,4 +1,4 @@
-class Projects::BaseProjectController < BaseController
+class Projects::BaseProjectController < Users::BaseUserController
   before_action :temporarily_user?
 
   # ユーザー、プロジェクト、送信先を取得
