@@ -1,5 +1,7 @@
 ---
 ja:
+  flash:
+    no_access_rights: 'アクセス権限がありません。'
   date:
     abbr_day_names:
     - 日

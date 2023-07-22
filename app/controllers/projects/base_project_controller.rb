@@ -12,7 +12,8 @@ class Projects::BaseProjectController < BaseController
   def project_authorization
     @user = current_user
     @project = Project.find(params[:id])
-    unless @project.project_users.exists?(user_id: @user)
+    unless @project.project_users.exists?(user_id: @user) || @user.admin
+      flash[:danger] = t('flash.no_access_rights')
       redirect_to user_projects_path(@user)
     end
   end
