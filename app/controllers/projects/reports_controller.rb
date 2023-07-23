@@ -7,6 +7,24 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    # start_of_month = Date.today.beginning_of_month
+    start_of_month = Time.zone.today.beginning_of_month
+    # end_of_month = Date.today.end_of_month
+    end_of_month = Time.zone.today.end_of_month
+    @monthly_reports = @project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_month, end_of_month)
+    if @monthly_reports.present?
+      @reports = @monthly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @monthly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    end
+    # start_of_week = Date.today.beginning_of_week
+    start_of_week = Time.zone.today.beginning_of_week
+    # end_of_week = Date.today.end_of_week
+    end_of_week = Time.zone.today.end_of_week
+    @weekly_reports = @project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)
+    if @weekly_reports.present?
+      @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    end
     if params[:search].present? and params[:search] != ""
       # @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       @results = Report.search(report_search_params)
