@@ -43,32 +43,34 @@
           </tr>
         </thead>
         <tbody class="table-report-totalling-body">
-          <% line_num = 0%>
-          <% i = 0 %>
-          <% @report_days.each do |report_deadline|%>
-            <% line_num += 1%>
-            <% reported_users = reported_users(@project, report_deadline) %>
-            <% unreported_users = @project.users.all - reported_users %>
-            <% reports = Report.where(report_day: report_deadline.day).where(remanded: false) %>
-            <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-              <tr>
-                <td class="body">6/1</td>
-                <td class="body">6月30日 23:50</td>
-                <td class="body">6月30日 23:50</td>
-                <td class="body">6月30日 23:50</td>
-                <td class="body">6月30日 23:50</td>
+          <% (@first_day..@last_day).each do |date| %>
+            <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
+            <% unreported_users = @project.users - reported_users.collect { |r| r.user_id } %>
+            <tr>
+              <td class="body"><%= date.strftime("%y-%m-%d") %></td>
+              <% @project.users.each do |user| %>
+                <% user_reports = reported_users.select { |r| r.user_id == user.id } %>
                 <td class="body">
-                  <% if @display == "percent" %>
-                    <%= reported_users.count * 100 / @project.users.all.count %>%
-                  <% elsif @display == "people" %>
-                    <%= reported_users.count %>
-                    人 /
-                    <%= @project.users.all.count %>
-                    人
+                  <% if user_reports.any? %>
+                    <% user_reports.each do |report| %>
+                      <% report_day = report.report_day.strftime("%m月%d日 %H:%M") %>
+                      <%= report_day %>
+                      <br>
+                    <% end %>
                   <% end %>
                 </td>
-              </tr>
-            </div>
+              <% end %>
+              <td class="body">
+                <% if @display == "percent" %>
+                  <%= reported_users.count * 100 / @project.users.all.count %>%
+                <% elsif @display == "people" %>
+                  <%= reported_users.count %>
+                  人 /
+                  <%= @project.users.all.count %>
+                  人
+                <% end %>
+              </td>
+            </tr>
           <% end %>
         </tbody>
         <tfoot class="table-report-totalling-footer">
@@ -93,8 +95,8 @@
         <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
         <%= f.submit "送信", class: "btn btn-outline-orange mr-4" %>
       <% end %>
-      <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: (@first_day - 1.day).beginning_of_week), class: "btn btn-outline-orange mr-1" %>
-      <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @first_day.next_week), class: "btn btn-outline-orange" %>
+      <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: (@week_first_day - 1.day).beginning_of_week), class: "btn btn-outline-orange mr-1" %>
+      <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_week), class: "btn btn-outline-orange" %>
     </div>
     <div class="table-totalling-background">
       <table class="table table-report-totalling">
@@ -104,14 +106,14 @@
             <th colspan="7", class="item col-md-8">報告日時</th>
             <th rowspan="2", class="item col-md-2">
               <% if @display == "percent" %>
-                報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-2" %>
+                報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @week_first_day ), class: "text-white  ml-2" %>
               <% elsif @display == "people" %>
-                報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @week_first_day ), class: "text-white  ml-2" %>
               <% end %>
             </th>
           </tr>
           <tr class="table-report-totalling-body">
-            <% (@first_day..@last_day).reverse_each do |date| %>
+            <% (@week_first_day..@week_last_day).reverse_each do |date| %>
               <th><%= date.strftime("%Y-%m-%d") %></th>
             <% end %>
           </tr>
