@@ -47,7 +47,7 @@
             <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
             <% unreported_users = @project.users - reported_users.collect { |r| r.user_id } %>
             <tr>
-              <td class="body"><%= date.strftime("%y-%m-%d") %></td>
+              <td class="body"><%= date.strftime("%m/%d") %></td>
               <% @project.users.each do |user| %>
                 <% user_reports = reported_users.select { |r| r.user_id == user.id } %>
                 <td class="body">
@@ -114,44 +114,37 @@
           </tr>
           <tr class="table-report-totalling-body">
             <% (@week_first_day..@week_last_day).reverse_each do |date| %>
-              <th><%= date.strftime("%Y-%m-%d") %></th>
+              <th><%= date.strftime("%m/%d") %></th>
             <% end %>
           </tr>
         </thead>
         <tbody class="table-report-totalling-body">
-          <% line_num = 0%>
-          <% i = 0 %>
-          <% @report_days.each do |report_deadline|%>
-            <% line_num += 1%>
-            <% reported_users = reported_users(@project, report_deadline) %>
-            <% unreported_users = @project.users.all - reported_users %>
-            <% reports = Report.where(report_day: report_deadline.day).where(remanded: false) %>
-            <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-              <% @project.users.each do |user|%>
-                <tr>
-                  <td class="body">
-                    <%= user.name %>
-                  </td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">6月30日 23:50</td>
-                  <td class="body">
-                    <% if @display == "percent" %>
-                      <%= reported_users.count * 100 / @project.users.all.count %>%
-                    <% elsif @display == "people" %>
-                      <%= reported_users.count %>
-                      人 /
-                      <%= @project.users.all.count %>
-                      人
+          <% @project.users.each do |user| %>
+            <tr>
+              <td class="body"><%= user.name %></td>
+              <% (@first_day..@last_day).each do |date| %>
+                <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
+                <% unreported_users = @project.users - reported_users.collect { |r| r.user_id } %>
+                <% user_reports = reported_users.select { |r| r.user_id == user.id } %>
+                <td class="body">
+                  <% if user_reports.any? %>
+                    <% user_reports.each do |report| %>
+                      <% report_day = report.report_day.strftime("%m月%d日 %H:%M") %>
+                      <%= report_day %>
+                      <br>
                     <% end %>
-                  </td>
-                </tr>
+                  <% end %>
+                </td>
               <% end %>
-            </div>
+              <td class="body">
+                <% reported_users = @project.reports.where(report_day: @first_day..@last_day, remanded: false).pluck(:user_id).uniq %>
+                <% if @display == "percent" %>
+                  <%= reported_users.count * 100 / @project.users.count %>%
+                <% elsif @display == "people" %>
+                  <%= reported_users.count %> 人 / <%= @project.users.count %> 人
+                <% end %>
+              </td>
+            </tr>
           <% end %>
         </tbody>
         <tfoot class="table-report-totalling-footer">
