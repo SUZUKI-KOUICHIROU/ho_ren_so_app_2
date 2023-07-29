@@ -7,6 +7,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @monthly_reports = Report.monthly_reports_for(@project, @user, params[:page])
+    @weekly_reports = Report.weekly_reports_for(@project, @user, params[:page])
     if params[:search].present? and params[:search] != ""
       # @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       @results = Report.search(report_search_params)
