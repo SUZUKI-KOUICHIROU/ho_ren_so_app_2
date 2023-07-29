@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         get 'notice_not_submitted_members'
         get 'reports/view_reports'
         get 'reports/view_reports_log'
+        get 'reports/view_reports_log_month'
         resources :messages do
           member do
             patch 'read'

@@ -201,19 +201,32 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @display = params[:display].nil? ?
     "percent" : params[:display]
-    one_month = nil
-    if params[:monthly] == 'true'
-      @first_day = Date.current.beginning_of_month
-      @last_day = Date.current.end_of_month
-      @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
-      one_month = [*@first_day..@last_day]
-    else
-      @week_first_day = Date.current - 6
-      @week_last_day = Date.current
-      @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_week }
-      @first_day = @week_first_day
-      @last_day = @week_last_day
+    @week_first_day = Date.current - 6
+    @week_last_day = Date.current
+    @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_week }
+    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @week_first_day..@week_last_day)
+    if params[:search].present? and params[:search] != ""
+      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
+      if @results.present?
+        @report_ids = @results.pluck(:report_id).uniq
+      else
+        @report_ids = 0
+      end
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def view_reports_log_month
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @display = params[:display].nil? ?
+    "percent" : params[:display]
+    @first_day = Date.current.beginning_of_month
+    @last_day = Date.current.end_of_month
+    @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
+    one_month = [*@first_day..@last_day]
     @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
     @month_field_value = @first_day.strftime("%Y-%m")
     if params[:search].present? and params[:search] != ""
@@ -227,7 +240,6 @@ class Projects::ReportsController < Projects::BaseProjectController
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def report_form_switching
     @user = User.find(params[:user_id])
