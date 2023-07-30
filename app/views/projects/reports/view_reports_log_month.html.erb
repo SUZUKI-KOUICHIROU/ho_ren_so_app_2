@@ -12,6 +12,7 @@
     </div>
     <div class="d-flex justify-content-end mb-3">
       <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
+        <%= f.label :search, "月選択：", class: "mb-0" %>
         <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
         <%= f.submit "送信", class: "btn btn-outline-orange mr-4" %>
       <% end %>
@@ -51,10 +52,13 @@
                 <td class="body">
                   <% if user_reports.any? %>
                     <% user_reports.each do |report| %>
-                      <% report_day = report.report_day.strftime("%m月%d日 %H:%M") %>
-                      <%= report_day %>
-                      <br>
+                      <% if report.respond_to?(:updated_at) && report.updated_at.present? %>
+                        <%= report.updated_at.strftime("%m月%d日 %H:%M") %>
+                        <br>
+                      <% end %>
                     <% end %>
+                  <% else %>
+                    <%= "-" %>
                   <% end %>
                 </td>
               <% end %>

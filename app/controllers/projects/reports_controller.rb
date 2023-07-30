@@ -223,12 +223,18 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @display = params[:display].nil? ?
     "percent" : params[:display]
-    @first_day = Date.current.beginning_of_month
-    @last_day = Date.current.end_of_month
+    if params[:date].present?
+      selected_date = Date.parse(params[:date] + "-01")
+      @first_day = selected_date.beginning_of_month
+      @last_day = selected_date.end_of_month
+    else
+      @first_day = Date.current.beginning_of_month
+      @last_day = Date.current.end_of_month
+    end
     @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
     one_month = [*@first_day..@last_day]
     @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
-    @month_field_value = @first_day.strftime("%Y-%m")
+    @month_field_value = @first_day.strftime("%Y-%m-%d")
     if params[:search].present? and params[:search] != ""
       @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
       if @results.present?
