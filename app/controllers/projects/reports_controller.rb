@@ -221,8 +221,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports_log_month
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @display = params[:display].nil? ?
-    "percent" : params[:display]
+    @display = params[:display].presence || "percent"
     if params[:date].present?
       selected_date = Date.parse(params[:date] + "-01")
       @first_day = selected_date.beginning_of_month
@@ -232,16 +231,11 @@ class Projects::ReportsController < Projects::BaseProjectController
       @last_day = Date.current.end_of_month
     end
     @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
-    one_month = [*@first_day..@last_day]
     @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
     @month_field_value = @first_day.strftime("%Y-%m-%d")
-    if params[:search].present? and params[:search] != ""
-      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
-      if @results.present?
-        @report_ids = @results.pluck(:report_id).uniq
-      else
-        @report_ids = 0
-      end
+    if params[:search].present?
+      @results = Answer.where('value LIKE ?', "%#{sanitize_sql_like(params[:search])}%")
+      @report_ids = @results.pluck(:report_id).uniq
       @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
