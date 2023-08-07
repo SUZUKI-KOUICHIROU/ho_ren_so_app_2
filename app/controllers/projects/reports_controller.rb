@@ -227,6 +227,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @first_day = selected_date.beginning_of_month
       @last_day = selected_date.end_of_month
     else
+      selected_date = Date.current
       @first_day = Date.current.beginning_of_month
       @last_day = Date.current.end_of_month
     end
@@ -238,6 +239,10 @@ class Projects::ReportsController < Projects::BaseProjectController
       @report_ids = @results.pluck(:report_id).uniq
       @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+    else
+      if @project.reports.where(report_day: @first_day..@last_day).empty?
+        flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
+      end
     end
   end
 
