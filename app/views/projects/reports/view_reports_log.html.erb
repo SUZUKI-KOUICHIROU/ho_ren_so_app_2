@@ -11,8 +11,8 @@
     <%= link_to "一か月の集計表示", user_project_reports_view_reports_log_month_path, class: "btn btn-outline-orange" %>
   </div>
   <div class="d-flex justify-content-end mb-3">
-    <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: (@week_first_day - 1.day).beginning_of_week), class: "btn btn-outline-orange mr-1" %>
-    <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_week), class: "btn btn-outline-orange" %>
+    <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.prev_day(7)), class: "btn btn-outline-orange mr-1" %>
+    <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_day(7)), class: "btn btn-outline-orange" %>
   </div>
   <div class="table-totalling-background">
     <table class="table table-report-totalling">
@@ -40,15 +40,13 @@
             <td class="body"><%= user.name %></td>
             <% (@week_first_day..@week_last_day).each do |date| %>
               <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
-              <% unreported_users = @project.users - reported_users.collect { |r| r.user_id } %>
-              <% user_reports = reported_users.select { |r| r.user_id == user.id } %>
+              <% user_report = user.reports.find_by(report_day: date) %>
               <td class="body">
-                <% if user_reports.any? %>
-                  <% user_reports.each do |report| %>
-                    <% report_day = report.report_day.strftime("%m月%d日 %H:%M") %>
-                    <%= report_day %>
-                    <br>
-                  <% end %>
+                <% if user_report.present? %>
+                  <%= user_report.created_at.strftime("%m月%d日 %H:%M") %>
+                  <br>
+                <% else %>
+                  <%= "-" %>
                 <% end %>
               </td>
             <% end %>

@@ -194,29 +194,22 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
   # rubocop:enable Metrics/AbcSize
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @display = params[:display].nil? ?
-    "percent" : params[:display]
-    @week_first_day = Date.current - 6
-    @week_last_day = Date.current
-    @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_week }
-    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @week_first_day..@week_last_day)
-    if params[:search].present? and params[:search] != ""
-      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
-      if @results.present?
-        @report_ids = @results.pluck(:report_id).uniq
-      else
-        @report_ids = 0
-      end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @display = params[:display].presence || "percent"
+    if params[:date].present?
+      selected_day = Date.parse(params[:date])
+      @week_first_day = selected_day
+      @week_last_day = selected_day + 6
+    else
+      @week_first_day = Date.current - 6
+      @week_last_day = Date.current
+    end
+    if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
+      flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def view_reports_log_month
     @user = User.find(params[:user_id])
@@ -231,18 +224,9 @@ class Projects::ReportsController < Projects::BaseProjectController
       @first_day = Date.current.beginning_of_month
       @last_day = Date.current.end_of_month
     end
-    @reports = @project.reports.order(report_day: :desc).group_by { |r| r.report_day.beginning_of_month }
-    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
     @month_field_value = @first_day.strftime("%Y-%m-%d")
-    if params[:search].present?
-      @results = Answer.where('value LIKE ?', "%#{sanitize_sql_like(params[:search])}%")
-      @report_ids = @results.pluck(:report_id).uniq
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
-    else
-      if @project.reports.where(report_day: @first_day..@last_day).empty?
-        flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
-      end
+    if @project.reports.where(report_day: @first_day..@last_day).empty?
+      flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
     end
   end
 
