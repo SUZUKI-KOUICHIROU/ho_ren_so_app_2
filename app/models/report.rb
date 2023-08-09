@@ -29,33 +29,19 @@ class Report < ApplicationRecord
     if search_params[:sender_name].present?
       reports = reports.sender_name_like(search_params[:sender_name])
     end
-
-    # if search_params[:value].present?
-    #   reports = reports.answer_value_like(search_params[:value])
-    # end
-
-    # if search_params[:array_value].present?
-    #   reports = reports.answer_array_value_like(search_params[:array_value])
-    # end
-
-    if search_params[:search_keywords].present?
-      reports = reports.answer_like(search_params[:search_keywords])  
+    
+    if search_params[:keywords].present?
+      reports = reports.keywords_like(search_params[:keywords])  
     end
 
     reports
   end
-
+  
   scope :title_like, ->(title) { where('title LIKE ?', "%#{title}%") }
   scope :updated_at, ->(updated_at) { where('updated_at BETWEEN ? AND ?', "#{updated_at} 00:00:00", "#{updated_at} 23:59:59") }
   scope :sender_name_like, ->(sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
-  # scope :search_keywords_like, ->(search_keywords) { joins(:answers).where('answers.value LIKE ? OR answers.array_value LIKE ?', "%#{search_keywords}%", "%#{search_keywords}%") }
-  scope :answer_like, ->(value) { 
-    joins(:answers).where('answers.value LIKE ?', "%#{value}%").or(joins(:answers).where('answers.array_value LIKE ?', "%#{value}%"))
-  }
+  scope :keywords_like, ->(keywords) { joins(:answers).where('answers.value LIKE ? OR answers.array_value LIKE ?', "%#{keywords}%", "%#{keywords}%") }
   
-  # scope :answer_value_like, ->(value) { joins(:answers).where('answers.value LIKE ?', "%#{value}%") }
-  # scope :answer_array_value_like, ->(array_value) { joins(:answers).where('answers.array_value LIKE ?', "%#{array_value}%") }
-
   def self.befor_deadline_reports_size(project_reports)
     if project_reports.present?
       return project_reports.map { |report| report.report_day == report.created_at.to_date ? report.user_id : nil }.compact.uniq.size

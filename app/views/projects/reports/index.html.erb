@@ -41,15 +41,9 @@
                 <%= form.label :title, "件名：", class: "mb-0" %>
                 <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
 
-                <%= form.label :search_keywords, "キーワード：", class: "mb-0" %>
-                <%= form.text_field :search_keywords, placeholder: "件名を入力", value: @search_params && @search_params[:search_keywords], class: "search-box" %>
-
-                <!--< % = form.label :value, "キーワード：", class: "mb-0" %>
-                < % = form.text_field :value, placeholder: "キーワードを入力", value: @search_params && @search_params[:value], class: "search-box" %>
-
-                < % = form.label :array_value, "キーワード：", class: "mb-0" %>
-                < % = form.text_field :array_value, placeholder: "キーワードを入力", value: @search_params && @search_params[:array_value], class: "search-box" %>-->
-
+                <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                
                 <%= form.submit "検索", class: "btn btn-outline-orange" %>
               <% end %>
             </div>
@@ -129,15 +123,9 @@
                 <%= form.label :sender_name, "報告者：", class: "mb-0" %>
                 <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
 
-                <%= form.label :search_keywords, "キーワード：", class: "mb-0" %>
-                <%= form.text_field :search_keywords, placeholder: "件名を入力", value: @search_params && @search_params[:search_keywords], class: "search-box" %>
-
-                <!--< % = form.label :value, "キーワード：", class: "mb-0" %>
-                < % = form.text_field :value, placeholder: "キーワードを入力", value: @search_params && @search_params[:value], class: "search-box" %>
-
-                < % = form.label :array_value, "キーワード：", class: "mb-0" %>
-                < % = form.text_field :array_value, placeholder: "キーワードを入力", value: @search_params && @search_params[:array_value], class: "search-box" %>-->
-            
+                <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                
                 <%= form.submit "検索", class: "btn btn-outline-orange" %>            
               <% end %>
             </div>
