@@ -1,6 +1,8 @@
 class Project < ApplicationRecord
   attr_accessor :report_frequency_selection, :week_select
 
+  attribute :has_submitted
+
   has_one  :format, dependent: :destroy
   has_many :project_users, dependent: :destroy
   has_many :users, through: :project_users
@@ -106,5 +108,33 @@ class Project < ApplicationRecord
   def delegate_leader(from_user_id, to_member_id)
     self.delegations.where(is_valid: true).update_all(is_valid: false) # "最新である"フラグをfalseに
     self.delegations.create(user_from: from_user_id, user_to: to_member_id)
+  end
+
+  # admin権限者かプロジェクトメンバーかによって、取得プロジェクトの切り替え
+  def set_admin_or_member_projects(user)
+    if user.admin
+      return Project.includes(:report_statuses).all
+    else
+      return user.projects.includes(:report_statuses)
+    end
+  end
+
+  def search_and_pagenate(params_search, params_page)
+    if params_search.present?
+      return self.where('name LIKE ?', "%#{params_search}%").page(params_page).per(10)
+    else
+      return self.page(params_page).per(10)
+    end
+  end
+
+  def set_report_status(user)
+    self.each do |project|
+      report_status = project.report_statuses.find_by(user_id: user.id, is_newest: true)
+      if report_status.present?
+        project.has_submitted = report_status.has_submitted
+      else
+        project.has_submitted = nil
+      end
+    end
   end
 end
