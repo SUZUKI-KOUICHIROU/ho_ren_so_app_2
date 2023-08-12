@@ -27,9 +27,11 @@
             <th colspan=<%= @project.users.all.count %>, class="item col-md-8">報告者名</th>
             <th rowspan="2", class="item col-md-2">
               <% if @display == "percent" %>
-                報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-2" %>
+                一日当たりの<br>
+                報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-2" %>
               <% elsif @display == "people" %>
-                報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                一日当たりの<br>
+                報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-2" %>
               <% end %>
             </th>
           </tr>
@@ -72,7 +74,7 @@
         </tbody>
         <tfoot class="table-report-totalling-footer">
           <tr>
-            <td class="item">一日当たりの報告率</td>
+            <td class="item">報告割合</td>
             <td class="footer"></td>
             <td class="footer"></td>
             <td class="footer"></td>

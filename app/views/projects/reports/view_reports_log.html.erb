@@ -22,7 +22,7 @@
           <th colspan="7", class="item col-md-8">報告日時</th>
           <th rowspan="2", class="item col-md-2">
             <% if @display == "percent" %>
-              報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @week_first_day ), class: "text-white  ml-2" %>
+              報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @week_first_day ), class: "text-white  ml-2" %>
             <% elsif @display == "people" %>
               報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @week_first_day ), class: "text-white  ml-2" %>
             <% end %>
@@ -38,7 +38,7 @@
         <% @project.users.each do |user| %>
           <tr>
             <td class="body"><%= user.name %></td>
-            <% (@week_first_day..@week_last_day).each do |date| %>
+            <% (@week_first_day..@week_last_day).reverse_each do |date| %>
               <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
               <% user_report = user.reports.find_by(report_day: date) %>
               <td class="body">
@@ -63,14 +63,25 @@
       </tbody>
       <tfoot class="table-report-totalling-footer">
         <tr>
-          <td class="item">一日当たりの報告率</td>
-          <td class="footer"></td>
-          <td class="footer"></td>
-          <td class="footer"></td>
-          <td class="footer"></td>
-          <td class="footer"></td>
-          <td class="footer"></td>
-          <td class="footer"></td>
+          <td class="item">
+            <% if @display == "percent" %>
+              一日当たりの<br>
+              報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% elsif @display == "people" %>
+              一日当たりの<br>
+              報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% end %>
+          </td>
+          <% (@week_first_day..@week_last_day).reverse_each do |date| %>
+            <td class="footer">
+              <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
+              <% if @display == "percent" %>
+                <%= reported_users.count * 100 / @project.users.count %>%
+              <% elsif @display == "people" %>
+                <%= reported_users.count %> 人 / <%= @project.users.count %> 人
+              <% end %>
+            </td>
+          <% end %>
           <td class="footer"></td>
         </tr>
       </tfoot>
