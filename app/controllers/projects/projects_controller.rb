@@ -6,13 +6,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
-    @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
-    @projects =
-      if params[:search].present?
-        @user.projects.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
-      else
-        @user.projects.all.page(params[:page]).per(10)
-      end
+    projects = Project.set_admin_or_member_projects(@user)
+    @projects = Project.search_and_pagenate(projects, params[:search], params[:page])
+    Project.set_report_status(@projects, @user)
   end
 
   # プロジェクト詳細ページ表示アクション
