@@ -6,9 +6,9 @@ class Projects::ProjectsController < Projects::BaseProjectController
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
-    @projects = Project.set_admin_or_member_projects(@user)
-    @projects = @porjects.search_and_pagenate(params[:search], params[:page])
-    @projects.set_report_status(@user)
+    projects = Project.set_admin_or_member_projects(@user)
+    @projects = Project.search_and_pagenate(projects, params[:search], params[:page])
+    Project.set_report_status(@projects, @user)
   end
 
   # プロジェクト詳細ページ表示アクション

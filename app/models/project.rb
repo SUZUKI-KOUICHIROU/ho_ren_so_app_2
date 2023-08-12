@@ -111,7 +111,7 @@ class Project < ApplicationRecord
   end
 
   # admin権限者かプロジェクトメンバーかによって、取得プロジェクトの切り替え
-  def set_admin_or_member_projects(user)
+  def self.set_admin_or_member_projects(user)
     if user.admin
       return Project.includes(:report_statuses).all
     else
@@ -119,16 +119,21 @@ class Project < ApplicationRecord
     end
   end
 
-  def search_and_pagenate(params_search, params_page)
+  # プロジェクトの1ページ分の取得と検索を実行
+  def self.search_and_pagenate(projects, params_search, params_page)
+    return nil if projects.blank?
     if params_search.present?
-      return self.where('name LIKE ?', "%#{params_search}%").page(params_page).per(10)
+      return projects.where('name LIKE ?', "%#{params_search}%").page(params_page).per(10)
     else
-      return self.page(params_page).per(10)
+      return projects.page(params_page).per(10)
     end
   end
 
-  def set_report_status(user)
-    self.each do |project|
+  # 全プロジェクトのインスタンスに報告状態の値を持たせる処理
+  def self.set_report_status(projects, user)
+    return nil if projects.blank?
+
+    projects.each do |project|
       report_status = project.report_statuses.find_by(user_id: user.id, is_newest: true)
       if report_status.present?
         project.has_submitted = report_status.has_submitted
