@@ -198,6 +198,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @display = params[:display].presence || "percent"
+    @display_days = params[:display_days].presence || "percent"
     if params[:date].present?
       selected_day = Date.parse(params[:date])
       @week_first_day = selected_day
@@ -215,6 +216,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @display = params[:display].presence || "percent"
+    @display_days = params[:display_days].presence || "percent"
     if params[:date].present?
       selected_date = Date.parse(params[:date] + "-01")
       @first_day = selected_date.beginning_of_month

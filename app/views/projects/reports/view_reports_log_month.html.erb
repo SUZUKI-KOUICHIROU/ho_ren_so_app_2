@@ -74,12 +74,36 @@
         </tbody>
         <tfoot class="table-report-totalling-footer">
           <tr>
-            <td class="item">報告割合</td>
-            <td class="footer"></td>
-            <td class="footer"></td>
-            <td class="footer"></td>
-            <td class="footer"></td>
-            <td class="footer"></td>
+            <td class="item">
+              <% if @display_days == "percent" %>
+                一日当たりの<br>
+                報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "days", date: @first_day ), class: "text-white  ml-2" %>
+              <% elsif @display_days == "days" %>
+                一日当たりの<br>
+                報告割合<%= link_to "▼日数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "percent", date: @first_day ), class: "text-white  ml-2" %>
+              <% end %>
+            </td>
+            <% @project.users.each do |user| %>
+              <td class="footer">
+                <% reported_days = @project.reports.where(report_day: @first_day..@last_day, remanded: false, user_id: user.id).pluck(:report_day).uniq %>
+                <% total_days = (@first_day..@last_day).count %>
+                <% if @display_days == "percent" %>
+                  <%= reported_days.count * 100 / total_days %>%
+                <% elsif @display_days == "days" %>
+                  <%= reported_days.count %> 日 / <%= total_days %> 日
+                <% end %>
+              </td>
+            <% end %>
+            <td class="footer">
+              <% total_reported_users = 0 %>
+              <% total_users = @project.users.count %>
+              <% total_days = (@last_day - @first_day + 1) %>
+              <% (@first_day..@last_day).each do |date| %>
+                <% reported_users = @project.reports.where(report_day: date).where(remanded: false).select(:user_id).distinct %>
+                <% total_reported_users += reported_users.count %>
+              <% end %>
+              <%= ((total_reported_users.to_f / (total_users * total_days)) * 100).to_i %>%
+            </td>
           </tr>
         </tfoot>
       </table>
