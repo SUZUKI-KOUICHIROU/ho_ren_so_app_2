@@ -10,9 +10,17 @@
   <div class="d-flex justify-content-end mb-3">
     <%= link_to "一か月の集計表示", user_project_reports_view_reports_log_month_path, class: "btn btn-outline-orange" %>
   </div>
-  <div class="d-flex justify-content-end mb-3">
-    <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.prev_day(7)), class: "btn btn-outline-orange mr-1" %>
-    <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_day(7)), class: "btn btn-outline-orange" %>
+  <div class="d-flex justify-content-between">
+    <div class="mb-3">
+      <%= form_with url: user_project_reports_view_reports_log_path, method: :get, local: true do |f| %>
+        <%= f.select :weekday, options_for_select([["日", 0], ["月", 1], ["火", 2], ["水", 3], ["木", 4], ["金", 5], ["土", 6]]), { include_blank: true }, class: "form-control" %>
+        <%= f.submit "末日の曜日を指定", class: "btn btn-outline-orange btn-block" %>
+      <% end %>
+    </div>
+    <div class="align-self-end mb-3">
+      <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.prev_day(7)), class: "btn btn-outline-orange mr-1" %>
+      <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_day(7)), class: "btn btn-outline-orange" %>
+    </div>
   </div>
   <div class="table-totalling-background">
     <table class="table table-report-totalling">
@@ -30,7 +38,10 @@
         </tr>
         <tr class="table-report-totalling-body">
           <% (@week_first_day..@week_last_day).reverse_each do |date| %>
-            <th><%= date.strftime("%m/%d") %></th>
+            <th>
+              <%= date.strftime("%m/%d") %><br>
+              (<%= (%w(日 月 火 水 木 金 土)[date.wday]) %>)
+            </th>
           <% end %>
         </tr>
       </thead>

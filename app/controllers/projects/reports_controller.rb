@@ -203,6 +203,10 @@ class Projects::ReportsController < Projects::BaseProjectController
       selected_day = Date.parse(params[:date])
       @week_first_day = selected_day
       @week_last_day = selected_day + 6
+    elsif params[:weekday].present?
+      selected_weekday = params[:weekday].to_i
+      @week_last_day = Date.current.beginning_of_week + selected_weekday - 1.days
+      @week_first_day = @week_last_day - 6.days
     else
       @week_first_day = Date.current - 6
       @week_last_day = Date.current
