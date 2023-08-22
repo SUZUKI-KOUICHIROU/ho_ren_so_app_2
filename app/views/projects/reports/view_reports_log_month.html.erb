@@ -10,14 +10,24 @@
   <div class="d-flex justify-content-end mb-3">
       <%= link_to "一週間の集計表示", user_project_reports_view_reports_log_path, class: "btn btn-outline-orange" %>
     </div>
-    <div class="d-flex justify-content-end mb-3">
-      <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
-        <%= f.label :search, "月選択：", class: "mb-0" %>
-        <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
-        <%= f.submit "送信", class: "btn btn-outline-orange mr-4" %>
-      <% end %>
-      <%= link_to "⇦前月", user_project_reports_view_reports_log_month_path(current_user, @project, display: @display, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
-      <%= link_to "次月⇨", user_project_reports_view_reports_log_month_path(current_user, @project, display: @display, date: @first_day.next_month), class: "btn btn-outline-orange" %>
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
+          <%= f.date_field :start_date, class: "search-box" %> ～
+          <%= f.date_field :end_date, class: "search-box" %><br>
+          <%= f.submit "指定した期間の集計", class: "btn btn-outline-orange mt-2" %>
+        <% end %>
+      </div>
+      <div class="align-self-end">
+        <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
+          <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
+          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+        <% end %>
+      </div>
+      <div class="align-self-end">
+        <%= link_to "⇦前月", user_project_reports_view_reports_log_month_path(current_user, @project, display: @display, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
+        <%= link_to "次月⇨", user_project_reports_view_reports_log_month_path(current_user, @project, display: @display, date: @first_day.next_month), class: "btn btn-outline-orange" %>
+      </div>
     </div>
     <div class="table-totalling-background">
       <table class="table table-report-totalling">

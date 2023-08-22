@@ -13,7 +13,7 @@
   <div class="d-flex justify-content-between">
     <div class="mb-3">
       <%= form_with url: user_project_reports_view_reports_log_path, method: :get, local: true do |f| %>
-        <%= f.select :weekday, options_for_select([["日", 0], ["月", 1], ["火", 2], ["水", 3], ["木", 4], ["金", 5], ["土", 6]]), { include_blank: true }, class: "form-control" %>
+        <%= f.select :weekday, options_for_select([["日", 0], ["月", 1], ["火", 2], ["水", 3], ["木", 4], ["金", 5], ["土", 6]]), { include_blank: true }, class: "search-box" %>
         <%= f.submit "末日の曜日を指定", class: "btn btn-outline-orange btn-block" %>
       <% end %>
     </div>

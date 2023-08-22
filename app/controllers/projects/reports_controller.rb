@@ -225,6 +225,9 @@ class Projects::ReportsController < Projects::BaseProjectController
       selected_date = Date.parse(params[:date] + "-01")
       @first_day = selected_date.beginning_of_month
       @last_day = selected_date.end_of_month
+    elsif params[:start_date].present? && params[:end_date].present?
+      @first_day = Date.parse(params[:start_date])
+      @last_day = Date.parse(params[:end_date])
     else
       selected_date = Date.current
       @first_day = Date.current.beginning_of_month
@@ -232,7 +235,11 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
     @month_field_value = @first_day.strftime("%Y-%m-%d")
     if @project.reports.where(report_day: @first_day..@last_day).empty?
-      flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
+      if params[:start_date].present? && params[:end_date].present?
+        flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
+      else
+        flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
+      end
     end
   end
 
