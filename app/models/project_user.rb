@@ -6,7 +6,7 @@ class ProjectUser < ApplicationRecord
   def self.member_expulsion_join(project, members)
     project_member_expulsions = project.project_users.all
     members.each do |member|
-      member.member_expulsion = project_member_expulsions.find(member.id).member_expulsion
+      member.member_expulsion = project_member_expulsions.find_by(user_id: member.id).member_expulsion
     end
     return members
   end
