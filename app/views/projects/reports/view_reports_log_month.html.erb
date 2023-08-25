@@ -15,6 +15,7 @@
         <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
           <%= f.date_field :start_date, class: "search-box" %> ～
           <%= f.date_field :end_date, class: "search-box" %><br>
+          <%= f.hidden_field :date, value: nil %>
           <%= f.submit "指定した期間の集計", class: "btn btn-outline-orange mt-2" %>
         <% end %>
       </div>
@@ -37,11 +38,21 @@
             <th colspan=<%= @project.users.all.count %>, class="item col-md-8">報告者名</th>
             <th rowspan="2", class="item col-md-2">
               <% if @display == "percent" %>
-                一日当たりの<br>
-                報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-2" %>
+                <% if params[:start_date].present? && params[:end_date].present? %>
+                  一日当たりの<br>
+                  報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "people", start_date: params[:start_date], end_date: params[:end_date]), class: "text-white  ml-2" %>
+                <% else %>
+                  一日当たりの<br>
+                  報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-2" %>
+                <% end %>
               <% elsif @display == "people" %>
-                一日当たりの<br>
-                報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                <% if params[:start_date].present? && params[:end_date].present? %>
+                  一日当たりの<br>
+                  報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "percent", start_date: params[:start_date], end_date: params[:end_date]), class: "text-white  ml-2" %>
+                <% else %>
+                  一日当たりの<br>
+                  報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                <% end %>
               <% end %>
             </th>
           </tr>
@@ -86,9 +97,17 @@
           <tr>
             <td class="item">
               <% if @display_days == "percent" %>
-                報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "days", date: @first_day ), class: "text-white  ml-2" %>
+                <% if params[:start_date].present? && params[:end_date].present? %>
+                  報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "days", start_date: params[:start_date], end_date: params[:end_date]), class: "text-white  ml-2" %>
+                <% else %>
+                  報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "days", date: @first_day ), class: "text-white  ml-2" %>
+                <% end %>
               <% elsif @display_days == "days" %>
-                報告割合<%= link_to "▼日数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                <% if params[:start_date].present? && params[:end_date].present? %>
+                  報告割合<%= link_to "▼日数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "percent", start_date: params[:start_date], end_date: params[:end_date]), class: "text-white  ml-2" %>
+                <% else %>
+                  報告割合<%= link_to "▼日数 ▼", user_project_reports_view_reports_log_month_path(current_user, @project, display_days: "percent", date: @first_day ), class: "text-white  ml-2" %>
+                <% end %>
               <% end %>
             </td>
             <% @project.users.each do |user| %>
