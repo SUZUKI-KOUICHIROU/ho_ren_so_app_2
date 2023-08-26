@@ -8,21 +8,21 @@ class Projects::ReportsController < Projects::BaseProjectController
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @monthly_reports = Report.monthly_reports_for(@project, @user)
-      if @monthly_reports.present?
-        @reports = @monthly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-        @you_reports = @monthly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-        { reports: @reports, you_reports: @you_reports }
-      else
-        { reports: [], you_reports: [] }
-      end
+    if @monthly_reports.present?
+      @reports = @monthly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @monthly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports }
+    else
+      { reports: [], you_reports: [] }
+    end
     @weekly_reports = Report.weekly_reports_for(@project, @user)
-      if @weekly_reports.present?
-        @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-        @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-        { reports: @reports, you_reports: @you_reports }
-      else
-        { reports: [], you_reports: [] }
-      end
+    if @weekly_reports.present?
+      @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports }
+    else
+      { reports: [], you_reports: [] }
+    end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
       if @results.present?

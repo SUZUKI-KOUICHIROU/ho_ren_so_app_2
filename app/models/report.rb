@@ -53,16 +53,17 @@ class Report < ApplicationRecord
   end
 
   # クラスメソッド: 月次レポートを取得する
-  def self.monthly_reports_for(project, user)
+  def self.monthly_reports_for(_project, _user)
     start_of_month = Time.zone.today.beginning_of_month
     end_of_month = Time.zone.today.end_of_month
-    monthly_reports = project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_month, end_of_month)    
+    Report.where("updated_at >= ? AND updated_at <= ?", start_of_month, end_of_month)
   end
 
   # クラスメソッド: 週次レポートを取得する
-  def self.weekly_reports_for(project, user)
-    start_of_week = Time.zone.today.beginning_of_week
-    end_of_week = Time.zone.today.end_of_week
-    weekly_reports = project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)    
+  def self.weekly_reports_for(_project, _user)
+    current_week = Time.zone.today.beginning_of_week
+    start_of_week = current_week.strftime("%Y-%m-%d") # 週の最初の日
+    end_of_week = (current_week + 6.days).strftime("%Y-%m-%d")  # 週の最後の日
+    Report.where("updated_at >= ? AND updated_at <= ?", start_of_week, end_of_week)
   end
 end
