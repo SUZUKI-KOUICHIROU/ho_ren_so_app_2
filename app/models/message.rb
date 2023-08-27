@@ -32,5 +32,5 @@ class Message < ApplicationRecord
         errors.add "", "送信相手を選択してください。"
       end
     end
-  end
+  end  
 end

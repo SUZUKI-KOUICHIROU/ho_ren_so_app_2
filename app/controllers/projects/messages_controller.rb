@@ -10,6 +10,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @you_send_messages = @project.messages.where(id: you_send_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+    set_project_and_members
+    @recipients = @members
+    # @recipients = MessageConfirmer.where(message_confirmer_id).pluck(:message_id)
+    @recipients_names = @recipients.map(&:name).join(', ')
   end
 
   def show
@@ -32,7 +36,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message.sender_id = current_user.id
     @message.sender_name = current_user.name
     # ActiveRecord::Type::Boolean：値の型をboolean型に変更
-    if ActiveRecord::Type::Boolean.new.cast(params[:message][:send_to_all])
+    if params[:message][:send_to_all]         
       # TO ALLが選択されているとき
       if @message.save
         @members.each do |member|
@@ -69,6 +73,18 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
     @message_c.switch_read_flag
     @checked_members = @message.checked_members
+  end
+
+  def destroy
+    @user = current_user
+    @project = Message.find(params[:project_id])
+    @message = Message.find(params[:id])
+    if @message.destroy
+      flash[:success] = "連絡を削除しました。"
+    else
+      flash[:danger] = "連絡の削除に失敗しました。"
+    end
+    redirect_to user_project_messages_path(@user, @project)
   end
 
   private

@@ -71,8 +71,7 @@
                         <%= message.sender_name %>
                     </div>
                     <div class="message-action">
-                        <!--< %= link_to "編集", "#", class: "btn btn-outline-orange" %>
-                        <%= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-danger" %>-->
+                        
                     </div>
                   </div>
                 <% end %>
@@ -112,7 +111,7 @@
                   連絡日
                 </div>
                 <div class="message-person">
-                  連絡者
+                  送信相手
                 </div>
                 <div class="message-action">
                   アクション
@@ -129,12 +128,12 @@
                     <div class="message-date">
                       <%= l(message.updated_at, format: :long) %>
                     </div>
-                    <div class="message-person">
-                        <%= message.sender_name %>
+                    <div class="message-person">                     
+                       <%= @recipients_names %>
                     </div>
                     <div class="message-action">
                         <%= link_to "編集", "#", class: "btn btn-outline-orange" %>
-                        <%= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-danger" %>
+                        <%= link_to "削除", user_project_message_path(@user, @project, message), method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-danger" %>
                     </div>
                   </div>
                 <% end %>
@@ -196,8 +195,7 @@
                     </div>
                     <div class="message-action">
                       <% if message.sender_id == current_user.id %>
-                        <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
-                        <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-danger" %>
+                        
                       <% end %>
                     </div>
                   </div>
