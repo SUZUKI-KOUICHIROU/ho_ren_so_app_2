@@ -1,6 +1,11 @@
+inherit_from:
+  - .rubocop_todo1.yml
+
+
+
 #「inherit_from:」の記述によりrubocop_todo.ymlのファイルもrubocopコマンド実行時に参照する
-inherit_from: .rubocop_todo.yml
-inherit_from: .rubocop_todo1.yml
+
+
 
 #gemでインストールしたrubocopの設定をrubocopに適用する
 require:
@@ -116,3 +121,4 @@ Rails/LexicallyScopedActionFilter:
 #putsやprintなどの出力はRailsのロガーを使わなければいけない設定を無効にする
 Rails/Output:
   Enabled: false
+  

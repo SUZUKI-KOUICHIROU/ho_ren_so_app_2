@@ -9,7 +9,7 @@
       <%= sidebar_link_item('報告', new_user_project_report_path(user, project)) %>
       <%= sidebar_link_item('連絡', new_user_project_message_path(user, project)) %>
       <%= sidebar_link_item('相談', new_user_project_counseling_path(user, project)) %>
-      <%= sidebar_link_item('報告一覧', user_project_reports_path(user, project)) %>
+      <%= sidebar_link_item('報告履歴', user_project_reports_path(user, project)) %>
       <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
       <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
       <% if project_leader? %>
@@ -27,6 +27,7 @@
       <%= sidebar_link_item('プロジェクト詳細', user_project_path(user, project)) %>
     <% end %>
     <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
+    <%= sidebar_link_item('全プロジェクト報告集計', all_project_reporting_rate_user_projects_path(current_user)) %>
   </div>
 </div>
 
@@ -37,7 +38,7 @@
     <%= sidebar_link_item('報告', new_user_project_report_path(user, project)) %>
     <%= sidebar_link_item('連絡', new_user_project_message_path(user, project)) %>
     <%= sidebar_link_item('相談', new_user_project_counseling_path(user, project)) %>
-    <%= sidebar_link_item('報告一覧', user_project_reports_path(user, project)) %>
+    <%= sidebar_link_item('報告履歴', user_project_reports_path(user, project)) %>
     <%= sidebar_link_item('連絡一覧', user_project_messages_path(user, project)) %>
     <%= sidebar_link_item('相談一覧', user_project_counselings_path(user, project)) %>
     <% if project_leader? %>
@@ -55,5 +56,6 @@
     <%= sidebar_link_item('プロジェクト詳細', user_project_path(user, project)) %>
   <% end %>
   <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
+  <%= sidebar_link_item('全プロジェクト報告集計', all_project_reporting_rate_user_projects_path(current_user)) %>
 </div>
 

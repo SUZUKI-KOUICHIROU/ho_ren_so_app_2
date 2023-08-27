@@ -101,7 +101,7 @@ function changeForm() {
             <% end %>
             </span>
           </li>
-          <% if answer.array_value.count != 0 %>
+          <% if answer.array_value.present? && answer.array_value.count != 0 %>
               <% answer.array_value.each do |buf| %>
                 <div class="card-text ml-0 test">
                   <%= buf %>

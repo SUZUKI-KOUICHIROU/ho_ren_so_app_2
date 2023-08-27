@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   resources :users, only: %i[edit] do
     scope module: :projects do
       resources :projects do
+        collection do
+          get 'reports/all_project_reporting_rate', as: :all_project_reporting_rate
+        end
         get 'new_period'
         get 'notice_not_submitted_members'
         get 'reports/view_reports'
@@ -47,8 +50,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'join', to: 'projects/projects#join'
-
   scope module: :formats do
     get 'users/:user_id/projects/:project_id/report_formats/edit', to: 'report_formats#edit', as: :edit_project_report_format
     get 'users/:user_id/projects/:project_id/report_formats/new', to: 'report_formats#new', as: :new_project_report_format
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :projects do
+    get 'join', to: 'members#join'
     get 'input_forms/frequency_input_form_switching', to: 'projects#frequency_input_form_switching', as: :frequency_input_form_switching
     get 'report_forms/report_form_switching', to: 'reports#report_form_switching', as: :report_form_switching
     get 'users/:user_id/projects/:project_id/index', to: 'members#index', as: :project_member_index

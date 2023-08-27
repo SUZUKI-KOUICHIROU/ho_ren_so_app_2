@@ -1,36 +1,23 @@
 class Projects::ProjectsController < Projects::BaseProjectController
   before_action :authenticate_user!, only: %i[index new create]
-  before_action :project_authorization, only: %i[show edit update destroy delegate_leader accept_request disown_request]
+  before_action :project_authorization, only: %i[show accept_request disown_request]
   before_action :project_leader_user, only: %i[edit update destroy]
 
   # プロジェクト一覧ページ表示アクション
   def index
     @user = current_user
-    @report_statuses = ReportStatus.where(user_id: @user.id, is_newest: true)
-    @projects =
-      if params[:search].present?
-        @user.projects.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
-      else
-        @user.projects.all.page(params[:page]).per(10)
-      end
+    projects = Project.set_admin_or_member_projects(@user)
+    @projects = Project.search_and_pagenate(projects, params[:search], params[:page])
+    Project.set_report_status(@projects, @user)
   end
 
-  # プロジェクト新規登録アクション
-  def create
-    @user = current_user
-    if @user.projects.new(project_params).valid?
-      @project = @user.projects.create(project_params)
-      @project.update_next_report_date(project_params[:report_frequency_selection], project_params[:week_select])
-      @project.update_deadline(@project.next_report_date)
-      @project.report_deadlines.create!(day: @project.next_report_date)
-      @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
-      flash[:success] = 'プロジェクトを新規登録しました。'
-      redirect_to user_project_path(@user, @project)
-      @project.create_format(title: '件名')
-    else
-      flash[:danger] = 'プロジェクト新規登録に失敗しました。'
-      redirect_to user_projects_path(@user)
-    end
+  # プロジェクト詳細ページ表示アクション
+  def show
+    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
+    @counselings = @project.counselings.my_counselings(current_user)
+    @messages = @project.messages.my_recent_messages(current_user)
+    @member = @project.users.all.where.not(id: @project.leader_id)
+    @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
   end
 
   # プロジェクト新規登録用モーダルウインドウ表示アクション
@@ -50,13 +37,22 @@ class Projects::ProjectsController < Projects::BaseProjectController
     end
   end
 
-  # プロジェクト詳細ページ表示アクション
-  def show
-    @delegate = @project.delegations.find_by(user_to: @user.id, is_valid: true)
-    @counselings = @project.counselings.my_counselings(current_user)
-    @messages = @project.messages.my_recent_messages(current_user)
-    @member = @project.users.all.where.not(id: @project.leader_id)
-    @remanded_reports = @project.reports.where(user_id: @user.id, remanded: true)
+  # プロジェクト新規登録アクション
+  def create
+    @user = current_user
+    if @user.projects.new(project_params).valid?
+      @project = @user.projects.create(project_params)
+      @project.update_next_report_date(project_params[:report_frequency_selection], project_params[:week_select])
+      @project.update_deadline(@project.next_report_date)
+      @project.report_deadlines.create!(day: @project.next_report_date)
+      @project.report_format_creation # デフォルト報告フォーマット作成アクション呼び出し
+      flash[:success] = 'プロジェクトを新規登録しました。'
+      redirect_to user_project_path(@user, @project)
+      @project.create_format(title: '件名')
+    else
+      flash[:danger] = 'プロジェクト新規登録に失敗しました。'
+      redirect_to user_projects_path(@user)
+    end
   end
 
   # プロジェクト内容編集アクション
@@ -82,22 +78,6 @@ class Projects::ProjectsController < Projects::BaseProjectController
   end
 
   def invitations; end
-
-  # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
-  def join
-    @join = Join.find_by(token: params[:token])
-    @user = User.find(@join.user_id)
-    @project = Project.find_by(id: @join.project_id)
-    unless @project.users.exists?(id: @user)
-      @project.users << @user
-      @project.join_new_member(@user.id)
-      flash[:success] = "#{@project.name}に参加しました。"
-    else
-      flash[:success] = '参加済みプロジェクトです。'
-    end
-    bypass_sign_in @user
-    redirect_to user_project_path(@user, @project)
-  end
 
   def frequency_input_form_switching
     @user = User.find(params[:user_id])

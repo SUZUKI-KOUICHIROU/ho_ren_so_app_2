@@ -1,11 +1,11 @@
-<% provide(:title, '報告一覧') %>
+<% provide(:title, '報告履歴') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
-  <h1 class="text-center">報告一覧</h1>
+  <h1 class="text-center">報告履歴</h1>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -19,18 +19,32 @@
     </div>
     <div class="card-body">
       <div class="tab-content" id="myTabContent">
-        <!-- あなたの報告一覧 -->
+        <!-- あなたの報告履歴 -->
         <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
           <div class="box-report-index">
-            <div class="d-flex justify-content-end mb-3">
-              <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
-                <%= form.hidden_field :search_type, :value => "you-report" %>
-                <%= form.label :search, "報告検索：", class: "mb-0" %>
-                <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                <%= form.submit "検索", class: "btn btn-outline-orange" %>
-              <% end %>
-            </div>
             <% if @you_reports.present? %>
+              <div class="d-flex justify-content-start mb-3">
+                <!-- 今月の報告ボタン -->
+                <%= link_to "今月の報告", user_project_reports_path(current_user, @project, @monthly_reports), month: 'current', class: "btn btn-outline-orange mx-2" %>
+                <!-- 今週の報告ボタン -->
+                <%= link_to "今週の報告", user_project_reports_path(current_user, @project, @weekly_reports), week: 'current', class: "btn btn-outline-orange mx-2" %>
+              </div>
+              <div class="d-flex justify-content-end mb-3">
+                <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
+                  <%= form.hidden_field :search_type, value: "you-report" %>            
+
+                  <%= form.label :updated_at, "報告日：", class: "mb-0" %>
+                  <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
+
+                  <%= form.label :title, "件名：", class: "mb-0" %>
+                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
+
+                  <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                  
+                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
+                <% end %>
+              </div>            
               <div class="table-header">
                 <div class="subject-name col-md-4">
                   <%=@project.format.title%>
@@ -80,18 +94,35 @@
             </div>
           </div>
         </div>
-        <!-- 他メンバーの報告一覧 -->
+        <!-- 他メンバーの報告履歴 -->
         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
           <div class="box-report-index">
-            <div class="d-flex justify-content-end mb-3">
-              <%= form_with url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
-                <%= form.hidden_field :search_type, :value => "report" %>
-                <%= form.label :search, "件名検索：", class: "mb-0" %>
-                <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                <%= form.submit "検索", class: "btn btn-outline-orange" %>
-              <% end %>
-            </div>
             <% if @reports.present? %>
+              <div class="d-flex justify-content-start mb-3">
+                <!-- 今月の報告ボタン -->
+                <%= link_to "今月の報告", "#", month: 'current', class: "btn btn-outline-orange mx-2" %>
+                <!-- 今週の報告ボタン -->
+                <%= link_to "今週の報告", "#", week: 'current', class: "btn btn-outline-orange mx-2" %>
+              </div>
+              <div class="d-flex justify-content-end mb-3">
+                <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
+                  <%= form.hidden_field :search_type, value: "report" %>                
+                  
+                  <%= form.label :updated_at, "報告日：", class: "mb-0" %>
+                  <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
+                  
+                  <%= form.label :title, "件名：", class: "mb-0" %>
+                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
+
+                  <%= form.label :sender_name, "報告者：", class: "mb-0" %>
+                  <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
+
+                  <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                  
+                  <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+                <% end %>
+              </div>            
               <div class="table-header">
                 <div class="subject-name col-md-4">
                   <%=@project.format.title%>

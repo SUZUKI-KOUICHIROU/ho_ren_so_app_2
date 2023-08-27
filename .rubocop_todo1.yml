@@ -157,9 +157,9 @@ Rails/UniqueValidationWithoutIndex:
   Exclude:
     - 'app/models/join.rb'
 
-# Offense count: 17
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, IgnoredPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 148
+# Offense count: 1
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: slashes, arguments
+Rails/FilePath:
+  Exclude:
+    - 'spec/rails_helper.rb'
