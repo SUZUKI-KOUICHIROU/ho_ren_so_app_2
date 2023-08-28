@@ -44,6 +44,17 @@ class Report < ApplicationRecord
     joins(:answers).where('answers.value LIKE ? OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE ?', "%#{keywords}%", "%#{keywords}%")
   }
 
+  # プロジェクトの報告集計対象のユーザーidを取得
+  def self.get_aggregated_members(project)
+    return project.project_users.where(member_expulsion: false).map(&:user_id)
+  end
+
+  # 報告集計対象のユーザーの任意の期間の報告を取得
+  def self.get_aggregated_reports(project, period, aggregated_members)
+    return project.reports.where(report_day: period, user_id: aggregated_members)
+  end
+
+  # 報告日までに報告したユーザーの数を取得
   def self.befor_deadline_reports_size(project_reports)
     if project_reports.present?
       return project_reports.map { |report| report.report_day == report.created_at.to_date ? report.user_id : nil }.compact.uniq.size

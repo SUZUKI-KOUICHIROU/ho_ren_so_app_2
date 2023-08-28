@@ -25,20 +25,27 @@ class Projects::MembersController < Projects::BaseProjectController
     @delegates = @project.delegations
     @members =
       if params[:search].present?
-        @project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10)
+        ProjectUser.member_expulsion_join(@project, @project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10))
       else
-        @project.users.all.page(params[:page]).per(10)
+        ProjectUser.member_expulsion_join(@project, @project.users.all.page(params[:page]).per(10))
       end
   end
 
+  # プロジェクトメンバーをプロジェクトの集計から外す
   def destroy
-    user = User.find(params[:user_id])
+    user = User.find(params[:member_id])
     project = Project.find(params[:project_id])
     project_user = ProjectUser.find_by(project_id: project.id, user_id: user.id)
-    if project_user.destroy
-      flash[:success] = "#{user.name}さんをプロジェクトから外しました。"
+    if project.leader_id != user.id
+      if project_user.member_expulsion
+        project_user.update(member_expulsion: false)
+        flash[:success] = "#{user.name}さんを報告集計に戻しました。"
+      else
+        project_user.update(member_expulsion: true)
+        flash[:success] = "#{user.name}さんを報告集計から外しました。"
+      end
     else
-      flash[:success] = "#{user.name}さんをプロジェクトから外せませんでした。"
+      flash[:success] = "リーダーはメンバーから外せません"
     end
     redirect_to project_member_index_path(current_user.id, project.id)
   end
