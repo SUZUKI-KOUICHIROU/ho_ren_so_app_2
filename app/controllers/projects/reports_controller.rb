@@ -149,12 +149,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_days_for_each_four_weeks = four_weeks_from_yesterday_array
     # プロジェクトの情報とそのプロジェクトの報告率の値を持つ配列を代入
     @projects = Project.all.map do |project|
+      aggregated_users = Report.get_aggregated_members(project)
       @four_weeks_report_rate_array = []
       @n = 5
       # プロジェクトの一週間の報告率を４週間分のハッシュの配列として代入
       report_rate_for_each_four_weeks = @report_days_for_each_four_weeks.map do |one_week|
         @n -= 1
-        one_week_reports_rate = one_week_report_rate_calc(one_week, project)
+        one_week_reports_rate = one_week_report_rate_calc(project, one_week, aggregated_users)
         @four_weeks_report_rate_array = @four_weeks_report_rate_array.push(one_week_reports_rate)
         ["rate_week#{@n}".to_sym, "#{one_week_reports_rate}%"]
       end
@@ -318,9 +319,9 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   # プロジェクトメンバー全員の一週間の報告率を計算して返す
-  def one_week_report_rate_calc(one_week, project)
-    project_four_weeks_reports_size = Report.befor_deadline_reports_size(project.reports.where(report_day: one_week))
-    return (project_four_weeks_reports_size.quo(7 * project.project_users.size).to_f * 100).floor
+  def one_week_report_rate_calc(project, one_week, members)
+    project_four_weeks_reports_size = Report.befor_deadline_reports_size(Report.get_aggregated_reports(project, one_week, members))
+    return (project_four_weeks_reports_size.quo(7 * members.size).to_f * 100).floor
   end
 
   # プロジェクトメンバーかスタッフかを判断する
