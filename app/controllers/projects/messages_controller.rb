@@ -27,7 +27,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new
   end
-
+  
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def create
@@ -73,6 +73,26 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
     @message_c.switch_read_flag
     @checked_members = @message.checked_members
+  end
+
+  def edit
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @message = Message.find(params[:id])
+    #@user = User.find(@report.user_id)
+    set_project_and_members
+    @message = @project.messages
+  end
+
+  def update
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @message = Message.find(params[:id])
+    set_project_and_members
+    @message = @project.messages
+    @message.update(message_params)
+    flash[:success] = "連絡を編集しました。"
+    redirect_to user_project_message_path(@user, @project, @message)
   end
 
   def destroy
