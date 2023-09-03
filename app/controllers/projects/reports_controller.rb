@@ -223,6 +223,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
+    @users = @project.project_users.where(member_expulsion: false).map(&:user)
     @display = params[:display].presence || "percent"
     @display_days = params[:display_days].presence || "percent"
     if params[:date].present?
@@ -245,6 +246,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   def view_reports_log_month
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
+    @users = @project.project_users.where(member_expulsion: false).map(&:user)
     @display = params[:display].presence || "percent"
     @display_days = params[:display_days].presence || "percent"
     if params[:date].present?
