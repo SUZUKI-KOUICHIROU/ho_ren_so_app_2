@@ -17,7 +17,7 @@ class Message < ApplicationRecord
   # ログインユーザー宛メッセージ最新の５件を取得
   def self.my_recent_messages(user_id)
     joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user_id }).order(created_at: :desc).limit(5)
-  end
+  end 
 
   def checked_members
     buf = message_confirmers.where(message_confirmation_flag: true).select('message_confirmer_id')
