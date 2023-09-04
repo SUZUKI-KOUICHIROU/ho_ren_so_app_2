@@ -1,21 +1,22 @@
 class Projects::MessagesController < Projects::BaseProjectController
   before_action :my_message, only: %i[show]
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Metrics/AbcSize
   def index
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
-    @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)   
+    @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
     @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @you_send_messages = @project.messages.where(id: you_send_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
     set_project_and_members
-    @recipients = @members 
-    # @message_confurmer = @project.messages.joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: @user_id })
-    # @recipients = @message_confurmer
+    @recipients = @members
     @recipients_names = @recipients.map(&:name).join(', ')
   end
+  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -28,7 +29,14 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new
   end
-  
+
+  def edit
+    @user = current_user
+    @project = Project.find(params[:project_id])
+    @message = Message.find(params[:id])
+    set_project_and_members
+  end
+
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def create
@@ -37,7 +45,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message.sender_id = current_user.id
     @message.sender_name = current_user.name
     # ActiveRecord::Type::Boolean：値の型をboolean型に変更
-    if params[:message][:send_to_all]        
+    if params[:message][:send_to_all]
       # TO ALLが選択されているとき
       if @message.save
         @members.each do |member|
@@ -76,21 +84,13 @@ class Projects::MessagesController < Projects::BaseProjectController
     @checked_members = @message.checked_members
   end
 
-  def edit
-    @user = current_user
-    @project = Project.find(params[:project_id])
-    @message = Message.find(params[:id])
-    #@user = User.find(@report.user_id)
-    set_project_and_members
-  end
-
   def update
     @user = current_user
     @project = Project.find(params[:project_id])
     @message = Message.find(params[:id])
     set_project_and_members
     @message.update(message_params)
-    flash[:success] = "連絡を編集しました。"
+    flash[:success] = "連絡を更新しました。"
     redirect_to user_project_message_path(@user, @project, @message)
   end
 
