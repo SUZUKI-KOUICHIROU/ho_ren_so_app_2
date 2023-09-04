@@ -30,8 +30,8 @@ class Report < ApplicationRecord
       reports = reports.sender_name_like(search_params[:sender_name])
     end
 
-    if search_params[:value].present?
-      reports = reports.answer_value_like(search_params[:value])
+    if search_params[:keywords].present?
+      reports = reports.keywords_like(search_params[:keywords])
     end
 
     reports
@@ -40,8 +40,21 @@ class Report < ApplicationRecord
   scope :title_like, ->(title) { where('title LIKE ?', "%#{title}%") }
   scope :updated_at, ->(updated_at) { where('updated_at BETWEEN ? AND ?', "#{updated_at} 00:00:00", "#{updated_at} 23:59:59") }
   scope :sender_name_like, ->(sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
-  scope :answer_value_like, ->(value) { joins(:answers).where('answers.value LIKE ?', "%#{value}%") }
-  # scope :answer_value_like, -> (value) { joins(:answers).select('reports.*, answers.value').where('answers.value LIKE ?', "%#{value}%") }
+  scope :keywords_like, ->(keywords) {
+    joins(:answers).where('answers.value LIKE ? OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE ?', "%#{keywords}%", "%#{keywords}%")
+  }
+
+  # プロジェクトの報告集計対象のユーザーidを取得
+  def self.get_aggregated_members(project)
+    return project.project_users.where(member_expulsion: false).map(&:user_id)
+  end
+
+  # 報告集計対象のユーザーの任意の期間の報告を取得
+  def self.get_aggregated_reports(project, period, aggregated_members)
+    return project.reports.where(report_day: period, user_id: aggregated_members)
+  end
+
+  # 報告日までに報告したユーザーの数を取得
   def self.befor_deadline_reports_size(project_reports)
     if project_reports.present?
       return project_reports.map { |report| report.report_day == report.created_at.to_date ? report.user_id : nil }.compact.uniq.size

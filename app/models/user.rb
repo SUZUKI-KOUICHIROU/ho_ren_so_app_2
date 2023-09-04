@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :report_statuses, dependent: :destroy
 
   has_many :reports, dependent: :nullify
-  attr_accessor :remember_token, :activation_token, :reset_token, :invite_token
+  attr_accessor :remember_token, :activation_token, :reset_token, :invite_token, :member_expulsion
 
   # 招待メールを送信する
   def send_invite_email(token, name, password)
@@ -28,6 +28,7 @@ class User < ApplicationRecord
   def project_leader?
     return Project.exists?(leader_id: self.id)
   end
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

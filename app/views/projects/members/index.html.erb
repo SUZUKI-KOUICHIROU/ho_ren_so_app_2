@@ -43,7 +43,11 @@
             <% if project_leader? %>
             <div class="w-50 mr-2 mb-2">
               <% unless @project.leader_id == member.id %>
-                <%= link_to "プロジェクトから外す", project_member_destroy_path(member.id, @project.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
+                <% if member.member_expulsion %>
+                  <%= link_to "プロジェクトへ戻す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーへ戻そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
+                <% else %>
+                  <%= link_to "プロジェクトから外す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
+                <% end %>
                 <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
                 <% if delegate.present? %>
                   <%= link_to "リクエストをキャンセル", cancel_delegate_path(@user, @project, delegate), method: :post, class: "btn btn-danger" %>

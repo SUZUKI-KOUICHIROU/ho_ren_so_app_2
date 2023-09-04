@@ -47,14 +47,15 @@ bin/dev 8080
 
 ## 開発コマンド
 ```
-# コンテナ起動＜binding.irbを使いたい時（docker-compose upより常にこっちの方がいいかも）＞
-bin/dev
-
-# railsサーバー起動(cloud9の方)
-bin/dev 8080
 
 # コンテナ起動
 docker-compose up
+
+# コンテナ起動(バックグラウンド起動):byebugを使うときに実行
+docker-compose up -d
+
+# コンテナのlogを出力(byebugの操作を行う)
+docker attach ho_ren_so_app
 
 # コンテナ停止
 docker-compose down
@@ -105,10 +106,10 @@ bin/testで全てのチェックに合格すると以下のように表示され
 ## テストコマンド(gem 'rspec')
 ```
 # rspec(全部実行)
-docker-compose run --rm app rspec
+docker-compose run --rm app bundle exec rspec
 
 # rspec(個別実行):例 spec/models/article_spec.rbの17行目
-docker-compose run --rm app rspec spec/models/article_spec.rb:17
+docker-compose run --rm app bundle exec rspec spec/models/article_spec.rb:17
 ```
 
 ---
@@ -116,10 +117,10 @@ docker-compose run --rm app rspec spec/models/article_spec.rb:17
 ## 構文チェックコマンド(gem 'rubocop')
 ```
 # rubocop
-docker-compose run --rm app rubocop
+docker-compose run --rm app bundle exec rubocop
 
 # rubocop(自動整形)
-docker-compose run --rm app rubocop -a
+docker-compose run --rm app bundle exec rubocop -a
 ```
 
 ---

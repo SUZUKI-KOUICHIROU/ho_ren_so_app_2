@@ -101,7 +101,7 @@ function changeForm() {
             <% end %>
             </span>
           </li>
-          <% if answer.array_value.count != 0 %>
+          <% if answer.array_value.present? && answer.array_value.count != 0 %>
               <% answer.array_value.each do |buf| %>
                 <div class="card-text ml-0 test">
                   <%= buf %>
@@ -129,6 +129,9 @@ function changeForm() {
             <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
           </div>
         <% end %>
+        <div class="text-center">
+          <%= link_to '戻る', user_project_reports_path(@user, @project), class: "btn btn-light btn-outline-secontary col-2 " %>
+        </div>
       </div>
     </div>
   </div>
