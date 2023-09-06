@@ -96,7 +96,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   def destroy
     @user = current_user
-    @project = Message.find(params[:project_id])
+    @project = Project.find(params[:project_id])
     @message = Message.find(params[:id])
     if @message.destroy
       flash[:success] = "連絡を削除しました。"
