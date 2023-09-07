@@ -85,20 +85,10 @@ docker-compose run --rm app bin/rails db:seed_fu
 - rspecと構文チェックとERDの生成
   - rspecが通っているか？
   - 構文チェックでエラーが出ていないか？
-  - ERDの更新はされているか？
 
-以上を以下のコマンドで確認できます。
-
+テストで全てのチェックに合格すると以下のように表示されます。チェックに合格しない場合は自分で解決するか、メンバーに相談しながら解決してください。チェックに全て合格してPRを初めて上げることができます。
 ```
-bin/test
-```
-bin/testで全てのチェックに合格すると以下のように表示されます。チェックに合格しない場合は自分で解決するか、メンバーに相談しながら解決してください。チェックに全て合格してPRを初めて上げることができます。
-```
-  =========================
-
-         TEST PASSED
-
-  =========================
+  ・・・・・・・・・・・・・・・・・・
 ```
 
 ---
@@ -123,15 +113,6 @@ docker-compose run --rm app bundle exec rubocop
 docker-compose run --rm app bundle exec rubocop -a
 ```
 
----
-
-## ER図の生成(gem 'erd')
-```
-# ER図の生成
-docker-compose run --rm app erd
-```
-
----
 
 ## その他開発用readme（こちらも必ず確認ください！！）
 - https://github.com/shotaimai66/readme-develop
