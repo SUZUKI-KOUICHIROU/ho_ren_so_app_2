@@ -204,20 +204,20 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
-  def view_reports
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
-    @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).page(params[:reports_page]).per(10)
-    reported_users_id = []
-    i = 0
-    reported_users = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).select(:user_id).distinct
-    reported_users.each do |user|
-      reported_users_id[i] = user.user_id
-      i += 1
-    end
-    @reported_users = @project.users.all.where(id: reported_users_id).page(params[:reported_users_page]).per(10)
-    @unreported_users = @project.users.all.where.not(id: reported_users_id).page(params[:unreported_users_page]).per(10)
-  end
+  # def view_reports
+    # @user = User.find(params[:user_id])
+    # @project = Project.find(params[:project_id])
+    # @reports = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).page(params[:reports_page]).per(10)
+    # reported_users_id = []
+    # i = 0
+    # reported_users = @project.reports.where(report_day: @project.report_deadlines.last.day).where(remanded: false).select(:user_id).distinct
+    # reported_users.each do |user|
+      # reported_users_id[i] = user.user_id
+      # i += 1
+    # end
+    # @reported_users = @project.users.all.where(id: reported_users_id).page(params[:reported_users_page]).per(10)
+    # @unreported_users = @project.users.all.where.not(id: reported_users_id).page(params[:unreported_users_page]).per(10)
+  # end
   # rubocop:enable Metrics/AbcSize
 
   # rubocopを一時的に無効にする。
