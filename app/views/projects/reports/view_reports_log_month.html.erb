@@ -69,13 +69,14 @@
             <% reported_users = @project.reports
                                   .joins(user: :project_users)
                                   .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                  .where("DATE(reports.created_at) = ?", date)
                                   .select(:user_id).distinct %>
             <tr>
               <td class="body"><%= date.strftime("%m/%d") %></td>
               <% @users.each do |user| %>
                 <% user_report = user.reports.find_by(report_day: date) %>
                 <td class="body">
-                  <% if user_report.present? %>
+                  <% if user_report.present? && user_report.created_at.to_date == date %>
                     <%= user_report.created_at.strftime("%m月%d日 %H:%M") %>
                     <br>
                   <% else %>
@@ -119,11 +120,12 @@
                                     .joins(user: :project_users)
                                     .where(report_day: @first_day..@last_day, remanded: false, user_id: user.id, project_users: { member_expulsion: false })
                                     .pluck(:report_day).uniq %>
+                <% valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day } %>
                 <% total_days = (@first_day..@last_day).count %>
                 <% if @display_days == "percent" %>
-                  <%= reported_days.count * 100 / total_days %>%
+                  <%= valid_reported_days.count * 100 / total_days %>%
                 <% elsif @display_days == "days" %>
-                  <%= reported_days.count %> 日 / <%= total_days %> 日
+                  <%= valid_reported_days.count %> 日 / <%= total_days %> 日
                 <% end %>
               </td>
             <% end %>
@@ -135,6 +137,7 @@
                 <% reported_users = @project.reports
                                       .joins(user: :project_users)
                                       .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                      .where("DATE(reports.created_at) = ?", date)
                                       .select(:user_id).distinct %>
                 <% total_reported_users += reported_users.count %>
               <% end %>
