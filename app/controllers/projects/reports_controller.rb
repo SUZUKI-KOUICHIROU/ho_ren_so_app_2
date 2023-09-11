@@ -202,8 +202,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -216,7 +214,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @week_last_day = selected_day + 6
     elsif params[:weekday].present?
       selected_weekday = params[:weekday].to_i
-      @week_last_day = Date.current.beginning_of_week + selected_weekday - 1.days
+      @week_last_day = Date.current.beginning_of_week + selected_weekday - 1.day
       @week_first_day = @week_last_day - 6.days
     else
       @week_first_day = Date.current - 6
