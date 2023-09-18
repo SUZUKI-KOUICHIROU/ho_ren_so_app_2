@@ -64,16 +64,16 @@ class Report < ApplicationRecord
   end
 
   # 週次レポートを取得する
-  def self.monthly_reports_for(project, user)
+  def self.monthly_reports_for(project)
     start_of_month = Time.zone.now.beginning_of_month
     end_of_month = Time.zone.now.end_of_month
-    Report.where(project: project, user: user, created_at: start_of_month..end_of_month)
+    Report.where(project: project, created_at: start_of_month..end_of_month)
   end
 
   # 週次レポートを取得する
-  def self.weekly_reports_for(project, user)
+  def self.weekly_reports_for(project)
     start_of_week = Time.zone.now.beginning_of_week
     end_of_week = Time.zone.now.end_of_week
-    Report.where(project: project, user: user, created_at: start_of_week..end_of_week)
+    Report.where(project: project, created_at: start_of_week..end_of_week)
   end
 end
