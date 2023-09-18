@@ -1,30 +1,99 @@
-FROM ruby:2.6.3
-# 起動させるためのパッケージを取得
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    # `build-essential`は開発に必須のビルドツールを提供しているパッケージ
-    build-essential \
-    postgresql-client \
-    nodejs \
-    vim \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-# 作業用のディレクトリを作成(存在しない場合は勝手に作成してくれる)
-WORKDIR /myproject
-# ホストのGemfile達をコンテナ内にコピー
-ADD Gemfile /myproject/Gemfile
-ADD Gemfile.lock /myproject/Gemfile.lock
-RUN gem install bundler
-RUN gem update --system 3.2.3
-RUN bundle install -j4
-#既存railsプロジェクトをコンテナ内にコピー
-ADD . /myproject
-# entrypoint.shをコピーし、実行権限を与える
-COPY entrypoint.sh /usr/bin/
-# chmodコマンドはファイルやディレクトリに権限設定するコマンド。`+`は後に記述した権限を付加する。`x`は実行権限。
-# つまり今回は全てのユーザに該当ファイルの実行権限を付与する。
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-# `EXPOSE <ポート>`はコンテナ実行時に<ポート>にリッスンするよう命令するコマンド。
+# syntax = docker/dockerfile:1
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=2.6.3
+FROM ruby:$RUBY_VERSION-slim as base
+
+LABEL fly_launch_runtime="rails"
+
+# Rails app lives here
+WORKDIR /rails
+
+# Set production environment
+ENV RAILS_ENV="production" \
+    BUNDLE_WITHOUT="development:test" \
+    BUNDLE_DEPLOYMENT="1"
+
+# Update gems and bundler
+RUN gem update --system --no-document && \
+    gem install -N bundler
+
+# Install packages needed to install nodejs
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Install Node.js
+ARG NODE_VERSION=20.5.1
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    rm -rf /tmp/node-build-master
+
+
+# Throw-away build stage to reduce size of final image
+FROM base as build
+
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libpq-dev node-gyp pkg-config python
+
+# Install yarn
+ARG YARN_VERSION=1.22.19
+RUN npm install -g yarn@$YARN_VERSION
+
+# Build options
+ENV PATH="/usr/local/node/bin:$PATH"
+
+# Install application gems
+COPY --link Gemfile Gemfile.lock ./
+RUN bundle install && \
+    bundle exec bootsnap precompile --gemfile && \
+    rm -rf ~/.bundle/ $BUNDLE_PATH/ruby/*/cache $BUNDLE_PATH/ruby/*/bundler/gems/*/.git
+
+# Install node modules
+COPY --link .yarnrc package.json yarn.lock ./
+COPY --link .yarn/releases/* .yarn/releases/
+RUN yarn install --frozen-lockfile
+
+# Copy application code
+COPY --link . .
+
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+
+# Adjust binfiles to be executable on Linux
+RUN chmod +x bin/* && \
+    sed -i "s/\r$//g" bin/*
+
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE=DUMMY ./bin/rails assets:precompile
+
+
+# Final stage for app image
+FROM base
+
+# Install packages needed for deployment
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl libsqlite3-0 postgresql-client && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Copy built artifacts: gems, application
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /rails /rails
+
+# Run and own only the runtime files as a non-root user for security
+RUN useradd rails --create-home --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER rails:rails
+
+# Deployment options
+ENV RAILS_LOG_TO_STDOUT="1" \
+    RAILS_SERVE_STATIC_FILES="true"
+
+# Entrypoint prepares the database.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["./bin/rails", "server"]
