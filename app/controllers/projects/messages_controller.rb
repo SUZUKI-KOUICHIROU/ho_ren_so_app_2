@@ -89,9 +89,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @message = Message.find(params[:id])
     set_project_and_members
-    @message.update(message_params)
-    flash[:success] = "連絡を更新しました。"
-    redirect_to user_project_message_path(@user, @project, @message)
+    delete_old_message_confirmers
+    update_message_confirmers
   end
 
   def destroy
@@ -116,6 +115,40 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = Message.find(params[:id])
     if @message.sender_id != current_user.id && @message.message_confirmers.exists?(message_confirmer_id: current_user.id) == false
       redirect_to root_path
+    end
+  end
+
+  def delete_old_message_confirmers
+    old_message_confirmers = @message.message_confirmers.where.not(message_confirmer_id: @message.send_to)
+    old_message_confirmers.destroy_all
+  end
+
+  def update_message_confirmers
+    if @message.update(message_params)
+      if params[:message][:send_to_all]
+        update_message_confirmers_for_all
+      else
+        update_message_confirmers_for_selected
+      end
+      flash[:success] = "連絡内容を更新し、送信しました。"
+      redirect_to user_project_path(current_user, params[:project_id])
+    else
+      flash[:danger] = "送信相手を選択してください。"
+      render :edit
+    end
+  end
+
+  def update_message_confirmers_for_all
+    @members.each do |member|
+      @send = @message.message_confirmers.find_or_initialize_by(message_confirmer_id: member.id)
+      @send.save
+    end
+  end
+
+  def update_message_confirmers_for_selected
+    @message.send_to.each do |t|
+      @send = @message.message_confirmers.find_or_initialize_by(message_confirmer_id: t)
+      @send.save
     end
   end
 end
