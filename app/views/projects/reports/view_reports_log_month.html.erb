@@ -85,13 +85,17 @@
                 </td>
               <% end %>
               <td class="body">
-                <% if @display == "percent" %>
-                  <%= reported_users.count * 100 / @project.users.where(project_users: { member_expulsion: false }).count %>%
-                <% elsif @display == "people" %>
-                  <%= reported_users.count %>
-                  人 /
-                  <%= @project.users.where(project_users: { member_expulsion: false }).count %>
-                  人
+                <% if @report_days.any? { |report_day| report_day.day == date } %>
+                  <% if @display == "percent" %>
+                    <%= reported_users.count * 100 / @project.users.where(project_users: { member_expulsion: false }).count %>%
+                  <% elsif @display == "people" %>
+                    <%= reported_users.count %>
+                    人 /
+                    <%= @project.users.where(project_users: { member_expulsion: false }).count %>
+                    人
+                  <% end %>
+                <% else %>
+                  -
                 <% end %>
               </td>
             </tr>
@@ -121,11 +125,15 @@
                                     .where(report_day: @first_day..@last_day, remanded: false, user_id: user.id, project_users: { member_expulsion: false })
                                     .pluck(:report_day).uniq %>
                 <% valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day } %>
-                <% total_days = (@first_day..@last_day).count %>
-                <% if @display_days == "percent" %>
-                  <%= valid_reported_days.count * 100 / total_days %>%
-                <% elsif @display_days == "days" %>
-                  <%= valid_reported_days.count %> 日 / <%= total_days %> 日
+                <% total_days = @report_days.count %>
+                <% if total_days > 0 %>
+                  <% if @display_days == "percent" %>
+                    <%= valid_reported_days.count * 100 / total_days %>%
+                  <% elsif @display_days == "days" %>
+                    <%= valid_reported_days.count %> 日 / <%= total_days %> 日
+                  <% end %>
+                <% else %>
+                  -
                 <% end %>
               </td>
             <% end %>
@@ -141,7 +149,12 @@
                                       .select(:user_id).distinct %>
                 <% total_reported_users += reported_users.count %>
               <% end %>
-              <%= ((total_reported_users.to_f / (total_users * total_days)) * 100).to_i %>%
+              <% total_days = @report_days.count %>
+              <% if total_days > 0 %>
+                <%= ((total_reported_users.to_f / (total_users * total_days)) * 100).to_i %>%
+              <% else %>
+                -
+              <% end %>
             </td>
           </tr>
         </tfoot>

@@ -220,6 +220,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @week_first_day = Date.current - 6
       @week_last_day = Date.current
     end
+    @report_days = @project.report_deadlines.where(day: @week_first_day..@week_last_day)
     if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
       flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
     end
@@ -244,6 +245,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       @last_day = Date.current.end_of_month
     end
     @month_field_value = @first_day.strftime("%Y-%m-%d")
+    @report_days = @project.report_deadlines.where(day: @first_day..@last_day)
     if @project.reports.where(report_day: @first_day..@last_day).empty?
       if params[:start_date].present? && params[:end_date].present?
         flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
