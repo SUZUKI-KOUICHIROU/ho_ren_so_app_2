@@ -129,7 +129,7 @@
                       <%= l(message.updated_at, format: :long) %>
                     </div>
                     <div class="message-person">                     
-                       <%= @recipients_names %>
+                       <%= get_message_recipients(message.id, @members) %>
                     </div>
                     <div class="message-action">
                         <%= link_to "編集", edit_user_project_message_path(current_user, @project, message), class: "btn btn-outline-orange" %>
