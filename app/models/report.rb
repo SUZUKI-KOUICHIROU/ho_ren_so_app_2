@@ -63,31 +63,17 @@ class Report < ApplicationRecord
     end
   end
 
-  # クラスメソッド: 月次レポートを取得する
-  def self.monthly_reports_for(project, user, page)
-    start_of_month = Time.zone.today.beginning_of_month
-    end_of_month = Time.zone.today.end_of_month
-    monthly_reports = project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_month, end_of_month)
-    if monthly_reports.present?
-      reports = monthly_reports.where.not(sender_id: user.id).order(updated_at: 'DESC').page(page).per(10)
-      you_reports = monthly_reports.where(sender_id: user.id).order(updated_at: 'DESC').page(page).per(10)
-      { reports: reports, you_reports: you_reports }
-    else
-      { reports: [], you_reports: [] }
-    end
+  # 週次レポートを取得する
+  def self.monthly_reports_for(project)
+    start_of_month = Time.zone.now.beginning_of_month
+    end_of_month = Time.zone.now.end_of_month
+    Report.where(project: project, updated_at: start_of_month..end_of_month)
   end
 
-  # クラスメソッド: 週次レポートを取得する
-  def self.weekly_reports_for(project, user, page)
-    start_of_week = Time.zone.today.beginning_of_week
-    end_of_week = Time.zone.today.end_of_week
-    weekly_reports = project.reports.where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)
-    if weekly_reports.present?
-      reports = weekly_reports.where.not(sender_id: user.id).order(updated_at: 'DESC').page(page).per(10)
-      you_reports = weekly_reports.where(sender_id: user.id).order(updated_at: 'DESC').page(page).per(10)
-      { reports: reports, you_reports: you_reports }
-    else
-      { reports: [], you_reports: [] }
-    end
+  # 週次レポートを取得する
+  def self.weekly_reports_for(project)
+    start_of_week = Time.zone.now.beginning_of_week
+    end_of_week = Time.zone.now.end_of_week
+    Report.where(project: project, updated_at: start_of_week..end_of_week)
   end
 end

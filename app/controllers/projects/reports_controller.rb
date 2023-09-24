@@ -7,8 +7,19 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
     @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-    @monthly_reports = Report.monthly_reports_for(@project, @user, params[:page])
-    @weekly_reports = Report.weekly_reports_for(@project, @user, params[:page])
+    @monthly_reports = Report.monthly_reports_for(@project)
+    @weekly_reports = Report.weekly_reports_for(@project)
+    if params[:report_type] == 'monthly'
+      @reports = @monthly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @monthly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports }
+    elsif params[:report_type] == 'weekly'
+      @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports }
+    else
+      render :index
+    end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
       if @results.present?
@@ -159,31 +170,32 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
+  # 報告集計画面(一週間)
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @display = params[:display].nil? ?
-    "percent" : params[:display]
-    @first_day = params[:date].blank? ?
-    Date.current.beginning_of_month : Date.strptime(params[:date], '%Y-%m')
-    @last_day = @first_day.end_of_month
-    one_month = [*@first_day..@last_day]
-    @report_days = @project.report_deadlines.order(id: "DESC").where(day: @first_day..@last_day)
-    @month_field_value = @first_day.strftime("%Y-%m")
-    if params[:search].present? and params[:search] != ""
-      @results = Answer.where('value LIKE ?', "%#{params[:search]}%")
-      if @results.present?
-        @report_ids = @results.pluck(:report_id).uniq
-      else
-        @report_ids = 0
-      end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @users = @project.project_users.where(member_expulsion: false).map(&:user)
+    @display = params[:display].presence || "percent"
+    @display_days = params[:display_days].presence || "percent"
+    @week_first_day, @week_last_day = calculate_week_dates
+    @report_days = @project.report_deadlines.where(day: @week_first_day..@week_last_day)
+    if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
+      flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
     end
   end
-  # rubocop:enable Metrics/AbcSize
+
+  # 報告集計画面(一か月、期間指定)
+  def view_reports_log_month
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @users = @project.project_users.where(member_expulsion: false).map(&:user)
+    @display = params[:display].presence || "percent"
+    @display_days = params[:display_days].presence || "percent"
+    @first_day, @last_day = calculate_month_dates
+    @month_field_value = @first_day.strftime("%Y-%m-%d")
+    @report_days = @project.report_deadlines.where(day: @first_day..@last_day)
+    month_no_report_noitce
+  end
 
   def report_form_switching
     @user = User.find(params[:user_id])
@@ -252,5 +264,43 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 総合報告率の計算
   def overall_report_rate_calc(reports_rate_array)
     return reports_rate_array.sum.quo(reports_rate_array.size).to_f.floor
+  end
+
+  # 一週間集計の日付を計算
+  def calculate_week_dates
+    if params[:date].present?
+      selected_day = Date.parse(params[:date])
+      [selected_day, selected_day + 6]
+    elsif params[:weekday].present?
+      selected_weekday = params[:weekday].to_i
+      week_last_day = Date.current.beginning_of_week + selected_weekday - 1.day
+      [week_last_day - 6.days, week_last_day]
+    else
+      [Date.current - 6, Date.current]
+    end
+  end
+
+  # 一か月集計、期間指定集計の日付を計算
+  def calculate_month_dates
+    if params[:date].present?
+      selected_date = Date.parse(params[:date] + "-01")
+      [selected_date.beginning_of_month, selected_date.end_of_month]
+    elsif params[:start_date].present? && params[:end_date].present?
+      [Date.parse(params[:start_date]), Date.parse(params[:end_date])]
+    else
+      current_date = Date.current
+      [current_date.beginning_of_month, current_date.end_of_month]
+    end
+  end
+
+  # 一か月集計、報告が無い場合のフラッシュメッセージ
+  def month_no_report_noitce
+    if @project.reports.where(report_day: @first_day..@last_day).empty?
+      if params[:start_date].present? && params[:end_date].present?
+        flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
+      else
+        flash.now[:notice] = "#{@first_day.strftime('%-m月')}の報告はありません。"
+      end
+    end
   end
 end
