@@ -16,9 +16,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     elsif params[:report_type] == 'weekly'
       @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-      { reports: @reports, you_reports: @you_reports }
-    else
-      render :index
+      { reports: @reports, you_reports: @you_reports }    
     end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
@@ -26,11 +24,12 @@ class Projects::ReportsController < Projects::BaseProjectController
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。'
-        render :index
+        return
       end
       @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
     end
+    render :index
   end
   # rubocop:enable Metrics/AbcSize
 
