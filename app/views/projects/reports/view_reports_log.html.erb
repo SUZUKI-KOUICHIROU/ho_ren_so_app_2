@@ -1,78 +1,135 @@
 <% provide(:title, '報告集計') %>
+
 <%= content_for :side_menu do %>
-  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+  <%= render partial: 'layouts/sidebar', locals: { user: @user, project: @project } %>
 <% end %>
-<div class="card-box">
+
+<div class="mt-3 mr-4 ml-4">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
-  <h1 class="text-center">報告集計
-  </h1>
-    <div class="card-body">
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="you-report" role="tabpanel" aria-labelledby="you-report-tab">
-          <div class="box-report-index">
-            <div class="d-flex justify-content-end mb-3">
-              <%= form_with url: user_project_reports_view_reports_log_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
-                <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
-                <%= f.submit "送信", class: "btn btn-outline-orange mr-4" %>
-              <% end %>
-              <%= link_to "⇦前月", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
-              <%= link_to "次月⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @first_day.next_month), class: "btn btn-outline-orange" %>
-            </div>
-            <div class="table-header">
-              <div class="subject-name col-md-4">
-                報告日
-              </div>
-              <div class="reported-date col-md-4">
-                <% if @display == "percent" %>
-                  報告割合<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @first_day ), class: "text-white  ml-5" %>
-                <% elsif @display == "people" %>
-                  報告割合<%= link_to "▼ 人 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @first_day ), class: "text-white  ml-5" %>
-                <% end %>
-              </div>
-              <div class="report-action col-md-4">
-                報告者数 / 未報告者数
-              </div>
-            </div>
-            <div class="table-body">
-              <% line_num = 0%>
-              <% i = 0 %>
-              <% @report_days.each do |report_deadline|%>
-                <% line_num += 1%>
-                <% reported_users = reported_users(@project, report_deadline) %>
-                <% unreported_users = @project.users.all - reported_users %>
-                <% reports = Report.where(report_day: report_deadline.day).where(remanded: false) %>
-                <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report">
-                  <div class="subject-name col-md-4">
-                    <%= l(report_deadline.day, format: :long) %>
-                  </div>
-                  <div class="reported-date col-md-4">
-                    <% if @display == "percent" %>
-                      <%= reported_users.count * 100 / @project.users.all.count %>%
-                    <% elsif @display == "people" %>
-                      <%= reported_users.count %>
-                      人 /
-                      <%= @project.users.all.count %>
-                      人
-                    <% end %>
-                  </div>
-                  <div class="report-action col-md-4">
-                    <%= reported_users.count %>人
-                    <button type="button" class="btn btn-outline-orange rounded-circle p-1 mr-4" data-toggle="modal" data-target="#report-user<%= line_num %>">
-                      ▼
-                    </button>
-                    <%= render partial: 'reported_users', locals: { line_num: line_num, report_deadline: report_deadline, reports: reports} %>
-                    <%= unreported_users.count %>人
-                    <button type="button" class="btn btn-outline-orange rounded-circle p-1" data-toggle="modal" data-target="#not-report-user<%= line_num %>">
-                      ▼
-                    </button>
-                    <%= render partial: 'unreported_users', locals: { line_num: line_num, report_deadline: report_deadline, unreported_users: unreported_users} %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+  <h1 class="text-center">報告集計</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "一か月の集計表示", user_project_reports_view_reports_log_month_path, class: "btn btn-outline-orange" %>
+  </div>
+  <div class="d-flex justify-content-between">
+    <div class="mb-3">
+      <%= form_with url: user_project_reports_view_reports_log_path, method: :get, local: true do |f| %>
+        <%= f.select :weekday, options_for_select([["日", 0], ["月", 1], ["火", 2], ["水", 3], ["木", 4], ["金", 5], ["土", 6]]), { include_blank: true }, class: "search-box" %>
+        <%= f.submit "末日の曜日を指定", class: "btn btn-outline-orange btn-block" %>
+      <% end %>
     </div>
+    <div class="align-self-end mb-3">
+      <%= link_to "⇦前週", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.prev_day(7)), class: "btn btn-outline-orange mr-1" %>
+      <%= link_to "次週⇨", user_project_reports_view_reports_log_path(current_user, @project, display: @display, date: @week_first_day.next_day(7)), class: "btn btn-outline-orange" %>
+    </div>
+  </div>
+  <div class="table-totalling-background">
+    <table class="table table-report-totalling">
+      <thead class="table-report-totalling-header">
+        <tr>
+          <th rowspan="2", class="item col-md-2">報告者名</th>
+          <th colspan="7", class="item col-md-8">報告日時</th>
+          <th rowspan="2", class="item col-md-2">
+            <% if @display_days == "percent" %>
+              報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display_days: "days", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% elsif @display_days == "days" %>
+              報告割合<%= link_to "▼ 日数 ▼", user_project_reports_view_reports_log_path(current_user, @project, display_days: "percent", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% end %>
+          </th>
+        </tr>
+        <tr class="table-report-totalling-body">
+          <% (@week_first_day..@week_last_day).reverse_each do |date| %>
+            <th>
+              <%= date.strftime("%m/%d") %><br>
+              (<%= (%w(日 月 火 水 木 金 土)[date.wday]) %>)
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-report-totalling-body">
+        <% @users.each do |user| %>
+          <tr>
+            <td class="body"><%= user.name %></td>
+            <% (@week_first_day..@week_last_day).reverse_each do |date| %>
+              <% user_report = user.reports.find_by(report_day: date) %>
+              <td class="body">
+                <% if user_report.present? && user_report.created_at.to_date == date %>
+                  <%= user_report.created_at.strftime("%m月%d日 %H:%M") %>
+                  <br>
+                <% else %>
+                  <%= "-" %>
+                <% end %>
+              </td>
+            <% end %>
+            <td class="body">
+              <% reported_days = @project.reports
+                                  .joins(user: :project_users)
+                                  .where(report_day: @week_first_day..@week_last_day, remanded: false, user_id: user.id, project_users: { member_expulsion: false })
+                                  .pluck(:report_day).uniq %>
+              <% valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day } %>
+              <% total_days = @report_days.count %>
+              <% if total_days > 0 %>
+                <% if @display_days == "percent" %>
+                  <%= valid_reported_days.count * 100 / total_days %>%
+                <% elsif @display_days == "days" %>
+                  <%= valid_reported_days.count %> 日 / <%= total_days %> 日
+                <% end %>
+              <% else %>
+                -
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="table-report-totalling-footer">
+        <tr>
+          <td class="item">
+            <% if @display == "percent" %>
+              一日当たりの<br>
+              報告率<%= link_to "▼ % ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "people", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% elsif @display == "people" %>
+              一日当たりの<br>
+              報告割合<%= link_to "▼人数 ▼", user_project_reports_view_reports_log_path(current_user, @project, display: "percent", date: @week_first_day ), class: "text-white  ml-2" %>
+            <% end %>
+          </td>
+          <% (@week_first_day..@week_last_day).reverse_each do |date| %>
+            <td class="footer">
+              <% if @report_days.any? { |report_day| report_day.day == date } %>
+                <% reported_users = @project.reports
+                                      .joins(user: :project_users)
+                                      .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                      .where("DATE(reports.created_at) = ?", date)
+                                      .select(:user_id).distinct %>
+                <% total_users = @project.users.where(project_users: { member_expulsion: false }).count %>
+                <% if @display == "percent" %>
+                  <%= reported_users.count * 100 / total_users %>%
+                <% elsif @display == "people" %>
+                  <%= reported_users.count %> 人 / <%= total_users %> 人
+                <% end %>
+              <% else %>
+                -
+              <% end %>
+            </td>
+          <% end %>
+          <td class="footer">
+            <% total_reported_users = 0 %>
+            <% total_users = @project.users.where(project_users: { member_expulsion: false }).count %>
+            <% (@week_first_day..@week_last_day).each do |date| %>
+              <% reported_users = @project.reports
+                                    .joins(user: :project_users)
+                                    .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                    .where("DATE(reports.created_at) = ?", date)
+                                    .select(:user_id).distinct %>
+              <% total_reported_users += reported_users.count %>
+            <% end %>
+            <% total_days = @report_days.count %>
+            <% if total_days > 0 %>
+              <%= ((total_reported_users.to_f / (total_users * total_days)) * 100).to_i %>%
+            <% else %>
+              -
+            <% end %>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </div>
