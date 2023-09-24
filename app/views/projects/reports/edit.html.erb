@@ -4,7 +4,6 @@
 <div class="box-project-report">
   <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告編集</h1>
-  <% cnt = 1 %>
   <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
     <div class="btn btn-danger font-weight-bold mb-2" style="pointer-events: none;">
       コメント
@@ -13,7 +12,7 @@
       <%= simple_format(@report.remanded_reason) %>
     </div>
   <% end %>
-  <%= form_with url: user_project_report_path(current_user,@project),method: :patch do |f| %>
+  <%= form_with model: @report, url: user_project_report_path(current_user, @project, @report),method: :patch do |f| %>
     <div class="base-background-color px-5 pt-5">
       <div class="report-form">
         <span class="report-item-title mb-2 font-weight-bold"><%= f.label  "報告日", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
@@ -23,7 +22,7 @@
         <span class="report-item-title mb-2 font-weight-bold"><%= f.label "件名", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
         <%= f.text_field :title, class:'form-control', placeholder: "最大30文字", maxlength: 30, required: true, value: @report.title %>
       </div>
-        <% @answers.each do |answer| %>
+        <% @answers.zip(@questions) do |answer, question| %>
           <% case answer.question_type %>
             <% when 'text_field' %>
               <% q_type = 'edit_text_field' %>
@@ -38,8 +37,7 @@
             <% when 'date_field' %>
               <% q_type = 'edit_date_field' %>
           <% end %>
-          <%= render partial: q_type, locals: { answer: answer, f: f, c: cnt} %>
-          <% cnt += 1 %>
+          <%= render partial: q_type, locals: { answer: answer, question: question, f: f} %>
         <% end %>
         <%# レンダリング %>
         <div class="text-right mt-3 mr-4 pb-5">

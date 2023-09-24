@@ -41,9 +41,10 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def edit
     @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = Report.find(params[:id])
+    @project = Project.includes(questions: [:text_field, :text_area, {check_box: :check_box_option_strings}, {radio_button: :radio_button_option_strings}, {select: :select_option_strings}, :date_field]).find(params[:project_id])
+    @report = Report.includes(:answers).find(params[:id])
     @user = User.find(@report.user_id)
+    @questions = @project.questions.where(using_flag: true)
     @answers = @report.answers
   end
 
@@ -60,74 +61,30 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
     if @report.save
       flash[:success] = '報告を登録しました。'
+      @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
+      redirect_to user_project_report_path(@user, @project, @report)
     else
       flash[:danger] = '報告の登録に失敗しました。'
+      render :new
     end
-    @project.report_statuses.find_by(user_id: @user.id, is_newest: true).update(has_submitted: true)
-    flash[:success] = "報告を登録しました。"
-    redirect_to user_project_report_path(@user, @project, @report)
   end
 
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
-    @project = Project.find(params[:project_id])
-    @report = @project.reports.find(params[:id])
-    @report.title = params[:title]
-    @answers = @report.answers
-    cnt = 1
-    @answers.each do |answer|
-      cnt_num = "#{cnt}"
-      if params[:answer]
-        case answer.question_type
-        when 'text_field'
-          if TextField.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            answer.update(value: params[:answer][cnt_num][:value])
-          end
-        when 'text_area'
-          if TextArea.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            answer.update(value: params[:answer][cnt_num][:value])
-          end
-        when 'date_field'
-          if DateField.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            answer.update(value: params[:answer][cnt_num][:value])
-          end
-        when 'radio_button'
-          if RadioButton.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            if params[:answer][cnt_num].nil?
-              answer.update(value: "")
-            else
-              answer.update(value: params[:answer][cnt_num][:value])
-            end
-          end
-        when 'check_box'
-          if CheckBox.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            answer.update(array_value: params[:answer][cnt_num])
-          end
-        when 'select'
-          if Select.find_by(question_id: answer.question_id).nil?
-            answer.destroy
-          else
-            answer.update(value: params[:answer][cnt_num][:value])
-          end
-        end
-      end
-      cnt += 1
+    @project = Project.includes(questions: [:text_field, :text_area, {check_box: :check_box_option_strings}, {radio_button: :radio_button_option_strings}, {select: :select_option_strings}, :date_field]).find(params[:project_id])
+    @report = Report.includes(:answers).find(params[:id])
+    byebug
+    if @report.update!(create_reports_params)
+      flash[:success] = "報告を編集しました。"
+      redirect_to user_project_report_path(@user, @project, @report)
+    else
+      flash[:success] = "更新に失敗しました"
+      @questions = @project.questions.where(using_flag: true)
+      @answers = @report.answers
+      render :edit
     end
-    @report.update(resubmitted: params[:resubmitted])
-    flash[:success] = "報告を編集しました。"
-    redirect_to user_project_report_path(@user, @project, @report)
   end
   # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 

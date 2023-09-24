@@ -12,13 +12,13 @@
       </div>
     <% end %>
   <% else %>
-    <span class="report-item-title mb-2 font-weight-bold"><%= RadioButton.find_by(question_id: answer.question_id).label_name %></span>
+    <% radio_button = question.radio_button %>
+    <span class="report-item-title mb-2 font-weight-bold"><%= radio_button.label_name %></span>
     <span class="pl-2 font-weight-bold text-danger">必須</span>
     <br>
-    <% RadioButton.find_by(question_id: answer.question_id).radio_button_option_strings.each do |item| %>
-      <%= f.fields_for "answer[#{c}]", answer do |m| %>
-        <%= m.radio_button :value, item.option_string, required: true %>
-        <%= item.option_string %>
+    <%= f.fields_for :answers, answer do |m| %>
+      <%= m.collection_radio_buttons(:value, radio_button.radio_button_option_strings, :option_string , :option_string, {}, { required: true }) do |r| %>
+        <% r.label(class: "radio-label") { r.radio_button(class: "radio-button") + r.text } %>
       <% end %>
     <% end %>
   <% end %>
