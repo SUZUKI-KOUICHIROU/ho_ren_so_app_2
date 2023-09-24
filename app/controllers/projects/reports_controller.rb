@@ -213,6 +213,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     redirect_to action: :show
   end
 
+  # 報告集計画面(一週間)
   def view_reports_log
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -226,6 +227,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
   end
 
+  # 報告集計画面(一か月、期間指定)
   def view_reports_log_month
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
