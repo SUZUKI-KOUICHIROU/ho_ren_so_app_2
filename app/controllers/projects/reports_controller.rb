@@ -208,18 +208,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @users = @project.project_users.where(member_expulsion: false).map(&:user)
     @display = params[:display].presence || "percent"
     @display_days = params[:display_days].presence || "percent"
-    if params[:date].present?
-      selected_day = Date.parse(params[:date])
-      @week_first_day = selected_day
-      @week_last_day = selected_day + 6
-    elsif params[:weekday].present?
-      selected_weekday = params[:weekday].to_i
-      @week_last_day = Date.current.beginning_of_week + selected_weekday - 1.day
-      @week_first_day = @week_last_day - 6.days
-    else
-      @week_first_day = Date.current - 6
-      @week_last_day = Date.current
-    end
+    @week_first_day, @week_last_day = calculate_week_dates
     @report_days = @project.report_deadlines.where(day: @week_first_day..@week_last_day)
     if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
       flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
@@ -232,27 +221,10 @@ class Projects::ReportsController < Projects::BaseProjectController
     @users = @project.project_users.where(member_expulsion: false).map(&:user)
     @display = params[:display].presence || "percent"
     @display_days = params[:display_days].presence || "percent"
-    if params[:date].present?
-      selected_date = Date.parse(params[:date] + "-01")
-      @first_day = selected_date.beginning_of_month
-      @last_day = selected_date.end_of_month
-    elsif params[:start_date].present? && params[:end_date].present?
-      @first_day = Date.parse(params[:start_date])
-      @last_day = Date.parse(params[:end_date])
-    else
-      selected_date = Date.current
-      @first_day = Date.current.beginning_of_month
-      @last_day = Date.current.end_of_month
-    end
+    @first_day, @last_day = calculate_month_dates
     @month_field_value = @first_day.strftime("%Y-%m-%d")
     @report_days = @project.report_deadlines.where(day: @first_day..@last_day)
-    if @project.reports.where(report_day: @first_day..@last_day).empty?
-      if params[:start_date].present? && params[:end_date].present?
-        flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
-      else
-        flash.now[:notice] = "#{selected_date.strftime('%-m月')}の報告はありません。"
-      end
-    end
+    month_no_report_noitce
   end
 
   def report_form_switching
@@ -322,5 +294,43 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 総合報告率の計算
   def overall_report_rate_calc(reports_rate_array)
     return reports_rate_array.sum.quo(reports_rate_array.size).to_f.floor
+  end
+
+  # 一週間集計の日付を計算
+  def calculate_week_dates
+    if params[:date].present?
+      selected_day = Date.parse(params[:date])
+      [selected_day, selected_day + 6]
+    elsif params[:weekday].present?
+      selected_weekday = params[:weekday].to_i
+      week_last_day = Date.current.beginning_of_week + selected_weekday - 1.day
+      [week_last_day - 6.days, week_last_day]
+    else
+      [Date.current - 6, Date.current]
+    end
+  end
+
+  # 一か月集計、期間指定集計の日付を計算
+  def calculate_month_dates
+    if params[:date].present?
+      selected_date = Date.parse(params[:date] + "-01")
+      [selected_date.beginning_of_month, selected_date.end_of_month]
+    elsif params[:start_date].present? && params[:end_date].present?
+      [Date.parse(params[:start_date]), Date.parse(params[:end_date])]
+    else
+      current_date = Date.current
+      [current_date.beginning_of_month, current_date.end_of_month]
+    end
+  end
+
+  # 一か月集計、報告が無い場合のフラッシュメッセージ
+  def month_no_report_noitce
+    if @project.reports.where(report_day: @first_day..@last_day).empty?
+      if params[:start_date].present? && params[:end_date].present?
+        flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
+      else
+        flash.now[:notice] = "#{@first_day.strftime('%-m月')}の報告はありません。"
+      end
+    end
   end
 end
