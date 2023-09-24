@@ -52,7 +52,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def edit
     @user = current_user
-    @project = Project.includes(questions: [:text_field, :text_area, {check_box: :check_box_option_strings}, {radio_button: :radio_button_option_strings}, {select: :select_option_strings}, :date_field]).find(params[:project_id])
+    @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
     @user = User.find(@report.user_id)
     @questions = @project.questions.where(using_flag: true)
@@ -81,13 +81,11 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def update
     @user = current_user
-    @project = Project.includes(questions: [:text_field, :text_area, {check_box: :check_box_option_strings}, {radio_button: :radio_button_option_strings}, {select: :select_option_strings}, :date_field]).find(params[:project_id])
+    @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
-    byebug
-    if @report.update!(create_reports_params)
+    if @report.update(create_reports_params)
       flash[:success] = "報告を編集しました。"
       redirect_to user_project_report_path(@user, @project, @report)
     else
@@ -97,7 +95,7 @@ class Projects::ReportsController < Projects::BaseProjectController
       render :edit
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     @user = current_user
