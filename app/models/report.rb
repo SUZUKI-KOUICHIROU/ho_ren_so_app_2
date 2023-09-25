@@ -22,8 +22,8 @@ class Report < ApplicationRecord
       reports = reports.title_like(search_params[:title])
     end
 
-    if search_params[:updated_at].present?
-      reports = reports.updated_at(search_params[:updated_at])
+    if search_params[:created_at].present?
+      reports = reports.created_at(search_params[:created_at])
     end
 
     if search_params[:sender_name].present?
@@ -38,7 +38,7 @@ class Report < ApplicationRecord
   end
 
   scope :title_like, ->(title) { where('title LIKE ?', "%#{title}%") }
-  scope :updated_at, ->(updated_at) { where('updated_at BETWEEN ? AND ?', "#{updated_at} 00:00:00", "#{updated_at} 23:59:59") }
+  scope :created_at, ->(created_at) { where('created_at BETWEEN ? AND ?', "#{created_at} 00:00:00", "#{created_at} 23:59:59") }
   scope :sender_name_like, ->(sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
   scope :keywords_like, ->(keywords) {
     joins(:answers).where('answers.value LIKE ? OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE ?', "%#{keywords}%", "%#{keywords}%")
@@ -67,13 +67,13 @@ class Report < ApplicationRecord
   def self.monthly_reports_for(project)
     start_of_month = Time.zone.now.beginning_of_month
     end_of_month = Time.zone.now.end_of_month
-    Report.where(project: project, updated_at: start_of_month..end_of_month)
+    Report.where(project: project, created_at: start_of_month..end_of_month)
   end
 
   # 週次レポートを取得する
   def self.weekly_reports_for(project)
     start_of_week = Time.zone.now.beginning_of_week
     end_of_week = Time.zone.now.end_of_week
-    Report.where(project: project, updated_at: start_of_week..end_of_week)
+    Report.where(project: project, created_at: start_of_week..end_of_week)
   end
 end

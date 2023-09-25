@@ -62,7 +62,7 @@
                       <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
                     </div>
                     <div class="counseling-date">
-                      <%= l(counseling.updated_at, format: :long) %>
+                      <%= l(counseling.created_at, format: :long) %>
                     </div>
                     <div class="counseling-person">
                         <%= counseling.sender_name %>
@@ -124,7 +124,7 @@
                       <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
                     </div>
                     <div class="counseling-date">
-                      <%= l(counseling.updated_at, format: :long) %>
+                      <%= l(counseling.created_at, format: :long) %>
                     </div>
                     <div class="counseling-person">
                         <%= counseling.sender_name %>

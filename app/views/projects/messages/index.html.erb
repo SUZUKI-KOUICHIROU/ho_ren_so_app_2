@@ -65,7 +65,7 @@
                       <%= link_to message.title, user_project_message_path(@user, @project, message), class: "message-detail-link" %>
                     </div>
                     <div class="message-date">
-                      <%= l(message.updated_at, format: :long) %>
+                      <%= l(message.created_at, format: :long) %>
                     </div>
                     <div class="message-person">
                         <%= message.sender_name %>
@@ -126,7 +126,7 @@
                       <%= link_to message.title, user_project_message_path(@user, @project, message), class: "message-detail-link" %>
                     </div>
                     <div class="message-date">
-                      <%= l(message.updated_at, format: :long) %>
+                      <%= l(message.created_at, format: :long) %>
                     </div>
                     <div class="message-person">                     
                        <%= get_message_recipients(message.id, @members) %>
@@ -188,7 +188,7 @@
                       <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
                     </div>
                     <div class="message-date">
-                      <%= l(message.updated_at, format: :long) %>
+                      <%= l(message.created_at, format: :long) %>
                     </div>
                     <div class="message-person">
                         <%= message.sender_name %>

@@ -35,8 +35,8 @@
                 <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, value: "you-report" %>            
 
-                  <%= form.label :updated_at, "報告日：", class: "mb-0" %>
-                  <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
+                  <%= form.label :created_at, "報告日：", class: "mb-0" %>
+                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
 
                   <%= form.label :title, "件名：", class: "mb-0" %>
                   <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
@@ -70,7 +70,7 @@
                       <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
                     <div class="reported-date col-md-4">
-                      <%= l(report.updated_at, format: :long) %>
+                      <%= l(report.created_at, format: :long) %>
                     </div>
                     <%# <div class="report-confirmer">
                       <%= report.report_confirmers.where(report_confirmation_flag: true).count人 %>
@@ -112,8 +112,8 @@
                 <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, value: "report" %>                
                   
-                  <%= form.label :updated_at, "報告日：", class: "mb-0" %>
-                  <%= form.date_field :updated_at, placeholder: "報告日を入力", value: @search_params && @search_params[:updated_at], class: "search-box" %>
+                  <%= form.label :created_at, "報告日：", class: "mb-0" %>
+                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
                   
                   <%= form.label :title, "件名：", class: "mb-0" %>
                   <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
@@ -150,7 +150,7 @@
                       <%= link_to "#{report.title}", user_project_report_path(User.find(report.user_id), @project, report), class: "report-detail-link" %>
                     </div>
                     <div class="reported-date col-md-4">
-                      <%= l(report.updated_at, format: :long) %>
+                      <%= l(report.created_at, format: :long) %>
                     </div>
                     <div class="report-confirmer col-md-4">
                       <%= report.sender_name %>

@@ -7,11 +7,11 @@ class Projects::MessagesController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
-    @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
+    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:page]).per(5)
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    @you_send_messages = @project.messages.where(id: you_send_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+    @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     set_project_and_members
   end
   # rubocop:enable Metrics/AbcSize
