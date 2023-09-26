@@ -67,7 +67,8 @@
                   <% line_num += 1%>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
                     <div class="subject-name col-md-4">
-                      <%= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                      <%#= link_to "#{report.title}", user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+                      <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
                     <div class="reported-date col-md-4">
                       <%= l(report.created_at, format: :long) %>
@@ -147,7 +148,8 @@
                   <% line_num += 1%>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
                     <div class="subject-name col-md-4">
-                      <%= link_to "#{report.title}", user_project_report_path(User.find(report.user_id), @project, report), class: "report-detail-link" %>
+                      <%#= link_to "#{report.title}", user_project_report_path(User.find(report.user_id), @project, report), class: "report-detail-link" %>
+                      <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
                     </div>
                     <div class="reported-date col-md-4">
                       <%= l(report.created_at, format: :long) %>
