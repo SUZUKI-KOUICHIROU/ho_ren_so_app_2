@@ -12,16 +12,16 @@ class BaseController < ApplicationController
     when 'report'
       @first_question = @project.questions.first
       @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-      @reports = @project.reports.where.not(user_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(5)
-      @you_reports = @project.reports.where(user_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(5)
+      @reports = @project.reports.where.not(user_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(5)
+      @you_reports = @project.reports.where(user_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(5)
     when 'message'
-      @messages = @project.messages.all.order(updated_at: 'DESC').page(params[:page]).per(5)
+      @messages = @project.messages.all.order(created_at: 'DESC').page(params[:page]).per(5)
       you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     when 'counseling'
-      @counselings = @project.counselings.all.order(updated_at: 'DESC').page(params[:page]).per(5)
+      @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:page]).per(5)
       you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(updated_at: 'DESC').page(params[:page]).per(5)
+      @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     end
   end
   # rubocop:enable Metrics/AbcSize

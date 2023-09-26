@@ -5,20 +5,18 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+    @reports = @project.reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
+    @you_reports = @project.reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
     @monthly_reports = Report.monthly_reports_for(@project)
     @weekly_reports = Report.weekly_reports_for(@project)
     if params[:report_type] == 'monthly'
-      @reports = @monthly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @monthly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
       { reports: @reports, you_reports: @you_reports }
     elsif params[:report_type] == 'weekly'
-      @reports = @weekly_reports.where.not(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @weekly_reports.where(sender_id: @user.id).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
       { reports: @reports, you_reports: @you_reports }
-    else
-      render :index
     end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
@@ -26,11 +24,12 @@ class Projects::ReportsController < Projects::BaseProjectController
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。'
-        render :index
+        return
       end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(updated_at: 'DESC').page(params[:page]).per(10)
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
     end
+    render :index
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -260,7 +259,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   def report_search_params
-    params.fetch(:search, {}).permit(:title, :updated_at, :sender_name, :keywords)
+    params.fetch(:search, {}).permit(:title, :created_at, :sender_name, :keywords)
     # fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
     # ここでの:searchには、フォームから送られてくるparamsの値が入っている
   end
