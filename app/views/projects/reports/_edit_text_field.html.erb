@@ -1,5 +1,6 @@
 <div class="report-form">
-  <% if TextField.find_by(question_id: answer.question_id).nil?%>
+  <% text_field = question.text_field %>
+  <% if text_field.nil?%>
     <span class="report-item-title mb-2 font-weight-bold"><%= answer.question_name %></span><span class="pl-2 font-weight-bold text-danger">※削除された質問です。この項目は削除されます。</span>
     <br>
     <% if !answer.value.blank? %>
@@ -12,10 +13,10 @@
       </div>
     <% end %>
   <% else %>
-    <span class="report-item-title mb-2 font-weight-bold"><%= TextField.find_by(question_id: answer.question_id).label_name %></span>
-    <% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
-      <%= f.fields_for "answer[#{c}]", answer do |m| %>
-      <div><%= m.text_field :value, class: "form-control", required: Question.find_by(id: answer.question_id).required %></div>
+    <span class="report-item-title mb-2 font-weight-bold"><%= text_field.label_name %></span>
+    <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
+      <%= f.fields_for :answers, answer do |m| %>
+      <div><%= m.text_field :value, class: "form-control", required: question.required %></div>
     <% end %>
   <% end %>
 </div>

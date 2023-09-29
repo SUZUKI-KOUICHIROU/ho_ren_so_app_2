@@ -1,5 +1,6 @@
 <div class="report-form">
-  <% if Select.find_by(question_id: answer.question_id).nil?%>
+  <% select = question.select %>
+  <% if select.nil?%>
     <span class="report-item-title mb-2 font-weight-bold"><%= answer.question_name %></span><span class="pl-2 font-weight-bold text-danger">※削除された質問です。この項目は削除されます。</span>
     <br>
     <% if !answer.value.blank? %>
@@ -12,11 +13,11 @@
       </div>
     <% end %>
   <% else %>
-    <span class="report-item-title mb-2 font-weight-bold"><%= Select.find_by(question_id: answer.question_id).label_name %></span>
-    <% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
+    <span class="report-item-title mb-2 font-weight-bold"><%= select.label_name %></span>
+    <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
     <br>
-    <%= f.fields_for "answer[#{c}]", answer do |m| %>
-      <%= m.collection_select(:value, Select.find_by(question_id: answer.question_id).select_option_strings.all, :option_string, :option_string, { prompt: false } ,{class: "form-control", required: Question.find_by(id: answer.question_id).required }) %>
+    <%= f.fields_for :answers, answer do |m| %>
+      <%= m.collection_select(:value, select.select_option_strings.all, :option_string, :option_string, { prompt: false } ,{class: "form-control", required: question.required }) %>
     <% end %>
   <% end %>
 </div>
