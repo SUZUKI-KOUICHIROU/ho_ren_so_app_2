@@ -18,6 +18,11 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counseling = @project.counselings.new
   end
 
+  def edit
+    set_project_and_members
+    @counseling = @project.counselings.find(params[:id])
+  end
+
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def create
