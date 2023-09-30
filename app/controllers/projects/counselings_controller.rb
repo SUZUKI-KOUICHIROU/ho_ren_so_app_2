@@ -64,32 +64,13 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def update
     set_project_and_members
     @counseling = @project.counselings.find(params[:id])
-    if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])  
-      if @counseling.update(counseling_params)
-        @counseling.counseling_confirmers.destroy_all
-        @members.each do |member|
-          @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
-          @send.save
-        end
-        flash[:success] = "相談内容を更新しました。"
-        redirect_to user_project_counselings_path
-      else
-        flash[:danger] = "送信相手を選択してください。"
-        render action: :edit
-      end
-    else   
-      if @counseling.update(counseling_params)
-        @counseling.counseling_confirmers.destroy_all
-          @counseling.send_to.each do |t|
-            @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
-            @send.save
-          end
+  
+    if update_counseling_and_confirmers
       flash[:success] = "相談内容を更新しました。"
       redirect_to user_project_counselings_path
-      else
+    else
       flash[:danger] = "送信相手を選択してください。"
       render action: :edit
-      end
     end
   end
 
@@ -106,5 +87,41 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
+  end
+
+  def update_counseling_and_confirmers
+    if @counseling.update(counseling_params)
+      @counseling.counseling_confirmers.destroy_all
+  
+      if send_to_all?
+        create_confirmers_for_all_members
+      else
+        create_confirmers_from_send_to
+      end
+  
+      true
+    else
+      false
+    end
+  end
+  
+  def send_to_all?
+    ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
+  end
+  
+  def create_confirmers_for_all_members
+    @members.each do |member|
+      create_confirmer(member.id)
+    end
+  end
+  
+  def create_confirmers_from_send_to
+    @counseling.send_to.each do |t|
+      create_confirmer(t)
+    end
+  end
+  
+  def create_confirmer(confirmer_id)
+    @counseling.counseling_confirmers.create(counseling_confirmer_id: confirmer_id)
   end
 end
