@@ -11,7 +11,11 @@ class Projects::BaseProjectController < Users::BaseUserController
   # メンバー外ユーザーをフィルタ
   def project_authorization
     @user = current_user
-    @project = Project.find(params[:id])
+    @project = if params[:project_id].present?
+                 Project.find(params[:project_id])
+               else
+                 Project.find(params[:id])
+               end
     unless @project.project_users.exists?(user_id: @user) || @user.admin
       flash[:danger] = t('flash.no_access_rights')
       redirect_to user_projects_path(@user)
@@ -32,7 +36,11 @@ class Projects::BaseProjectController < Users::BaseUserController
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   # # プロジェクトリーダーを許可
   def project_leader_user
-    @project = Project.find(params[:id])
+    @project = if params[:project_id].present?
+                 Project.find(params[:project_id])
+               else
+                 Project.find(params[:id])
+               end
     return if current_user.id == @project.leader_id
 
     flash[:danger] = 'リーダーではない為、権限がありません。'

@@ -1,4 +1,6 @@
 class Projects::CounselingsController < Projects::BaseProjectController
+  before_action :project_authorization
+
   def index
     set_project_and_members
     @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:page]).per(5)

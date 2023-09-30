@@ -11,14 +11,4 @@ class Formats::BaseFormatController < BaseController
       redirect_to user_projects_path(@user)
     end
   end
-
-  # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-  # プロジェクトリーダーを許可
-  def project_leader_user
-    @project = Project.find(params[:project_id])
-    return if current_user.id == @project.leader_id
-
-    flash[:danger] = 'リーダーではない為、権限がありません。'
-    redirect_to user_project_path(current_user, @project)
-  end
 end

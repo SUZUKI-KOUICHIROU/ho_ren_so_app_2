@@ -1,4 +1,7 @@
 class Projects::ReportsController < Projects::BaseProjectController
+  before_action :project_authorization, only: %i[index show new edit create update destroy]
+  before_action :project_leader_user, only: %i[view_reports_log]
+
   # rubocopを一時的に無効にする。
   # rubocop:disable Metrics/AbcSize
   def index
