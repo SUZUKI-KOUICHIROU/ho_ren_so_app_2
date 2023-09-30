@@ -61,6 +61,38 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
   # rubocop:enable Metrics/AbcSize
 
+  def update
+    set_project_and_members
+    @counseling = @project.counselings.find(params[:id])
+    if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])  
+      if @counseling.update(counseling_params)
+        @counseling.counseling_confirmers.destroy_all
+        @members.each do |member|
+          @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
+          @send.save
+        end
+        flash[:success] = "相談内容を更新しました。"
+        redirect_to user_project_counselings_path
+      else
+        flash[:danger] = "送信相手を選択してください。"
+        render action: :edit
+      end
+    else   
+      if @counseling.update(counseling_params)
+        @counseling.counseling_confirmers.destroy_all
+          @counseling.send_to.each do |t|
+            @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
+            @send.save
+          end
+      flash[:success] = "相談内容を更新しました。"
+      redirect_to user_project_counselings_path
+      else
+      flash[:danger] = "送信相手を選択してください。"
+      render action: :edit
+      end
+    end
+  end
+
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])
