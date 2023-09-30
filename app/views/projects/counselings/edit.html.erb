@@ -21,7 +21,7 @@
       <%= f.label :counseling_detail, "相談内容", class:"font-weight-bold counseling-title-box" %>
       <%= f.text_area :counseling_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control counseling-area mb-3",rows: "10", required: true %>
       <div class="text-center mb-3">
-        <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-secondary col-2" %>
+        <%= link_to '戻る', user_project_counselings_path(@user, @project), class: "btn btn-secondary col-2" %>
         <%= f.submit "更新", class: "btn col-2 btn-outline-orange" %>
       </div>  
   </div>
