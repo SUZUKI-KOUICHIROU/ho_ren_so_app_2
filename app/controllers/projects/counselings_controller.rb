@@ -74,6 +74,17 @@ class Projects::CounselingsController < Projects::BaseProjectController
     end
   end
 
+  def destroy
+    set_project_and_members
+    @counseling = Counseling.find(params[:id])
+    if @counseling.destroy
+      flash[:success] = "「#{@counseling.title}」を削除しました。"
+    else
+      flash[:danger] = "#{@counseling.title}の削除に失敗しました。"
+    end
+    redirect_to user_project_counselings_path(@user, @project)
+  end
+
   # "確認しました"フラグの切り替え。機能を確認してもらい、実装確定後リファクタリング
   def read
     @project = Project.find(params[:project_id])
