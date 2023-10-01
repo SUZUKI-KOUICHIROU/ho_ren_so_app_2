@@ -185,7 +185,11 @@
                   <% line_num += 1%>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
                     <div class="subject-name">
-                      <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
+                      <% if @you_addressee_messages.present? %>
+                        <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
+                      <% else %>
+                        <%= message.title  %>
+                      <% end %>
                     </div>
                     <div class="message-date">
                       <%= l(message.created_at, format: :long) %>
