@@ -25,4 +25,19 @@ class BaseController < ApplicationController
     end
   end
   # rubocop:enable Metrics/AbcSize
+
+  # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+  # プロジェクトリーダーを許可
+  def project_leader_user
+    @project = if params[:project_id].present?
+                 Project.find(params[:project_id])
+               else
+                 Project.find(params[:id])
+               end
+
+    return if current_user.id == @project.leader_id
+
+    flash[:danger] = t('flash.not_leader')
+    redirect_to user_project_path(current_user, @project)
+  end
 end
