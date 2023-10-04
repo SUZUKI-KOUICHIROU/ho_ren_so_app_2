@@ -2,6 +2,7 @@ ja:
   flash:
     no_access_rights: 'アクセス権限がありません。'
     not_logined: 'ログインもしくはアカウント登録してください。'
+    not_leader: 'リーダーではない為、権限がありません。'
   date:
     abbr_day_names:
     - 日

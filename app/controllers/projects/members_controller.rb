@@ -1,5 +1,6 @@
 class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
+  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate]
   # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）

@@ -1,4 +1,5 @@
 class Projects::MessagesController < Projects::BaseProjectController
+  before_action :project_authorization
   before_action :my_message, only: %i[show]
 
   # rubocopを一時的に無効にする。
