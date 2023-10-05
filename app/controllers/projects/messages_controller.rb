@@ -14,6 +14,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     set_project_and_members
+    @recipient_count = {}
+    @messages.each do |message|
+      @recipient_count[message.id] = message.message_confirmers.count
+    end
   end
   # rubocop:enable Metrics/AbcSize
 

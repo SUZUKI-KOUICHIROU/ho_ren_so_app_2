@@ -71,7 +71,12 @@
                         <%= message.sender_name %>
                     </div>
                     <div class="message-action">
-                        
+                      <% if message.checked_members.present? %>
+                      <!--checked_membersで対応中だが変える必要あり、現在メンバーの一人がチェックすると既読になる状況です。-->                      
+                        <P>既読</P>                        
+                      <% else %>
+                        <%= link_to "未読", user_project_message_path(@user, @project, message), class: "message-detail-link text-danger font-weight-bold" %>                       
+                      <% end %>                        
                     </div>
                   </div>
                 <% end %>
@@ -195,12 +200,12 @@
                       <%= l(message.created_at, format: :long) %>
                     </div>
                     <div class="message-person">
-                        <%= message.sender_name %>
+                      <%= message.sender_name %>
                     </div>
-                    <div class="message-action">
-                      <% if message.sender_id == current_user.id %>
-                        
-                      <% end %>
+                    <div class="message-action">                      
+                      <%= message.checked_members.count %>人/
+                      <% count = @recipient_count[message.id] %>
+                      <%= "#{count}人" if count.present? %>
                     </div>
                   </div>
                 <% end %>
