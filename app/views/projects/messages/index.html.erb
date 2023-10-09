@@ -71,9 +71,8 @@
                         <%= message.sender_name %>
                     </div>
                     <div class="message-action">
-                      <% if message.checked_members.present? %>
-                      <!--checked_membersで対応中だが変える必要あり、現在メンバーの一人がチェックすると既読になる状況です。-->                      
-                        <P>既読</P>                        
+                      <% if message.message_confirmers.exists?(message_confirmer_id: current_user.id, message_confirmation_flag: true) %>
+                        <P>既読</P>
                       <% else %>
                         <%= link_to "未読", user_project_message_path(@user, @project, message), class: "message-detail-link text-danger font-weight-bold" %>                       
                       <% end %>                        
@@ -190,7 +189,7 @@
                   <% line_num += 1%>
                   <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
                     <div class="subject-name">
-                      <% if @you_addressee_messages.present? %>
+                      <% if message.message_confirmers.exists?(message_confirmer_id: current_user.id) %>
                         <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
                       <% else %>
                         <%= message.title  %>
