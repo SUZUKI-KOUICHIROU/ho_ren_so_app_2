@@ -14,6 +14,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
     set_project_and_members
+    @recipient_count = {}
+    @messages.each do |message|
+      @recipient_count[message.id] = message.message_confirmers.count
+    end
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -52,7 +56,7 @@ class Projects::MessagesController < Projects::BaseProjectController
           @send.save
         end
         flash[:success] = "連絡内容を送信しました。"
-        redirect_to user_project_path current_user, params[:project_id]
+        redirect_to user_project_messages_path current_user, params[:project_id]
       else
         flash[:danger] = "送信相手を選択してください。"
         render action: :new
@@ -65,7 +69,7 @@ class Projects::MessagesController < Projects::BaseProjectController
           @send.save
         end
         flash[:success] = "連絡内容を送信しました。"
-        redirect_to user_project_path current_user, params[:project_id]
+        redirect_to user_project_messages_path current_user, params[:project_id]
       else
         flash[:danger] = "送信相手を選択してください。"
         render :new
@@ -130,7 +134,7 @@ class Projects::MessagesController < Projects::BaseProjectController
         update_message_confirmers_for_selected
       end
       flash[:success] = "連絡内容を更新し、送信しました。"
-      redirect_to user_project_path(current_user, params[:project_id])
+      redirect_to user_project_messages_path(current_user, params[:project_id])
     else
       flash[:danger] = "送信相手を選択してください。"
       render :edit
