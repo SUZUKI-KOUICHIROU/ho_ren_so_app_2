@@ -40,7 +40,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
-    @answers = @report.answers
+    @answers = @report.answers.order(:id)
   end
 
   def new
@@ -57,8 +57,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
     @user = User.find(@report.user_id)
-    @questions = @project.questions.where(using_flag: true)
-    @answers = @report.answers
+    @questions = @project.questions.where(using_flag: true).order(:id)
+    @answers = @report.answers.order(:id)
   end
 
   # rubocopを一時的に無効にする。
@@ -87,15 +87,28 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = current_user
     @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
-    if @report.update(create_reports_params)
+    
+    ActiveRecord::Base.transaction do      
+      create_reports_params[:answers_attributes].each do |key, answer|
+        res = Answer.find(answer[:id])
+        if res.question_type == 'check_box'
+          if answer[:array_value].nil?
+            res.array_value.clear
+            res.save!
+          end
+        end
+      end
+
+      @report.update!(create_reports_params)
       flash[:success] = "報告を編集しました。"
       redirect_to user_project_report_path(@user, @project, @report)
-    else
+    end
+
+    rescue  
       flash[:success] = "更新に失敗しました"
       @questions = @project.questions.where(using_flag: true)
       @answers = @report.answers
-      render :edit
-    end
+      render :edit    
   end
   # rubocop:enable Metrics/AbcSize
 
