@@ -87,8 +87,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = current_user
     @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
-    
-    ActiveRecord::Base.transaction do      
+
+    ActiveRecord::Base.transaction do
+      # rubocop:disable Lint/UnusedBlockArgument
       create_reports_params[:answers_attributes].each do |key, answer|
         res = Answer.find(answer[:id])
         if res.question_type == 'check_box'
@@ -98,17 +99,17 @@ class Projects::ReportsController < Projects::BaseProjectController
           end
         end
       end
+      # rubocop:enable Lint/UnusedBlockArgument
 
       @report.update!(create_reports_params)
       flash[:success] = "報告を編集しました。"
       redirect_to user_project_report_path(@user, @project, @report)
     end
-
-    rescue  
-      flash[:success] = "更新に失敗しました"
-      @questions = @project.questions.where(using_flag: true)
-      @answers = @report.answers
-      render :edit    
+  rescue
+    flash[:success] = "更新に失敗しました"
+    @questions = @project.questions.where(using_flag: true)
+    @answers = @report.answers
+    render :edit
   end
   # rubocop:enable Metrics/AbcSize
 
