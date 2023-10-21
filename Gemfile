@@ -6,7 +6,7 @@ ruby '2.6.3'
 gem 'activesupport'
 gem 'bcrypt'
 gem 'bootsnap', require: false
-gem 'bootstrap', '~> 4.1.1'
+gem 'bootstrap', '~> 4.6.2'
 gem 'cancancan'
 gem 'clipboard-rails'
 gem 'coffee-rails', '~> 4.2'
