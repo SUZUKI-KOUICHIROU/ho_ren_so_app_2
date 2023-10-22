@@ -68,6 +68,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
     @report.sender_name = @user.name
+    @report.report_read_flag = false
     @report.answers.each do |answer|
       answer.question_name = answer.question_type.camelize.constantize.find_by(question_id: answer.question_id).label_name
     end
