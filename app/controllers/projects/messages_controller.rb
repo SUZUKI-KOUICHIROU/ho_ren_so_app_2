@@ -18,6 +18,19 @@ class Projects::MessagesController < Projects::BaseProjectController
     @messages.each do |message|
       @recipient_count[message.id] = message.message_confirmers.count
     end
+    if params[:search].present? and params[:search] != ""
+      @results = Message.search(message_search_params)
+      if @results.present?
+        @message_ids = @results.pluck(:id).uniq
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        return
+      end
+      @messages = @messages.where(id: @message_ids)
+      @you_addressee_messages = @you_addressee_messages.where(id: @message_ids)
+      @you_send_messages = @you_send_messages.where(id: @message_ids)
+    end
+    render :index
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -109,6 +122,10 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   private
+
+  def message_search_params
+    params.fetch(:search, {}).permit(:created_at, :keywords)
+  end
 
   def message_params
     params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
