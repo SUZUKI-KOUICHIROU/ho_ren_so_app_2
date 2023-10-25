@@ -105,6 +105,12 @@
   width: unset;
 }
 
+////////// 報告リマインド用の日時設定デザイン //////////
+.form-group.time-input input[type="time"] {
+  width: 100px;
+  display: inline-block;
+}
+
 ////////// 検索のtext_fieldのデザイン //////////
 .search-box {
   border-style: none;

@@ -45,14 +45,22 @@
                   <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>">
                   <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                 </div>
+                <div class="form-group time-input" style="display: none;">
+                  <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                  <label for="timeInput<%= member.id %>">に</label>
+                </div>
               </div>
             <% elsif project_leader? %>
               <div class="project-member-action member-text">
                 <% if @user.id == member.id %>
                   <div class="custom-control custom-switch">
                     報告リマインドを設定（メール）
-                    <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" name="report_reminder">
                     <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
+                  </div>
+                  <div class="form-group time-input" style="display: none;">
+                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                    <label for="timeInput<%= member.id %>">に</label>
                   </div>
                 <% end %>
                 <% unless @project.leader_id == member.id %>
