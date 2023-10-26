@@ -4,6 +4,8 @@ class Report < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :report_confirmers, dependent: :destroy
 
+  attr_accessor :leader_id
+
   accepts_nested_attributes_for :answers, allow_destroy: true
   attribute :remanded, default: false
   attribute :resubmitted, default: false

@@ -41,6 +41,11 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
     @answers = @report.answers
+    @project = Project.find(params[:project_id])
+    if current_user && current_user.id == @project.leader_id
+      # 既読フラグを設定
+      @report.update(report_read_flag: true)
+    end
   end
 
   def new
