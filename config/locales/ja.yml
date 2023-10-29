@@ -117,5 +117,6 @@ ja:
       hours_only: "%-H時"
       kan_hm: "%-H時%-M分"
       h: "%-H"
+      posting: "%Y年%m月%d日(%a) %H時%M分"
     pm: 午後
 

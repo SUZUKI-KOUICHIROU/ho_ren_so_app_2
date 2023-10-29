@@ -44,6 +44,11 @@ Rails.application.routes.draw do
             post 'reject'
             post 'resubmitted'
           end
+          resources :report_replys do
+            member do
+              get 'cancel'
+            end
+          end
         end
       end
     end

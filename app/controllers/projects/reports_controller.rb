@@ -41,6 +41,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
     @answers = @report.answers.order(:id)
+    @reply = @report.report_replies.new
+    @report_replies = @report.report_replies.all.order(:created_at)
   end
 
   def new

@@ -3,6 +3,7 @@ class Report < ApplicationRecord
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_many :report_confirmers, dependent: :destroy
+  has_many :report_replies, dependent: :destroy
 
   accepts_nested_attributes_for :answers, allow_destroy: true
   attribute :remanded, default: false
