@@ -59,7 +59,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     set_project_and_members
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
-    @message.sender_name = current_user.name
+    @message.sender_name = current_user.name   
+    # @message.set_importance(params[:importance])
     # ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if params[:message][:send_to_all]
       # TO ALLが選択されているとき
@@ -128,7 +129,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def message_params
-    params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
+    params.require(:message).permit(:message_detail, :title, :importance, { send_to: [] }, :send_to_all)
   end
 
   def my_message
