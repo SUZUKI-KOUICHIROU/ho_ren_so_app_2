@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+gem 'actionmailer'
+gem 'activejob'
 gem 'activesupport'
 gem 'bcrypt'
 gem 'bootsnap', require: false

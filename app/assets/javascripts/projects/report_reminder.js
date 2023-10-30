@@ -1,4 +1,10 @@
 $(document).on('turbolinks:load', function(){
+  function setReminder(memberId) {
+    // TODO: 時刻選択の処理を追加
+
+    // フラッシュメッセージの表示
+    alert("報告リマインドの設定が完了しました。");
+  }
 
   // 報告リマインド切替スイッチの状態が変化したら実行する処理
   $(function($) {
