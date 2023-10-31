@@ -132,6 +132,7 @@ Rails/I18nLocaleTexts:
     - 'app/controllers/projects/messages_controller.rb'
     - 'app/controllers/projects/projects_controller.rb'
     - 'app/controllers/projects/reports_controller.rb'
+    - 'app/controllers/projects/report_replys_controller.rb'
     - 'app/controllers/users/invitations_controller.rb'
     - 'app/controllers/users/registrations_controller.rb'
     - 'app/mailers/notification_mailer.rb'
