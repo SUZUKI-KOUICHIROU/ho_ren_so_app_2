@@ -142,4 +142,11 @@ class Project < ApplicationRecord
       end
     end
   end
+
+  # 報告から質問の内容すべてをincludesする
+  def self.get_report_questions_includes(params_project_id)
+    includes(questions: [:text_field, :text_area, { check_box: :check_box_option_strings },
+                         { radio_button: :radio_button_option_strings }, { select: :select_option_strings },
+                         :date_field]).find(params_project_id)
+  end
 end

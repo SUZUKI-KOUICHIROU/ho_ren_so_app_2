@@ -33,4 +33,25 @@ class Message < ApplicationRecord
       end
     end
   end
+
+  scope :search, ->(search_params) do
+    return all if search_params.blank?
+
+    messages = all
+
+    if search_params[:created_at].present?
+      messages = messages.created_at(search_params[:created_at])
+    end
+
+    if search_params[:keywords].present?
+      messages = messages.keywords_like(search_params[:keywords])
+    end
+
+    messages
+  end
+
+  scope :created_at, ->(created_at) { where('created_at BETWEEN ? AND ?', "#{created_at} 00:00:00", "#{created_at} 23:59:59") }
+  scope :keywords_like, ->(keywords) {
+                          where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
+                        }
 end

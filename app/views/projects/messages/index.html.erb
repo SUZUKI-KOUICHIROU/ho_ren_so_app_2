@@ -35,12 +35,23 @@
           <div class="box-you-addressee-index">
             <% if @you_addressee_messages.present? %>
               <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
+                <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "you-addressee" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  
+                  <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
+                  <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+
+                  <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                  <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
+                <%#= form_with url: "#", method: :get, local: true do |form| %>
+                  <%#= form.hidden_field :search_type, :value => "you-addressee" %>
+                  <%#= form.label :search, "件名検索：", class: "mb-0" %>
+                  <%#= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  <%#= form.submit "検索", class: "btn btn-outline-orange" %>
+                <%# end %>
               </div>
               <div class="table-header">
                 <div class="subject-name">
@@ -100,12 +111,23 @@
           <div class="box-you-send-index">
             <% if @you_send_messages.present? %>
               <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
+                <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "you-send" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  
+                  <%= form.label :created_at, "連絡送信日：", class: "mb-0" %>
+                  <%= form.date_field :created_at, placeholder: "送信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+
+                  <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                  <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
+                <%#= form_with url: "#", method: :get, local: true do |form| %>
+                  <%#= form.hidden_field :search_type, :value => "you-send" %>
+                  <%#= form.label :search, "件名検索：", class: "mb-0" %>
+                  <%#= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  <%#= form.submit "検索", class: "btn btn-outline-orange" %>
+                <%# end %>
               </div>
               <div class="table-header">
                 <div class="subject-name">
@@ -162,12 +184,23 @@
           <div class="box-message-index">
             <% if @messages.present? %>
               <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
+                <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, :value => "message" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  
+                  <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
+                  <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+
+                  <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+                  <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                
                   <%= form.submit "検索", class: "btn btn-outline-orange" %>
                 <% end %>
+                <%#= form_with url: "#", method: :get, local: true do |form| %>
+                  <%#= form.hidden_field :search_type, :value => "message" %>
+                  <%#= form.label :search, "件名検索：", class: "mb-0" %>
+                  <%#= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+                  <%#= form.submit "検索", class: "btn btn-outline-orange" %>
+                <%# end %>
               </div>
               <div class="table-header">
                 <div class="subject-name">

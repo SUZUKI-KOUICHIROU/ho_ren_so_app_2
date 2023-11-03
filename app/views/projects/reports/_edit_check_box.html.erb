@@ -1,5 +1,6 @@
 <div class="report-form">
-  <% if CheckBox.find_by(question_id: answer.question_id).nil? %>
+  <% check_box = question.check_box %>
+  <% if check_box.nil? %>
     <span class="report-item-title mb-2 font-weight-bold"><%= answer.question_name %></span><span class="pl-2 font-weight-bold text-danger">※削除された質問です。この項目は削除されます。</span>
     <br>
     <% if answer.array_value.count != 0 %>
@@ -14,17 +15,20 @@
       </div>
     <% end %>
   <% else %>
-    <% c -= 1 %>
-    <span class="report-item-title mb-2 font-weight-bold"><%= CheckBox.find_by(question_id: answer.question_id).label_name %></span><% if Question.find_by(id: answer.question_id).required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
+    <span class="report-item-title mb-2 font-weight-bold"><%= check_box.label_name %></span>
+    <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
     <br>
-    <% CheckBox.find_by(question_id: answer.question_id).check_box_option_strings.each do |box| %>
-      <% boolExists = if answer.array_value.present? 
-                        answer.array_value.include? box.option_string
-                      else
-                        false
-                      end
-                    %>
-        <%= f.check_box "answer[#{c}]", {multiple: true, include_hidden: false, checked: boolExists, required: Question.find_by(id: answer.question_id).required}, box[:option_string] %><%= box.option_string %>
+    <%= f.fields_for :answers, answer do |m| %>
+      <% question.check_box.check_box_option_strings.each do |box| %>
+        <% boolExists = if answer.array_value.present? 
+                          answer.array_value.include? box.option_string
+                        else
+                          false
+                        end
+                      %>
+        <%= m.check_box :array_value, {multiple: true, include_hidden: false, checked: boolExists, required: question.required}, box[:option_string] %>
+        <%= box.option_string %>
+      <% end %> 
     <% end %> 
   <% end %>
 </div>
