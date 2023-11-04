@@ -9,34 +9,25 @@ class Message < ApplicationRecord
   validates :message_detail, presence: true
   validate :no_check_become_invalid
 
-  # 重要度を設定
-  def set_importance(importance)
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Lint/DuplicateBranch
+  def set_importance(importance, recipients)
     if importance == '中'
-      # '中'の場合、メールを送信
       self.importance = importance
-      send_email
+      recipients.each do |recipient|
+        MessageMailer.send_email(recipient, importance).deliver_now
+      end
     elsif importance == '高'
-      # '高'の場合、メールとSlackに送信
       self.importance = importance
-      send_email
-      send_to_slack
+      recipients.each do |recipient|
+        MessageMailer.send_email(recipient, importance).deliver_now
+        # Slackにも送信する処理を追加
+      end
     else
-      # その他の場合、何もしない
       self.importance = importance
     end
   end
-
-  # メールを送信
-  def send_email
-    # メール送信のコードを追加
-    # 例: メール送信ライブラリを使ってメールを送信
-  end
-
-  # Slackに送信
-  def send_to_slack
-    # Slackへの送信コードを追加
-    # 例: Slack APIを使用してメッセージを送信
-  end
+  # rubocop:enable Lint/DuplicateBranch
 
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
