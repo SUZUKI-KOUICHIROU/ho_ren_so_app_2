@@ -70,6 +70,15 @@
                   <span>に修正依頼が来ています。</span></p>
                 <% end %>
             <% end %>
+            
+            <% unread_report = project.reports.where(report_read_flag: "false") %>
+            <% if current_user.id == project.leader_id %>
+              <% if unread_report.count > 0 %>
+                <p><%= link_to "未読の報告", user_project_reports_path(@user, project) %>
+                <span>があります。</span></p>
+              <% end %>
+            <% end %>
+            
             <% messages = project.messages.my_messages(@user) %>
             <% if messages.count > 0 %>
                 <p><%= link_to "新着の連絡", user_project_messages_path(@user, project) %>
@@ -81,8 +90,12 @@
                 <span>が<%= "#{counselings.count}件あります。" %></span></p>
             <% end %>
             <% counselings = project.counselings.my_counselings(@user) %>
-            <% if remanded_reports.empty? && messages.empty? && counselings.empty? && resubmitted_reports.empty? %>
+            <% if current_user.id == project.leader_id %>
+              <% if remanded_reports.empty? && unread_report.empty? && messages.empty? && counselings.empty? && resubmitted_reports.empty? %>
                 <p>無し</p>
+              <% end %>
+            <% elsif remanded_reports.empty? && messages.empty? && counselings.empty? && resubmitted_reports.empty? %>
+              <p>無し</p>
             <% end %>
           </div>
         </div>
