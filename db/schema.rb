@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 2023_10_24_052922) do
     t.boolean "resubmitted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "report_read_flag"
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["user_id"], name: "index_reports_on_user_id"
   end

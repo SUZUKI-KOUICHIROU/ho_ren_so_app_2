@@ -41,6 +41,12 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @report = Report.find(params[:id])
     @answers = @report.answers.order(:id)
+    @project = Project.find(params[:project_id])
+    if current_user && current_user.id == @project.leader_id
+      # 既読フラグを設定
+      @report.update(report_read_flag: true)
+    end
+
     @reply = @report.report_replies.new
     @report_replies = @report.report_replies.all.order(:created_at)
   end
@@ -71,6 +77,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
     @report.sender_name = @user.name
+    @report.report_read_flag = false
     @report.answers.each do |answer|
       answer.question_name = answer.question_type.camelize.constantize.find_by(question_id: answer.question_id).label_name
     end
