@@ -70,4 +70,14 @@ class Projects::MembersController < Projects::BaseProjectController
     flash[:success] = "リクエストをキャンセルしました。"
     redirect_to project_member_index_path(current_user.id, project.id)
   end
+
+  # 報告リマインド設定で選択した時刻をサーバーに送信する、send_reminder メソッドを呼び出すアクション
+  def send_reminder
+    member_id = params[:memberId]
+    report_time = params[:reportTime]
+
+    ReminderJob.perform_later(member_id, report_time)
+
+    render json: { message: 'Reminder job enqueued successfully' }, status: :ok
+  end
 end
