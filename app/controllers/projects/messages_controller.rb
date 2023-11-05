@@ -67,7 +67,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
     else
       members_saved = save_message_and_send_to_members(@message, @message.send_to)
-      recipients = @message.send_to.map { |recipient| recipient.email } # 送信先のメールアドレスを取得
+      recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
     end
 
     if members_saved
