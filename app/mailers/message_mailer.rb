@@ -1,7 +1,10 @@
 class MessageMailer < ApplicationMailer
-  def send_email(recipient, importance)
+  def send_email(recipient, importance, title, message_detail, sender_name)
     @importance = importance
     @recipient = recipient
+    @title = title
+    @message_detail = message_detail
+    @sender_name = sender_name
 
     if @recipient.nil?
       # recipientがnilの場合のエラーハンドリングを行うか、処理を記述する
