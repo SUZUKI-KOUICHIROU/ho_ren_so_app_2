@@ -76,7 +76,8 @@ class Projects::MembersController < Projects::BaseProjectController
     member_id = params[:memberId]
     report_time = params[:reportTime]
 
-    ReminderJob.perform_later(member_id, report_time)
+    # ReminderJobをキューに追加
+    ReminderJob.set(wait_until: report_time).perform_later(member_id, report_time)
 
     render json: { message: 'Reminder job enqueued successfully' }, status: :ok
   end

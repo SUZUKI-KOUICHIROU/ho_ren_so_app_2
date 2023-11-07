@@ -20,4 +20,11 @@ class UserMailer < ApplicationMailer
     @project = name
     mail to: to_address, subject: "【リマインド】#{name}の報告期限が迫っています。"
   end
+
+  # 報告リマインドメールを送信する処理
+  def reminder_email(member_id, report_time)
+    @member = Member.find(member_id)
+    @report_time = report_time
+    mail(to: @member.email, subject: '報告リマインド')
+  end
 end
