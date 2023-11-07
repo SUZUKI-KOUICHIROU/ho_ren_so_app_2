@@ -1,4 +1,5 @@
 class Projects::MessagesController < Projects::BaseProjectController
+  include MessageOperations
   before_action :project_authorization
   before_action :my_message, only: %i[show]
 
@@ -60,33 +61,24 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
     @message.sender_name = current_user.name
-    # ActiveRecord::Type::Boolean：値の型をboolean型に変更
+
     if params[:message][:send_to_all]
-      # TO ALLが選択されているとき
-      if @message.save
-        @members.each do |member|
-          @send = @message.message_confirmers.new(message_confirmer_id: member.id)
-          @send.save
-        end
-        flash[:success] = "連絡内容を送信しました。"
-        redirect_to user_project_messages_path current_user, params[:project_id]
-      else
-        flash[:danger] = "送信相手を選択してください。"
-        render action: :new
-      end
+      members_saved = save_message_and_send_to_members(@message, @members)
+      recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
     else
-      # TO ALLが選択されていない時
-      if @message.save
-        @message.send_to.each do |t|
-          @send = @message.message_confirmers.new(message_confirmer_id: t)
-          @send.save
-        end
-        flash[:success] = "連絡内容を送信しました。"
-        redirect_to user_project_messages_path current_user, params[:project_id]
-      else
-        flash[:danger] = "送信相手を選択してください。"
-        render :new
-      end
+      members_saved = save_message_and_send_to_members(@message, @message.send_to)
+      recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
+    end
+
+    if members_saved
+      # 重要度を設定し、recipient（メールアドレス）も渡す
+      @message.set_importance(@message.importance, recipients)
+
+      flash[:success] = "連絡内容を送信しました."
+      redirect_to user_project_messages_path(current_user, params[:project_id])
+    else
+      flash[:danger] = "送信相手を選択してください."
+      render action: :new
     end
   end
   # rubocop:enable Metrics/AbcSize
@@ -128,7 +120,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def message_params
-    params.require(:message).permit(:message_detail, :title, { send_to: [] }, :send_to_all)
+    params.require(:message).permit(:message_detail, :title, :importance, { send_to: [] }, :send_to_all)
   end
 
   def my_message
