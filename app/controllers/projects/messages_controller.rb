@@ -139,9 +139,12 @@ class Projects::MessagesController < Projects::BaseProjectController
     if @message.update(message_params)
       if params[:message][:send_to_all]
         update_message_confirmers_for_all
+        recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
       else
         update_message_confirmers_for_selected
+        recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
       end
+      @message.set_importance(@message.importance, recipients)
       flash[:success] = "連絡内容を更新し、送信しました。"
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
