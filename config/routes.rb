@@ -44,7 +44,7 @@ Rails.application.routes.draw do
             post 'reject'
             post 'resubmitted'
           end
-          resources :report_replys do
+          resources :report_replys, only: %i[edit  create update destroy] do
             member do
               get 'cancel'
             end

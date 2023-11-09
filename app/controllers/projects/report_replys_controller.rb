@@ -1,24 +1,13 @@
 class Projects::ReportReplysController < Projects::BaseProjectController
-  def index
-  end
-
-  def show
-  end
-
-  def new
-  end
+  before_action :project_authorization, only: %i[edit create update destroy cancel]
 
   def edit
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @report = Report.find(params[:report_id])
     @reply = ReportReply.find(params[:id])
     @index = params[:index]
   end
 
   def create
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @report = Report.find(params[:report_id])
     @reply = @report.report_replies.new(report_reply_params)
     if @reply.save
@@ -30,8 +19,6 @@ class Projects::ReportReplysController < Projects::BaseProjectController
   end
 
   def update
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @report = Report.find(params[:report_id])
     @reply = ReportReply.find(params[:id])
     if @reply.update(report_reply_params)
@@ -43,8 +30,6 @@ class Projects::ReportReplysController < Projects::BaseProjectController
   end
 
   def destroy
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @report = Report.find(params[:report_id])
     @reply = ReportReply.find(params[:id])
     if @reply.destroy
@@ -56,8 +41,6 @@ class Projects::ReportReplysController < Projects::BaseProjectController
   end
 
   def cancel
-    @user = User.find(params[:user_id])
-    @project = Project.find(params[:project_id])
     @report = Report.find(params[:report_id])
     @reply = ReportReply.find(params[:id])
     @index = params[:index]
