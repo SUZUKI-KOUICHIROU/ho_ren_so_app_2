@@ -9,6 +9,28 @@ class Message < ApplicationRecord
   validates :message_detail, presence: true
   validate :no_check_become_invalid
 
+  # rubocopを一時的に無効にする。
+  # rubocop:disable Lint/DuplicateBranch
+  # rubocop:disable Lint/UnusedBlockArgument
+  def set_importance(importance, recipients)
+    if importance == '中'
+      self.importance = importance
+      recipients.each do |recipient|
+        MessageMailer.send_email(recipients, self.importance, self.title, self.message_detail, self.sender_name).deliver_now
+      end
+    elsif importance == '高'
+      self.importance = importance
+      recipients.each do |recipient|
+        MessageMailer.send_email(recipients, self.importance, self.title, self.message_detail, self.sender_name).deliver_now
+        # Slackにも送信する処理を追加
+      end
+    else
+      self.importance = importance
+    end
+  end
+  # rubocop:enable Lint/DuplicateBranch
+  # rubocop:enable Lint/UnusedBlockArgument
+
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
     joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user, message_confirmation_flag: false }).order(created_at: :desc)
