@@ -5,7 +5,8 @@
 		<!-- 返信本文 -->
 		<%= f.text_area :reply_content, class: "col-11 form-control message-area mb-3", rows: "6", required: true %>
 		<!-- 画像選択 -->
-		　<input type="button" value="画像を選択">
+		<!-- 次タスクにて対応 -->
+		<!-- 　<input type="button" value="画像を選択"> -->
 		<!-- 投稿者名 -->
 		<%= f.hidden_field :poster_name, :value => current_user.name %>
 		<!-- 投稿者ID -->
