@@ -187,6 +187,17 @@ ActiveRecord::Schema.define(version: 2023_10_28_105034) do
     t.index ["project_id"], name: "index_report_deadlines_on_project_id"
   end
 
+  create_table "report_replies", force: :cascade do |t|
+    t.text "reply_content", default: "", null: false
+    t.bigint "report_id"
+    t.integer "poster_id", null: false
+    t.string "poster_name", null: false
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_report_replies_on_report_id"
+  end
+
   create_table "report_statuses", force: :cascade do |t|
     t.bigint "project_id"
     t.bigint "user_id"
@@ -289,6 +300,7 @@ ActiveRecord::Schema.define(version: 2023_10_28_105034) do
   add_foreign_key "radio_buttons", "questions"
   add_foreign_key "report_confirmers", "reports"
   add_foreign_key "report_deadlines", "projects"
+  add_foreign_key "report_replies", "reports"
   add_foreign_key "report_statuses", "projects"
   add_foreign_key "report_statuses", "users"
   add_foreign_key "reports", "projects"

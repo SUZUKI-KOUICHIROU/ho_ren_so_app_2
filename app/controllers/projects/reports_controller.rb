@@ -46,6 +46,9 @@ class Projects::ReportsController < Projects::BaseProjectController
       # 既読フラグを設定
       @report.update(report_read_flag: true)
     end
+
+    @reply = @report.report_replies.new
+    @report_replies = @report.report_replies.all.order(:created_at)
   end
 
   def new
