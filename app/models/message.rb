@@ -22,7 +22,7 @@ class Message < ApplicationRecord
       self.importance = importance
       recipients.each do |recipient|
         MessageMailer.send_email(recipients, self.importance, self.title, self.message_detail, self.sender_name).deliver_now
-        # Slackにも送信する処理を追加
+        send_slack_notification(self.title, self.message_detail)
       end
     else
       self.importance = importance
@@ -76,4 +76,13 @@ class Message < ApplicationRecord
   scope :keywords_like, ->(keywords) {
                           where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
                         }
+  
+  private
+
+  def send_slack_notification(title, message_detail)
+    client = Slack::Web::Client.new
+    channel = "#Horenso_App"
+    message = "重要度「高」の連絡が届いています。 \nfrom #{self.sender_name}\nTitle: #{title}\nMessage: #{message_detail}"
+    client.chat_postMessage(channel: '#horenso_app通知', text: message)
+  end
 end
