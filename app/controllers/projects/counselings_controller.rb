@@ -10,7 +10,14 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def show
     set_project_and_members
-    @counseling = Counseling.find(params[:id])
+    @counseling = Counseling.find_by(id: params[:id])
+    
+    if @counseling.nil?
+      flash[:alert] = "相談は削除されました。"
+      redirect_to user_project_counselings_path(@user, @project) # または適切なパスに変更
+      return
+    end
+    
     @checked_members = @counseling.checked_members
     @counseling_c = @counseling.counseling_confirmers.find_by(counseling_confirmer_id: current_user)
   end
@@ -32,6 +39,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.sender_name = current_user.name
+    @counseling.token = SecureRandom.hex(10)
     # ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
       # TO ALLが選択されている時
@@ -39,6 +47,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
         @members.each do |member|
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
           @send.save
+          @user = member
+          CounselingMailer.notification(@user, @counseling, @project, @counseling.token).deliver_now
         end
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
@@ -52,6 +62,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
         @counseling.send_to.each do |t|
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
           @send.save
+          @user = User.find(t)
+          CounselingMailer.notification(@user, @counseling, @project, @counseling.token).deliver_now
         end
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
