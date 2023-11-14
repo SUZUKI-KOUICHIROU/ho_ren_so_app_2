@@ -11,13 +11,13 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def show
     set_project_and_members
     @counseling = Counseling.find_by(id: params[:id])
-    
+
     if @counseling.nil?
       flash[:alert] = "相談は削除されました。"
       redirect_to user_project_counselings_path(@user, @project) # または適切なパスに変更
       return
     end
-    
+
     @checked_members = @counseling.checked_members
     @counseling_c = @counseling.counseling_confirmers.find_by(counseling_confirmer_id: current_user)
   end
