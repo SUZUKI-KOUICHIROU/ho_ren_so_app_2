@@ -18,7 +18,7 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
         <li class="nav-item">
-          <a class="text-white active" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなたへの連絡 ▼</a>
+          <a class="text-white" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなたへの連絡 ▼</a>
         </li>
         <li class="nav-item">
           <a class="text-white" id="you-send-tab" data-toggle="tab" href="#you-send" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-send" aria-selected="false">▼ あなたが送った連絡 ▼</a>
@@ -97,7 +97,7 @@
             <div class="d-flex">
               <% if @you_addressee_messages.present?%>
                 <div class="paginate">
-                  <%= paginate @you_addressee_messages %>
+                  <%= paginate @you_addressee_messages, param_name: message_page('you-addressee') %>
                 </div>
               <% end %>
               <div class="ml-auto">
@@ -170,7 +170,7 @@
             <div class="d-flex">
               <% if @you_send_messages.present?%>
                 <div class="paginate">
-                  <%= paginate @you_send_messages %>
+                  <%= paginate @you_send_messages, param_name: message_page('you-send') %>
                 </div>
               <% end %>
               <div class="ml-auto">
@@ -248,7 +248,7 @@
             <div class="d-flex">
               <% if @messages.present?%>
                 <div class="paginate">
-                  <%= paginate @messages %>
+                  <%= paginate @messages, param_name: message_page('message') %>
                 </div>
               <% end %>
               <div class="ml-auto">

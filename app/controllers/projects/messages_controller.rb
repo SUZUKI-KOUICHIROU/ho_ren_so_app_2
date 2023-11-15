@@ -8,11 +8,11 @@ class Projects::MessagesController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
-    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:page]).per(5)
+    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:page]).per(5)
+    @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
     set_project_and_members
     @recipient_count = {}
     @messages.each do |message|
