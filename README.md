@@ -77,6 +77,11 @@ docker-compose run --rm app bin/rails db:seed
 
 # rails db:seed_fu
 docker-compose run --rm app bin/rails db:seed_fu
+
+　　# その他のrails系コマンド（rails generate や rails routes など）にも共通する点
+　　docker-compose run --rm app bin/
+　　↑このコマンドをrails系コマンドの「前」に加えて下さい。↑
+
 ```
 
 ---
