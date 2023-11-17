@@ -78,10 +78,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def update
     set_project_and_members
     @counseling = @project.counselings.find(params[:id])
-  
+
     if update_counseling_and_confirmers
       send_edited_notification_emails
-  
+
       flash[:success] = "相談内容を更新しました。"
       redirect_to user_project_counselings_path
     else
