@@ -1,6 +1,6 @@
 class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
-  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate]
+  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder]
   # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
@@ -71,14 +71,35 @@ class Projects::MembersController < Projects::BaseProjectController
     redirect_to project_member_index_path(current_user.id, project.id)
   end
 
-  # 報告リマインド設定で選択した時刻をサーバーに送信する、send_reminder メソッドを呼び出すアクション
+  # 報告リマインダーの設定を行うアクション
   def send_reminder
-    member_id = params[:memberId]
-    report_time = params[:reportTime]
-
+    user = User.find(params[:user_id])
+    project = Project.find(params[:project_id])
+    member_id = params[:member_id].to_i
+    report_time = params[:report_time]
+    # メンバーIDが渡されている場合はそれを使う
+    if member_id.present?
+      user = User.find_by(id: member_id)
+      unless user
+        flash[:error] = "ユーザーが見つかりません。"
+        redirect_to root_path
+        return
+      end
+    else
+      flash[:error] = "メンバーIDが指定されていません。"
+      redirect_to root_path
+      return
+    end
+    # ProjectUser モデルに保存
+    project_user = ProjectUser.find_by(project_id: project.id, user_id: member_id)
+    raise ActiveRecord::RecordNotFound unless project_user
+    project_user.set_report_reminder_time(report_time)
     # ReminderJobをキューに追加
-    ReminderJob.set(wait_until: report_time).perform_later(member_id, report_time)
-
-    render json: { message: 'Reminder job enqueued successfully' }, status: :ok
+    ReminderJob.perform_later(project.id, member_id, report_time)
+    render json: { success: true }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { success: false, error: "Record not found" }, status: :not_found
+  rescue StandardError => e
+    render json: { success: false, error: e.message }, status: :internal_server_error
   end
 end

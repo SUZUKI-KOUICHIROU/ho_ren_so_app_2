@@ -1,5 +1,8 @@
 $(document).on('turbolinks:load', function(){
 
+  // CSRFトークンの取得
+  var csrfToken = $('meta[name=csrf-token]').attr('content');
+
   // 報告リマインド切替スイッチの状態が変化したら実行する処理
   $(function($) {
     $('.project-member-action').on('change', '.custom-control-input', function(){
@@ -16,27 +19,36 @@ $(document).on('turbolinks:load', function(){
     });
   });
 
-  function setReminder(memberId) {
-    // 選択した時刻で「設定」する処理
-    var selectedTime = document.getElementById("timeInput" + memberId).value;
+  // 報告リマインドで選択した時刻を設定する処理
+  $(function($) {
+    $('.set-reminder').on('click', function() {
+      // report_time の値を設定
+      var timeInput = $(this).closest('.project-member-action').find('.form-control');
+      var reportTime = timeInput.val();
+  
+      // ユーザーIDとプロジェクトIDを取得
+      var userId = $(this).data('user-id');
+      var projectId = $(this).data('project-id');
 
-    // 時刻設定時にフラッシュメッセージを表示
-    alert("報告リマインドの設定が完了しました。");
+      // Ajaxリクエストを送信
+      $.ajax({
+        url: '/projects/members/send_reminder',
+        type: 'POST',
+        data: { user_id: userId, project_id: projectId, member_id: $(this).data('member-id'), report_time: reportTime },
 
-    // 報告リマインド用に設定した時刻をサーバーに送信
-    var selectedTime = document.getElementById("timeInput" + memberId).value;
-    fetch('/send_reminder', {
-        method: 'POST',
+        // CSRFトークンをリクエストヘッダに含める
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': '<%= form_authenticity_token.to_s %>'
+          'X-CSRF-Token': csrfToken
         },
-        body: JSON.stringify({ memberId: memberId, reportTime: selectedTime })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => console.error('Error:', error));
-  }
+        success: function(data) {
+          // 成功時の処理
+          alert("報告リマインドの設定が完了しました。");
+        },
+        error: function() {
+          // エラー時の処理
+          alert("報告リマインドの設定でエラーが発生しました。");
+        }
+      });
+    });
+  });
 });

@@ -10,4 +10,11 @@ class ProjectUser < ApplicationRecord
     end
     return members
   end
+
+  # 報告リマインダーに対し、選択時刻で設定を行うメソッド
+  # プロジェクトメンバーそれぞれに報告リマインダーの時刻を設定する
+  def set_report_reminder_time(time)
+    self.report_reminder_time = time
+    save!
+  end
 end

@@ -78,11 +78,7 @@ Rails.application.routes.draw do
   end
 
   # 報告リマインド用アクションを追加
-  scope module: :projects do
-    scope module: :members do
-      post '/send_reminder', to: 'members#send_reminder'
-    end
-  end
+  post '/projects/members/send_reminder', to: 'projects/members#send_reminder'
 
   #letter_openerを追加
   if Rails.env.development?
