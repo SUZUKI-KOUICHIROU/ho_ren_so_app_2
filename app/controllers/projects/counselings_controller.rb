@@ -153,8 +153,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def send_edited_notification_emails
-    @counseling.send_to.each do |recipient_id|
-      recipient = User.find(recipient_id)
+    recipients = @counseling.send_to_all ? @members : @counseling.send_to
+    recipients.each do |recipient|
+      recipient = recipient.is_a?(User) ? recipient : User.find(recipient)
       CounselingMailer.notification_edited(recipient, @counseling, @project, @counseling.token).deliver_now
     end
   end
