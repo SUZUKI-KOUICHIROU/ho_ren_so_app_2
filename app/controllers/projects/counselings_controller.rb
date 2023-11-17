@@ -78,8 +78,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def update
     set_project_and_members
     @counseling = @project.counselings.find(params[:id])
-
+  
     if update_counseling_and_confirmers
+      send_edited_notification_emails
+  
       flash[:success] = "相談内容を更新しました。"
       redirect_to user_project_counselings_path
     else
@@ -148,5 +150,12 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def create_confirmer(confirmer_id)
     @counseling.counseling_confirmers.create(counseling_confirmer_id: confirmer_id)
+  end
+
+  def send_edited_notification_emails
+    @counseling.send_to.each do |recipient_id|
+      recipient = User.find(recipient_id)
+      CounselingMailer.notification_edited(recipient, @counseling, @project, @counseling.token).deliver_now
+    end
   end
 end
