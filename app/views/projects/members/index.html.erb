@@ -42,14 +42,14 @@
               <div class="project-member-action member-text">
                 <div class="custom-control custom-switch">
                   報告リマインドを設定（メール）
-                  <!--報告リマインド用のオンオフ切替スイッチ-->
+                  <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトメンバー用）-->
                   <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
                   <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                 </div>
                 <div class="form-group time-input" style="display: none;">
                   <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
                   <label for="timeInput<%= member.id %>">に</label>
-                  <!--選択した報告リマインド時刻の設定ボタン-->
+                  <!--選択した報告リマインド時刻の設定ボタン（プロジェクトメンバー用）-->
                   <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
                 </div>
               </div>                           
@@ -58,14 +58,14 @@
                 <% if @user.id == member.id %>
                   <div class="custom-control custom-switch">
                     報告リマインドを設定（メール）
-                    <!--報告リマインド用のオンオフ切替スイッチ-->
+                    <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトリーダー用）-->
                     <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
                     <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                   </div>
                   <div class="form-group time-input" style="display: none;">
                     <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
                     <label for="timeInput<%= member.id %>">に</label>
-                    <!--選択した報告リマインド時刻の設定ボタン-->
+                    <!--選択した報告リマインド時刻の設定ボタン（プロジェクトリーダー用）-->
                     <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>       
                   </div>
                 <% end %>
