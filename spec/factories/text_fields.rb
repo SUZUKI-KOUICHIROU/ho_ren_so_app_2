@@ -4,7 +4,7 @@ FactoryBot.define do
     id { 1 }
     question_id { 1 }
     label_name { 'ラベル名' }
-    field_type { 'text_area' }
+    field_type { 'text_field' }
     created_at { Date.current }
     updated_at { Date.current }
   end

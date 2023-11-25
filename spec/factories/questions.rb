@@ -5,7 +5,7 @@ FactoryBot.define do
     position { 1 }
     form_table_type { 'text_field' }
     project_id { 1 }
-    using_flag { true }
+    using_flag { false }
     required { true }
     created_at { Date.current }
     updated_at { Date.current }

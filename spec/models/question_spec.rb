@@ -17,33 +17,33 @@ RSpec.describe Question, type: :model do
     end
   end
 
-  # describe "using_flag" do
-  #   it "trueは登録できる" do
-  #     question.using_flag == true
-  #     expect(question).to be_valid
-  #   end
-  #   it "falseは登録できる" do
-  #     question.using_flag == false
-  #     expect(question).to be_valid
-  #   end
-  #   it "nilは登録できない" do
-  #     question.using_flag = nil
-  #     expect(question).to be_invalid
-  #   end
-  # end
+  describe "using_flag" do
+    # it "trueは登録できる" do
+    #   question.using_flag == true
+    #   expect(question).to be_valid
+    # end
+    # it "falseは登録できる" do
+    #   question.using_flag == false
+    #   expect(question).to be_valid
+    # end
+    it "nilは登録できない" do
+      question.using_flag = nil
+      expect(question).to be_invalid
+    end
+  end
 
-  # describe "required" do
-  #   it "trueは登録できる" do
-  #     question.required == true
-  #     expect(question).to be_valid
-  #   end
-  #   it "falseは登録できる" do
-  #     question.required == false
-  #     expect(question).to be_valid
-  #   end
-  #   it "nilは登録できない" do
-  #     question.required = nil
-  #     expect(question).to be_invalid
-  #   end
-  # end
+  describe "required" do
+    # it "trueは登録できる" do
+    #   question.required == true
+    #   expect(question).to be_valid
+    # end
+    # it "falseは登録できる" do
+    #   question.required == false
+    #   expect(question).to be_valid
+    # end
+    it "nilは登録できない" do
+      question.required = nil
+      expect(question).to be_invalid
+    end
+  end
 end
