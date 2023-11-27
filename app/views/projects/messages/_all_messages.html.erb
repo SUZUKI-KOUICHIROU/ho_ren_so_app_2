@@ -1,0 +1,78 @@
+<!-- 全メンバーの連絡 -->
+<div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+  <div class="box-message-index">
+    <% if @messages.present? %>
+      <div class="d-flex justify-content-end mb-3">
+        <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
+          <%= form.hidden_field :search_type, :value => "message" %>
+          
+          <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
+          <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+
+          <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+        
+          <%= form.submit "検索", class: "btn btn-outline-orange" %>
+        <% end %>
+        <%#= form_with url: "#", method: :get, local: true do |form| %>
+          <%#= form.hidden_field :search_type, :value => "message" %>
+          <%#= form.label :search, "件名検索：", class: "mb-0" %>
+          <%#= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
+          <%#= form.submit "検索", class: "btn btn-outline-orange" %>
+        <%# end %>
+      </div>
+      <div class="table-header">
+        <div class="subject-name">
+          件名
+        </div>
+        <div class="message-date">
+          連絡日
+        </div>
+        <div class="message-person">
+          連絡者
+        </div>
+        <div class="message-action">
+          連絡確認者/連絡未確認者
+        </div>
+      </div>
+      <div class="table-body">
+        <% line_num = 0%>
+        <% @messages.each do |message|%>
+          <% line_num += 1%>
+          <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+            <div class="subject-name">
+              <% if message.message_confirmers.exists?(message_confirmer_id: current_user.id) %>
+                <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
+              <% else %>
+                <%= message.title  %>
+              <% end %>
+            </div>
+            <div class="message-date">
+              <%= l(message.created_at, format: :long) %>
+            </div>
+            <div class="message-person">
+              <%= message.sender_name %>
+            </div>
+            <div class="message-action">                      
+              <%= message.checked_members.count %>人/
+              <% count = @recipient_count[message.id] %>
+              <%= "#{count}人" if count.present? %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else @messages.blank?%>
+      <P>連絡履歴がありません。</P>
+    <% end %>
+    <div class="d-flex">
+      <% if @messages.present?%>
+        <div class="paginate">
+          <%= paginate @messages, param_name: message_page('message'), remote: true %>
+        </div>
+      <% end %>
+      <div class="ml-auto">
+        <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>
