@@ -64,4 +64,4 @@ class Projects::ReportReplysController < Projects::BaseProjectController
   def report_reply_params
     params.require(:report_reply).permit(:reply_content, :poster_name, :poster_id, images: [])
   end
-end 
+end
