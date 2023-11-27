@@ -1,0 +1,3 @@
+$("#you-addressee-messages-container").html("<%= escape_javascript(render partial: 'messages/you_addressee_messages', locals: { messages: @you_addressee_messages }) %>");
+$("#you-send-messages-container").html("<%= escape_javascript(render partial: 'messages/you_send_messages', locals: { messages: @you_send_messages }) %>");
+$("#messages-container").html("<%= escape_javascript(render partial: 'messages/all_messages', locals: { messages: @messages }) %>");

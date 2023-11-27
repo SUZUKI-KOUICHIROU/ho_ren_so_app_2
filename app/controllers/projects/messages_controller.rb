@@ -13,6 +13,10 @@ class Projects::MessagesController < Projects::BaseProjectController
     @you_addressee_messages = @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+    respond_to do |format|
+      format.html
+      format.js
+    end
     set_project_and_members
     @recipient_count = {}
     @messages.each do |message|

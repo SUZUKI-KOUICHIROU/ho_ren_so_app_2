@@ -97,7 +97,7 @@
             <div class="d-flex">
               <% if @you_addressee_messages.present?%>
                 <div class="paginate">
-                  <%= paginate @you_addressee_messages, param_name: message_page('you-addressee') %>
+                  <%= paginate @you_addressee_messages, param_name: message_page('you-addressee'), remote: true %>
                 </div>
               <% end %>
               <div class="ml-auto">
@@ -170,7 +170,7 @@
             <div class="d-flex">
               <% if @you_send_messages.present?%>
                 <div class="paginate">
-                  <%= paginate @you_send_messages, param_name: message_page('you-send') %>
+                  <%= paginate @you_send_messages, param_name: message_page('you-send'), remote: true %>
                 </div>
               <% end %>
               <div class="ml-auto">
@@ -248,7 +248,7 @@
             <div class="d-flex">
               <% if @messages.present?%>
                 <div class="paginate">
-                  <%= paginate @messages, param_name: message_page('message') %>
+                  <%= paginate @messages, param_name: message_page('message'), remote: true %>
                 </div>
               <% end %>
               <div class="ml-auto">
