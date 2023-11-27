@@ -67,7 +67,11 @@ class Projects::MessagesController < Projects::BaseProjectController
       recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
     else
       members_saved = save_message_and_send_to_members(@message, @message.send_to)
-      recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
+      recipients = if @message.importance == '低' || @message.importance == '中' || @message.importance == '高'
+                     [] # 重要度の設定で送信相手が空欄の場合は空の配列を使用
+                   else
+                     @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
+                   end
     end
 
     if members_saved
