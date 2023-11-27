@@ -205,3 +205,83 @@
     vertical-align: middle;
   }
 }
+
+//返信機能
+.reply-image-containar {
+  position: relative;
+  display: inline-block;
+  width: 40%;
+  margin-right: 5%;
+}
+.reply-image-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  padding: 5px;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);
+  a {
+    margin: 0; 
+    padding: 0;
+    color: #ffffff;  
+  }
+}
+.reply-image-containar:hover .reply-image-menu {
+  display: block;
+}
+.thumbnail {
+  width: 100%;
+  height: 30%;
+  cursor: zoom-in;
+}
+.reply-image-modal {
+  width: 80%;
+}
+.reply-image-input{
+  display: block;
+  background-color: #228B22;
+  width: 180px;
+  height: 30px;
+  margin-top: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  padding-top: 2px;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+.reply-image-form {
+  display: none;
+}
+.reply-image-label {
+  margin-left: 15px;
+}
+.reply-text {
+  padding: 0.5em 1em;
+  background: #FFF;
+  border: 2px solid rgba(0, 0, 0, 0.125);
+  border-radius: 10px;
+  p {
+    margin: 0; 
+    padding: 0;
+    font-weight: bold;
+    font-size: 0.8em;
+    white-space: pre-wrap;
+  }
+}
+.textlines {
+  padding: 0.5em 1em;
+  background-color: #FFF;
+  border: 2px solid #0a0;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.8em;
+}
+.textlines:focus {
+  border-color: skyblue;
+  background-color: #ffc;
+  outline: none;
+}

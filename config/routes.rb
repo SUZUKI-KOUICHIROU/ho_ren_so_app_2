@@ -47,6 +47,8 @@ Rails.application.routes.draw do
           resources :report_replys, only: %i[edit  create update destroy] do
             member do
               get 'cancel'
+              get 'show_image'
+              delete 'delete_image'
             end
           end
         end

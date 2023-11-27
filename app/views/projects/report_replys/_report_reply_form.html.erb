@@ -3,10 +3,12 @@
 	
 	<%= form_with(model: @reply, url: user_project_report_report_replys_path(@user,@project,@report), method: :post) do |f| %>
 		<!-- 返信本文 -->
-		<%= f.text_area :reply_content, class: "col-11 form-control message-area mb-3", rows: "6", required: true %>
+		<%= f.text_area :reply_content, class: "col-11 form-control message-area mb-3", rows: "6", placeholder: "返信する…", required: true %>
 		<!-- 画像選択 -->
-		<!-- 次タスクにて対応 -->
-		<!-- 　<input type="button" value="画像を選択"> -->
+		<label class="reply-image-label">
+			<span class="btn btn-light"><font size="2">📁画像アップロード</font></span>
+			<%= f.file_field :images, multiple: true, accept: 'image/*', class: "reply-image-form" %>
+		</label>
 		<!-- 投稿者名 -->
 		<%= f.hidden_field :poster_name, :value => current_user.name %>
 		<!-- 投稿者ID -->
