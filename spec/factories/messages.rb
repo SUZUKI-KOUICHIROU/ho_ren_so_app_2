@@ -8,6 +8,6 @@ FactoryBot.define do
     title { 'a' * 25 }
     message_detail { '連絡内容' }
     created_at { Date.current }
-    updated_at { Date.current }    
+    updated_at { Date.current }
   end
 end

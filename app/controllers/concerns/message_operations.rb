@@ -22,4 +22,26 @@ module MessageOperations
 
     message_saved
   end
+
+  def update_message_and_send_to_members(message, _members)
+    message_saved = message.update(message_params)
+
+    if message_saved
+      if params[:message][:send_to_all]
+        # TO ALLが選択されているとき
+        @members.each do |member|
+          @send = @message.message_confirmers.find_or_initialize_by(message_confirmer_id: member.id)
+          @send.save
+        end
+      else
+        # TO ALLが選択されていない時
+        @message.send_to.each do |t|
+          @send = @message.message_confirmers.find_or_initialize_by(message_confirmer_id: t)
+          @send.save
+        end
+      end
+    end
+
+    message_saved
+  end
 end

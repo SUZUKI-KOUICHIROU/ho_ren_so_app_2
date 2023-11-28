@@ -5,7 +5,7 @@ class Message < ApplicationRecord
   attr_accessor :send_to
 
   attribute :send_to_all # , default: false
-  
+
   validates :title, presence: true
   validates :title, presence: true, length: { maximum: 30 }
   validates :message_detail, presence: true
