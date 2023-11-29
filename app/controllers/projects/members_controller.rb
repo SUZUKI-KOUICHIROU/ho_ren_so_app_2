@@ -73,33 +73,47 @@ class Projects::MembersController < Projects::BaseProjectController
 
   # 報告リマインダーの設定を行うアクション
   def send_reminder
-    user = User.find(params[:user_id])
-    project = Project.find(params[:project_id])
+    user_id = params[:user_id].to_i
+    project_id = params[:project_id].to_i
     member_id = params[:member_id].to_i
     report_time = params[:report_time]
-    # メンバーIDが渡されている場合はそれを使う
-    if member_id.present?
-      user = User.find_by(id: member_id)
-      unless user
-        flash[:error] = "ユーザーが見つかりません。"
-        redirect_to root_path
-        return
-      end
-    else
-      flash[:error] = "メンバーIDが指定されていません。"
-      redirect_to root_path
-      return
+
+    user, project = find_user_and_project(user_id, project_id)
+    return unless user && project
+
+    # タイムゾーンをリマインド専用にJSTへとブロックで変換設定
+    Time.use_zone('Asia/Tokyo') do
+      project_user = find_project_user(project, member_id)
+      return unless project_user
+
+      # 指定の時刻にリマインドジョブをキューに追加
+      project_user.queue_report_reminder(project.id, member_id, report_time)
+
+      render json: { success: true }, status: :ok
     end
-    # ProjectUser モデルに保存
-    project_user = ProjectUser.find_by(project_id: project.id, user_id: member_id)
-    raise ActiveRecord::RecordNotFound unless project_user
-    project_user.set_report_reminder_time(report_time)
-    # ReminderJobをキューに追加
-    ReminderJob.perform_later(project.id, member_id, report_time)
-    render json: { success: true }, status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: { success: false, error: "Record not found" }, status: :not_found
+
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
+  end
+
+  private
+
+  # ユーザーとプロジェクトを取得するメソッド（報告リマインド用）
+  def find_user_and_project(user_id, project_id)
+    user = User.find_by(id: user_id)
+    project = Project.find_by(id: project_id)
+    [user, project]
+  end
+
+  # ProjectUserを取得するメソッド（報告リマインド用）
+  def find_project_user(project, member_id)
+    project_user = ProjectUser.find_by(project_id: project.id, user_id: member_id)
+    return project_user if project_user
+
+    flash[:error] = "プロジェクトメンバーが見つかりません。"
+    redirect_to root_path
+    nil
   end
 end
