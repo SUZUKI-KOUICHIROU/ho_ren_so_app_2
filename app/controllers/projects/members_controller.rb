@@ -91,7 +91,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
       render json: { success: true }, status: :ok
     end
-
   rescue ActiveRecord::RecordNotFound => e
     render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e

@@ -6,7 +6,7 @@ class ReminderJob < ApplicationJob
     project_user = ProjectUser.find(member_id)
     project = Project.find(project_id)
     reminder_time = Time.zone.parse(report_time)
-    
+
     # 指定時刻まで待機
     wait_until_report_reminder_time(reminder_time)
 
@@ -21,9 +21,10 @@ class ReminderJob < ApplicationJob
     # タイムゾーンをJSTに変換
     jst_reminder_time = reminder_time.in_time_zone('Asia/Tokyo')
 
-     # 1秒ごとに確認
+    # 1秒ごとに確認
     loop do
       break if Time.zone.now >= jst_reminder_time
+
       sleep(1)
     end
   end

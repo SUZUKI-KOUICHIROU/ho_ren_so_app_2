@@ -19,7 +19,7 @@ class ProjectUser < ApplicationRecord
     self.report_reminder_time = report_time.in_time_zone('Asia/Tokyo')
 
     save!
-     # reminder_time が返されるよう設定
+    # reminder_time が返されるよう設定
     self.report_reminder_time
   end
 
