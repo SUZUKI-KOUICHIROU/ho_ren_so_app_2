@@ -81,9 +81,11 @@ ActiveRecord::Schema.define(version: 2023_11_13_074415) do
     t.integer "sender_id"
     t.string "sender_name"
     t.string "title"
+    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_counselings_on_project_id"
+    t.index ["token"], name: "index_counselings_on_token", unique: true
   end
 
   create_table "date_fields", force: :cascade do |t|
@@ -92,9 +94,7 @@ ActiveRecord::Schema.define(version: 2023_11_13_074415) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "token"
     t.index ["question_id"], name: "index_date_fields_on_question_id"
-    t.index ["token"], name: "index_counselings_on_token", unique: true
   end
 
   create_table "delegations", force: :cascade do |t|
