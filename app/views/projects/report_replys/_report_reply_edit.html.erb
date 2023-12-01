@@ -1,8 +1,6 @@
 <%= form_with(model: @reply, url: user_project_report_report_reply_path(@user,@project,@report,@reply), method: :patch) do |f| %>
-  <div class="card">
-    <!-- 返信本文 -->
-    <%= f.text_area :reply_content, class: "card card-body", rows: "2", required: true %>
-  </div>
+  <!-- 返信本文 -->
+  <%= f.text_area :reply_content,class: "textlines", rows: "3", required: true %>
   <%= f.submit "更新する", class: "btn btn-primary btn-sm" %>
   <%= link_to "キャンセル", cancel_user_project_report_report_reply_path(@user,@project,@report,@reply, index: @index), class: "btn btn-secondary btn-sm", remote: true %>
 <% end %>

@@ -140,7 +140,9 @@ function changeForm() {
     </div>
   
     <!-- 返信一覧の表示 -->
-    <%= render "/projects/report_replys/report_reply_list" %>
+    <% if @report_replies.size > 0 %>
+      <%= render "/projects/report_replys/report_reply_list" %>
+    <% end %>
     <!-- 返信フォームの表示 -->
     <%= render "/projects/report_replys/report_reply_form" %>
   </div>
