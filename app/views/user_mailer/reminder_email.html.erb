@@ -1,0 +1,5 @@
+<h2><%= @project_name %> の報告リマインド</h2>
+<h3>上記プロジェクトの報告を本日23:59までに完了してください。</h3>
+<br>
+<%= link_to "プロジェクトの報告をする", new_user_project_report_url(user_id: @user.id, project_id: @project.id) %>
+<p>（このメールはシステムより自動配信されています。入れ違いでご報告がお済みの際は何卒ご容赦ください。）</p>

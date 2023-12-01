@@ -83,9 +83,7 @@ ActiveRecord::Schema.define(version: 2023_11_13_074415) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "token"
     t.index ["project_id"], name: "index_counselings_on_project_id"
-    t.index ["token"], name: "index_counselings_on_token", unique: true
   end
 
   create_table "date_fields", force: :cascade do |t|
@@ -150,6 +148,7 @@ ActiveRecord::Schema.define(version: 2023_11_13_074415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "member_expulsion", default: false, null: false
+    t.datetime "report_reminder_time"
     t.index ["project_id"], name: "index_project_users_on_project_id"
     t.index ["user_id"], name: "index_project_users_on_user_id"
   end
