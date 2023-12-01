@@ -255,7 +255,7 @@
 .reply-image-form {
   display: none;
 }
-.reply-image-label {
+.reply-image-label, .images_area {
   margin-left: 15px;
 }
 .reply-text {
@@ -284,4 +284,28 @@
   border-color: skyblue;
   background-color: #ffc;
   outline: none;
+}
+
+.images_preview {
+  position: relative;
+  display: inline-block;
+  width: 25%;
+  margin-right: 5%;
+  button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 100%;/*ボタンの大きさ*/
+    font-weight: bold;
+    border: 1px solid #999;
+    color: #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 1.3em;
+    line-height: 1.3em;
+    cursor: pointer;
+    transition: .2s;
+  }
 }
