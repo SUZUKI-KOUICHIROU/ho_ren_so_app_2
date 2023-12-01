@@ -82,6 +82,9 @@ Rails.application.routes.draw do
     post 'users/:user_id/projects/:project_id/invitations/create', to: 'invitations#create', as: :create_invitation
   end
 
+  # 報告リマインド用アクションを追加
+  post '/projects/members/send_reminder', to: 'projects/members#send_reminder'
+
   #letter_openerを追加
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

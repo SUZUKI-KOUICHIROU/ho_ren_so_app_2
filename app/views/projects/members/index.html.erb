@@ -20,11 +20,9 @@
     <div class="project-next-report-date">
       参加日
     </div>
-    <% if project_leader? %>
-    <div class="w-50 mr-2 mb-2">
+    <div class="project-member-action">
       アクション
     </div>
-    <% end %>
   </div>
   <div class="table-body">
     <% if @members.present? %>
@@ -40,22 +38,53 @@
               <% entry_date = ProjectUser.find_by(project_id: @project.id, user_id: member.id).created_at %>
               <%= l(entry_date, format: :long) %>
             </div>
-            <% if project_leader? %>
-            <div class="w-50 mr-2 mb-2">
-              <% unless @project.leader_id == member.id %>
-                <% if member.member_expulsion %>
-                  <%= link_to "プロジェクトへ戻す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーへ戻そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
-                <% else %>
-                  <%= link_to "プロジェクトから外す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
+            <% if @user.id == member.id %>
+              <div class="project-member-action member-text">
+                <div class="custom-control custom-switch">
+                  報告リマインドを設定（メール）
+                  <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトメンバー用）-->
+                  <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
+                  <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
+                </div>
+                <div class="form-group time-input" style="display: none;">
+                  <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                  <label for="timeInput<%= member.id %>">に</label>
+                  <!--選択した報告リマインド時刻の設定ボタン（プロジェクトメンバー用）-->
+                  <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                </div>
+              </div>                           
+            <% elsif project_leader? %>
+              <div class="project-member-action member-text">
+                <% if @user.id == member.id %>
+                  <div class="custom-control custom-switch">
+                    報告リマインドを設定（メール）
+                    <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトリーダー用）-->
+                    <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
+                    <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
+                  </div>
+                  <div class="form-group time-input" style="display: none;">
+                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                    <label for="timeInput<%= member.id %>">に</label>
+                    <!--選択した報告リマインド時刻の設定ボタン（プロジェクトリーダー用）-->
+                    <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>       
+                  </div>
                 <% end %>
-                <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
-                <% if delegate.present? %>
-                  <%= link_to "リクエストをキャンセル", cancel_delegate_path(@user, @project, delegate), method: :post, class: "btn btn-danger" %>
+                <% unless @project.leader_id == member.id %>
+                  <% if member.member_expulsion %>
+                    <%= link_to "プロジェクトへ戻す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーへ戻そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
                   <% else %>
-                <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-danger" %>
+                    <%= link_to "プロジェクトから外す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
+                  <% end %>
+                  <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
+                  <% if delegate.present? %>
+                    <%= link_to "リクエストをキャンセル", cancel_delegate_path(@user, @project, delegate), method: :post, class: "btn btn-danger" %>
+                    <% else %>
+                  <%= link_to "リーダー権限を委譲", delegate_leader_path(@user, @project.id,member.id), method: :post, data: { confirm: "#{member.name}さんにリーダー権限委譲の打診を行います。\nよろしいですか？" }, class: "btn btn-danger" %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% else %>
+              <div class="none" style="background-color: transparent;"></div>
             <% end %>
           </div>
         <% end %>
