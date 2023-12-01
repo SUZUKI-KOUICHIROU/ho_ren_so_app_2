@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(version: 2023_11_13_074415) do
     t.integer "sender_id"
     t.string "sender_name"
     t.string "title"
-    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "token"
     t.index ["project_id"], name: "index_counselings_on_project_id"
     t.index ["token"], name: "index_counselings_on_token", unique: true
   end
