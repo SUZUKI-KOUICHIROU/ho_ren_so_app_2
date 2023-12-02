@@ -1,7 +1,7 @@
 <div class="box-you-addressee-index">
   <% if @you_addressee_messages.present? %>
     <div class="d-flex justify-content-end mb-3">
-      <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
+      <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "you-addressee" %>
         
         <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
