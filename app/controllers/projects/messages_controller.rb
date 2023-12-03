@@ -107,15 +107,15 @@ class Projects::MessagesController < Projects::BaseProjectController
     if @message.sender_id != current_user.id && @message.message_confirmers.exists?(message_confirmer_id: current_user.id) == false
       redirect_to root_path
     end
-  end 
+  end
 
   def save_message_confirmers
     if @message.save
       if params[:message][:send_to_all]
-        members_saved = save_message_and_send_to_members(@message, @members)
+        save_message_and_send_to_members(@message, @members)
         recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
       else
-        members_saved = save_message_and_send_to_members(@message, @message.send_to)
+        save_message_and_send_to_members(@message, @message.send_to)
         recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
       end
       @message.set_importance(@message.importance, recipients)
@@ -136,10 +136,10 @@ class Projects::MessagesController < Projects::BaseProjectController
   def update_message_confirmers
     if @message.update(message_params)
       if params[:message][:send_to_all]
-        members_saved = update_message_and_send_to_members(@message, @members)
+        save_message_and_send_to_members(@message, @members)
         recipients = @members.map { |member| member.email } # メンバーのメールアドレスを取得
       else
-        members_saved = update_message_and_send_to_members(@message, @message.send_to)
+        save_message_and_send_to_members(@message, @message.send_to)
         recipients = @message.send_to.map { |send_to| send_to.to_i }.map { |id| @members.find(id).email }
       end
       @message.set_importance(@message.importance, recipients)
