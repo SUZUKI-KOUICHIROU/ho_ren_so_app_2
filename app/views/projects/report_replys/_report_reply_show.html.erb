@@ -1,0 +1,29 @@
+<div class="reply-text">
+  <!-- 返信本文 -->
+  <p><%= reply.reply_content %></p>
+</div>
+<!-- 添付画像 -->
+<% if reply.images.count > 0 %>
+  <details open>
+    <summary>
+      <font size="1"><%= reply.images.count %>個の画像</font>
+    </summary>
+    <% reply.images.each do |image| %>
+      <div class="reply-image-containar">
+        <%= link_to image_tag(image, class: "thumbnail"), 
+            show_image_user_project_report_report_reply_path(@user,@project,@report, image_id: image.id),
+            remote: true %>
+
+        <% if reply.poster_id == current_user.id %>
+          <div class="reply-image-menu">
+            <%= link_to "削除", delete_image_user_project_report_report_reply_path(@user,@project,@report, image_id: image.id), method: :delete, remote: true,
+                data: {confirm: "削除してよろしいですか？"} %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </details>
+<% end %>
+
+ <!-- モーダルウィンドウ表示 -->
+<div id="show_image" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

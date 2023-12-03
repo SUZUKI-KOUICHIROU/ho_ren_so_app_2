@@ -11,7 +11,7 @@
     <div class="ml-3 mb-3 form col-11">
       <% if @members.present? %>
         <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
-        <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", checked: @counseling.counseling_confirmers.pluck(:counseling_confirmer_id) %>
+        <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", required: true %>
       <% else %>
         <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
       <% end %>

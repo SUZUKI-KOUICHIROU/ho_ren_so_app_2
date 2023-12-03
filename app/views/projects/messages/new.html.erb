@@ -8,10 +8,12 @@
 <%= form_with(model: @message, url: user_project_messages_path(current_user,@project), local: true, method: :post) do |f| %>
   <div class="col-6 container offset-3 box-message-format-new pb-2 my-5">
     <%= f.label :sent_to, "送信対象", class:"font-weight-bold message-title-box" %>
-    <div class="ml-3 mb-3 form col-11">
+    <div class="ml-3 mb-3 form col-11 send-to">
       <% if @members.present? %>
-        <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>
-        <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", required: true %>
+        <%= f.check_box :send_to_all, {}, true, false %>TO ALL<br>        
+        <div class="collection-check-boxes">
+          <%= f.collection_check_boxes :send_to, @members, :id, :name, include_hidden: false, class: "form-control", required: true, :as => :integer %>
+        </div>
       <% else %>
         <p class="text-center font-weight-bold text-danger">送信対象がいません</p>
       <% end %>
@@ -20,6 +22,8 @@
       <%= f.text_field :title, min: 1, placeholder: "件名（30字以内）", class: "col-11 form-control message-text mb-3", required: true %>
       <%= f.label :message_detail, "連絡内容", class:"font-weight-bold message-title-box" %>
       <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control message-area mb-3",rows: "6", required: true %>
+      <%= f.label :importance, "連絡重要度", class:"font-weight-bold message-title-box" %>
+      <%= f.select :importance, [['低', '低'], ['中', '中'], ['高', '高']], { selected: '低' }, prompt: '重要度を選択してください', class: "col-11 form-control message-text mb-3", required: true, id: 'message_importance' %>
     <div class="text-center mb-3">
       <%= link_to '戻る', user_project_path(@user,@project),class: "btn btn-secondary col-2" %>
       <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>

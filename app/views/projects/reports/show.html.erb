@@ -129,10 +129,21 @@ function changeForm() {
             <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
           </div>
         <% end %>
+
         <div class="text-center">
           <%= link_to '戻る', user_project_reports_path(@user, @project), class: "btn btn-light btn-outline-secontary col-2 " %>
         </div>
       </div>
     </div>
+    <div class="text-right mr-4">
+      <%= link_to "返信する", anchor: "reply_form" %>
+    </div>
+  
+    <!-- 返信一覧の表示 -->
+    <% if @report_replies.size > 0 %>
+      <%= render "/projects/report_replys/report_reply_list" %>
+    <% end %>
+    <!-- 返信フォームの表示 -->
+    <%= render "/projects/report_replys/report_reply_form" %>
   </div>
 </div>

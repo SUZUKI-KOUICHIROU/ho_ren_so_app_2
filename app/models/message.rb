@@ -9,6 +9,18 @@ class Message < ApplicationRecord
   validates :message_detail, presence: true
   validate :no_check_become_invalid
 
+  def set_importance(importance, recipients)
+    self.importance = importance
+    if importance == '中' || importance == '高'
+      recipients.each do |_recipient|
+        MessageMailer.send_email(recipients, self.importance, self.title, self.message_detail, self.sender_name).deliver_now
+      end
+    end
+    if importance == '高'
+      send_slack_notification(self.title, self.message_detail)
+    end
+  end
+
   # ログインユーザー宛のメッセージを取得
   def self.my_messages(user)
     joins(:message_confirmers).where(message_confirmers: { message_confirmer_id: user, message_confirmation_flag: false }).order(created_at: :desc)
@@ -54,4 +66,13 @@ class Message < ApplicationRecord
   scope :keywords_like, ->(keywords) {
                           where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
                         }
+
+  private
+
+  def send_slack_notification(title, message_detail)
+    client = Slack::Web::Client.new
+    # channel = "#Horenso_App" # 参照資料には記述されていたがrubocopで不要と警告が出た為コメントアウトとする。
+    message = "重要度「高」の連絡が届いています。 \n送信者: #{self.sender_name}\n件名: #{title}\n連絡内容: #{message_detail}"
+    client.chat_postMessage(channel: '#horenso_app通知', text: message)
+  end
 end

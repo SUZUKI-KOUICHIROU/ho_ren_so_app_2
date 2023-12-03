@@ -117,5 +117,8 @@ ja:
       hours_only: "%-H時"
       kan_hm: "%-H時%-M分"
       h: "%-H"
+      posting: "%Y年%m月%d日(%a) %H時%M分"
     pm: 午後
-
+  counseling_mailer:
+    consultation_arrived: "相談が届きました"
+    consultation_edited_arrived: "相談内容が更新されました"
