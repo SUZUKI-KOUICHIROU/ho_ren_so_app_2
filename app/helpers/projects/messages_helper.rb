@@ -19,4 +19,14 @@ module Projects::MessagesHelper
     end
     recipient_names.join(', ')
   end
+
+  # タブごとのページ設定
+  def message_page(tab)
+    page = {
+      'you-addressee' => 'you_addressee_messages_page',
+      'you-send' => 'you_send_messages_page',
+      'message' => 'messages_page'
+    }
+    page[tab]
+  end
 end
