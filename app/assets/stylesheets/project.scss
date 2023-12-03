@@ -105,6 +105,12 @@
   width: unset;
 }
 
+////////// 報告リマインド用の日時設定デザイン //////////
+.form-group.time-input input[type="time"] {
+  width: 100px;
+  display: inline-block;
+}
+
 ////////// 検索のtext_fieldのデザイン //////////
 .search-box {
   border-style: none;
@@ -191,6 +197,11 @@
 .message-date, .message-confirmer, .message-person, .message-action,
 .counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
   width: 25%;
+  margin: 0rem 0.5rem 0.5rem 0rem;
+}
+
+.project-member-action, .none {
+  width: 50%;
   margin: 0rem 0.5rem 0.5rem 0rem;
 }
 

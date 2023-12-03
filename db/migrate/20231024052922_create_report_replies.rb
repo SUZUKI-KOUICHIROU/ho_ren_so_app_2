@@ -5,7 +5,6 @@ class CreateReportReplies < ActiveRecord::Migration[5.2]
       t.references :report, foreign_key: true           # 報告ID
       t.integer :poster_id, null: false                 # 投稿者ID
       t.string  :poster_name,  null: false              # 投稿者名
-      t.string :image                                   # 画像ファイル名
 
       t.timestamps
     end
