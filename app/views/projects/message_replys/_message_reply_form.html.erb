@@ -1,0 +1,26 @@
+<div class="col-12 container box-message-format-new pb-2 my-5">
+	<label id="reply_form" class="font-weight-bold message-title-box"><font size="3">返信フォーム</font></label>
+	
+	<%= form_with(model: @reply, url: user_project_message_message_replys_path(@user,@project,@message), method: :post) do |f| %>
+		<!-- 返信本文 -->
+		<%= f.text_area :reply_content, class: "col-11 form-control message-area mb-3", rows: "6", placeholder: "返信する…", required: true %>
+		<!-- 画像選択 -->
+		<label class="reply-image-label">
+			<span class="btn btn-light"><font size="2">📁画像アップロード</font></span>
+			<%= f.file_field :images, multiple: true, accept: 'image/*', class: "reply-image-form", onchange: "preview_images(this)" %>
+		</label>
+		<div class="images_area">
+			<!-- プレビュー画像が表示される -->
+		</div>
+		<!-- 画像使用有無 -->
+		<%= f.hidden_field :image_enable, id: "hiddenInput", :value => "" %>
+		<!-- 投稿者名 -->
+		<%= f.hidden_field :poster_name, :value => current_user.name %>
+		<!-- 投稿者ID -->
+		<%= f.hidden_field :poster_id, :value => current_user.id %>
+		<!-- 返信投稿 -->
+		<div class="text-center mr-4">
+			<%= f.submit "投稿する", class: "btn btn-light btn-outline-orange" %>
+		</div>
+	<% end %>
+</div>

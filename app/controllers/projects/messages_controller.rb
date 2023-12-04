@@ -48,6 +48,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     @message = Message.find(params[:id])
     @checked_members = @message.checked_members
     @message_c = @message.message_confirmers.find_by(message_confirmer_id: current_user)
+    @reply = @message.message_replies.new
+    @message_replies = @message.message_replies.all.order(:created_at)
   end
 
   def new
