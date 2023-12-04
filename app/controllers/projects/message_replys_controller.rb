@@ -67,18 +67,4 @@ class Projects::MessageReplysController < Projects::BaseProjectController
   def message_reply_params
     params.require(:message_reply).permit(:reply_content, :poster_name, :poster_id, images: [])
   end
-
-  def set_enable_images(image_enable_info, images_array)
-    rmv_num = 0
-    img_enable_array = image_enable_info.split(',')
-
-    img_enable_array.each_with_index do |value, idx|
-      if value == "false"
-        images_array.delete_at(idx - rmv_num)
-        rmv_num += 1
-      end
-    end
-
-    return images_array
-  end
 end
