@@ -130,6 +130,7 @@ Rails/I18nLocaleTexts:
     - 'app/controllers/projects/counselings_controller.rb'
     - 'app/controllers/projects/members_controller.rb'
     - 'app/controllers/projects/messages_controller.rb'
+    - 'app/controllers/projects/message_replys_controller.rb'
     - 'app/controllers/projects/projects_controller.rb'
     - 'app/controllers/projects/reports_controller.rb'
     - 'app/controllers/projects/report_replys_controller.rb'
