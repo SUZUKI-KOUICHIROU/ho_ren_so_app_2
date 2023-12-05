@@ -1,0 +1,22 @@
+<hr>
+<details>
+  <summary>
+    <u><%= @message_replies.size %>件の返信</u>
+  </summary>
+  <hr>
+  <% @message_replies.each_with_index do |reply, i| %>
+    <!-- 投稿者名 -->
+    👤<b><%= reply.poster_name %></b>
+    <font size="1"><%= l(reply.updated_at, format: :posting) %></font>
+    <% if reply.poster_id == current_user.id %>
+      <%= link_to "編集する", edit_user_project_message_message_reply_path(@user,@project,@message,reply,index: i ), class: "btn btn-primary btn-sm", remote: true %>
+      <%= link_to "削除する", user_project_message_message_reply_path(@user,@project,@message,reply), class: "btn btn-danger btn-sm", method: :delete, remote: true,
+          data: {confirm: "削除してよろしいですか？"} %> 
+    <% end %>
+    <div id="reply-show-<%= i %>">
+      <%= render "/projects/message_replys/message_reply_show", reply: reply %>
+    </div>
+    <br/>
+  <% end %>
+</details>
+<hr>
