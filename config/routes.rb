@@ -33,6 +33,13 @@ Rails.application.routes.draw do
           member do
             patch 'read'
           end
+          resources :message_replys, only: %i[edit create update destroy] do
+            member do
+              get 'cancel'
+              get 'show_image'
+              delete 'delete_image'
+            end
+          end
         end
         resources :counselings do
           member do
