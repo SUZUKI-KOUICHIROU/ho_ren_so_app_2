@@ -80,7 +80,7 @@
             <div class="d-flex">
               <% if @you_addressee_counselings.present?%>
                 <div class="paginate">
-                  <%= paginate @you_addressee_counselings %>
+                  <%= paginate @you_addressee_counselings, param_name: counseling_page('you-addressee') %>
                 </div>
               <% end %>
               <div class="ml-auto">
@@ -144,7 +144,7 @@
             <div class="d-flex">
               <% if @counselings.present?%>
                 <div class="paginate">
-                  <%= paginate @counselings %>
+                  <%= paginate @counselings, param_name: counseling_page('counseling') %>
                 </div>
               <% end %>
               <div class="ml-auto">
