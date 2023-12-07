@@ -128,6 +128,7 @@ Rails/I18nLocaleTexts:
     - 'app/controllers/formats/report_formats_controller.rb'
     - 'app/controllers/projects/base_project_controller.rb'
     - 'app/controllers/projects/counselings_controller.rb'
+    - 'app/controllers/projects/counseling_replys_controller.rb'
     - 'app/controllers/projects/members_controller.rb'
     - 'app/controllers/projects/messages_controller.rb'
     - 'app/controllers/projects/message_replys_controller.rb'
