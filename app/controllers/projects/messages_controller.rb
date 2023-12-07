@@ -81,20 +81,24 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   private
 
+  # 全員の連絡
   def all_messages
     @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
   end
 
+  # あなたへの連絡
   def you_addressee_messages
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
     @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
   end
 
+  # あなたが送った連絡
   def you_send_messages
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
   end
 
+  # 連絡を送った人数
   def count_recipients
     @recipient_count = {}
     @messages.each do |message|
@@ -102,6 +106,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
+  # 連絡検索
   def messages_by_search
     if params[:search].present? and params[:search] != ""
       @results = Message.search(message_search_params)
@@ -132,6 +137,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
+  # 連絡を送ったメンバーを保存し、メールアドレスと重要度を渡す。
   def save_message_confirmers
     if @message.save
       if params[:message][:send_to_all]
@@ -151,11 +157,13 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
+  # 連絡更新するにあたり編集前の送信相手を一旦削除する。
   def delete_old_message_confirmers
     old_message_confirmers = @message.message_confirmers.where.not(message_confirmer_id: @message.send_to)
     old_message_confirmers.destroy_all
   end
 
+  # 連絡を送ったメンバーを更新し、メールアドレスと重要度を渡す。
   def update_message_confirmers
     if @message.update(message_params)
       if params[:message][:send_to_all]
