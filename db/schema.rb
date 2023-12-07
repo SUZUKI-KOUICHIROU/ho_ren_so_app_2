@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 2023_12_07_000217) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-        t.index ["project_id"], name: "index_counselings_on_project_id"
-      end
+    t.index ["project_id"], name: "index_counselings_on_project_id"
+  end
 
   create_table "date_fields", force: :cascade do |t|
     t.string "label_name", default: "", null: false
