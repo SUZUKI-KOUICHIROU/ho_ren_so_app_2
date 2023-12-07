@@ -3,45 +3,33 @@ class Projects::MessagesController < Projects::BaseProjectController
   before_action :project_authorization
   before_action :my_message, only: %i[show]
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
   def index
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
-    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
-    you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @you_addressee_messages = @project.messages
-                                      .where(id: you_addressee_message_ids)
-                                      .order(created_at: 'DESC')
-                                      .page(params[:you_addressee_messages_page])
-                                      .per(5)
-    you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    @you_send_messages = @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+    @messages = all_messages
+    @you_addressee_messages = you_addressee_messages
+    @you_send_messages = you_send_messages
     respond_to do |format|
       format.html
       format.js
     end
     set_project_and_members
-    @recipient_count = {}
-    @messages.each do |message|
-      @recipient_count[message.id] = message.message_confirmers.count
-    end
+    count_recipients
     if params[:search].present? and params[:search] != ""
       @results = Message.search(message_search_params)
       if @results.present?
         @message_ids = @results.pluck(:id).uniq
+        @messages = @messages.where(id: @message_ids)
+        @you_addressee_messages = @you_addressee_messages.where(id: @message_ids)
+        @you_send_messages = @you_send_messages.where(id: @message_ids)
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        flash.now[:danger] = '検索結果が見つかりませんでした。'unless @results.present?
         return
-      end
-      @messages = @messages.where(id: @message_ids)
-      @you_addressee_messages = @you_addressee_messages.where(id: @message_ids)
-      @you_send_messages = @you_send_messages.where(id: @message_ids)
-    end
+      end      
+    end    
     render :index
   end
-  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -103,6 +91,27 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   private
+
+  def all_messages
+    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
+  end
+
+  def you_addressee_messages
+    you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
+    @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
+  end
+
+  def you_send_messages
+    you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
+    @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+  end
+
+  def count_recipients
+    @recipient_count = {}
+    @messages.each do |message|
+      @recipient_count[message.id] = message.message_confirmers.count
+    end
+  end
 
   def message_search_params
     params.fetch(:search, {}).permit(:created_at, :keywords)
