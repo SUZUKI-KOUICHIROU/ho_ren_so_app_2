@@ -8,28 +8,28 @@ class Projects::MessageReplysController < Projects::BaseProjectController
   end
 
   def create
-    @@message = Message.find(params[:message_id])
+    @message = Message.find(params[:message_id])
     unless params[:message_reply][:images].nil?
       set_enable_images(params[:message_reply][:image_enable], params[:message_reply][:images])
     end
-    @reply = @@message.message_replies.new(message_reply_params)
+    @reply = @message.message_replies.new(message_reply_params)
     if @reply.save
       flash[:success] = '返信を投稿しました。'
     else
       flash[:danger] = '返信の投稿に失敗しました。'
     end
-    redirect_to user_project_message_path(@user, @project, @@message)
+    redirect_to user_project_message_path(@user, @project, @message)
   end
 
   def update
-    @@message = Message.find(params[:message_id])
+    @message = Message.find(params[:message_id])
     @reply = MessageReply.find(params[:id])
     if @reply.update(message_reply_params)
       flash[:success] = "返信内容を更新しました。"
     else
       flash[:danger] = "返信の更新に失敗しました。"
     end
-    redirect_to user_project_message_path(@user, @project, @@message)
+    redirect_to user_project_message_path(@user, @project, @message)
   end
 
   def destroy
