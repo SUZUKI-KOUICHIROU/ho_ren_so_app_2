@@ -16,18 +16,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
     set_project_and_members
     count_recipients
-    if params[:search].present? and params[:search] != ""
-      @results = Message.search(message_search_params)
-      if @results.present?
-        @message_ids = @results.pluck(:id).uniq
-        @messages = @messages.where(id: @message_ids)
-        @you_addressee_messages = @you_addressee_messages.where(id: @message_ids)
-        @you_send_messages = @you_send_messages.where(id: @message_ids)
-      else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'unless @results.present?
-        return
-      end      
-    end    
+    messages_by_search    
     render :index
   end
 
@@ -110,6 +99,21 @@ class Projects::MessagesController < Projects::BaseProjectController
     @recipient_count = {}
     @messages.each do |message|
       @recipient_count[message.id] = message.message_confirmers.count
+    end
+  end
+
+  def messages_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Message.search(message_search_params)
+      if @results.present?
+        @message_ids = @results.pluck(:id).uniq
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        return
+      end
+      @messages = @messages.where(id: @message_ids)
+      @you_addressee_messages = @you_addressee_messages.where(id: @message_ids)
+      @you_send_messages = @you_send_messages.where(id: @message_ids)
     end
   end
 
