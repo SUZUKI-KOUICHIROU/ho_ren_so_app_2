@@ -6,6 +6,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:counselings_page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
     @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(created_at: 'DESC').page(params[:you_addressee_counselings_page]).per(5)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
