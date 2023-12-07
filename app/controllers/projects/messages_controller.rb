@@ -14,9 +14,8 @@ class Projects::MessagesController < Projects::BaseProjectController
       format.html
       format.js
     end
-    set_project_and_members
     count_recipients
-    messages_by_search    
+    messages_by_search
     render :index
   end
 
@@ -100,6 +99,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   # 連絡を送った人数
   def count_recipients
+    set_project_and_members
     @recipient_count = {}
     @messages.each do |message|
       @recipient_count[message.id] = message.message_confirmers.count
