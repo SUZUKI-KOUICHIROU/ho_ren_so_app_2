@@ -125,3 +125,8 @@ Rails/Output:
 #RuboCopを実行した際にRails/UniqueValidationWithoutIndex Cop（RuboCopのルールの一つ）に関するエラーを無効化
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
+
+#ActiveRecord::Schema.defineブロックが設定された行数の上限を超過していることによるエラーを無効化
+Metrics/BlockLength:
+  Exclude:
+    - 'db/schema.rb'

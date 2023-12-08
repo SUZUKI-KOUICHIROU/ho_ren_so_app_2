@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_04_002627) do
-
+ActiveRecord::Schema.define(version: 2023_10_28_105034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,7 +54,7 @@ ActiveRecord::Schema.define(version: 2023_12_04_002627) do
 
   create_table "counselings", force: :cascade do |t|
     t.text "counseling_detail", default: "", null: false
-    t.date "counseling_reply_deadline"n
+    t.date "counseling_reply_deadline"
     t.bigint "project_id"
     t.integer "sender_id"
     t.string "sender_name"
