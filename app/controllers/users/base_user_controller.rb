@@ -24,16 +24,16 @@ class Users::BaseUserController < BaseController
             else
               User.find(params[:id])
             end
-  
+
     return if current_user?(@user)
-  
+
     counseling_id = params[:counseling_id] || params[:id]
     counseling = Counseling.find_by(id: counseling_id)
-  
+
     if counseling && counseling.project.users.include?(current_user)
       return
     end
-  
+
     flash[:danger] = t('flash.not_logined')
     redirect_to root_path
   end
