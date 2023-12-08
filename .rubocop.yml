@@ -121,4 +121,7 @@ Rails/LexicallyScopedActionFilter:
 #putsやprintなどの出力はRailsのロガーを使わなければいけない設定を無効にする
 Rails/Output:
   Enabled: false
-  
+
+#RuboCopを実行した際にRails/UniqueValidationWithoutIndex Cop（RuboCopのルールの一つ）に関するエラーを無効化
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
