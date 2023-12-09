@@ -121,4 +121,12 @@ Rails/LexicallyScopedActionFilter:
 #putsやprintなどの出力はRailsのロガーを使わなければいけない設定を無効にする
 Rails/Output:
   Enabled: false
-  
+
+#RuboCopを実行した際にRails/UniqueValidationWithoutIndex Cop（RuboCopのルールの一つ）に関するエラーを無効化
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+#ActiveRecord::Schema.defineブロックが設定された行数の上限を超過していることによるエラーを無効化
+Metrics/BlockLength:
+  Exclude:
+    - 'db/schema.rb'

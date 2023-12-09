@@ -75,7 +75,18 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   # ユーザー新規登録後のリダイレクト先を参加しているプロジェクト一覧ページに変更
+  # def after_sign_in_path_for(resource)
+  # user_projects_path(resource)
+  # end
+
   def after_sign_in_path_for(resource)
-    user_projects_path(resource)
+    stored_location = session[:user_return_to]
+    session.delete(:user_return_to)
+
+    if stored_location && user_has_access?(resource, stored_location)
+      stored_location
+    else
+      user_projects_path(resource)
+    end
   end
 end
