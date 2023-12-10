@@ -1,12 +1,12 @@
 FactoryBot.define do
-  factory :question do
+  factory :message do
     association :project
     id { 1 }
-    position { 1 }
-    form_table_type { 'text_field' }
     project_id { 1 }
-    using_flag { false }
-    required { true }
+    sender_id { 1 }
+    sender_name { '連絡者' }
+    title { 'a' * 25 }
+    message_detail { '連絡内容' }
     created_at { Date.current }
     updated_at { Date.current }
   end

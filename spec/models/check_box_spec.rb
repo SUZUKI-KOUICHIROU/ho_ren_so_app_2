@@ -8,11 +8,17 @@ RSpec.describe CheckBox, type: :model do
       it 'label_nameがなければ登録できない' do
         expect(build(:check_box, label_name: '')).to be_invalid
       end
+      it 'label_nameがあれば登録できる' do
+        expect(build(:check_box, label_name: 'ラベル名')).to be_valid
+      end
     end
 
     context 'field_typeカラム' do
       it 'field_typeがなければ登録できない' do
         expect(build(:check_box, field_type: '')).to be_invalid
+      end
+      it 'field_typeがあれば登録できる' do
+        expect(build(:check_box, field_type: 'check_box')).to be_valid
       end
     end
   end
