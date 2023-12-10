@@ -7,7 +7,10 @@ class Message < ApplicationRecord
 
   attribute :send_to_all # , default: false
 
+  validates :title, presence: true
+  validates :title, presence: true, length: { maximum: 30 }
   validates :message_detail, presence: true
+  validates :message_detail, length: { maximum: 500 }
   validate :no_check_become_invalid
 
   def set_importance(importance, recipients)

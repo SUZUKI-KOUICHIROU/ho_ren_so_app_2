@@ -2,4 +2,4 @@
 
 <h2><%= "#{@sender_name}さんから相談がありました。" %></h2>
 <p>下記のリンクより確認できます。</p>
-<%= link_to @counseling_title, user_project_counseling_url(@user, @project, @counseling, token: @token) %>
+<%= link_to @counseling_title, user_project_counseling_url(@user, @project, @counseling) %>

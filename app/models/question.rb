@@ -16,7 +16,6 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :date_field, allow_destroy: true
 
   validates :position, presence: true
-  validates :position, presence: true
   validates :form_table_type, presence: true
   validates :using_flag, inclusion: [true, false]
   validates :required, inclusion: [true, false]
