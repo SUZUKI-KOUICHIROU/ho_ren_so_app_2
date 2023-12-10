@@ -1,7 +1,7 @@
 <div class="box-counseling-index">
   <% if @counselings.present? %>
     <div class="d-flex justify-content-end mb-3">
-      <%= form_with url: "#", method: :get, remote: true do |form| %>
+      <%= form_with url: "#", method: :get, local: true do |form| %>
         <%= form.hidden_field :search_type, :value => "counseling" %>
         <%= form.label :search, "件名検索：", class: "mb-0" %>
         <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
