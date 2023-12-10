@@ -31,6 +31,21 @@ class Projects::BaseProjectController < Users::BaseUserController
     redirect_to edit_user_registration_path(current_user)
   end
 
+  # 画像添付機能：使用する画像リストの設定 (プレビュー表示時に取り消しした画像をDBに登録しないための処置）
+  def set_enable_images(image_enable_info, images_array)
+    rmv_num = 0
+    img_enable_array = image_enable_info.split(',')
+
+    img_enable_array.each_with_index do |value, idx|
+      if value == "false"
+        images_array.delete_at(idx - rmv_num)
+        rmv_num += 1
+      end
+    end
+
+    return images_array
+  end
+
   private
 
   # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ before_action（権限関連） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
