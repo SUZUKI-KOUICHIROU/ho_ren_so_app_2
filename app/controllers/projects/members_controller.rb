@@ -24,6 +24,11 @@ class Projects::MembersController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @delegates = @project.delegations
+
+    # 報告頻度の取得（報告リマインド日にち選択用）
+    @report_frequency = @project.report_frequency
+    puts "Report Frequency: #{@report_frequency}"
+
     @members =
       if params[:search].present?
         ProjectUser.member_expulsion_join(@project, @project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10))
@@ -76,6 +81,8 @@ class Projects::MembersController < Projects::BaseProjectController
     user_id = params[:user_id].to_i
     project_id = params[:project_id].to_i
     member_id = params[:member_id].to_i
+    report_frequency = params[:report_frequency].to_i # 報告頻度を取得
+    reminder_days = params[:reminder_days].to_i
     report_time = params[:report_time]
 
     user, project = find_user_and_project(user_id, project_id)
@@ -86,8 +93,8 @@ class Projects::MembersController < Projects::BaseProjectController
       project_user = find_project_user(project, member_id)
       return unless project_user
 
-      # 指定の時刻にリマインドジョブをキューに追加
-      project_user.queue_report_reminder(project.id, member_id, report_time)
+      # 指定の日時にリマインドジョブをキューに追加
+      project_user.queue_report_reminder(project.id, member_id, report_frequency, reminder_days, report_time) # 報告頻度を追加
 
       render json: { success: true }, status: :ok
     end

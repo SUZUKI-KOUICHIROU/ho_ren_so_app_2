@@ -2,10 +2,12 @@ class ReminderJob < ApplicationJob
   queue_as :default
 
   # 報告リマインドメールを送信する処理
-  def perform(project_id, member_id, report_time)
+  def perform(project_id, member_id, reminder_days, report_time)
     project_user = ProjectUser.find(member_id)
     project = Project.find(project_id)
-    reminder_time = Time.zone.parse(report_time)
+
+    # project_userモデルの calculate_reminder_time メソッドを呼び出す
+    reminder_time = project_user.calculate_reminder_time(reminder_days, report_time)
 
     # 指定時刻まで待機
     wait_until_report_reminder_time(reminder_time)

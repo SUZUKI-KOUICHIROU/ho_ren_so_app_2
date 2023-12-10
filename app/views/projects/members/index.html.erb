@@ -39,7 +39,7 @@
               <%= l(entry_date, format: :long) %>
             </div>
             <% if @user.id == member.id %>
-              <div class="project-member-action member-text">
+              <div class="project-member-action member-text" data-report-frequency="<%= @report_frequency %>">
                 <div class="custom-control custom-switch">
                   報告リマインドを設定（メール）
                   <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトメンバー用）-->
@@ -47,14 +47,18 @@
                   <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                 </div>
                 <div class="form-group time-input" style="display: none;">
+                  <!--報告リマインドの日にち選択ドロップダウン（プロジェクトメンバー用）-->
+                  <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
+                  <label for="reminderDays<%= member.id %>">の</label>
+                  <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用）-->
                   <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
                   <label for="timeInput<%= member.id %>">に</label>
-                  <!--選択した報告リマインド時刻の設定ボタン（プロジェクトメンバー用）-->
+                  <!--選択した報告リマインド日時の設定ボタン（プロジェクトメンバー用）-->
                   <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
                 </div>
-              </div>                           
+              </div>
             <% elsif project_leader? %>
-              <div class="project-member-action member-text">
+              <div class="project-member-action member-text" data-report-frequency="<%= @report_frequency %>">
                 <% if @user.id == member.id %>
                   <div class="custom-control custom-switch">
                     報告リマインドを設定（メール）
@@ -63,10 +67,14 @@
                     <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                   </div>
                   <div class="form-group time-input" style="display: none;">
+                    <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用）-->
+                    <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
+                    <label for="reminderDays<%= member.id %>">の</label>
+                    <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用）-->
                     <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
                     <label for="timeInput<%= member.id %>">に</label>
-                    <!--選択した報告リマインド時刻の設定ボタン（プロジェクトリーダー用）-->
-                    <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>       
+                    <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用）-->
+                    <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
                   </div>
                 <% end %>
                 <% unless @project.leader_id == member.id %>
