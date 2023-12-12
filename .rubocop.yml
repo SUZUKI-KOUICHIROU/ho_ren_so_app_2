@@ -110,9 +110,11 @@ Metrics/PerceivedComplexity:
   Max: 15
 
 #ブロック内の行数を最大値以下とする設定をspec/**/*は除外
+#ActiveRecord::Schema.defineブロックが設定された行数の上限を超過していることによるエラーを無効化
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'db/schema.rb'
 
 #befor_action等のonly、exceptオプションで指定されているメソッドが存在していなければならない設定を無効
 Rails/LexicallyScopedActionFilter:
@@ -121,4 +123,7 @@ Rails/LexicallyScopedActionFilter:
 #putsやprintなどの出力はRailsのロガーを使わなければいけない設定を無効にする
 Rails/Output:
   Enabled: false
-  
+
+#RuboCopを実行した際にRails/UniqueValidationWithoutIndex Cop（RuboCopのルールの一つ）に関するエラーを無効化
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false

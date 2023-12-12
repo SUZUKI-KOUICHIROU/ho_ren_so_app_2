@@ -3,9 +3,17 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def index
     set_project_and_members
-    @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:page]).per(5)
+    @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:counselings_page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(created_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_counselings = @project.counselings
+                                         .where(id: you_addressee_counseling_ids)
+                                         .order(created_at: 'DESC')
+                                         .page(params[:you_addressee_counselings_page])
+                                         .per(5)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
@@ -40,7 +48,6 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.sender_name = current_user.name
-    @counseling.token = SecureRandom.hex(10)
     # ActiveRecord::Type::Boolean：値の型をboolean型に変更
     if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
       # TO ALLが選択されている時
@@ -49,7 +56,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: member.id)
           @send.save
           @user = member
-          CounselingMailer.notification(@user, @counseling, @project, @counseling.token).deliver_now
+          CounselingMailer.notification(@user, @counseling, @project).deliver_now
         end
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
@@ -64,7 +71,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
           @send = @counseling.counseling_confirmers.new(counseling_confirmer_id: t)
           @send.save
           @user = User.find(t)
-          CounselingMailer.notification(@user, @counseling, @project, @counseling.token).deliver_now
+          CounselingMailer.notification(@user, @counseling, @project).deliver_now
         end
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
@@ -157,7 +164,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     recipients = @counseling.send_to_all ? @members : @counseling.send_to
     recipients.each do |recipient|
       recipient = recipient.is_a?(User) ? recipient : User.find(recipient)
-      CounselingMailer.notification_edited(recipient, @counseling, @project, @counseling.token).deliver_now
+      CounselingMailer.notification_edited(recipient, @counseling, @project).deliver_now
     end
   end
 end
