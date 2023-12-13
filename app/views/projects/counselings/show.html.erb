@@ -18,7 +18,19 @@
       </div>  
     </div>
   </div>
+  <div class="text-right mr-4">
+    <%= link_to "返信する", anchor: "reply_form" %>
+  </div>
 </div>
 <div class="text-center">
   <%= link_to '戻る', user_project_counselings_path(@user,@project),class: "btn btn-light btn-outline-secontary col-2 " %>
+</div>
+
+<div class="col-6 offset-3 p-4">  
+  <!-- 返信一覧の表示 -->
+  <% if @counseling_replies.size > 0 %>
+    <%= render "/projects/counseling_replys/counseling_reply_list" %>
+  <% end %>
+  <!-- 返信フォームの表示 -->
+  <%= render "/projects/counseling_replys/counseling_reply_form" %>
 </div>

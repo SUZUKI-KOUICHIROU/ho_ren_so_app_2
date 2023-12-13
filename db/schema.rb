@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_04_002627) do
+ActiveRecord::Schema.define(version: 2023_12_07_000217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,16 @@ ActiveRecord::Schema.define(version: 2023_12_04_002627) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["counseling_id"], name: "index_counseling_confirmers_on_counseling_id"
+  end
+
+  create_table "counseling_replies", force: :cascade do |t|
+    t.text "reply_content", default: "", null: false
+    t.bigint "counseling_id"
+    t.integer "poster_id", null: false
+    t.string "poster_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["counseling_id"], name: "index_counseling_replies_on_counseling_id"
   end
 
   create_table "counselings", force: :cascade do |t|
@@ -319,6 +329,7 @@ ActiveRecord::Schema.define(version: 2023_12_04_002627) do
   add_foreign_key "check_box_option_strings", "check_boxes"
   add_foreign_key "check_boxes", "questions"
   add_foreign_key "counseling_confirmers", "counselings"
+  add_foreign_key "counseling_replies", "counselings"
   add_foreign_key "counselings", "projects"
   add_foreign_key "date_fields", "questions"
   add_foreign_key "delegations", "projects"

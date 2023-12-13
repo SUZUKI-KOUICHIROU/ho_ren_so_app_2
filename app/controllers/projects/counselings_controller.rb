@@ -19,7 +19,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def show
     set_project_and_members
     @counseling = Counseling.find_by(id: params[:id])
-
+    @reply = @counseling.counseling_replies.new
+    @counseling_replies = @counseling.counseling_replies.all.order(:created_at)
     if @counseling.nil?
       flash[:alert] = "相談は削除されました。"
       redirect_to user_project_counselings_path(@user, @project) # または適切なパスに変更
