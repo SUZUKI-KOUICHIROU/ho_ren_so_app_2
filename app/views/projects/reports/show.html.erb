@@ -18,23 +18,6 @@ function changeForm() {
 <div class="box-project-report">
   <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告詳細</h1>
-  <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
-    <div class="d-flex">
-      <div class="btn btn-danger font-weight-bold mb-2" style="pointer-events: none;">
-      コメント
-      </div> 
-      <% if @project.leader_id == @current_user.id && @report.sender_id != @project.leader_id %>
-        <%= form_with(model: @report, url: resubmitted_user_project_report_path(@user,@project,@report), method: :post) do |f| %>
-          <%= f.hidden_field :remanded, value: false %>
-          <%= f.hidden_field :resubmitted, value: false %>
-          <%= f.submit '承認する', class: "btn btn-primary text-right" %>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="py-3 pl-1 mb-3 border rounded text-danger">
-      <%= @report.remanded_reason %>
-    </div>
-  <% end %>
   <div>
     <div class="card">
       <div class="card-header card-header-radius">
@@ -118,12 +101,6 @@ function changeForm() {
           <% end %>
         </div>
         <% end %>
-        <% if @project.leader_id == @current_user.id && @report.sender_id != @project.leader_id %>
-          <div class="text-center"><label onclick="changeForm()" class="btn btn-danger mb-3">手直ししてもらう</label></div>
-        <% end %>
-        <div id="formblock" style="display: none">
-          <%= render partial: 'reason', locals: {report: @report} %>
-        </div>
         <% if current_user == @user %>
           <div class="text-right mr-4">
             <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
