@@ -14,6 +14,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
       format.html
       format.js
     end
+    counselings_by_search
+    render :index
   end
 
   def show
@@ -124,6 +126,16 @@ class Projects::CounselingsController < Projects::BaseProjectController
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
   end
 
+  def counseling_search_params
+    if params[:search].is_a?(ActionController::Parameters)
+      params.require(:search).permit(:created_at, :keywords)
+    elsif params[:search].is_a?(String)
+      { keywords: params[:search] }
+    else
+      {}
+    end
+  end
+
   def update_counseling_and_confirmers
     if @counseling.update(counseling_params)
       @counseling.counseling_confirmers.destroy_all
@@ -165,6 +177,21 @@ class Projects::CounselingsController < Projects::BaseProjectController
     recipients.each do |recipient|
       recipient = recipient.is_a?(User) ? recipient : User.find(recipient)
       CounselingMailer.notification_edited(recipient, @counseling, @project).deliver_now
+    end
+  end
+
+  def counselings_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Counseling.search(counseling_search_params)
+      if @results.present?
+        @counseling_ids = @results.pluck(:id).uniq
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        return
+      end
+      @counselings = @counselings.where(id: @counseling_ids) if @counselings
+      @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
+      @you_send_counselings = @you_send_counselings.when(id: @counseling_ids) if @you_send_counselings
     end
   end
 end
