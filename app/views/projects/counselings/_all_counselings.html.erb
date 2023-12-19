@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-end mb-3">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "counseling" %>
-        <%= form.label :keywords, "件名検索：", class: "mb-0" %>
+        <%= form.label :keywords, "件名・内容検索：", class: "mb-0" %>
         <%= form.text_field :keywords, placeholder: "キーワードを入力", class: "search-box" %>
         <%= form.submit "検索", class: "btn btn-outline-orange" %>
       <% end %>    

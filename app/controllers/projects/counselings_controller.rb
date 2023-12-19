@@ -15,7 +15,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
       format.js
     end
     counselings_by_search
-    render :index
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
@@ -191,7 +194,6 @@ class Projects::CounselingsController < Projects::BaseProjectController
       end
       @counselings = @counselings.where(id: @counseling_ids) if @counselings
       @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
-      @you_send_counselings = @you_send_counselings.when(id: @counseling_ids) if @you_send_counselings
     end
   end
 end
