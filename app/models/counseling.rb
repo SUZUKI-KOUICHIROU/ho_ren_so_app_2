@@ -36,4 +36,14 @@ class Counseling < ApplicationRecord
       end
     end
   end
+
+  # 検索機能
+  def self.search(search_params)
+    query = all
+    if search_params[:keywords].present?
+      keyword = "%#{search_params[:keywords]}%"
+      query = query.where("title LIKE :keyword OR counseling_detail LIKE :keyword", keyword: keyword)
+    end
+    query
+  end
 end
