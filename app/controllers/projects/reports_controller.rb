@@ -158,41 +158,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
   end
 
-  # 再提出を求める。
-  def reject
-    @report = Report.find(params[:id])
-    @user = current_user
-    if params[:report][:remanded_reason] != ""
-      @report.update!(params.require(:report).permit(:remanded_reason, :remanded))
-      if @report.save
-        flash[:success] = "登録完了しました。"
-        NotificationMailer.send_rework_notification(@user).deliver_now
-      else
-        flash[:danger] = "登録に失敗しました。"
-      end
-    elsif params[:report][:remanded_reason] == ""
-      if @report.update!(remanded: false, remanded_reason: nil)
-        flash[:success] = "登録に完了しました。"
-      else
-        flash[:danger] = "登録に失敗しました。"
-      end
-    end
-    redirect_to action: :show
-  end
-
-  # 再提出の承認
-  def resubmitted
-    @report = Report.find(params[:id])
-    if @report.update(params.require(:report).permit(:remanded, :resubmitted))
-      if @report.update(remanded_reason: nil)
-        flash[:success] = "報告手直しを承認しました。"
-      end
-    else
-      flash[:danger] = "登録に失敗しました。"
-    end
-    redirect_to action: :show
-  end
-
   # 報告集計画面(一週間)
   def view_reports_log
     @user = User.find(params[:user_id])

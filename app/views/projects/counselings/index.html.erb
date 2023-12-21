@@ -4,6 +4,12 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
+<div id="flash-messages">
+  <% flash.each do |key, message| %>
+    <div class="alert alert-<%= key %>"><%= message %></div>
+  <% end %>
+</div>
+
 <div class="card-box">
   <!-- div class="box-project-select">
     <%#= form_with do |form| %>

@@ -14,7 +14,7 @@ WORKDIR /myproject
 # ホストのGemfile達をコンテナ内にコピー
 ADD Gemfile /myproject/Gemfile
 ADD Gemfile.lock /myproject/Gemfile.lock
-RUN gem install bundler
+RUN gem install bundler -v 2.4.22
 RUN gem update --system 3.2.3
 RUN bundle install -j4
 #既存railsプロジェクトをコンテナ内にコピー
