@@ -106,13 +106,13 @@
 }
 
 ////////// 報告リマインド用の日にち選択デザイン //////////
-.form-group.time-input select {
+.form-group.reminder-setting select {
   width: 100px;
   display: inline-block;
 }
 
 ////////// 報告リマインド用の時刻選択デザイン //////////
-.form-group.time-input input[type="time"] {
+.form-group.reminder-setting input[type="time"] {
   width: 100px;
   display: inline-block;
 }

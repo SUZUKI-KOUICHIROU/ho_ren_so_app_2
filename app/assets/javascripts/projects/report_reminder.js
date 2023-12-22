@@ -6,15 +6,15 @@ $(document).on('turbolinks:load', function(){
   // 報告リマインド切替スイッチの状態が変化したら実行する処理
   $(function($) {
     $('.project-member-action').on('change', '.custom-control-input', function(){
-      var timeInputContainer = $(this).closest('.project-member-action').find('.time-input');
-      var timeInput = timeInputContainer.find('.form-control');
+      var reminderSettingContainer = $(this).closest('.project-member-action').find('.reminder-setting');
+      var selectElement = reminderSettingContainer.find('.form-control');
 
       if (this.checked) {
-        timeInputContainer.show();
-        timeInput.prop('disabled', false);
+        reminderSettingContainer.show();
+        selectElement.prop('disabled', false);
       } else {
-        timeInputContainer.hide();
-        timeInput.prop('disabled', true);
+        reminderSettingContainer.hide();
+        selectElement.prop('disabled', true);
       }
     });
   });
@@ -30,7 +30,8 @@ $(document).on('turbolinks:load', function(){
     function updateReminderOptions() {
       // 日にち選択肢の親要素を取得
       $('.project-member-action').each(function(index) {
-        var selectElement = $(this).find('.form-control');
+        var reminderSettingContainer = $(this).find('.reminder-setting');
+        var selectElement = reminderSettingContainer.find('.form-control');
         var reportFrequency = reportFrequencies[index];
 
         // 日にち選択肢を一旦クリア
@@ -39,7 +40,7 @@ $(document).on('turbolinks:load', function(){
         // 報告頻度に応じて日にち選択肢の最大値を設定
         var optionsCount = reportFrequency;
 
-        // 日にち選択肢を生成して追加
+        // 日にち選択肢を再生成
         for (var i = 0; i < optionsCount; i++) {
           var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
           if (i === 0) {
@@ -47,6 +48,14 @@ $(document).on('turbolinks:load', function(){
           }
           selectElement.append(option);
         }
+
+        // 時刻選択用の<input>要素を取得
+        var timeInput = reminderSettingContainer.find('input[type="time"]');
+        timeInput.val('');  // デフォルトの選択をクリア
+
+        // 時刻選択肢を再生成
+        var timeOption = $('<option>').val('').text('');  // デフォルトの選択
+        timeInput.append(timeOption);
       });
     }
 
@@ -64,13 +73,21 @@ $(document).on('turbolinks:load', function(){
       var userId = $(this).data('user-id');
       var projectId = $(this).data('project-id');
       
-      // 報告頻度の設定
+      // 報告頻度（report-frequency）の値を取得
       var reportFrequency = $(this).closest('.project-member-action').data('report-frequency');
 
-      // reminderDays と report_time の値を設定
+      // 選択した日数（reminderDays）の値を設定
       var reminderDays = $(this).closest('.project-member-action').find('select').val();
-      var timeInput = $(this).closest('.project-member-action').find('.form-control');
+
+      // 選択した時刻（report_time）の値を設定
+      var timeInput = $(this).closest('.project-member-action').find('.form-control[type="time"]');
       var reportTime = timeInput.val();
+    
+      // 追加: ログ出力
+      console.log("Selected Report Time: " + reportTime);
+      console.log("Report Frequency: " + reportFrequency);
+      console.log("Reminder Days: " + reminderDays);
+      console.log("Report Time: " + reportTime);
 
       // Ajaxリクエストを送信
       $.ajax({
@@ -80,7 +97,7 @@ $(document).on('turbolinks:load', function(){
           user_id: userId,
           project_id: projectId,
           member_id: $(this).data('member-id'),
-          report_frequency: reportFrequency, // 報告頻度を追加
+          report_frequency: reportFrequency,
           reminder_days: reminderDays,
           report_time: reportTime
         },
