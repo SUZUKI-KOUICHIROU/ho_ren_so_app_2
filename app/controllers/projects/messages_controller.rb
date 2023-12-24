@@ -116,7 +116,7 @@ class Projects::MessagesController < Projects::BaseProjectController
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
       end
     end
   end
