@@ -4,14 +4,6 @@
 <div class="box-project-report">
   <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告編集</h1>
-  <% if !@report.remanded_reason.nil? && !@report.remanded_reason.blank? %>
-    <div class="btn btn-danger font-weight-bold mb-2" style="pointer-events: none;">
-      コメント
-    </div>
-    <div class="pt-3 pl-1 mb-3 border rounded text-danger">
-      <%= simple_format(@report.remanded_reason) %>
-    </div>
-  <% end %>
   <%= form_with model: @report, url: user_project_report_path(current_user, @project, @report),method: :patch do |f| %>
     <div class="base-background-color px-5 pt-5">
       <div class="report-form">
@@ -41,9 +33,6 @@
         <% end %>
         <%# レンダリング %>
         <div class="text-right mt-3 mr-4 pb-5">
-          <% if @report.remanded == "true" %>
-            <span class="remanded-box font-weight-bold mr-2 rounded">手直しを完了する<%= f.check_box :resubmitted, {checked: ActiveRecord::Type::Boolean.new.cast(@report.resubmitted)}, checked_value = "true", unchecked_value = "false" %></span>
-          <% end %>
           <%= f.submit '変更', class: "btn btn-outline-orange col-2" %>
           <div class="text-center">
             <%= link_to '戻る', :back, class: "btn btn-light btn-outline-secontary col-2 " %>
