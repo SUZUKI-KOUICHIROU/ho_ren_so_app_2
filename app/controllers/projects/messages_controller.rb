@@ -78,6 +78,9 @@ class Projects::MessagesController < Projects::BaseProjectController
     redirect_to user_project_messages_path(@user, @project)
   end
 
+  def history
+  end
+
   private
 
   # 全員の連絡
