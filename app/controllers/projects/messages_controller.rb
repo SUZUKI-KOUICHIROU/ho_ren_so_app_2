@@ -79,25 +79,39 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def history
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @projects = @user.projects.all
+    # @first_day = Date.current.beginning_of_month
+    # @last_day = @first_day.end_of_month
+    @messages = all_messages
+    # @you_addressee_messages = you_addressee_messages
+    # @you_send_messages = you_send_messages
+    # count_recipients
   end
 
   private
 
   # 全員の連絡
   def all_messages
-    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
+    Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)
+    # @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
   end
 
   # あなたへの連絡
   def you_addressee_messages
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
+    Message.monthly_messages_for(@project).where(id: you_addressee_message_ids).order(created_at: 'DESC')
+    .page(params[:you_addressee_messages_page]).per(5)
+    # @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
   end
 
   # あなたが送った連絡
   def you_send_messages
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+    Message.monthly_messages_for(@project).where(id: you_send_message_ids).order(created_at: 'DESC')
+    .page(params[:you_addressee_messages_page]).per(5)
+    # @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
   end
 
   # 連絡を送った人数

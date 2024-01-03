@@ -48,6 +48,13 @@ class Message < ApplicationRecord
     end
   end
 
+  # 月次連絡を取得する
+  def self.monthly_messages_for(project)
+    start_of_month = Time.zone.now.beginning_of_month
+    end_of_month = Time.zone.now.end_of_month
+    Message.where(project: project, created_at: start_of_month..end_of_month)
+  end
+
   scope :search, ->(search_params) do
     return all if search_params.blank?
 
