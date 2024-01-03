@@ -105,10 +105,10 @@ class Projects::MembersController < Projects::BaseProjectController
       next_report_date = project.next_report_date # project_usersテーブルではなくprojectsテーブルから取得
     
       # 追加：ログ出力
-      logger.debug "Report Frequency: #{report_frequency}"
-      logger.debug "Reminder Days: #{reminder_days}"
-      logger.debug "Report Time: #{report_time}"
-      logger.debug "Next Report Date: #{next_report_date}"
+      logger.debug "報告頻度（report_frequency）: #{report_frequency}"
+      logger.debug "選択日数（reminder_days）: #{reminder_days}"
+      logger.debug "選択時刻（report_time）: #{report_time}"
+      logger.debug "次回報告日（next_report_date）: #{next_report_date}"
 
       # 5. 指定の日時にリマインドジョブをキューに追加
       project_user.queue_report_reminder(project.id,
