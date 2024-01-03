@@ -7,7 +7,8 @@ FactoryBot.define do
     sender_name { '連絡者' }
     title { 'a' * 25 }
     message_detail { '連絡内容' }
-    created_at { Date.current }
-    updated_at { Date.current }
+    importance { '中' }
+    created_at { '2023-01-01' }
+    updated_at { '2023-01-01' }
   end
 end
