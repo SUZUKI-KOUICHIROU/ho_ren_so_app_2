@@ -10,6 +10,7 @@ gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.6.2'
 gem 'cancancan'
+gem 'chartkick'
 gem 'clipboard-rails'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
