@@ -12,15 +12,9 @@ class ReminderJob < ApplicationJob
     # project_userモデルの calculate_reminder_datetime メソッドを呼び出す
     reminder_datetime = project_user.calculate_reminder_datetime(report_frequency, reminder_days, report_time, next_report_date)
 
-    # 追加: ログ出力
-    logger.debug "Performing report reminder job for user #{member_id} in project #{project_id} at #{reminder_datetime}"
-
     # 指定時刻まで待機
     wait_until_report_reminder_datetime(reminder_datetime)
     
-    # 追加: ログ出力
-    logger.debug "Waiting complete. Performing report reminder job for user #{member_id} in project #{project_id} at #{reminder_datetime}"
-
     # 指定の日にち＆時刻になったらメール送信
     send_reminder_email(project_user, project, reminder_days, report_time, reminder_datetime)
   end
@@ -31,9 +25,6 @@ class ReminderJob < ApplicationJob
   def wait_until_report_reminder_datetime(reminder_datetime)
     # タイムゾーンをJSTに変換
     jst_reminder_datetime = reminder_datetime.in_time_zone('Asia/Tokyo')
-
-    # 追加: ログ出力
-    logger.debug "待機指定日時（Waiting until report reminder datetime）: #{jst_reminder_datetime}"
 
     # 1秒ごとに確認
     loop do
