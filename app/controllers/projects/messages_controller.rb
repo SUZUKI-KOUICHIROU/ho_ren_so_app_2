@@ -82,12 +82,12 @@ class Projects::MessagesController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
-    # @first_day = Date.current.beginning_of_month
-    # @last_day = @first_day.end_of_month
-    @messages = all_messages
-    # @you_addressee_messages = you_addressee_messages
-    # @you_send_messages = you_send_messages
-    # count_recipients
+    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)             
+    count_recipients    
+    messages_by_search
+    respond_to do |format|
+      format.html { render :history }
+    end
   end
 
   private
@@ -196,5 +196,12 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:danger] = "送信相手を選択してください。"
       render :edit
     end
+  end
+
+  def get_selected_month    
+    if params[:month].present? && params[:month] != ""
+      selected_month = params[:month]
+      @messages = Message.where("EXTRACT(MONTH FROM created_at) = ?", selected_month)
+    end    
   end
 end
