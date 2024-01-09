@@ -37,6 +37,6 @@ class ReminderJob < ApplicationJob
   # 指定の日にち＆時刻になったらメールを送信させるメソッド
   def send_reminder_email(project_user, project, reminder_days, report_time, reminder_datetime)
     # member_idとreport_timeを使い、非同期処理でメールを送信
-    UserMailer.reminder_email(project_user.user_id, report_time, project.id).deliver_later
+    UserMailer.reminder_email(project_user.user_id, project.id, reminder_days, report_time).deliver_later
   end
 end
