@@ -1,6 +1,7 @@
 class Counseling < ApplicationRecord
   belongs_to :project
   has_many :counseling_confirmers, dependent: :destroy
+  has_many :counseling_replies, dependent: :destroy
 
   attr_accessor :send_to
 
@@ -34,5 +35,15 @@ class Counseling < ApplicationRecord
         errors.add "", "送信相手を選択してください。"
       end
     end
+  end
+
+  # 検索機能
+  def self.search(search_params)
+    query = all
+    if search_params[:keywords].present?
+      keyword = "%#{search_params[:keywords]}%"
+      query = query.where("title LIKE :keyword OR counseling_detail LIKE :keyword", keyword: keyword)
+    end
+    query
   end
 end

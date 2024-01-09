@@ -68,7 +68,7 @@
           <% (@first_day..@last_day).each do |date| %>
             <% reported_users = @project.reports
                                   .joins(user: :project_users)
-                                  .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                  .where(report_day: date, project_users: { member_expulsion: false })
                                   .where("DATE(reports.created_at) = ?", date)
                                   .select(:user_id).distinct %>
             <tr>
@@ -122,7 +122,7 @@
               <td class="footer">
                 <% reported_days = @project.reports
                                     .joins(user: :project_users)
-                                    .where(report_day: @first_day..@last_day, remanded: false, user_id: user.id, project_users: { member_expulsion: false })
+                                    .where(report_day: @first_day..@last_day, user_id: user.id, project_users: { member_expulsion: false })
                                     .pluck(:report_day).uniq %>
                 <% valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day } %>
                 <% total_days = @report_days.count %>
@@ -144,7 +144,7 @@
               <% (@first_day..@last_day).each do |date| %>
                 <% reported_users = @project.reports
                                       .joins(user: :project_users)
-                                      .where(report_day: date, remanded: false, project_users: { member_expulsion: false })
+                                      .where(report_day: date, project_users: { member_expulsion: false })
                                       .where("DATE(reports.created_at) = ?", date)
                                       .select(:user_id).distinct %>
                 <% total_reported_users += reported_users.count %>

@@ -1,0 +1,6 @@
+<% if flash.now[:danger] %>
+  $("#flash-messages").html('<div class="alert alert-danger"><%= j flash.now[:danger] %></div>');
+<% end %>
+
+$("#you-addressee-counselings-container").html("<%= escape_javascript(render partial: 'projects/counselings/you_addressee_counselings', locals: { messages: @you_addressee_counselings }) %>");
+$("#counselings-container").html("<%= escape_javascript(render partial: 'projects/counselings/all_counselings', locals: { messages: @counselings }) %>");

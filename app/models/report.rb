@@ -8,8 +8,6 @@ class Report < ApplicationRecord
   attr_accessor :leader_id
 
   accepts_nested_attributes_for :answers, allow_destroy: true
-  attribute :remanded, default: false
-  attribute :resubmitted, default: false
   attribute :report_read_flag, default: false
 
   # validates :report_detail, presence: true

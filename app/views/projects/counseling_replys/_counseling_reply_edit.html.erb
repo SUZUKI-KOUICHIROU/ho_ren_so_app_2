@@ -1,0 +1,6 @@
+<%= form_with(model: @reply, url: user_project_counseling_counseling_reply_path(@user,@project,@counseling,@reply), method: :patch) do |f| %>
+  <!-- 返信本文 -->
+  <%= f.text_area :reply_content,class: "textlines", rows: "3", required: true %>
+  <%= f.submit "更新する", class: "btn btn-primary btn-sm" %>
+  <%= link_to "キャンセル", cancel_user_project_counseling_counseling_reply_path(@user,@project,@counseling,@reply, index: @index), class: "btn btn-secondary btn-sm", remote: true %>
+<% end %>

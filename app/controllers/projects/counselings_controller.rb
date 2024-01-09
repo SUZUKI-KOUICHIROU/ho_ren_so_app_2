@@ -3,15 +3,29 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def index
     set_project_and_members
-    @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:page]).per(5)
+    @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:counselings_page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    @you_addressee_counselings = @project.counselings.where(id: you_addressee_counseling_ids).order(created_at: 'DESC').page(params[:page]).per(5)
+    @you_addressee_counselings = @project.counselings
+                                         .where(id: you_addressee_counseling_ids)
+                                         .order(created_at: 'DESC')
+                                         .page(params[:you_addressee_counselings_page])
+                                         .per(5)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+    counselings_by_search
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     set_project_and_members
     @counseling = Counseling.find_by(id: params[:id])
-
+    @reply = @counseling.counseling_replies.new
+    @counseling_replies = @counseling.counseling_replies.all.order(:created_at)
     if @counseling.nil?
       flash[:alert] = "相談は削除されました。"
       redirect_to user_project_counselings_path(@user, @project) # または適切なパスに変更
@@ -115,6 +129,16 @@ class Projects::CounselingsController < Projects::BaseProjectController
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
   end
 
+  def counseling_search_params
+    if params[:search].is_a?(ActionController::Parameters)
+      params.require(:search).permit(:created_at, :keywords)
+    elsif params[:search].is_a?(String)
+      { keywords: params[:search] }
+    else
+      {}
+    end
+  end
+
   def update_counseling_and_confirmers
     if @counseling.update(counseling_params)
       @counseling.counseling_confirmers.destroy_all
@@ -156,6 +180,20 @@ class Projects::CounselingsController < Projects::BaseProjectController
     recipients.each do |recipient|
       recipient = recipient.is_a?(User) ? recipient : User.find(recipient)
       CounselingMailer.notification_edited(recipient, @counseling, @project).deliver_now
+    end
+  end
+
+  def counselings_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Counseling.search(counseling_search_params)
+      if @results.present?
+        @counseling_ids = @results.pluck(:id).uniq
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。'
+        return
+      end
+      @counselings = @counselings.where(id: @counseling_ids) if @counselings
+      @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
     end
   end
 end

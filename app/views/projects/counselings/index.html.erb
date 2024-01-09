@@ -4,6 +4,12 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
+<div id="flash-messages">
+  <% flash.each do |key, message| %>
+    <div class="alert alert-<%= key %>"><%= message %></div>
+  <% end %>
+</div>
+
 <div class="card-box">
   <!-- div class="box-project-select">
     <%#= form_with do |form| %>
@@ -29,128 +35,14 @@
       <div class="tab-content" id="myTabContent">
         <!-- あなた宛の相談一覧 -->
         <div class="tab-pane fade show active" id="you-addressee" role="tabpanel" aria-labelledby="you-addressee-tab">
-          <div class="box-you-addressee-index">
-            <% if @you_addressee_counselings.present? %>
-              <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
-                  <%= form.hidden_field :search_type, :value => "you-addressee" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
-                <% end %>
-              </div>
-              <div class="table-header">
-                <div class="subject-name">
-                  件名
-                </div>
-                <div class="counseling-date">
-                  連絡日
-                </div>
-                <div class="counseling-person">
-                  相談者
-                </div>
-                <!-- div class="counseling-action">
-                  アクション
-                </div -->
-              </div>
-              <div class="table-body">
-                <% line_num = 0%>
-                <% @you_addressee_counselings.each do |counseling|%>
-                  <% line_num += 1%>
-                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-                    <div class="subject-name">
-                      <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
-                    </div>
-                    <div class="counseling-date">
-                      <%= l(counseling.created_at, format: :long) %>
-                    </div>
-                    <div class="counseling-person">
-                        <%= counseling.sender_name %>
-                    </div>
-                    <!-- div class="counseling-action">
-                        <%#= link_to "編集", "#", class: "btn btn-outline-orange" %>
-                        <%#= link_to "削除", "#", method: :delete, data: { confirm: "投稿された連絡を削除してよろしいですか？" }, class: "btn btn-danger" %>
-                    </div -->
-                  </div>
-                <% end %>
-              </div>
-            <% else @you_addressee_counselings.blank? %>
-              <P>あなた宛の相談履歴がありません。</P>
-            <% end %>
-            <div class="d-flex">
-              <% if @you_addressee_counselings.present?%>
-                <div class="paginate">
-                  <%= paginate @you_addressee_counselings %>
-                </div>
-              <% end %>
-              <div class="ml-auto">
-                <%= link_to "戻る", :back, class: "btn btn-secondary" %>
-              </div>
-            </div>
+          <div id="you-addressee-counselings-container">
+            <%= render partial: 'projects/counselings/you_addressee_counselings', locals: { counselings: @you_addressee_counselings } %>
           </div>
         </div>
         <!-- 全メンバーの連絡 -->
         <div class="tab-pane fade" id="counseling" role="tabpanel" aria-labelledby="counseling-tab">
-          <div class="box-counseling-index">
-            <% if @counselings.present? %>
-              <div class="d-flex justify-content-end mb-3">
-                <%= form_with url: "#", method: :get, local: true do |form| %>
-                  <%= form.hidden_field :search_type, :value => "counseling" %>
-                  <%= form.label :search, "件名検索：", class: "mb-0" %>
-                  <%= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
-                <% end %>
-              </div>
-              <div class="table-header">
-                <div class="subject-name">
-                  件名
-                </div>
-                <div class="counseling-date">
-                  連絡日
-                </div>
-                <div class="counseling-person">
-                  相談者
-                </div>
-                <div class="counseling-action">
-                  アクション
-                </div>
-              </div>
-              <div class="table-body">
-                <% line_num = 0%>
-                <% @counselings.each do |counseling|%>
-                  <% line_num += 1%>
-                  <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
-                    <div class="subject-name">
-                      <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
-                    </div>
-                    <div class="counseling-date">
-                      <%= l(counseling.created_at, format: :long) %>
-                    </div>
-                    <div class="counseling-person">
-                        <%= counseling.sender_name %>
-                    </div>
-                    <div class="counseling-action">
-                      <% if counseling.sender_id == current_user.id %>
-                        <%= link_to "編集", edit_user_project_counseling_path(@user, @project, counseling), class: "btn btn-outline-orange" %>
-                        <%= link_to "削除", user_project_counseling_path(@user, @project, counseling), method: :delete, data: { confirm: "投稿された相談を削除してよろしいですか？" }, class: "btn btn-danger" %>
-                      <% end %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% else @counselings.blank?%>
-              <P>相談履歴がありません。</P>
-            <% end %>
-            <div class="d-flex">
-              <% if @counselings.present?%>
-                <div class="paginate">
-                  <%= paginate @counselings %>
-                </div>
-              <% end %>
-              <div class="ml-auto">
-                <%= link_to "戻る", :back, class: "btn btn-secondary" %>
-              </div>
-            </div>
+          <div id="counselings-container">
+            <%= render partial: 'projects/counselings/all_counselings', locals: { counselings: @counselings } %>
           </div>
         </div>
       </div>
