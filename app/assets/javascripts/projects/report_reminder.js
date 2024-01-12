@@ -82,13 +82,7 @@ $(document).on('turbolinks:load', function(){
       // 選択した時刻（report_time）の値を設定
       var timeInput = $(this).closest('.project-member-action').find('.form-control[type="time"]');
       var reportTime = timeInput.val();
-    
-      // 追加: ログ出力
-      console.log("Selected Report Time: " + reportTime);
-      console.log("Report Frequency: " + reportFrequency);
-      console.log("Reminder Days: " + reminderDays);
-      console.log("Report Time: " + reportTime);
-
+  
       // Ajaxリクエストを送信
       $.ajax({
         url: '/projects/members/send_reminder',
@@ -108,11 +102,11 @@ $(document).on('turbolinks:load', function(){
         },
         success: function(data) {
           // 成功時の処理
-          alert("報告リマインドの設定が完了しました。");
+          alert("報告リマインドの設定が完了しました。設定は 1ヶ月間 有効です。");
         },
         error: function() {
           // エラー時の処理
-          alert("報告リマインドの設定でエラーが発生しました。");
+          alert("報告リマインドの設定でエラーが発生しました。設定には日時の選択が両方とも必要です。");
         }
       });
     });

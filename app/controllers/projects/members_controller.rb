@@ -27,7 +27,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 報告頻度の取得（報告リマインド日にち選択用）
     @report_frequency = @project.report_frequency
-    logger.debug "Report Frequency: #{@report_frequency}"
 
     @members =
       if params[:search].present?
@@ -81,45 +80,17 @@ class Projects::MembersController < Projects::BaseProjectController
     user_id = params[:user_id].to_i
     project_id = params[:project_id].to_i
     member_id = params[:member_id].to_i
-    report_frequency = params[:report_frequency].to_i # プロジェクトの報告頻度（i日に1回）を取得
-    reminder_days = params[:reminder_days].to_i # メンバーが選択した日数（i日前）を取得（i = 0 なら当日）
-    report_time = params[:report_time] # メンバーが選択した時刻を取得
-
-    # 追加: ログ出力
-    Rails.logger.debug "Selected Report Time in Controller: #{report_time}"
-    Rails.logger.debug "Report Frequency: #{report_frequency}"
-    Rails.logger.debug "Reminder Days: #{reminder_days}"
-    Rails.logger.debug "Report Time: #{report_time}"
+    report_frequency = params[:report_frequency].to_i
+    reminder_days = params[:reminder_days].to_i
+    report_time = params[:report_time]
 
     # 1. ユーザーとプロジェクトを取得
     user, project = find_user_and_project(user_id, project_id)
     return unless user && project
 
-    # 2. タイムゾーンをリマインド専用にJSTへとブロックで変換設定
-    Time.use_zone('Asia/Tokyo') do
-      # 3. プロジェクトユーザーを取得
-      project_user = find_project_user(project, member_id)
-      return unless project_user
-
-      # 4. 次回報告日（next_report_date）を取得
-      next_report_date = project.next_report_date # project_usersテーブルではなくprojectsテーブルから取得
-    
-      # 追加：ログ出力
-      logger.debug "報告頻度（report_frequency）: #{report_frequency}"
-      logger.debug "選択日数（reminder_days）: #{reminder_days}"
-      logger.debug "選択時刻（report_time）: #{report_time}"
-      logger.debug "次回報告日（next_report_date）: #{next_report_date}"
-
-      # 5. 指定の日時にリマインドジョブをキューに追加
-      project_user.queue_report_reminder(project.id,
-                                         member_id,
-                                         report_frequency, # 次回報告日とともに、report_frequency も渡す
-                                         reminder_days,
-                                         report_time,
-                                         next_report_date) # 引数に次回報告日を追加
-
-      render json: { success: true }, status: :ok
-    end
+    # 2. リマインダー用の各処理を実行
+    process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
+    render json: { success: true }, status: :ok
   rescue ActiveRecord::RecordNotFound => e
     render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
@@ -135,7 +106,7 @@ class Projects::MembersController < Projects::BaseProjectController
     [user, project]
   end
 
-  # ProjectUserを取得するメソッド（報告リマインド用）
+  # プロジェクトユーザーを取得するメソッド（報告リマインド用）
   def find_project_user(project, member_id)
     project_user = ProjectUser.find_by(project_id: project.id, user_id: member_id)
     return project_user if project_user
@@ -143,5 +114,16 @@ class Projects::MembersController < Projects::BaseProjectController
     flash[:error] = "プロジェクトメンバーが見つかりません。"
     redirect_to root_path
     nil
+  end
+
+  # リマインダー用の各処理を実行するメソッド（報告リマインド用）
+  def process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
+    Time.use_zone('Asia/Tokyo') do
+      project_user = find_project_user(project, member_id)
+      return unless project_user
+
+      # 指定日時にリマインドジョブをキューに追加
+      project_user.queue_report_reminder(project.id, member_id, report_frequency, reminder_days, report_time)
+    end
   end
 end

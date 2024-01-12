@@ -15,101 +15,79 @@ class ProjectUser < ApplicationRecord
   def set_report_reminder_time(report_time)
     # report_timeをTime型に変換
     report_time = Time.zone.parse(report_time)
-    # タイムゾーンをJSTに変換
+    # タイムゾーンを日本時刻JSTに変換
     self.report_reminder_time = report_time.in_time_zone('Asia/Tokyo')
 
     save!
-
-    # 追加: ログ出力
-    logger.debug "カラム保存したリマインド時刻（Report reminder time） set for user #{user_id} in project #{project_id} at #{self.report_reminder_time}"
 
     # report_reminder_time の値が返されるよう設定
     self.report_reminder_time
   end
 
-  # 報告リマインダーに対し、選択日数＆選択時刻でリマインド日時を計算＆設定するメソッド
-  def calculate_reminder_datetime(report_frequency, reminder_days, report_time, next_report_date)
+  # 報告リマインダーに対し、リマインド指定日時（reminder_datetime）を計算＆設定するメソッド
+  def calculate_reminder_datetime(reminder_days, report_time, next_report_date)
     report_time = Time.zone.parse(report_time)
     reminder_date = next_report_date
 
-    # 選択日数（reminder_days）分の日数を減算してリマインド日（reminder_date）を設定
+    # 選択日数（reminder_days）分の日数を減算して指定日（reminder_date）を設定
     reminder_date -= reminder_days.days if reminder_days.positive?
-    logger.debug "リマインド日（After subtracting reminder_days, reminder_date） is #{reminder_date}"
 
-    # 選択時刻（report_time）をリマインド日（reminder_date）に加えてリマインド日時を設定
-    reminder_datetime = Time.zone.local(reminder_date.year,
-                                        reminder_date.month,
-                                        reminder_date.day,
-                                        report_time.hour,
-                                        report_time.min,
-                                        report_time.sec)
-    logger.debug "リマインド日時（After setting report_time, reminder_datetime） is #{reminder_datetime}"
-
-    # ログ出力
-    logger.debug "リマインド指定日時（Calculated reminder time） for user #{user_id} in project #{project_id} is #{reminder_datetime}"
+    # 選択時刻（report_time）を指定日に加えて指定日時（reminder_datetime）を設定
+    reminder_datetime = Time.zone.local(
+      reminder_date.year,
+      reminder_date.month,
+      reminder_date.day,
+      report_time.hour,
+      report_time.min,
+      report_time.sec
+    )
 
     # reminder_datetime の値が返されるよう設定
     reminder_datetime
   end
 
   # 報告リマインドメール送信ジョブをキューに追加するメソッド
-  def queue_report_reminder(project_id, member_id, report_frequency, reminder_days, report_time, next_report_date)
-    # set_report_reminder_time を使って report_reminder_time を設定
+  def queue_report_reminder(project_id, member_id, report_frequency, reminder_days, report_time)
+    # 設定ボタン押下日＆選択時刻（report_reminder_time）を保存
     self.set_report_reminder_time(report_time)
 
-    # 指定日時（reminder_datetime）を計算＆設定
-    reminder_datetime = calculate_reminder_datetime(report_frequency, reminder_days, report_time, next_report_date)
+    # projectsテーブルから次回報告日（next_report_date）を取得
+    next_report_date = project.next_report_date
 
-    # 追加: ログ出力
-    logger.debug "リマインドメール指定日時（Queued report reminder job） for user #{member_id} in project #{project_id} at #{reminder_datetime}"
+    # 指定日時（reminder_datetime）を計算＆設定
+    reminder_datetime = calculate_reminder_datetime(reminder_days, report_time, next_report_date)
 
     # 指定日時に応じた計1ヶ月分の送信ジョブをキューに追加
     if reminder_datetime.present?
-      # 指定日時が過去の場合、次回報告日（next_report_date）の報告頻度（report_frequency）日後を指定日時に再設定
+      # 指定日時が過去の場合、次回報告日の報告頻度（report_frequency）日後へと再設定
       if reminder_datetime < Time.current
-        recalculated_next_report_date = next_report_date # 元々の次回報告日（next_report_date）の値を取得
-        recalculated_next_report_date += report_frequency.days # 報告頻度（report_frequency）日分を加算
-        
-        # 指定日時（reminder_datetime）を再計算＆再設定
-        reminder_datetime = calculate_reminder_datetime(report_frequency, reminder_days, report_time, recalculated_next_report_date)
+        recalculated_next_report_date = next_report_date
+        recalculated_next_report_date += report_frequency.days
 
-        # 再計算後の指定日時が過去の場合、さらに報告頻度（report_frequency）日分を再加算
+        # 指定日時を再計算＆再設定
+        reminder_datetime = calculate_reminder_datetime(reminder_days, report_time, recalculated_next_report_date)
+
+        # 再計算後の指定日時が過去の場合、さらに報告頻度（report_frequency）日後へと再々設定
         if reminder_datetime < Time.current
-          recalculated_next_report_date += report_frequency.days # 報告頻度（report_frequency）日分を再加算
-          
-          # 指定日時（reminder_datetime）を再々計算＆再々設定
-          reminder_datetime = calculate_reminder_datetime(report_frequency, reminder_days, report_time, recalculated_next_report_date)
-        end
+          recalculated_next_report_date += report_frequency.days
 
-        # 追加: ログ出力
-        logger.debug "元々の次回報告日（Next Report date）: #{next_report_date}"
-        logger.debug "再計算後の次回報告日（Recalculate Next Report date）: #{recalculated_next_report_date}"
-        logger.debug "再計算した1度目のリマインド日時（Recalculated reminder time）: #{reminder_datetime}"
+          # 指定日時を再々計算＆再々設定
+          reminder_datetime = calculate_reminder_datetime(reminder_days, report_time, recalculated_next_report_date)
+        end
       end
 
-      # 追加: ログ出力
-      logger.debug "変わらないハズの次回報告日（Next Report date）: #{next_report_date}"
-      logger.debug "正しく設定したリマインド指定日時（Reminder Datetime）: #{reminder_datetime}"
-
       # 1度目のメール送信ジョブをキューに追加（JST時刻）
-      ReminderJob.set(wait_until: reminder_datetime).perform_later(project_id, member_id, report_frequency, reminder_days, report_time)
+      ReminderJob.set(wait_until: reminder_datetime).perform_later(project_id, member_id, reminder_days, report_time)
 
-      # 2度目以降（～1ヶ月間）用の指定日時を1度目と同時刻で設定
-      next_reminder_datetime = reminder_datetime + report_frequency.days # 報告頻度ごとに日数を加算
+      # 2度目以降の指定日時を計算＆設定
+      next_reminder_datetime = reminder_datetime + report_frequency.days
 
-      # 追加: ログ出力
-      logger.debug "1度目のリマインド指定日時（Reminder Datetime）: #{reminder_datetime}"
-      logger.debug "2度目～1ヶ月間のリマインド指定日時（Next Reminder Datetime）: #{next_reminder_datetime}"
-      
       # 2度目以降～1ヶ月間の継続的なメール送信ジョブをキューに追加（JST時刻）
       while next_reminder_datetime < 1.month.from_now
-        ReminderJob.set(wait_until: next_reminder_datetime).perform_later(project_id, member_id, report_frequency, reminder_days, report_time)
+        ReminderJob.set(wait_until: next_reminder_datetime).perform_later(project_id, member_id, reminder_days, report_time)
         next_reminder_datetime += report_frequency.days # 1ヶ月分、報告頻度ごとに日数を継続加算
       end
 
-      # 追加: ログ出力
-      logger.debug "1度目のリマインド指定日時（Reminder Datetime）: #{reminder_datetime}"
-      logger.debug "再計算した2度目～1ヶ月間のリマインド指定日時（Next Reminder Datetime）: #{next_reminder_datetime}"
     else
       Rails.logger.warn "Invalid report_reminder_datetime: #{reminder_datetime}. #{error_message}"
     end
