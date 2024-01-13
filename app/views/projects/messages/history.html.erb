@@ -12,7 +12,7 @@
     <%= link_to "csvインポート",'#', class: "btn btn-outline-orange mr-1" %>
     <%= link_to "csvエクスポート",'#', class: "btn btn-outline-orange"  %>
   </div>
-  <% if @messages.present? %>  
+  <% if @messages_history.present? %>  
     <div class="d-flex justify-content-between mb-3">
       <div class="align-self-end">
         <%= form_with url: history_user_project_message_path(current_user, @project), method: :get, local: true do |f| %>
@@ -53,7 +53,7 @@
     </div>
     <div class="table-body">
       <% line_num = 0%>
-      <% @messages.each do |message|%>
+      <% @messages_history.each do |message|%>
         <% line_num += 1%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
           <div class="message-date">
@@ -76,13 +76,13 @@
         </div>
       <% end %>
     </div>
-  <% else @messages.blank?%>
+  <% else @messages_history.blank?%>
     <P>連絡履歴がありません。</P>
   <% end %>
   <div class="d-flex">
-    <% if @messages.present?%>
+    <% if @messages_history.present?%>
       <div class="paginate">
-        <%= paginate @messages, param_name: message_page('message'), local: true %>
+        <%= paginate @messages_history, param_name: message_page('message'), local: true %>
       </div>
     <% end %>
     <div class="ml-auto">

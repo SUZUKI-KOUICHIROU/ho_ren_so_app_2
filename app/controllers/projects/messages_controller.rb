@@ -10,7 +10,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @messages = all_messages
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
-    count_recipients
+    count_recipients(@messages)
     messages_by_search
     respond_to do |format|
       format.html
@@ -81,13 +81,11 @@ class Projects::MessagesController < Projects::BaseProjectController
   def history
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @projects = @user.projects.all
-    @messages = @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)             
-    count_recipients    
-    messages_by_search
-    respond_to do |format|
-      format.html { render :history }
-    end
+    @projects = @user.projects.all    
+    @messages_history = all_messages_history_month
+    count_recipients(@messages_history)
+    messages_by_search    
+    # all_messages_history_month
   end
 
   private
@@ -114,11 +112,28 @@ class Projects::MessagesController < Projects::BaseProjectController
     # @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
   end
 
-  # 連絡を送った人数
-  def count_recipients
+  def all_messages_history    
+    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
+  end
+
+  def all_messages_history_month
+    selected_month = params[:month] # フォームから選択された月を取得
+  
+    if selected_month.present?
+      # 選択された月がある場合は、その月のデータを取得
+      start_date = Date.parse("#{selected_month}-01")
+      end_date = start_date.end_of_month
+      @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(5)
+    else
+      # 選択された月がない場合は、全てのデータを取得      
+      all_messages_history
+    end
+  end
+
+  def count_recipients(messages)
     set_project_and_members
     @recipient_count = {}
-    @messages.each do |message|
+    messages.each do |message|
       @recipient_count[message.id] = message.message_confirmers.count
     end
   end
@@ -130,6 +145,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       if @results.present?
         @message_ids = @results.pluck(:id).uniq
         @messages = all_messages.where(id: @message_ids)
+        @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
       else
@@ -196,12 +212,5 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:danger] = "送信相手を選択してください。"
       render :edit
     end
-  end
-
-  def get_selected_month    
-    if params[:month].present? && params[:month] != ""
-      selected_month = params[:month]
-      @messages = Message.where("EXTRACT(MONTH FROM created_at) = ?", selected_month)
-    end    
-  end
+  end  
 end
