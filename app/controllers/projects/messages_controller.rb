@@ -81,10 +81,10 @@ class Projects::MessagesController < Projects::BaseProjectController
   def history
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @projects = @user.projects.all    
+    @projects = @user.projects.all
     @messages_history = all_messages_history_month
     count_recipients(@messages_history)
-    messages_by_search    
+    messages_by_search
     # all_messages_history_month
   end
 
@@ -93,39 +93,36 @@ class Projects::MessagesController < Projects::BaseProjectController
   # 全員の連絡
   def all_messages
     Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)
-    # @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
   end
 
   # あなたへの連絡
   def you_addressee_messages
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
     Message.monthly_messages_for(@project).where(id: you_addressee_message_ids).order(created_at: 'DESC')
-    .page(params[:you_addressee_messages_page]).per(5)
-    # @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
+           .page(params[:you_addressee_messages_page]).per(5)
   end
 
   # あなたが送った連絡
   def you_send_messages
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
     Message.monthly_messages_for(@project).where(id: you_send_message_ids).order(created_at: 'DESC')
-    .page(params[:you_addressee_messages_page]).per(5)
-    # @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+           .page(params[:you_addressee_messages_page]).per(5)
   end
 
-  def all_messages_history    
+  def all_messages_history
     @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
   end
 
   def all_messages_history_month
     selected_month = params[:month] # フォームから選択された月を取得
-  
+
     if selected_month.present?
       # 選択された月がある場合は、その月のデータを取得
       start_date = Date.parse("#{selected_month}-01")
       end_date = start_date.end_of_month
       @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(5)
     else
-      # 選択された月がない場合は、全てのデータを取得      
+      # 選択された月がない場合は、全てのデータを取得
       all_messages_history
     end
   end
@@ -212,5 +209,5 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:danger] = "送信相手を選択してください。"
       render :edit
     end
-  end  
+  end
 end

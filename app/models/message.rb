@@ -53,7 +53,7 @@ class Message < ApplicationRecord
     start_of_month = Time.zone.now.beginning_of_month
     end_of_month = Time.zone.now.end_of_month
     Message.where(project: project, created_at: start_of_month..end_of_month)
-  end 
+  end
 
   scope :search, ->(search_params) do
     return all if search_params.blank?
