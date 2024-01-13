@@ -47,12 +47,6 @@
 # #   url: <%= ENV['DATABASE_URL'] %>
 # #
 
-# production:
-#   <<: *default
-#   database: myapp_production
-#   username: myapp
-#   password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>
-
 default: &default
   adapter: postgresql
   encoding: unicode
@@ -68,3 +62,8 @@ development:
 test:
   <<: *default
   database: myproject_test
+
+production:
+  <<: *default
+  adapter: postgresql
+  dencoding: unicode
