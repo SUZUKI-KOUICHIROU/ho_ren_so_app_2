@@ -1,5 +1,11 @@
 <h2><%= @project_name %> の報告リマインド</h2>
-<h3>上記プロジェクトの報告を本日23:59までに完了してください。</h3>
+<% if @reminder_days == 0 %>
+  <p>本日</p>
+<% else %>
+  <p><%= @reminder_days %>日後</p>
+<% end %>
+<h3><%= @report_limit_date.strftime("%Y年 %m月 %d日") %> の 23:59 までに</h3>
+<p>上記プロジェクトの報告を完了してください。</p>
 <br>
 <%= link_to "プロジェクトの報告をする", new_user_project_report_url(user_id: @user.id, project_id: @project.id) %>
 <p>（このメールはシステムより自動配信されています。入れ違いでご報告がお済みの際は何卒ご容赦ください。）</p>
