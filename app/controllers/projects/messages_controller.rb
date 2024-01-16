@@ -1,5 +1,6 @@
 class Projects::MessagesController < Projects::BaseProjectController
   include MessageOperations
+  require 'csv'
   before_action :project_authorization
   before_action :my_message, only: %i[show]
 
@@ -86,6 +87,16 @@ class Projects::MessagesController < Projects::BaseProjectController
     count_recipients(@messages_history)
     messages_by_search
     # all_messages_history_month
+    @messages = @messages_history
+    respond_to do |format|
+      format.html
+      # rubocopを一時的に無効にする。
+      # rubocop:disable Lint/UnusedBlockArgument
+      format.csv do |csv|
+        send_messages_csv(@messages)
+      end
+      # rubocop:enable Lint/UnusedBlockArgument
+    end
   end
 
   private
@@ -110,7 +121,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def all_messages_history
-    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
+    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(30)
   end
 
   def all_messages_history_month
@@ -209,5 +220,24 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:danger] = "送信相手を選択してください。"
       render :edit
     end
+  end
+
+  def send_messages_csv(messages)
+    bom = "\uFEFF"
+    csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+      column_names = %w(送信者名 タイトル 内容 送信日 重用度)
+      csv << column_names
+      messages.each do |message|
+        column_values = [
+          message.sender_name,
+          message.title,
+          message.message_detail,
+          message.created_at,
+          message.importance,
+        ]
+        csv << column_values
+      end
+    end
+    send_data(csv_data, filename: "連絡一覧.csv")
   end
 end
