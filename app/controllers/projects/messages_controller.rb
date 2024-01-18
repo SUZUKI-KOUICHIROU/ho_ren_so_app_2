@@ -86,7 +86,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @messages_history = all_messages_history_month
     count_recipients(@messages_history)
     messages_by_search
-    # all_messages_history_month
+    all_messages_history_month
     @messages = @messages_history
     respond_to do |format|
       format.html
