@@ -125,17 +125,17 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def all_messages_history_month
-    selected_month = params[:month] # フォームから選択された月を取得
-
+    selected_month = params[:month]
+  
     if selected_month.present?
-      # 選択された月がある場合は、その月のデータを取得
       start_date = Date.parse("#{selected_month}-01")
       end_date = start_date.end_of_month
-      @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(5)
+      messages = @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(5)
     else
-      # 選択された月がない場合は、全てのデータを取得
-      all_messages_history
+      messages = all_messages_history
     end
+  
+    messages
   end
 
   def count_recipients(messages)
@@ -225,13 +225,12 @@ class Projects::MessagesController < Projects::BaseProjectController
   def send_messages_csv(messages)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
-      column_names = %w(送信者名 タイトル 内容 送信日 重用度)
+      column_names = %w(送信者名 タイトル 送信日 重用度)
       csv << column_names
       messages.each do |message|
         column_values = [
           message.sender_name,
           message.title,
-          message.message_detail,
           message.created_at,
           message.importance,
         ]

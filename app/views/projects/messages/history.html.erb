@@ -8,8 +8,8 @@
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">連絡履歴</h1>
   <%= link_to "連絡一覧", user_project_messages_path, class: "btn btn-outline-orange" %>
-  <div class="d-flex justify-content-end mb-3">
-    <%= link_to "csvエクスポート",history_user_project_message_path(format: :csv), class: "btn btn-outline-orange"  %>
+  <div class="d-flex justify-content-end mb-3">    
+    <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange"  %>
   </div>
   <% if @messages_history.present? %>  
     <div class="d-flex justify-content-between mb-3">
