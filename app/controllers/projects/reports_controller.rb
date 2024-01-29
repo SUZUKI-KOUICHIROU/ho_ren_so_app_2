@@ -167,6 +167,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @display_days = params[:display_days].presence || "percent"
     @week_first_day, @week_last_day = calculate_week_dates
     @report_days = @project.report_deadlines.where(day: @week_first_day..@week_last_day)
+    weekly_graph_data
     if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
       flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
     end
@@ -182,6 +183,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @first_day, @last_day = calculate_month_dates
     @month_field_value = @first_day.strftime("%Y-%m-%d")
     @report_days = @project.report_deadlines.where(day: @first_day..@last_day)
+    monthly_graph_data
     month_no_report_noitce
   end
 
@@ -289,6 +291,38 @@ class Projects::ReportsController < Projects::BaseProjectController
       else
         flash.now[:notice] = "#{@first_day.strftime('%-m月')}の報告はありません。"
       end
+    end
+  end
+
+  # １週間集計、グラフデータ
+  def weekly_graph_data
+    @report_data = {}
+    @week_first_day.upto(@week_last_day) do |date|
+      reported_users = @project.reports
+                        .joins(user: :project_users)
+                        .where(report_day: date, project_users: { member_expulsion: false })
+                        .where("DATE(reports.created_at) = ?", date)
+                        .select(:user_id).distinct
+      reported_count = reported_users.count # この日に報告したユーザー数を計算
+      total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
+      report_percentage = reported_count.to_f / total_count * 100
+      @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
+    end
+  end
+
+  # １か月集計、グラフデータ
+  def monthly_graph_data
+    @report_data = {}
+    @first_day.upto(@last_day) do |date|
+      reported_users = @project.reports
+                        .joins(user: :project_users)
+                        .where(report_day: date, project_users: { member_expulsion: false })
+                        .where("DATE(reports.created_at) = ?", date)
+                        .select(:user_id).distinct
+      reported_count = reported_users.count # この日に報告したユーザー数を計算
+      total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
+      report_percentage = reported_count.to_f / total_count * 100
+      @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
     end
   end
 end
