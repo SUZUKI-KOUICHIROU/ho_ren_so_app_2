@@ -33,7 +33,7 @@
         <% line_num += 1%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
           <div class="subject-name">
-            <% if message.message_confirmers.exists?(message_confirmer_id: current_user.id) %>
+            <% if message.sender_id == current_user.id || message.message_confirmers.exists?(message_confirmer_id: current_user.id) %>
               <%= link_to message.title, user_project_message_path(@user, @project, message), class: "report-detail-link" %>
             <% else %>
               <%= message.title  %>

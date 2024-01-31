@@ -83,11 +83,13 @@ class Projects::MessagesController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @projects = @user.projects.all
+    @message = Message.find(params[:id])
     @messages_history = all_messages_history_month
     count_recipients(@messages_history)
     messages_by_search
     all_messages_history_month
     @messages = @messages_history
+    @members = set_project_and_members
     respond_to do |format|
       format.html
       # rubocopを一時的に無効にする。
@@ -126,7 +128,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   def all_messages_history_month
     selected_month = params[:month]
-  
+
     if selected_month.present?
       start_date = Date.parse("#{selected_month}-01")
       end_date = start_date.end_of_month
@@ -134,7 +136,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     else
       messages = all_messages_history
     end
-  
+
     messages
   end
 
@@ -225,13 +227,15 @@ class Projects::MessagesController < Projects::BaseProjectController
   def send_messages_csv(messages)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
-      column_names = %w(送信者名 タイトル 送信日 重用度)
+      column_names = %w(送信者名 タイトル 送信日 受信者 重用度)
       csv << column_names
       messages.each do |message|
+        recipient_names = view_context.get_message_recipients(message.id, @members)
         column_values = [
           message.sender_name,
           message.title,
           message.created_at,
+          recipient_names,
           message.importance,
         ]
         csv << column_values
