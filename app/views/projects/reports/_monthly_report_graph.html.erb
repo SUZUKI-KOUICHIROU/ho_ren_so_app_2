@@ -1,25 +1,36 @@
 <div class="modal fade" id="monthly-graph" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="modalLabel">報告集計グラフ【１か月】</h1>
+        <button type="button" class="btn btn-outline-orange mr-2" data-toggle="modal" data-target="#monthly-user-graph" data-dismiss="modal">
+          報告者別を見る
+        </button>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <%= bar_chart @report_data, height: '750px', library: {
-          title: { text: '報告日ごとの報告割合' },
-          yAxis: {
-            allowDecimals: false,
-            title: { text: '割合 (%)' },
-            min: 0,  # Y軸の最小値を0に設定
-            max: 100, # Y軸の最大値を100に設定
-            labels: {
-              formatter: "function() { return this.value + '%'; }"  # Y軸のラベルをパーセンテージ形式に
-            }
-          }
-        } %>
+        <%= bar_chart @report_data, height: '750px', horizontal: true, min: 0, max: 100, suffix: "%" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="monthly-user-graph" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="modalLabel">報告集計グラフ【１か月】</h1>
+        <button type="button" class="btn btn-outline-orange mr-2" data-toggle="modal" data-target="#monthly-graph" data-dismiss="modal">
+          報告日別を見る
+        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= bar_chart @report_user_data, height: '500px', horizontal: true, min: 0, max: 100, suffix: "%" %>
       </div>
     </div>
   </div>
