@@ -28,6 +28,9 @@ class Projects::MembersController < Projects::BaseProjectController
     # 報告頻度の取得（報告リマインド日にち選択用）
     @report_frequency = @project.report_frequency
 
+    # プロジェクトユーザーの取得（報告リマインド設定表示用）
+    @project_user = find_project_user(@project, @user.id)
+
     @members =
       if params[:search].present?
         ProjectUser.member_expulsion_join(@project, @project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10))
@@ -90,6 +93,9 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 2. リマインダー用の各処理を実行
     process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
+
+    # 3. 設定情報を返す
+    # render json: { success: true, project_user: project_user.as_json }, status: :ok
     render json: { success: true }, status: :ok
   rescue ActiveRecord::RecordNotFound => e
     render json: { success: false, error: e.message }, status: :not_found
@@ -116,7 +122,6 @@ class Projects::MembersController < Projects::BaseProjectController
     nil
   end
 
-  # リマインダー用の各処理を実行するメソッド（報告リマインド用）
   def process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
     Time.use_zone('Asia/Tokyo') do
       project_user = find_project_user(project, member_id)
@@ -124,6 +129,22 @@ class Projects::MembersController < Projects::BaseProjectController
 
       # 指定日時にリマインドジョブをキューに追加
       project_user.queue_report_reminder(project.id, member_id, report_frequency, reminder_days, report_time)
+
+      # リマインダーの設定情報を保存
+      project_user.update!(
+        reminder_enabled: true,
+        reminder_days: reminder_days,
+        report_time: report_time
+      )
+
+      # ログに出力してデバッグ
+      logger.debug "Reminder Settings for project_user_id=#{project_user.id}: "
+      logger.debug "reminder_enabled=#{project_user.reminder_enabled}, "
+      logger.debug "reminder_days=#{project_user.reminder_days}, "
+      logger.debug "report_time=#{project_user.report_time}"
+
+      # 設定した project_user を返す
+      project_user
     end
   end
 end
