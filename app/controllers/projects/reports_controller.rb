@@ -300,14 +300,15 @@ class Projects::ReportsController < Projects::BaseProjectController
   def weekly_graph_daily_data
     @report_data = {}
     @week_first_day.upto(@week_last_day) do |date|
-      reported_users = @project.reports
-                        .joins(user: :project_users)
-                        .where(report_day: date, project_users: { member_expulsion: false })
-                        .where("DATE(reports.created_at) = ?", date)
-                        .select(:user_id).distinct
-      reported_count = reported_users.count # この日に報告したユーザー数を計算
+      reported_users = 0
+      @users.each do |user|
+        user_report = user.reports.find_by(project_id: @project.id, report_day: date)
+        if user_report.present? && user_report.created_at.to_date == date
+          reported_users += 1
+        end
+      end
       total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
-      report_percentage = reported_count.to_f / total_count * 100
+      report_percentage = reported_users.to_f / total_count * 100
       @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
     end
   end
@@ -335,14 +336,15 @@ class Projects::ReportsController < Projects::BaseProjectController
   def monthly_graph_daily_data
     @report_data = {}
     @first_day.upto(@last_day) do |date|
-      reported_users = @project.reports
-                        .joins(user: :project_users)
-                        .where(report_day: date, project_users: { member_expulsion: false })
-                        .where("DATE(reports.created_at) = ?", date)
-                        .select(:user_id).distinct
-      reported_count = reported_users.count # この日に報告したユーザー数を計算
+      reported_users = 0
+      @users.each do |user|
+        user_report = user.reports.find_by(project_id: @project.id, report_day: date)
+        if user_report.present? && user_report.created_at.to_date == date
+          reported_users += 1
+        end
+      end
       total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
-      report_percentage = reported_count.to_f / total_count * 100
+      report_percentage = reported_users.to_f / total_count * 100
       @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
     end
   end

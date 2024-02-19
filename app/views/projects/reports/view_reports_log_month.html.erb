@@ -70,15 +70,10 @@
       </thead>
       <tbody class="table-report-totalling-body">
         <% (@first_day..@last_day).each do |date| %>
-          <% reported_users = @project.reports
-                                .joins(user: :project_users)
-                                .where(report_day: date, project_users: { member_expulsion: false })
-                                .where("DATE(reports.created_at) = ?", date)
-                                .select(:user_id).distinct %>
           <tr>
             <td class="body"><%= date.strftime("%m/%d") %></td>
             <% @users.each do |user| %>
-              <% user_report = user.reports.find_by(report_day: date) %>
+              <% user_report = user.reports.find_by(project_id: @project.id, report_day: date) %>
               <td class="body">
                 <% if user_report.present? && user_report.created_at.to_date == date %>
                   <%= user_report.created_at.strftime("%m月%d日 %H:%M") %>
@@ -90,10 +85,17 @@
             <% end %>
             <td class="body">
               <% if @report_days.any? { |report_day| report_day.day == date } %>
+                <% reported_users = 0 %>
+                <% @users.each do |user| %>
+                  <% user_report = user.reports.find_by(project_id: @project.id, report_day: date) %>
+                  <% if user_report.present? && user_report.created_at.to_date == date %>
+                    <% reported_users += 1 %>
+                  <% end %>
+                <% end %>
                 <% if @display == "percent" %>
-                  <%= reported_users.count * 100 / @project.users.where(project_users: { member_expulsion: false }).count %>%
+                  <%= reported_users * 100 / @project.users.where(project_users: { member_expulsion: false }).count %>%
                 <% elsif @display == "people" %>
-                  <%= reported_users.count %>
+                  <%= reported_users %>
                   人 /
                   <%= @project.users.where(project_users: { member_expulsion: false }).count %>
                   人
@@ -143,16 +145,15 @@
           <% end %>
           <td class="footer">
             <% total_reported_users = 0 %>
-            <% total_users = @users.count %>
-            <% total_days = (@last_day - @first_day + 1) %>
             <% (@first_day..@last_day).each do |date| %>
-              <% reported_users = @project.reports
-                                    .joins(user: :project_users)
-                                    .where(report_day: date, project_users: { member_expulsion: false })
-                                    .where("DATE(reports.created_at) = ?", date)
-                                    .select(:user_id).distinct %>
-              <% total_reported_users += reported_users.count %>
+              <% @users.each do |user| %>
+                <% user_report = user.reports.find_by(project_id: @project.id, report_day: date) %>
+                <% if user_report.present? && user_report.created_at.to_date == date %>
+                  <% total_reported_users += 1 %>
+                <% end %>
+              <% end %>
             <% end %>
+            <% total_users = @users.count %>
             <% total_days = @report_days.count %>
             <% if total_days > 0 %>
               <%= ((total_reported_users.to_f / (total_users * total_days)) * 100).to_i %>%
