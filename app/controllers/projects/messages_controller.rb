@@ -79,6 +79,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     redirect_to user_project_messages_path(@user, @project)
   end
 
+  # 連絡履歴
   def history
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
@@ -90,6 +91,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     all_messages_history_month
     @messages = @messages_history
     @members = set_project_and_members
+    messages_by_search
+    # formatをhtmlとCSVに振り分ける
     respond_to do |format|
       format.html
       # rubocopを一時的に無効にする。
@@ -122,17 +125,19 @@ class Projects::MessagesController < Projects::BaseProjectController
            .page(params[:you_addressee_messages_page]).per(5)
   end
 
+  # 全連絡
   def all_messages_history
     @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(30)
   end
 
+  # 連絡履歴の月検索
   def all_messages_history_month
     selected_month = params[:month]
 
     if selected_month.present?
       start_date = Date.parse("#{selected_month}-01")
-      end_date = start_date.end_of_month
-      messages = @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(5)
+      end_date = start_date.end_of_month.end_of_day
+      messages = @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(30)
     else
       messages = all_messages_history
     end
@@ -140,6 +145,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     messages
   end
 
+  # 連絡した相手をcount
   def count_recipients(messages)
     set_project_and_members
     @recipient_count = {}
@@ -224,6 +230,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
+  # CSVエクスポート
   def send_messages_csv(messages)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
@@ -234,7 +241,7 @@ class Projects::MessagesController < Projects::BaseProjectController
         column_values = [
           message.sender_name,
           message.title,
-          message.created_at,
+          message.created_at.strftime("%m月%d日 %H:%M"),
           recipient_names,
           message.importance,
         ]

@@ -55,6 +55,7 @@ class Message < ApplicationRecord
     Message.where(project: project, created_at: start_of_month..end_of_month)
   end
 
+  # 連絡の日付とキーワードの検索
   scope :search, ->(search_params) do
     return all if search_params.blank?
 
