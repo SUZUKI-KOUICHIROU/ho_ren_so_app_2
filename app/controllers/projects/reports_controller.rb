@@ -318,9 +318,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_user_data = {}
     @users.each do |user|
       reported_days = @project.reports
-                        .joins(user: :project_users)
-                        .where(report_day: @week_first_day..@week_last_day, user_id: user.id, project_users: { member_expulsion: false })
-                        .pluck(:report_day).uniq
+                              .joins(user: :project_users)
+                              .where(report_day: @week_first_day..@week_last_day, user_id: user.id, project_users: { member_expulsion: false })
+                              .pluck(:report_day).uniq
       valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day }
       total_days = @report_days.count
       if total_days > 0
@@ -354,9 +354,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_user_data = {}
     @users.each do |user|
       reported_days = @project.reports
-                        .joins(user: :project_users)
-                        .where(report_day: @first_day..@last_day, user_id: user.id, project_users: { member_expulsion: false })
-                        .pluck(:report_day).uniq
+                              .joins(user: :project_users)
+                              .where(report_day: @first_day..@last_day, user_id: user.id, project_users: { member_expulsion: false })
+                              .pluck(:report_day).uniq
       valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day }
       total_days = @report_days.count
       if total_days > 0
