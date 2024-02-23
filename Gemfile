@@ -86,6 +86,12 @@ end
 
 group :production do
   gem 'pg', '0.20.0'
+
+  gem "dockerfile-rails", ">= 1.6", :group => :development
+
+  gem "net-imap", "~> 0.3.7", :require => false
+  gem "net-pop", "~> 0.1.2", :require => false
+  gem "net-smtp", "~> 0.4.0", :require => false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

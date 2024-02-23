@@ -97,6 +97,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    date (3.3.4)
     devise (4.8.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -106,6 +107,8 @@ GEM
     devise-i18n (1.10.2)
       devise (>= 4.8.0)
     diff-lcs (1.5.0)
+    dockerfile-rails (1.6.1)
+      rails (>= 3.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -234,6 +237,15 @@ GEM
       railties (>= 3.1)
     msgpack (1.5.2)
     multipart-post (2.3.0)
+    net-imap (0.3.7)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
+    net-protocol (0.2.2)
+      timeout
+    net-smtp (0.4.0.1)
+      net-protocol
     netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.13.6)
@@ -413,6 +425,7 @@ GEM
     thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    timeout (0.4.1)
     trix (0.10.1)
       rails
     turbolinks (5.2.1)
@@ -467,6 +480,7 @@ DEPENDENCIES
   database_cleaner
   devise
   devise-i18n
+  dockerfile-rails (>= 1.6)
   dotenv-rails
   enum_help
   factory_bot_rails
@@ -484,6 +498,9 @@ DEPENDENCIES
   letter_opener_web (~> 1.0)
   listen (>= 3.0.5, < 3.2)
   momentjs-rails
+  net-imap (~> 0.3.7)
+  net-pop (~> 0.1.2)
+  net-smtp (~> 0.4.0)
   payjp
   pg (= 0.20.0)
   poltergeist
@@ -523,4 +540,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.4.22
+   2.4.19
