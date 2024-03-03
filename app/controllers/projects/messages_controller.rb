@@ -7,7 +7,6 @@ class Projects::MessagesController < Projects::BaseProjectController
   def index
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @projects = @user.projects.all
     @messages = all_messages
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
@@ -83,14 +82,14 @@ class Projects::MessagesController < Projects::BaseProjectController
   def history
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @projects = @user.projects.all
     @message = Message.find(params[:id])
     @messages_history = all_messages_history_month
+    @messages_by_search = message_search_params.to_h
     count_recipients(@messages_history)
     messages_by_search
     all_messages_history_month
     @messages = @messages_history
-    @members = set_project_and_members
+    @members = @project.users.all
     messages_by_search
     # formatをhtmlとCSVに振り分ける
     respond_to do |format|
@@ -98,7 +97,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       # rubocopを一時的に無効にする。
       # rubocop:disable Lint/UnusedBlockArgument
       format.csv do |csv|
-        send_messages_csv(@messages)
+        send_messages_csv(@messages_history)
       end
       # rubocop:enable Lint/UnusedBlockArgument
     end
