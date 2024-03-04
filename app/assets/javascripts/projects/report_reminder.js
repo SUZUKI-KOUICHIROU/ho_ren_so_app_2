@@ -45,20 +45,23 @@ $(document).on('turbolinks:load', function(){
         // 報告頻度に応じて日にち選択肢の最大値を設定
         var optionsCount = reportFrequency;
 
-        // ユーザーのreminder_daysおよびreport_timeの値を取得
+        // 選択日数の値を取得
         var reminderDays = parseInt($(this).data('selected-days'));
 
-        // reminder_enabledがtrueの場合、設定済の選択日数を初期表示するよう日にち選択肢を再生成
+        // 報告リマインドが設定済の場合、設定済の選択日数＆選択時刻を初期表示するよう生成
         if (reminderDays !== null) {
           for (var i = 0; i < optionsCount; i++) {
             var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
-            if (i === selectedDays) { // ここを変更
+            if (i === selectedDays) {
               option.attr('selected', true);
             }
             selectElement.append(option);
           }
+          // 時刻選択用の<input>要素を取得
+          var timeInput = reminderSettingContainer.find('input[type="time"]');
+
+        // 報告リマインドが未設定の場合、デフォルトの日にち選択肢＆時刻選択肢を生成
         } else {
-          // reminder_enabledがfalseの場合、デフォルトの日にち選択肢を再生成
           for (var i = 0; i < optionsCount; i++) {
             var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
             if (i === 0) {
@@ -66,11 +69,10 @@ $(document).on('turbolinks:load', function(){
             }
             selectElement.append(option);
           }
+          // 時刻選択用の<input>要素を取得
+          var timeInput = reminderSettingContainer.find('input[type="time"]');
+          timeInput.val('');  // デフォルトの選択をクリア
         }
-
-        // 時刻選択用の<input>要素を取得
-        var timeInput = reminderSettingContainer.find('input[type="time"]');
-        timeInput.val('');  // デフォルトの選択をクリア
 
         // 時刻選択肢を再生成
         var timeOption = $('<option>').val('').text('');  // デフォルトの選択

@@ -59,7 +59,8 @@
                     </select>
                     <label for="reminderDays<%= member.id %>">の</label>
                     <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
-                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time">
+                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                    <% logger.debug("Report Time Value: #{@project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : ''}") %>
                     <label for="timeInput<%= member.id %>">に</label>
                     <!--選択した報告リマインド日時の設定ボタン（プロジェクトメンバー用／設定済の場合）-->
                     <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
@@ -86,22 +87,47 @@
             <% elsif project_leader? %>
               <div class="project-member-action member-text" data-report-frequency="<%= @report_frequency %>">
                 <% if @user.id == member.id %>
-                  <div class="custom-control custom-switch">
-                    報告リマインドを設定（メール）
-                    <!--報告リマインド用のオンオフ切替スイッチ（プロジェクトリーダー用）-->
-                    <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
-                    <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
-                  </div>
-                  <div class="form-group reminder-setting" style="display: none;">
-                    <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用）-->
-                    <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
-                    <label for="reminderDays<%= member.id %>">の</label>
-                    <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用）-->
-                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
-                    <label for="timeInput<%= member.id %>">に</label>
-                    <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用）-->
-                    <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
-                  </div>
+                  <% if @project_user.reminder_enabled == true %>
+                    <div class="custom-control custom-switch">
+                      報告リマインドを設定（メール）
+                      <!-- 報告リマインド用のオンオフ切替スイッチ（プロジェクトリーダー用／設定済の場合） -->
+                      <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>" checked>
+                      <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
+                    </div>
+                    <div class="form-group reminder-setting">
+                      <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
+                      <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>">
+                      <% logger.debug("Report Frequency: #{@report_frequency}") %>
+                        <% (0..(@report_frequency-1)).each do |i| %>
+                          <% selected = i == @project_user.reminder_days ? 'selected' : '' %>
+                          <option value="<%= i %>" <%= selected %>><%= i === 0 ? '当日' : i.to_s + '日前' %></option>
+                        <% end %>
+                      </select>
+                      <label for="reminderDays<%= member.id %>">の</label>
+                      <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
+                      <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                      <label for="timeInput<%= member.id %>">に</label>
+                      <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用／設定済の場合）-->
+                      <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                    </div>
+                  <% else %>
+                    <div class="custom-control custom-switch">
+                      報告リマインドを設定（メール）
+                      <!-- 報告リマインド用のオンオフ切替スイッチ（プロジェクトリーダー用／未設定の場合） -->
+                      <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
+                      <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
+                    </div>
+                      <div class="form-group reminder-setting" style="display: none;">
+                      <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用／未設定の場合）-->
+                      <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
+                      <label for="reminderDays<%= member.id %>">の</label>
+                      <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用／未設定の場合）-->
+                      <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                      <label for="timeInput<%= member.id %>">に</label>
+                      <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用／未設定の場合）-->
+                      <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                    </div>
+                  <% end %>
                 <% end %>
                 <% unless @project.leader_id == member.id %>
                   <% if member.member_expulsion %>
