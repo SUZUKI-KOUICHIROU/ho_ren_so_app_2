@@ -4,16 +4,12 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="card-box">
-  <!-- div class="box-project-select">
-    <%#= form_with do |form| %>
-      <%#= form.label :project_id, "プロジェクト選択：" %>
-      <%#= form.collection_select(:project_id, @projects, :id, :name, {selected: @project.id},
-      {class: "index-project-select-box", data: {user_id: "#{@user.id}", "turbolinks" => false, list_type: "message"}}) %>
-    <%# end %>
-  </div -->
-  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
+<div class="card-box">  
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
   <h1 class="text-center">連絡一覧</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "連絡履歴", history_user_project_message_path(id: @project.id, project_id: @project.id, user_id: current_user.id), class: "btn btn-outline-orange" %>
+  </div>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">

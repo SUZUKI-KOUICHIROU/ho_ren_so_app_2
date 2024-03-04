@@ -1,4 +1,6 @@
 module MessageOperations
+  # 連絡送信相手の選択を全員に送る場合と個人に送る場合の条件分岐をmoduleにする
+  # extendでクラスメソッドでクラスメソッドにし、message_controllerでincludeする
   extend ActiveSupport::Concern
 
   def save_message_and_send_to_members(message, _members)
