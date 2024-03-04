@@ -23,7 +23,10 @@ $(document).on('turbolinks:load', function(){
   $(function($) {
     // メンバー一覧画面からデータを取得
     var reportFrequencies = $('.project-member-action').map(function() {
-      return parseInt($(this).data('report-frequency'));
+      return {
+        reportFrequency: parseInt($(this).data('report-frequency')),
+        selectedDays: parseInt($(this).find('.form-control').data('selected-days'))
+      };
     }).get();
 
     // 日にち選択肢を制御する関数
@@ -32,7 +35,9 @@ $(document).on('turbolinks:load', function(){
       $('.project-member-action').each(function(index) {
         var reminderSettingContainer = $(this).find('.reminder-setting');
         var selectElement = reminderSettingContainer.find('.form-control');
-        var reportFrequency = reportFrequencies[index];
+
+        var reportFrequency = reportFrequencies[index].reportFrequency;
+        var selectedDays = reportFrequencies[index].selectedDays;
 
         // 日にち選択肢を一旦クリア
         selectElement.html('');
@@ -40,13 +45,27 @@ $(document).on('turbolinks:load', function(){
         // 報告頻度に応じて日にち選択肢の最大値を設定
         var optionsCount = reportFrequency;
 
-        // 日にち選択肢を再生成
-        for (var i = 0; i < optionsCount; i++) {
-          var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
-          if (i === 0) {
-            option.attr('selected', true);
+        // ユーザーのreminder_daysおよびreport_timeの値を取得
+        var reminderDays = parseInt($(this).data('selected-days'));
+
+        // reminder_enabledがtrueの場合、設定済の選択日数を初期表示するよう日にち選択肢を再生成
+        if (reminderDays !== null) {
+          for (var i = 0; i < optionsCount; i++) {
+            var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
+            if (i === selectedDays) { // ここを変更
+              option.attr('selected', true);
+            }
+            selectElement.append(option);
           }
-          selectElement.append(option);
+        } else {
+          // reminder_enabledがfalseの場合、デフォルトの日にち選択肢を再生成
+          for (var i = 0; i < optionsCount; i++) {
+            var option = $('<option>').val(i).text(i === 0 ? '当日' : i + '日前');
+            if (i === 0) {
+              option.attr('selected', true);
+            }
+            selectElement.append(option);
+          }
         }
 
         // 時刻選択用の<input>要素を取得

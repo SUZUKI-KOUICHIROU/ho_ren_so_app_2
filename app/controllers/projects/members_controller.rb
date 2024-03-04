@@ -122,6 +122,7 @@ class Projects::MembersController < Projects::BaseProjectController
     nil
   end
 
+  # リマインダー用の各処理を実行するメソッド（報告リマインド用）
   def process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
     Time.use_zone('Asia/Tokyo') do
       project_user = find_project_user(project, member_id)
