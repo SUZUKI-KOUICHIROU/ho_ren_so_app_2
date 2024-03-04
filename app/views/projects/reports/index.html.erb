@@ -1,11 +1,14 @@
-<% provide(:title, '報告履歴') %>
+<% provide(:title, '報告一覧') %>
 <%= content_for :side_menu do %>
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
-  <h1 class="text-center">報告履歴</h1>
+  <h1 class="text-center">報告一覧</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "報告履歴", '#', class: "btn btn-outline-orange" %>
+  </div>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
