@@ -1,0 +1,10 @@
+<!-- 画像選択 -->
+<label class="reply-image-label">
+  <span class="btn btn-light"><font size="2">📁画像アップロード</font></span>
+  <%= f.file_field :images, multiple: true, accept: 'image/*', class: "reply-image-form", onchange: "preview_images(this)" %>
+</label>
+<div class="images_area">
+  <!-- プレビュー画像が表示される -->
+</div>
+<!-- 画像使用有無 -->
+<%= f.hidden_field :image_enable, id: "hiddenInput", :value => "" %>

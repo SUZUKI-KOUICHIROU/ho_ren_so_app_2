@@ -101,6 +101,9 @@ function changeForm() {
           <% end %>
         </div>
         <% end %>
+        <!-- 添付画像の表示 -->
+        <%= render "/projects/images/show_image", object: @report %>
+
         <% if current_user == @user %>
           <div class="text-right mr-4">
             <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-2" %>
@@ -124,3 +127,6 @@ function changeForm() {
     <%= render "/projects/report_replys/report_reply_form" %>
   </div>
 </div>
+
+ <!-- モーダルウィンドウ表示 -->
+ <div id="show_image" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
