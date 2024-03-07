@@ -8,18 +8,21 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
     @monthly_reports = Report.monthly_reports_for(@project)
     @weekly_reports = Report.weekly_reports_for(@project)
+    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
+    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
+    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
     if params[:report_type] == 'monthly'
       @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      { reports: @reports, you_reports: @you_reports }
+      @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
     elsif params[:report_type] == 'weekly'
       @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
       @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      { reports: @reports, you_reports: @you_reports }
+      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
+      { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
     end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
