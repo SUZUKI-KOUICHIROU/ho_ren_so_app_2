@@ -1,0 +1,37 @@
+<div class="modal fade" id="weekly-graph" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="modalLabel">報告集計グラフ【１週間】</h1>
+        <button type="button" class="btn btn-outline-orange mr-2" data-toggle="modal" data-target="#weekly-user-graph" data-dismiss="modal">
+          報告者別を見る
+        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= bar_chart @report_data, height: '500px', horizontal: true, min: 0, max: 100, suffix: "%" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="weekly-user-graph" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="modalLabel">報告集計グラフ【１週間】</h1>
+        <button type="button" class="btn btn-outline-orange mr-2" data-toggle="modal" data-target="#weekly-graph" data-dismiss="modal">
+          報告日別を見る
+        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= bar_chart @report_user_data, height: '500px', horizontal: true, min: 0, max: 100, suffix: "%" %>
+      </div>
+    </div>
+  </div>
+</div>
