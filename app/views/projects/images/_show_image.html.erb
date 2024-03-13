@@ -10,6 +10,8 @@
           <%= link_to image_tag(image, class: "thumbnail"), show_image_user_project_report_report_reply_path(@user,@project,object, image_id: image.id), remote: true %>
         <% when Message %>
           <%= link_to image_tag(image, class: "thumbnail"), show_image_user_project_message_message_reply_path(@user,@project,object, image_id: image.id), remote: true %>
+        <% when Counseling %>
+          <%= link_to image_tag(image, class: "thumbnail"), show_image_user_project_counseling_counseling_reply_path(@user,@project,object, image_id: image.id), remote: true %>
         <% end %>
 
         <% if current_user.id == object.sender_id %>
@@ -20,6 +22,9 @@
                       data: {confirm: "削除してよろしいですか？"} %>
             <% when Message %>
               <%= link_to "削除", delete_image_user_project_message_message_reply_path(@user,@project,object, image_id: image.id), method: :delete, remote: true,
+                      data: {confirm: "削除してよろしいですか？"} %>
+            <% when Counseling %>
+              <%= link_to "削除", delete_image_user_project_counseling_counseling_reply_path(@user,@project,object, image_id: image.id), method: :delete, remote: true,
                       data: {confirm: "削除してよろしいですか？"} %>
             <% end %>
           </div>
