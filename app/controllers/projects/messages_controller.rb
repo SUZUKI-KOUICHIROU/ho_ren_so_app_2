@@ -42,6 +42,9 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   def create
     set_project_and_members
+    unless params[:message][:images].nil?
+      set_enable_images(params[:message][:image_enable], params[:message][:images])
+    end
     @message = @project.messages.new(message_params)
     @message.sender_id = current_user.id
     @message.sender_name = current_user.name
@@ -126,7 +129,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   def message_params
-    params.require(:message).permit(:message_detail, :title, :importance, { send_to: [] }, :send_to_all)
+    params.require(:message).permit(:message_detail, :title, :importance, { send_to: [] }, :send_to_all, images: [])
   end
 
   def my_message

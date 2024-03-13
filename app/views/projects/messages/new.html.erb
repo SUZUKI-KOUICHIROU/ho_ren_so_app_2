@@ -24,6 +24,8 @@
       <%= f.text_area :message_detail, min: 1, placeholder: "最大500文字", class: "col-11 form-control message-area mb-3",rows: "6", required: true %>
       <%= f.label :importance, "連絡重要度", class:"font-weight-bold message-title-box" %>
       <%= f.select :importance, [['低', '低'], ['中', '中'], ['高', '高']], { selected: '低' }, prompt: '重要度を選択してください', class: "col-11 form-control message-text mb-3", required: true, id: 'message_importance' %>
+      <!-- 画像添付 -->
+      <%= render partial: "/projects/images/images_form", locals: { f: f} %>
     <div class="text-center mb-3">
       <%= link_to '戻る', :back, class: "btn btn-secondary col-2" %>
       <%= f.submit "送信", class: "btn col-2 btn-outline-orange" %>
