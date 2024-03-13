@@ -53,7 +53,6 @@
                     <label for="reminderDays<%= member.id %>">の</label>
                     <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
                     <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
-                    <% logger.debug("Report Time Value: #{@project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : ''}") %>
                     <label for="timeInput<%= member.id %>">に</label>
                     <!--選択した報告リマインド日時の設定ボタン（プロジェクトメンバー用／設定済の場合）-->
                     <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>

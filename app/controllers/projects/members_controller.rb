@@ -158,13 +158,6 @@ class Projects::MembersController < Projects::BaseProjectController
         report_time: report_time
       )
 
-      # ログに出力してデバッグ
-      logger.debug "Reminder Settings for project_user_id=#{project_user.id}: "
-      logger.debug "report_frequency=#{project.report_frequency}, "
-      logger.debug "reminder_enabled=#{project_user.reminder_enabled}, "
-      logger.debug "reminder_days=#{project_user.reminder_days}, "
-      logger.debug "report_time=#{project_user.report_time}"
-
       # 設定した project_user を返す
       project_user
     end
@@ -185,14 +178,6 @@ class Projects::MembersController < Projects::BaseProjectController
       report_time: nil,
       report_reminder_time: nil
     )
-
-    # ログに出力してデバッグ
-    logger.debug "Reminder Settings Disabled for project_user_id=#{project_user.id}"
-    logger.debug "report_frequency=#{project.report_frequency}, "
-    logger.debug "reminder_enabled=#{project_user.reminder_enabled}, "
-    logger.debug "reminder_days=#{project_user.reminder_days}, "
-    logger.debug "report_time=#{project_user.report_time}"
-    logger.debug "report_reminder_time=#{project_user.report_reminder_time}"
 
     # 設定した project_user を返す
     project_user
