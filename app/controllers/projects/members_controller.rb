@@ -1,6 +1,6 @@
 class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
-  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder]
+  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder reset_reminder]
   # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
@@ -95,7 +95,27 @@ class Projects::MembersController < Projects::BaseProjectController
     process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
 
     # 3. 設定情報を返す
-    # render json: { success: true, project_user: project_user.as_json }, status: :ok
+    render json: { success: true }, status: :ok
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { success: false, error: e.message }, status: :not_found
+  rescue StandardError => e
+    render json: { success: false, error: e.message }, status: :internal_server_error
+  end
+
+  # 報告リマインダーの設定をリセットするアクション
+  def reset_reminder
+    user_id = params[:user_id].to_i
+    project_id = params[:project_id].to_i
+    member_id = params[:member_id].to_i
+
+    # 1. ユーザーとプロジェクトを取得
+    user, project = find_user_and_project(user_id, project_id)
+    return unless user && project
+
+    # 2. リマインダー用の各解除処理を実行
+    process_disable_reminder(project, member_id)
+
+    # 3. 設定情報を返す
     render json: { success: true }, status: :ok
   rescue ActiveRecord::RecordNotFound => e
     render json: { success: false, error: e.message }, status: :not_found
@@ -122,7 +142,7 @@ class Projects::MembersController < Projects::BaseProjectController
     nil
   end
 
-  # リマインダー用の各処理を実行するメソッド（報告リマインド用）
+  # リマインダー設定用の各処理を実行するメソッド（報告リマインド用）
   def process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
     Time.use_zone('Asia/Tokyo') do
       project_user = find_project_user(project, member_id)
@@ -140,6 +160,7 @@ class Projects::MembersController < Projects::BaseProjectController
 
       # ログに出力してデバッグ
       logger.debug "Reminder Settings for project_user_id=#{project_user.id}: "
+      logger.debug "report_frequency=#{project.report_frequency}, "
       logger.debug "reminder_enabled=#{project_user.reminder_enabled}, "
       logger.debug "reminder_days=#{project_user.reminder_days}, "
       logger.debug "report_time=#{project_user.report_time}"
@@ -147,5 +168,33 @@ class Projects::MembersController < Projects::BaseProjectController
       # 設定した project_user を返す
       project_user
     end
+  end
+
+  # リマインダー設定の解除処理を実行するメソッド（報告リマインド用）
+  def process_disable_reminder(project, member_id)
+    project_user = find_project_user(project, member_id)
+    return unless project_user
+
+    # リマインダージョブをキューから削除
+    project_user.dequeue_report_reminder # ※挙動にはSidekiq＋Redisの導入＆引数記述が必要※
+
+    # リマインダーの設定情報を解除
+    project_user.update!(
+      reminder_enabled: false,
+      reminder_days: nil,
+      report_time: nil,
+      report_reminder_time: nil
+    )
+
+    # ログに出力してデバッグ
+    logger.debug "Reminder Settings Disabled for project_user_id=#{project_user.id}"
+    logger.debug "report_frequency=#{project.report_frequency}, "
+    logger.debug "reminder_enabled=#{project_user.reminder_enabled}, "
+    logger.debug "reminder_days=#{project_user.reminder_days}, "
+    logger.debug "report_time=#{project_user.report_time}"
+    logger.debug "report_reminder_time=#{project_user.report_reminder_time}"
+
+    # 設定した project_user を返す
+    project_user
   end
 end

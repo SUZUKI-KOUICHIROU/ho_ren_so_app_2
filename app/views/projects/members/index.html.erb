@@ -49,14 +49,7 @@
                   </div>
                   <div class="form-group reminder-setting">
                     <!--報告リマインドの日にち選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
-                    <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>">
-                    <% logger.debug("Report Frequency: #{@report_frequency}") %>
-                      <% (0..(@report_frequency-1)).each do |i| %>
-                        <% logger.debug("Reminder Days: #{i}, Project User Reminder Days: #{@project_user.reminder_days}") %>
-                        <% selected = i == @project_user.reminder_days ? 'selected' : '' %>
-                        <option value="<%= i %>" <%= selected %>><%= i === 0 ? '当日' : i.to_s + '日前' %></option>
-                      <% end %>
-                    </select>
+                    <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>"></select>
                     <label for="reminderDays<%= member.id %>">の</label>
                     <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
                     <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
@@ -96,13 +89,7 @@
                     </div>
                     <div class="form-group reminder-setting">
                       <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
-                      <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>">
-                      <% logger.debug("Report Frequency: #{@report_frequency}") %>
-                        <% (0..(@report_frequency-1)).each do |i| %>
-                          <% selected = i == @project_user.reminder_days ? 'selected' : '' %>
-                          <option value="<%= i %>" <%= selected %>><%= i === 0 ? '当日' : i.to_s + '日前' %></option>
-                        <% end %>
-                      </select>
+                      <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>"></select>
                       <label for="reminderDays<%= member.id %>">の</label>
                       <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
                       <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
