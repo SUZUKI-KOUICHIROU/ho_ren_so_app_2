@@ -10,19 +10,23 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     @monthly_reports = Report.monthly_reports_for(@project)
     @weekly_reports = Report.weekly_reports_for(@project)
-    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
+    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
     if params[:report_type] == 'monthly'
-      @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
+      @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+      @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+      @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
       { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
     elsif params[:report_type] == 'weekly'
-      @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:page]).per(10)
+      @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+      @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
       { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
+    end
+    respond_to do |format|
+      format.html
+      format.js
     end
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
@@ -32,8 +36,9 @@ class Projects::ReportsController < Projects::BaseProjectController
         flash.now[:danger] = '検索結果が見つかりませんでした。'
         return
       end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
+      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
     end
     render :index
   end

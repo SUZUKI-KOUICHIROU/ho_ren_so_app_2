@@ -1,0 +1,3 @@
+$("#you-reports-container").html("<%= escape_javascript(render partial: 'projects/reports/you_reports', locals: { messages: @you_reports }) %>");
+$("#reports-container").html("<%= escape_javascript(render partial: 'projects/reports/reports', locals: { messages: @reports }) %>");
+$("#all-reports-container").html("<%= escape_javascript(render partial: 'projects/reports/all_reports', locals: { messages: @all_reports }) %>");

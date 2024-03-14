@@ -1,0 +1,111 @@
+<div class="box-report-index">
+  <% if @all_reports.present? %>
+    <div class="d-flex justify-content-start mb-3">
+      <!-- 今月の報告ボタン -->
+      <%= link_to '今月の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'monthly'), class: "btn btn-outline-orange mx-2" %>
+      <!-- 今週の報告ボタン -->
+      <%= link_to '今週の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'weekly'), class: "btn btn-outline-orange mx-2" %>
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+      <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
+        <%= form.hidden_field :search_type, value: "all-report" %>                
+        
+        <%= form.label :created_at, "報告日：", class: "mb-0" %>
+        <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+        
+        <%= form.label :title, "件名：", class: "mb-0" %>
+        <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
+
+        <%= form.label :sender_name, "報告者：", class: "mb-0" %>
+        <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
+
+        <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+        <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+        
+        <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+      <% end %>
+    </div>            
+    <div class="table-header">
+      <% if current_user.id == @project.leader_id %>
+        <div class="subject-name col-md-3">
+          <%=@project.format.title%>
+        </div>
+        <div class="reported-date col-md-3">
+          報告日
+        </div>
+        <div class="report-confirmer col-md-3">
+          報告者
+        </div>
+        <div class="report_read col-md-2.5">
+          報告確認状況
+        </div>
+      <% else %>
+        <div class="subject-name col-md-4">
+          <%=@project.format.title%>
+        </div>
+        <div class="reported-date col-md-4">
+          報告日
+        </div>
+        <div class="report-confirmer col-md-4">
+          報告者
+        </div>
+        <%# <div class="report-action">
+          アクション
+        </div> %>
+      <% end %>
+    </div>
+    <div class="table-body">
+      <% line_num = 0%>
+      <% @all_reports.each do |report|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
+          <% if current_user.id == @project.leader_id %>
+            <div class="subject-name col-md-3">
+              <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+            </div>
+            <div class="reported-date col-md-3">
+              <%= l(report.created_at, format: :long) %>
+            </div>
+            <div class="report-confirmer col-md-3">
+              <%= report.sender_name %>
+            </div>
+            <% if report.report_read_flag == true %>
+              <div class="report_read col-md-2.5">
+                <p>既読</p>
+              </div>
+            <% else %>
+              <div class="report_read col-md-2.5 text-danger font-weight-bold" >
+                <p>未読</p>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="subject-name col-md-4">
+              <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+            </div>
+            <div class="reported-date col-md-4">
+              <%= l(report.created_at, format: :long) %>
+            </div>
+            <div class="report-confirmer col-md-4">
+              <%= report.sender_name %>
+            </div>
+            <%# <div class="report-action"> %>
+              <%# link_to "編集", edit_user_project_report_path(@user, @project, report), class: "btn btn-outline-orange" %>
+              <%# link_to "削除", user_project_report_path(@user, @project, report), method: :delete, data: { confirm: "投稿された報告を削除してよろしいですか？" }, class: "btn btn-danger" %>
+            <%# </div> %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else @all_reports.blank?%>
+    <div class="d-flex justify-content-end">
+      <P class="report-none">全メンバーの報告履歴がありません</P>
+    </div>
+  <% end %>
+  <div class="d-flex">
+    <% if @all_reports.present?%>
+      <div class="paginate">
+        <%= paginate @all_reports, param_name: report_page('all-report'), remote: true %>
+      </div>
+    <% end %>
+  </div>
+</div>
