@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_17_142430) do
+ActiveRecord::Schema.define(version: 2024_02_02_134449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,9 @@ ActiveRecord::Schema.define(version: 2023_12_17_142430) do
     t.datetime "updated_at", null: false
     t.boolean "member_expulsion", default: false, null: false
     t.datetime "report_reminder_time"
+    t.boolean "reminder_enabled", default: false
+    t.integer "reminder_days"
+    t.time "report_time"
     t.index ["project_id"], name: "index_project_users_on_project_id"
     t.index ["user_id"], name: "index_project_users_on_user_id"
   end

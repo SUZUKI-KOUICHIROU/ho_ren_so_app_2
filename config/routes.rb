@@ -100,7 +100,8 @@ Rails.application.routes.draw do
   end
 
   # 報告リマインド用アクションを追加
-  post '/projects/members/send_reminder', to: 'projects/members#send_reminder'
+  post '/projects/members/send_reminder', to: 'projects/members#send_reminder' # 報告リマインドを設定
+  post '/projects/members/reset_reminder', to: 'projects/members#reset_reminder' # 報告リマインド設定をリセット
 
   #letter_openerを追加
   if Rails.env.development?
