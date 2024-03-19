@@ -8,37 +8,16 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @monthly_reports = Report.monthly_reports_for(@project)
-    @weekly_reports = Report.weekly_reports_for(@project)
-    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
-    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
-    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+    monthly_reports
     if params[:report_type] == 'monthly'
-      @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
-      @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
-      @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
-      { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
+      monthly_reports
     elsif params[:report_type] == 'weekly'
-      @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
-      @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
-      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
-      { reports: @reports, you_reports: @you_reports, all_reports: @all_reports }
+      weekly_reports
     end
+    reports_by_search
     respond_to do |format|
       format.html
       format.js
-    end
-    if params[:search].present? and params[:search] != ""
-      @results = Report.search(report_search_params)
-      if @results.present?
-        @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
-      else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'
-        return
-      end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:reports_page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
-      @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
     end
     render :index
   end
@@ -210,6 +189,37 @@ class Projects::ReportsController < Projects::BaseProjectController
       answers_attributes: [
         :id, :question_type, :question_id, :value, array_value: []
       ])
+  end
+
+  # 報告一覧デフォルト表示、今月の報告
+  def monthly_reports
+    @monthly_reports = Report.monthly_reports_for(@project)
+    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+  end
+  
+  # 報告一覧、今週の報告
+  def weekly_reports
+    @weekly_reports = Report.weekly_reports_for(@project)
+    @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+    @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+    @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+  end
+
+  # 報告検索
+  def reports_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Report.search(report_search_params)
+      if @results.present?
+        @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
+        @you_reports = @you_reports.where(id: @report_ids)
+        @reports = @reports.where(id: @report_ids)
+        @all_reports = @all_reports.where(id: @report_ids)
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+      end
+    end
   end
 
   def report_search_params
