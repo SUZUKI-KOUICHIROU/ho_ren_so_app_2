@@ -11,13 +11,7 @@
         <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
       
         <%= form.submit "検索", class: "btn btn-outline-orange" %>
-      <% end %>
-      <%#= form_with url: "#", method: :get, local: true do |form| %>
-        <%#= form.hidden_field :search_type, :value => "you-send" %>
-        <%#= form.label :search, "件名検索：", class: "mb-0" %>
-        <%#= form.text_field :search, placeholder: "キーワードを入力", class: "search-box" %>
-        <%#= form.submit "検索", class: "btn btn-outline-orange" %>
-      <%# end %>
+      <% end %>      
     </div>
     <div class="table-header">
       <div class="subject-name">

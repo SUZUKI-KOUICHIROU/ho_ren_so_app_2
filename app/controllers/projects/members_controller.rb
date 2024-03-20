@@ -1,6 +1,6 @@
 class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
-  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder]
+  before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder reset_reminder]
   # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
@@ -27,6 +27,9 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 報告頻度の取得（報告リマインド日にち選択用）
     @report_frequency = @project.report_frequency
+
+    # プロジェクトユーザーの取得（報告リマインド設定表示用）
+    @project_user = find_project_user(@project, @user.id)
 
     @members =
       if params[:search].present?
@@ -90,6 +93,29 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 2. リマインダー用の各処理を実行
     process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
+
+    # 3. 設定情報を返す
+    render json: { success: true }, status: :ok
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { success: false, error: e.message }, status: :not_found
+  rescue StandardError => e
+    render json: { success: false, error: e.message }, status: :internal_server_error
+  end
+
+  # 報告リマインダーの設定をリセットするアクション
+  def reset_reminder
+    user_id = params[:user_id].to_i
+    project_id = params[:project_id].to_i
+    member_id = params[:member_id].to_i
+
+    # 1. ユーザーとプロジェクトを取得
+    user, project = find_user_and_project(user_id, project_id)
+    return unless user && project
+
+    # 2. リマインダー用の各解除処理を実行
+    process_disable_reminder(project, member_id)
+
+    # 3. 設定情報を返す
     render json: { success: true }, status: :ok
   rescue ActiveRecord::RecordNotFound => e
     render json: { success: false, error: e.message }, status: :not_found
@@ -116,7 +142,7 @@ class Projects::MembersController < Projects::BaseProjectController
     nil
   end
 
-  # リマインダー用の各処理を実行するメソッド（報告リマインド用）
+  # リマインダー設定用の各処理を実行するメソッド（報告リマインド用）
   def process_report_reminder(project, member_id, report_frequency, reminder_days, report_time)
     Time.use_zone('Asia/Tokyo') do
       project_user = find_project_user(project, member_id)
@@ -124,6 +150,36 @@ class Projects::MembersController < Projects::BaseProjectController
 
       # 指定日時にリマインドジョブをキューに追加
       project_user.queue_report_reminder(project.id, member_id, report_frequency, reminder_days, report_time)
+
+      # リマインダーの設定情報を保存
+      project_user.update!(
+        reminder_enabled: true,
+        reminder_days: reminder_days,
+        report_time: report_time
+      )
+
+      # 設定した project_user を返す
+      project_user
     end
+  end
+
+  # リマインダー設定の解除処理を実行するメソッド（報告リマインド用）
+  def process_disable_reminder(project, member_id)
+    project_user = find_project_user(project, member_id)
+    return unless project_user
+
+    # リマインダージョブをキューから削除
+    project_user.dequeue_report_reminder # ※挙動にはSidekiq＋Redisの導入＆引数記述が必要※
+
+    # リマインダーの設定情報を解除
+    project_user.update!(
+      reminder_enabled: false,
+      reminder_days: nil,
+      report_time: nil,
+      report_reminder_time: nil
+    )
+
+    # 設定した project_user を返す
+    project_user
   end
 end

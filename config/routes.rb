@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         resources :messages do
           member do
             patch 'read'
+            get 'history'
           end
           resources :message_replys, only: %i[edit create update destroy] do
             member do
@@ -43,7 +44,7 @@ Rails.application.routes.draw do
         end
         resources :counselings do
           member do
-            patch 'read'
+            patch 'read'            
           end
           resources :counseling_replys, only: %i[edit  create update destroy] do
             member do
@@ -99,7 +100,8 @@ Rails.application.routes.draw do
   end
 
   # 報告リマインド用アクションを追加
-  post '/projects/members/send_reminder', to: 'projects/members#send_reminder'
+  post '/projects/members/send_reminder', to: 'projects/members#send_reminder' # 報告リマインドを設定
+  post '/projects/members/reset_reminder', to: 'projects/members#reset_reminder' # 報告リマインド設定をリセット
 
   #letter_openerを追加
   if Rails.env.development?

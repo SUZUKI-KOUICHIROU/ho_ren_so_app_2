@@ -49,6 +49,14 @@ class Message < ApplicationRecord
     end
   end
 
+  # 月次連絡を取得する
+  def self.monthly_messages_for(project)
+    start_of_month = Time.zone.now.beginning_of_month
+    end_of_month = Time.zone.now.end_of_month
+    Message.where(project: project, created_at: start_of_month..end_of_month)
+  end
+
+  # 連絡の日付とキーワードの検索
   scope :search, ->(search_params) do
     return all if search_params.blank?
 
@@ -65,10 +73,12 @@ class Message < ApplicationRecord
     messages
   end
 
-  scope :created_at, ->(created_at) { where('created_at BETWEEN ? AND ?', "#{created_at} 00:00:00", "#{created_at} 23:59:59") }
+  scope :created_at, ->(created_at) {
+    where("created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo' BETWEEN ? AND ?", "#{created_at} 00:00:00", "#{created_at} 23:59:59")
+  }
   scope :keywords_like, ->(keywords) {
-                          where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
-                        }
+    where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
+  }
 
   private
 
