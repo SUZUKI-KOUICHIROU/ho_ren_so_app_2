@@ -151,6 +151,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @display_days = params[:display_days].presence || "percent"
     @week_first_day, @week_last_day = calculate_week_dates
     @report_days = @project.report_deadlines.where(day: @week_first_day..@week_last_day)
+    weekly_graph_daily_data # 報告日ごとのデータロード
+    weekly_graph_user_data # 報告者ごとのデータロード
     if @project.reports.where(report_day: @week_first_day..@week_last_day).empty?
       flash.now[:notice] = "#{@week_first_day.strftime('%-m月%-d日')}～#{@week_last_day.strftime('%-m月%-d日')}の報告はありません。"
     end
@@ -166,6 +168,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @first_day, @last_day = calculate_month_dates
     @month_field_value = @first_day.strftime("%Y-%m-%d")
     @report_days = @project.report_deadlines.where(day: @first_day..@last_day)
+    monthly_graph_daily_data # 報告日ごとのデータロード
+    monthly_graph_user_data # 報告者ごとのデータロード
     month_no_report_noitce
   end
 
@@ -303,6 +307,78 @@ class Projects::ReportsController < Projects::BaseProjectController
         flash.now[:notice] = "#{@first_day.strftime('%-m月%-d日')}～#{@last_day.strftime('%-m月%-d日')}の報告はありません。"
       else
         flash.now[:notice] = "#{@first_day.strftime('%-m月')}の報告はありません。"
+      end
+    end
+  end
+
+  # １週間集計、グラフデータ(報告日別)
+  def weekly_graph_daily_data
+    @report_data = {}
+    @week_first_day.upto(@week_last_day) do |date|
+      reported_users = 0
+      @users.each do |user|
+        user_report = user.reports.find_by(project_id: @project.id, report_day: date)
+        if user_report.present? && user_report.created_at.to_date == date
+          reported_users += 1
+        end
+      end
+      total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
+      report_percentage = reported_users.to_f / total_count * 100
+      @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
+    end
+  end
+
+  # １週間集計、グラフデータ(報告者別)
+  def weekly_graph_user_data
+    @report_user_data = {}
+    @users.each do |user|
+      reported_days = @project.reports
+                              .joins(user: :project_users)
+                              .where(report_day: @week_first_day..@week_last_day, user_id: user.id, project_users: { member_expulsion: false })
+                              .pluck(:report_day).uniq
+      valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day }
+      total_days = @report_days.count
+      if total_days > 0
+        report_percentage = valid_reported_days.count * 100 / total_days
+        @report_user_data[user.name] = report_percentage.round(2) # 小数点第二位までの割合
+      else
+        @report_user_data[user.name] = 0
+      end
+    end
+  end
+
+  # １か月集計、グラフデータ(報告日別)
+  def monthly_graph_daily_data
+    @report_data = {}
+    @first_day.upto(@last_day) do |date|
+      reported_users = 0
+      @users.each do |user|
+        user_report = user.reports.find_by(project_id: @project.id, report_day: date)
+        if user_report.present? && user_report.created_at.to_date == date
+          reported_users += 1
+        end
+      end
+      total_count = @project.users.where(project_users: { member_expulsion: false }).count # この日の全ユーザー数を計算
+      report_percentage = reported_users.to_f / total_count * 100
+      @report_data[date] = report_percentage.round(2) # 小数点第二位までの割合
+    end
+  end
+
+  # １か月集計、グラフデータ(報告者別)
+  def monthly_graph_user_data
+    @report_user_data = {}
+    @users.each do |user|
+      reported_days = @project.reports
+                              .joins(user: :project_users)
+                              .where(report_day: @first_day..@last_day, user_id: user.id, project_users: { member_expulsion: false })
+                              .pluck(:report_day).uniq
+      valid_reported_days = reported_days.select { |day| user.reports.find_by(report_day: day).created_at.to_date == day }
+      total_days = @report_days.count
+      if total_days > 0
+        report_percentage = valid_reported_days.count * 100 / total_days
+        @report_user_data[user.name] = report_percentage.round(2) # 小数点第二位までの割合
+      else
+        @report_user_data[user.name] = 0
       end
     end
   end

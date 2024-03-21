@@ -1,0 +1,104 @@
+<% provide(:title, '連絡履歴') %>
+
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar', locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="mt-3 mr-4 ml-4">
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
+  <h1 class="text-center">連絡履歴</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "連絡一覧", user_project_messages_path, class: "btn btn-outline-orange" %>
+  </div>
+  <div class="d-flex justify-content-start mb-3">
+    <% if params[:search].present? && params[:search] != "" %>
+      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv,  search: @messages_by_search ), class: "btn btn-outline-orange" %>
+    <% elsif params[:month].present? %>
+      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>    
+    <% else %>    
+      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv), class: "btn btn-outline-orange"  %>
+    <% end %>
+  </div>
+  <% if @messages_history.present? %>  
+    <div class="d-flex justify-content-between mb-3">
+      <div class="align-self-end">
+        <%= form_with url: history_user_project_message_path(current_user, @project), method: :get, local: true do |f| %>
+          <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box" %>
+          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+        <% end %>
+      </div>
+      <div class="align-self-end">    
+        <%= form_with scope: :search, url: history_user_project_message_path(current_user,@project), method: :get, local: true do |form| %>
+          <%= form.hidden_field :search_type, :value => "message" %>
+          
+          <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
+          <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+
+          <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+        
+          <%= form.submit "検索", class: "btn btn-outline-orange" %>
+          
+        <% end %>
+      </div>
+    </div>
+    <div class="table-header">
+      <div class="message-date">
+        連絡日
+      </div>
+      <div class="subject-name">
+        件名
+      </div>      
+      <div class="message-person">
+        連絡者
+      </div>
+      <div class="message-person">
+        送信相手
+      </div>
+      <div class="message-action">
+        連絡確認者/連絡未確認者
+      </div>
+    </div>
+    <div class="table-body">
+      <% line_num = 0%>
+      <% @messages_history.each do |message|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+          <div class="message-date">
+            <%= l(message.created_at, format: :long) %>
+          </div>
+          <div class="subject-name">
+            <% if message.sender_id == current_user.id || message.message_confirmers.exists?(message_confirmer_id: current_user.id) %>            
+              <%= link_to message.title, user_project_message_path(@user, @project, message), class: "message-detail-link" %>              
+            <% else %>
+              <%= message.title  %>              
+            <% end %>         
+          </div>
+          <div class="message-person">
+            <%= message.sender_name %>
+          </div>
+          <div class="message-person">                     
+            <%= get_message_recipients(message.id, @members) %>
+          </div>
+          <div class="message-action">                      
+            <%= message.checked_members.count %>人/
+            <% count = @recipient_count[message.id] %>
+            <%= "#{count}人" if count.present? %>
+          </div>         
+        </div>
+      <% end %>
+    </div>
+  <% else @messages_history.blank?%>
+    <P>連絡履歴がありません。</P>
+  <% end %>
+  <div class="d-flex">
+    <% if @messages_history.present?%>
+      <div class="paginate">
+        <%= paginate @messages_history, param_name: message_page('message'), local: true %>
+      </div>
+    <% end %>
+    <div class="ml-auto">
+      <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+    </div>
+  </div>    
+</div>

@@ -5,7 +5,6 @@
 <% provide(:title, "#{@project.name}_連絡") %>
 <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">連絡編集</h1>
-<%#= form_with url: user_project_message_path(current_user, @project), method: :patch do |f| %>
 <%= form_with(model: @message, url: user_project_message_path(current_user, @project), local: true, method: :patch) do |f| %>
   <div class="col-6 container offset-3 box-message-format-edit pb-2 my-5">
     <%= f.label :sent_to, "送信対象", class:"font-weight-bold message-title-box" %>

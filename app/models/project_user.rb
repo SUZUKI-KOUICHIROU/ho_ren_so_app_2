@@ -90,4 +90,16 @@ class ProjectUser < ApplicationRecord
       Rails.logger.warn "Invalid report_reminder_datetime: #{reminder_datetime}. #{error_message}"
     end
   end
+
+  # 報告リマインドメール送信ジョブをキューから削除するメソッド
+  def dequeue_report_reminder # （考察：実装時には queue_report_reminder と同じ引数を要する可能性アリ）
+    # キューから削除する処理を追加
+
+    # （考察：Sidekiq＋Redisを導入後、例えば以下のような記述になる可能性アリ）
+    # Sidekiq::ScheduledSet.new.each do |job|
+    #   job.delete if job.args.include?(self.id)
+    # end
+
+    # 【注意】別ファイルにて、Sidekiq＋RedisをDocker上で導入する実装が少なくとも必要。
+  end
 end

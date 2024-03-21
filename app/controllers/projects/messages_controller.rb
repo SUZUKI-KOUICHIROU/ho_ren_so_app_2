@@ -1,16 +1,16 @@
 class Projects::MessagesController < Projects::BaseProjectController
   include MessageOperations
+  require 'csv'
   before_action :project_authorization
   before_action :my_message, only: %i[show]
 
   def index
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @projects = @user.projects.all
     @messages = all_messages
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
-    count_recipients
+    count_recipients(@messages)
     messages_by_search
     respond_to do |format|
       format.html
@@ -78,30 +78,77 @@ class Projects::MessagesController < Projects::BaseProjectController
     redirect_to user_project_messages_path(@user, @project)
   end
 
+  # 連絡履歴
+  def history
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @message = Message.find(params[:id])
+    @messages_history = all_messages_history_month
+    @messages_by_search = message_search_params.to_h
+    count_recipients(@messages_history)
+    messages_by_search
+    all_messages_history_month
+    @messages = @messages_history
+    @members = @project.users.all
+    messages_by_search
+    # formatをhtmlとCSVに振り分ける
+    respond_to do |format|
+      format.html
+      # rubocopを一時的に無効にする。
+      # rubocop:disable Lint/UnusedBlockArgument
+      format.csv do |csv|
+        send_messages_csv(@messages_history)
+      end
+      # rubocop:enable Lint/UnusedBlockArgument
+    end
+  end
+
   private
 
   # 全員の連絡
   def all_messages
-    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(5)
+    Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)
   end
 
   # あなたへの連絡
   def you_addressee_messages
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    @project.messages.where(id: you_addressee_message_ids).order(created_at: 'DESC').page(params[:you_addressee_messages_page]).per(5)
+    Message.monthly_messages_for(@project).where(id: you_addressee_message_ids).order(created_at: 'DESC')
+           .page(params[:you_addressee_messages_page]).per(5)
   end
 
   # あなたが送った連絡
   def you_send_messages
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    @project.messages.where(id: you_send_message_ids).order(created_at: 'DESC').page(params[:you_send_messages_page]).per(5)
+    Message.monthly_messages_for(@project).where(id: you_send_message_ids).order(created_at: 'DESC')
+           .page(params[:you_addressee_messages_page]).per(5)
   end
 
-  # 連絡を送った人数
-  def count_recipients
+  # 全連絡
+  def all_messages_history
+    @project.messages.all.order(created_at: 'DESC').page(params[:messages_page]).per(30)
+  end
+
+  # 連絡履歴の月検索
+  def all_messages_history_month
+    selected_month = params[:month]
+
+    if selected_month.present?
+      start_date = Date.parse("#{selected_month}-01")
+      end_date = start_date.end_of_month.end_of_day
+      messages = @project.messages.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:messages_page]).per(30)
+    else
+      messages = all_messages_history
+    end
+
+    messages
+  end
+
+  # 連絡した相手をcount
+  def count_recipients(messages)
     set_project_and_members
     @recipient_count = {}
-    @messages.each do |message|
+    messages.each do |message|
       @recipient_count[message.id] = message.message_confirmers.count
     end
   end
@@ -113,6 +160,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       if @results.present?
         @message_ids = @results.pluck(:id).uniq
         @messages = all_messages.where(id: @message_ids)
+        @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
       else
@@ -179,5 +227,26 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:danger] = "送信相手を選択してください。"
       render :edit
     end
+  end
+
+  # CSVエクスポート
+  def send_messages_csv(messages)
+    bom = "\uFEFF"
+    csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+      column_names = %w(送信者名 タイトル 送信日 受信者 重用度)
+      csv << column_names
+      messages.each do |message|
+        recipient_names = view_context.get_message_recipients(message.id, @members)
+        column_values = [
+          message.sender_name,
+          message.title,
+          message.created_at.strftime("%m月%d日 %H:%M"),
+          recipient_names,
+          message.importance,
+        ]
+        csv << column_values
+      end
+    end
+    send_data(csv_data, filename: "連絡一覧.csv")
   end
 end
