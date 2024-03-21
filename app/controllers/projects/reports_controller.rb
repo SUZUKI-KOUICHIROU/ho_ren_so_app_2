@@ -2,8 +2,6 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log]
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
   def index
     set_project_and_members
     @first_question = @project.questions.first
@@ -21,7 +19,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
     render :index
   end
-  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -198,7 +195,7 @@ class Projects::ReportsController < Projects::BaseProjectController
     @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
     @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
   end
-  
+
   # 報告一覧、今週の報告
   def weekly_reports
     @weekly_reports = Report.weekly_reports_for(@project)

@@ -1,5 +1,4 @@
 module Projects::ReportsHelper
-  
   # タブごとのページ設定
   def report_page(tab)
     page = {
