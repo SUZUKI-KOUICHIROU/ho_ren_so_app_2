@@ -12,6 +12,8 @@
       <div class="card-text"><%= simple_format(@message.message_detail) %></div>
       <h3 class="font-weight-bold message-title-box m-3 d-inline">連絡重要度</h3>
       <div class="card-text"><%= simple_format(@message.importance) %></div>
+      <!-- 添付画像の表示 -->
+      <%= render "/projects/images/show_image", object: @message %>
       <div id="read_button">
         <%= render partial: 'read' %>
       </div>  
@@ -36,3 +38,6 @@
   <!-- 返信フォームの表示 -->
   <%= render "/projects/message_replys/message_reply_form" %>
 </div>
+
+<!-- モーダルウィンドウ表示 -->
+<div id="show_image" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
