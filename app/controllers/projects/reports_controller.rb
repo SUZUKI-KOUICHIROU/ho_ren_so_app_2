@@ -58,6 +58,9 @@ class Projects::ReportsController < Projects::BaseProjectController
   def create
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
+    unless params[:report][:images].nil?
+      set_enable_images(params[:report][:image_enable], params[:report][:images])
+    end
     @report = @project.reports.new(create_reports_params)
     @report.sender_id = @user.id
     @report.sender_name = @user.name
@@ -80,7 +83,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     @user = current_user
     @project = Project.get_report_questions_includes(params[:project_id])
     @report = Report.includes(:answers).find(params[:id])
-
     ActiveRecord::Base.transaction do
       # rubocop:disable Lint/UnusedBlockArgument
       create_reports_params[:answers_attributes].each do |key, answer|
@@ -189,7 +191,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     params.require(:report).permit(:id, :user_id, :project_id, :title, :report_day,
       answers_attributes: [
         :id, :question_type, :question_id, :value, array_value: []
-      ])
+      ],
+      images: [])
   end
 
   # 報告一覧デフォルト表示、今月の報告

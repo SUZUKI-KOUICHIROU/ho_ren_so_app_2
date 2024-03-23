@@ -4,6 +4,7 @@ class Report < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :report_confirmers, dependent: :destroy
   has_many :report_replies, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
 
   attr_accessor :leader_id
 
