@@ -4,6 +4,7 @@ FactoryBot.define do
     association :project
 
     member_expulsion { false } # member_expulsion のデフォルト値を指定
+    report_reminder_time { nil } # report_reminder_time のデフォルト値を指定
   end
 end
 

@@ -13,8 +13,12 @@ class ProjectUser < ApplicationRecord
 
   # 報告リマインダーに対し、設定ボタンの押下日＆選択時刻をカラム保存するメソッド
   def set_report_reminder_time(report_time)
-    report_time = Time.zone.parse(report_time)
-    self.report_reminder_time = report_time.in_time_zone('Asia/Tokyo')
+    if report_time.present?
+      report_time = Time.zone.parse(report_time)
+      self.report_reminder_time = report_time.in_time_zone('Asia/Tokyo')
+    else
+      raise ArgumentError, "Invalid report time: #{report_time}"
+    end
 
     save!
 
