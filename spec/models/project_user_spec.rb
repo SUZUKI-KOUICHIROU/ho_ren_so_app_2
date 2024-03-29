@@ -40,7 +40,7 @@ RSpec.describe ProjectUser, type: :model do
   describe 'set_report_reminder_timeメソッドのテスト' do
     let(:project_user) { FactoryBot.create(:project_user) }
 
-    context '有効な報告時刻を指定した場合' do
+    context '有効なリマインド時刻を指定した場合' do
       it '報告リマインダー時刻を正しく設定できる' do
         report_time = Time.zone.now.to_s # 文字列に変換
         project_user.set_report_reminder_time(report_time)
@@ -53,10 +53,31 @@ RSpec.describe ProjectUser, type: :model do
       end
     end
 
-    context '無効な報告時刻を指定した場合' do
-      it 'report_timeが空の場合は報告時刻を設定できない' do
-        invalid_report_time = nil # 無効な報告時刻の例
+    context '無効なリマインド時刻を指定した場合' do
+      it 'report_timeが空の場合はリマインド時刻を設定できない' do
+        invalid_report_time = nil # 空のリマインド時刻を設定
         expect { project_user.set_report_reminder_time(invalid_report_time) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+  describe 'calculate_reminder_datetimeメソッドのテスト' do
+    let(:project_user) { FactoryBot.create(:project_user) }
+    let(:reminder_days) { 1 } # テスト選択日数を1（日前）に設定
+    let(:report_time) { "09:00:00" } # テスト選択時刻を午前9時に設定
+    let(:next_report_date) { Date.current + 1 } # テスト次回報告日を翌日に設定
+
+    context '選択日数が正の整数の場合' do
+      it '選択日数分を差し引いた日時が指定日時として設定されること' do
+        reminder_datetime = project_user.calculate_reminder_datetime(reminder_days, report_time, next_report_date)
+        expect(reminder_datetime).to eq(Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0) - 1.day)
+      end
+    end
+
+    context '選択日数が0の場合' do
+      it '指定日時がそのまま設定されること' do
+        reminder_datetime = project_user.calculate_reminder_datetime(0, report_time, next_report_date)
+        expect(reminder_datetime).to eq(Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0))
       end
     end
   end

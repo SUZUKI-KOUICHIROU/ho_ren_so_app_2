@@ -3,8 +3,11 @@ FactoryBot.define do
     association :user, factory: :unique_user
     association :project
 
-    member_expulsion { false } # member_expulsion のデフォルト値を指定
-    report_reminder_time { nil } # report_reminder_time のデフォルト値を指定
+    member_expulsion { false } # メンバー除外カラムのデフォルト値を指定
+    report_reminder_time { nil } # 設定日＆選択時刻カラムのデフォルト値を指定
+    reminder_enabled { false } # リマインダー有効無効カラムのデフォルト値を指定
+    reminder_days { nil } # 選択日数カラムのデフォルト値を指定
+    report_time { nil } # 選択時刻カラムのデフォルト値を指定
   end
 end
 
