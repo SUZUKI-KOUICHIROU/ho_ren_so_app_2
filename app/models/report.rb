@@ -21,16 +21,8 @@ class Report < ApplicationRecord
 
     reports = all
 
-    if search_params[:title].present?
-      reports = reports.title_like(search_params[:title])
-    end
-
     if search_params[:created_at].present?
       reports = reports.created_at(search_params[:created_at])
-    end
-
-    if search_params[:sender_name].present?
-      reports = reports.sender_name_like(search_params[:sender_name])
     end
 
     if search_params[:keywords].present?
@@ -40,11 +32,10 @@ class Report < ApplicationRecord
     reports
   end
 
-  scope :title_like, ->(title) { where('title LIKE ?', "%#{title}%") }
   scope :created_at, ->(created_at) { where('created_at BETWEEN ? AND ?', "#{created_at} 00:00:00", "#{created_at} 23:59:59") }
-  scope :sender_name_like, ->(sender_name) { where('sender_name LIKE ?', "%#{sender_name}%") }
   scope :keywords_like, ->(keywords) {
-    joins(:answers).where('answers.value LIKE ? OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE ?', "%#{keywords}%", "%#{keywords}%")
+    left_joins(:answers) # `answers`テーブルとのLEFT JOINを使用することで、answersテーブルにエントリがないreportsも検索結果に含めることができる。
+    .where('title LIKE :keyword OR sender_name LIKE :keyword OR answers.value LIKE :keyword OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE :keyword', keyword: "%#{keywords}%")
   }
 
   # プロジェクトの報告集計対象のユーザーidを取得

@@ -13,14 +13,8 @@
         <%= form.label :created_at, "報告日：", class: "mb-0" %>
         <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
         
-        <%= form.label :title, "件名：", class: "mb-0" %>
-        <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
-
-        <%= form.label :sender_name, "報告者：", class: "mb-0" %>
-        <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
-
         <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-        <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
         
         <%= form.submit "検索", class: "btn btn-outline-orange" %>            
       <% end %>
@@ -107,5 +101,8 @@
         <%= paginate @reports, param_name: report_page('report'), remote: true %>
       </div>
     <% end %>
+    <div class="ml-auto">
+      <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+    </div>
   </div>
 </div>

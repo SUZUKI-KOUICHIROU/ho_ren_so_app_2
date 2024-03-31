@@ -13,7 +13,7 @@
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">報告一覧</h1>
   <div class="d-flex justify-content-end mb-3">
-    <%= link_to "報告履歴", '#', class: "btn btn-outline-orange" %>
+    <%= link_to "報告履歴", history_user_project_report_path(id: @project.id, project_id: @project.id, user_id: current_user.id), class: "btn btn-outline-orange" %>
   </div>
   <div class="card">
     <div class="card-header">
