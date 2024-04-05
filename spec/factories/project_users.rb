@@ -8,6 +8,12 @@ FactoryBot.define do
     reminder_enabled { false } # リマインダー有効無効カラムのデフォルト値を指定
     reminder_days { nil } # 選択日数カラムのデフォルト値を指定
     report_time { nil } # 選択時刻カラムのデフォルト値を指定
+
+    trait :with_reminder do
+      report_reminder_time { Time.zone.now }
+      reminder_days { 1 }
+      report_time { Time.zone.now.strftime('%H:%M:%S') }
+    end
   end
 end
 
