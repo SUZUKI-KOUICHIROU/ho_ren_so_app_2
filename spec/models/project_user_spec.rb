@@ -99,7 +99,7 @@ RSpec.describe ProjectUser, type: :model do
         reminder_days = 1
         report_frequency = 7
 
-        # キューにジョブが追加されることを確認
+        # キューにジョブが追加される
         expect {
           project_user = project.project_users.find_by(user_id: user.id)
           project_user.queue_report_reminder(project.id, user.id, report_frequency, reminder_days, report_time)
@@ -119,11 +119,22 @@ RSpec.describe ProjectUser, type: :model do
         reminder_days = 1
         report_frequency = 7
 
-        # キューにジョブが追加されないことを確認
+        # キューにジョブが追加されない
         expect { 
           project_user = project.project_users.find_by(user_id: user.id)
           project_user.queue_report_reminder(project.id, user.id, report_frequency, reminder_days, report_time) 
         }.to raise_error(ArgumentError, /Invalid report time:/)
+      end
+    end
+  end
+
+  describe 'dequeue_report_reminderメソッドのテスト' do
+    context 'キューから報告リマインダージョブを削除する場合' do
+      it 'キューからジョブが削除される（メソッド未実装につきテスト保留中＆実装後は要・修正）' do
+        project_user = FactoryBot.create(:project_user)
+
+        # 未実装中メソッドを呼び出してもエラーを発生させない処理（実装後は要・修正）
+        expect { project_user.dequeue_report_reminder }.not_to raise_error
       end
     end
   end
