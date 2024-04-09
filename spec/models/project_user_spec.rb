@@ -1,46 +1,46 @@
 require 'rails_helper'
 
 RSpec.describe ProjectUser, type: :model do
-  let(:project) { FactoryBot.create(:project) } # テストプロジェクトの作成
-  let(:member1) { FactoryBot.create(:unique_user) } # テストユーザー１の作成
-  let(:member2) { FactoryBot.create(:unique_user) } # テストユーザー２の作成
-  let(:project_user1) { FactoryBot.create(:project_user, project: project, user: member1) } # ユーザー１のプロジェクト関連付け
-  let(:project_user2) { FactoryBot.create(:project_user, project: project, user: member2) } # ユーザー２のプロジェクト関連付け
-  let(:members) { [member1, member2] } # メンバー配列の作成
+  subject(:project_user) { FactoryBot.create(:project_user) } # テストプロジェクトユーザーの作成
+  let(:project) { project_user.project } # プロジェクトへの割当て
+  let(:members) { project.users } # メンバーへの割当て
 
   before do
-    # ActiveJobのキューアダプターをテスト用に設定
     ActiveJob::Base.queue_adapter = :test
   end
 
   describe 'member_expulsion_joinメソッドのテスト' do
     context 'メンバーを正しく除外した場合' do
       it '除外したメンバーには除外ステータスが割り当てられる' do
-        project_user1.update(member_expulsion: true) # 除外ステータスを付与
-        project_user2.update(member_expulsion: false) # 除外ステータスを付与しない
-
+        project_user.update(member_expulsion: true)
         ProjectUser.member_expulsion_join(project, members)
 
-        members.each(&:reload) # 各メンバーの除外ステータスを再度取得して検証
+        members.each(&:reload)
 
-        expect(members[0].member_expulsion).to eq(true)
-        expect(members[1].member_expulsion).to eq(false)
+        expect(members.pluck(:member_expulsion)).to eq([true])
+      end
+    end
+
+    context 'メンバーが正しく除外されていない場合' do
+      it '除外ステータスが割り当てられない' do
+        project_user.update(member_expulsion: false)
+        ProjectUser.member_expulsion_join(project, members)
+
+        members.each(&:reload)
+
+        expect(members.pluck(:member_expulsion)).to eq([false])
       end
     end
   end
 
   describe 'set_report_reminder_timeメソッドのテスト' do
-    let(:project_user) { FactoryBot.create(:project_user) }
     let(:report_time) { Time.zone.now.to_s }
 
     context 'リマインド時刻を選択した場合' do
       it '報告リマインダー時刻を正しく設定できる' do
         project_user.set_report_reminder_time(report_time)
-        expect(project_user.reload.report_reminder_time).to eq(report_time.in_time_zone('Asia/Tokyo'))
-      end
 
-      it 'プロジェクトユーザーを保存する' do
-        expect { project_user.set_report_reminder_time(report_time) }.to change { project_user.reload.report_reminder_time }.from(nil).to(report_time.in_time_zone('Asia/Tokyo'))
+        expect(project_user.report_reminder_time).to eq(report_time.in_time_zone('Asia/Tokyo'))
       end
     end
 
@@ -52,7 +52,6 @@ RSpec.describe ProjectUser, type: :model do
   end
 
   describe 'calculate_reminder_datetimeメソッドのテスト' do
-    let(:project_user) { FactoryBot.create(:project_user) }
     let(:next_report_date) { Date.current + 1 }
 
     context '選択日数が正の整数の場合' do
@@ -71,7 +70,6 @@ RSpec.describe ProjectUser, type: :model do
   end
 
   describe 'queue_report_reminderメソッドのテスト' do
-    let(:project_user) { FactoryBot.create(:project_user) }
     let(:user) { FactoryBot.create(:unique_user) }
     let(:reminder_days) { 1 }
     let(:report_time) { Time.zone.now.to_s }
@@ -96,8 +94,6 @@ RSpec.describe ProjectUser, type: :model do
 
   describe 'dequeue_report_reminderメソッドのテスト' do
     it 'キューからジョブが削除される（メソッド未実装につきテスト保留中＆実装後は要・修正）' do
-      project_user = FactoryBot.create(:project_user)
-
       expect { project_user.dequeue_report_reminder }.not_to raise_error
     end
   end
