@@ -16,7 +16,7 @@ FactoryBot.define do
       report_time { Time.zone.now.strftime('%H:%M:%S') }
 
       # 未実装のdequeue_report_reminderメソッドをテスト保留させる処理（実装後は要・修正or削除）
-      after(:create) do |project_user|
+      after(:build) do |project_user|
         allow(project_user).to receive(:dequeue_report_reminder).and_return(nil)
       end
     end

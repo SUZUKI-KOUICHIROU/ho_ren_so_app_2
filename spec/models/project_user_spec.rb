@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProjectUser, type: :model do
-  subject(:project_user) { FactoryBot.create(:project_user) } # テストプロジェクトユーザーの作成
+  subject(:project_user) { FactoryBot.build(:project_user) } # テストプロジェクトユーザーの作成
   let(:project) { project_user.project } # プロジェクトへの割当て
   let(:members) { project.users } # メンバーへの割当て
 
@@ -70,7 +70,7 @@ RSpec.describe ProjectUser, type: :model do
   end
 
   describe 'queue_report_reminderメソッドのテスト' do
-    let(:user) { FactoryBot.create(:unique_user) }
+    let(:user) { FactoryBot.build(:unique_user) }
     let(:reminder_days) { 1 }
     let(:report_time) { Time.zone.now.to_s }
     let(:report_frequency) { 7 }
