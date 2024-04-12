@@ -9,7 +9,7 @@ FactoryBot.define do
     reminder_days { nil } # 選択日数カラムのデフォルト値を指定
     report_time { nil } # 選択時刻カラムのデフォルト値を指定
 
-    trait :with_reminder do # テストジョブ用のサンプルデータを作成
+    trait :with_reminder do # テストジョブ用のサンプルパターン
       report_reminder_time { Time.zone.now }
       reminder_enabled { true }
       reminder_days { 1 }
@@ -19,6 +19,10 @@ FactoryBot.define do
       after(:build) do |project_user|
         allow(project_user).to receive(:dequeue_report_reminder).and_return(nil)
       end
+    end
+
+    trait :member_expulsion_true do # メンバー除外カラムをtrueにするサンプルパターン
+      member_expulsion { true }
     end
   end
 end

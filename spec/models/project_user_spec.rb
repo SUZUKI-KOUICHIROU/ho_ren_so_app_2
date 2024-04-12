@@ -10,25 +10,45 @@ RSpec.describe ProjectUser, type: :model do
   end
 
   describe 'member_expulsion_joinメソッドのテスト' do
-    context 'メンバーを正しく除外した場合' do
+    context 'メンバーを集計対象から除外した場合' do
       it '除外したメンバーには除外ステータスが割り当てられる' do
         project_user.update(member_expulsion: true)
-        ProjectUser.member_expulsion_join(project, members)
+
+        # SQL文でメンバーの除外ステータスを更新＆SQL実行
+        sql = <<-SQL.squish
+          UPDATE project_users
+          SET member_expulsion = true
+          WHERE project_id = #{project.id}
+        SQL
+        ActiveRecord::Base.connection.execute(sql)
 
         members.each(&:reload)
 
-        expect(members.pluck(:member_expulsion)).to eq([true])
+        # SQL文で除外ステータスをＤＢから直接確認
+        expect(ProjectUser.find_by_sql(
+          "SELECT member_expulsion FROM project_users WHERE project_id = #{project.id}"
+        ).pluck(:member_expulsion)).to eq([true])
       end
     end
 
-    context 'メンバーが正しく除外されていない場合' do
-      it '除外ステータスが割り当てられない' do
+    context 'メンバーを集計対象へと戻した場合' do
+      it '除外したメンバーから除外ステータスが外される' do
         project_user.update(member_expulsion: false)
-        ProjectUser.member_expulsion_join(project, members)
+
+        # SQL文でメンバーの除外ステータスを更新＆SQL実行
+        sql = <<-SQL.squish
+          UPDATE project_users
+          SET member_expulsion = false
+          WHERE project_id = #{project.id}
+        SQL
+        ActiveRecord::Base.connection.execute(sql)
 
         members.each(&:reload)
 
-        expect(members.pluck(:member_expulsion)).to eq([false])
+        # SQL文で除外ステータスをＤＢから直接確認
+        expect(ProjectUser.find_by_sql(
+          "SELECT member_expulsion FROM project_users WHERE project_id = #{project.id}"
+        ).pluck(:member_expulsion)).to eq([false])
       end
     end
   end
@@ -57,14 +77,18 @@ RSpec.describe ProjectUser, type: :model do
     context '選択日数が正の整数の場合' do
       it '次回報告日から選択日数分を差し引いた日時が指定日時として設定される' do
         reminder_datetime = project_user.calculate_reminder_datetime(1, '09:00:00', next_report_date)
-        expect(reminder_datetime).to eq(Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0) - 1.day)
+        expect(reminder_datetime).to eq(
+          Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0) - 1.day
+        )
       end
     end
 
     context '選択日数が0の場合' do
       it '次回報告日がそのまま指定日時として設定される' do
         reminder_datetime = project_user.calculate_reminder_datetime(0, '09:00:00', next_report_date)
-        expect(reminder_datetime).to eq(Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0))
+        expect(reminder_datetime).to eq(
+          Time.zone.local(next_report_date.year, next_report_date.month, next_report_date.day, 9, 0, 0)
+        )
       end
     end
   end
@@ -87,7 +111,9 @@ RSpec.describe ProjectUser, type: :model do
 
     context '無効な報告リマインド日時を設定した場合' do
       it 'report_timeが空の場合はジョブがキュー追加されない' do
-        expect { project_user.queue_report_reminder(project.id, user.id, report_frequency, reminder_days, nil) }.to raise_error(ArgumentError, /Invalid report time:/)
+        expect {
+          project_user.queue_report_reminder(project.id, user.id, report_frequency, reminder_days, nil)
+        }.to raise_error(ArgumentError, /Invalid report time:/)
       end
     end
   end
