@@ -10,6 +10,8 @@
     <div class="container p-4 card-body">
       <h3 class="font-weight-bold counseling-title-box m-3 d-inline">内容</h3>
       <div class="card-text"><%= simple_format(@counseling.counseling_detail) %></div>
+      <!-- 添付画像の表示 -->
+      <%= render "/projects/images/show_image", object: @counseling %>
       <div id="read_button">
         <%= render partial: 'read' %>
       </div>  
@@ -34,3 +36,6 @@
   <!-- 返信フォームの表示 -->
   <%= render "/projects/counseling_replys/counseling_reply_form" %>
 </div>
+
+<!-- モーダルウィンドウ表示 -->
+<div id="show_image" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

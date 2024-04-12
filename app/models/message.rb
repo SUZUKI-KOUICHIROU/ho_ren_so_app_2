@@ -2,6 +2,7 @@ class Message < ApplicationRecord
   belongs_to :project
   has_many :message_confirmers, dependent: :destroy
   has_many :message_replies, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
 
   attr_accessor :send_to
 

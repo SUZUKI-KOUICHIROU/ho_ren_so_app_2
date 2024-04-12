@@ -50,6 +50,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
   # rubocop:disable Metrics/AbcSize
   def create
     set_project_and_members
+    unless params[:counseling][:images].nil?
+      set_enable_images(params[:counseling][:image_enable], params[:counseling][:images])
+    end
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.sender_name = current_user.name
@@ -126,7 +129,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   private
 
   def counseling_params
-    params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all)
+    params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all, images: [])
   end
 
   def counseling_search_params

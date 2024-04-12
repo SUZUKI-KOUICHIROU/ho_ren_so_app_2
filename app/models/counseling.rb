@@ -2,6 +2,7 @@ class Counseling < ApplicationRecord
   belongs_to :project
   has_many :counseling_confirmers, dependent: :destroy
   has_many :counseling_replies, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
 
   attr_accessor :send_to
 
