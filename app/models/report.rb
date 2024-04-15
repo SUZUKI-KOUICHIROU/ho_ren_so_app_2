@@ -35,7 +35,11 @@ class Report < ApplicationRecord
   scope :created_at, ->(created_at) { where('created_at BETWEEN ? AND ?', "#{created_at} 00:00:00", "#{created_at} 23:59:59") }
   scope :keywords_like, ->(keywords) {
     left_joins(:answers) # `answers`テーブルとのLEFT JOINを使用することで、answersテーブルにエントリがないreportsも検索結果に含めることができる。
-    .where('title LIKE :keyword OR sender_name LIKE :keyword OR answers.value LIKE :keyword OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE :keyword', keyword: "%#{keywords}%")
+      .where(
+        'title LIKE :keyword OR sender_name LIKE :keyword OR answers.value LIKE :keyword ' \
+        'OR ARRAY_TO_STRING(answers.array_value, \',\') LIKE :keyword',
+        keyword: "%#{keywords}%"
+      )
   }
 
   # プロジェクトの報告集計対象のユーザーidを取得
