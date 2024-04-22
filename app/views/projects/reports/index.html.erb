@@ -170,7 +170,7 @@
                   <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>            
                 <% end %>
               </div>            
-              <div class="table-header rwd-table-header">
+              <div class="table-header">
                 <% if current_user.id == @project.leader_id %>
                   <div class="subject-name col-md-3">
                     <%=@project.format.title%>
