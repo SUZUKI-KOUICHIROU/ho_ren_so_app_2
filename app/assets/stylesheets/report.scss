@@ -24,6 +24,13 @@
     margin: 0.75rem;
   }
 }
+@media only screen and (max-width: 600px) {
+  .box-project-report {
+    width: 100%;
+    max-width: 90%;
+    margin-left: 5%;
+  }
+}
 
 .reprt-project-select-box,
 .report-date,

@@ -2,7 +2,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="col-6 offset-3 p-4">
+<div class="col-6 offset-3 pb-2 my-5 rwd-form">
   <div class="card">
     <div class="card-header card-header-radius">
       <%= @counseling.title %>
@@ -28,7 +28,7 @@
   <%= link_to '戻る', user_project_counselings_path(@user,@project),class: "btn btn-light btn-outline-secontary col-2 " %>
 </div>
 
-<div class="col-6 offset-3 p-4">  
+<div class="col-6 offset-3 pb-2 my-5 rwd-form">  
   <!-- 返信一覧の表示 -->
   <% if @counseling_replies.size > 0 %>
     <%= render "/projects/counseling_replys/counseling_reply_list" %>
