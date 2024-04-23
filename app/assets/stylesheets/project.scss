@@ -2,6 +2,12 @@
   margin: 2.5rem auto 5rem;
   width: 50%;
 }
+@media only screen and (max-width: 600px) {
+  /* ここにスマートフォン画面用のスタイルを記述 */
+  .projects-format {
+    width: 90%;
+  }
+}
 
 .projects-format .form-body {
   background-color: $base-background-color;
@@ -202,8 +208,13 @@
 .reported-date, .report-confirmer, .report-person, .report-action, .report_read,
 .message-date, .message-confirmer, .message-person, .message-action,
 .counseling-date, .counseling-confirmer, .counseling-person, .counseling-action {
-  width: 25%;
+  width: 30%;
   margin: 0rem 0.5rem 0.5rem 0rem;
+  word-break: break-all;
+}
+.member-text{
+  table-layout: fixed;
+  word-wrap: break-word;
 }
 
 .project-member-action, .none {

@@ -1,11 +1,11 @@
 <div class="box-you-addressee-index">
   <% if @you_addressee_counselings.present? %>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "you-addressee" %>
         <%= form.label :keywords, "件名・内容検索：", class: "mb-0" %>
-        <%= form.text_field :keywords, placeholder: "キーワードを入力", class: "search-box" %>
-        <%= form.submit "検索", class: "btn btn-outline-orange" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", class: "search-box rwd-search-box" %>
+        <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
       <% end %>
     </div>
     <div class="table-header">

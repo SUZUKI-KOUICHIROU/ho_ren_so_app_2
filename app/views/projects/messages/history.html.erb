@@ -20,29 +20,29 @@
     <% end %>
   </div>
   <% if @messages_history.present? %>  
-    <div class="d-flex justify-content-between mb-3">
+    <div class="d-flex justify-content-between mb-3 rwd-search-form">
       <div class="align-self-end">
         <%= form_with url: history_user_project_message_path(current_user, @project), method: :get, local: true do |f| %>
-          <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box" %>
-          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+          <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box rwd-search-box" %>
+          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange rwd-submit-btn" %>
         <% end %>
       </div>
-      <div class="align-self-end">    
+      <div class="align-self-end rwd-search-block">    
         <%= form_with scope: :search, url: history_user_project_message_path(current_user,@project), method: :get, local: true do |form| %>
           <%= form.hidden_field :search_type, :value => "message" %>
           
           <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
-          <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+          <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>                 
 
           <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
         
-          <%= form.submit "検索", class: "btn btn-outline-orange" %>
+          <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
           
         <% end %>
       </div>
     </div>
-    <div class="table-header">
+    <div class="table-header rwd-table-header">
       <div class="message-date">
         連絡日
       </div>
@@ -59,7 +59,7 @@
         連絡確認者/連絡未確認者
       </div>
     </div>
-    <div class="table-body">
+    <div class="table-body rwd-table-body">
       <% line_num = 0%>
       <% @messages_history.each do |message|%>
         <% line_num += 1%>

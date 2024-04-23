@@ -31,20 +31,20 @@
                 <!-- 全履歴の報告ボタン -->
                 <%= link_to "全履歴", user_project_reports_path(current_user, @project, @reports), class: "btn btn-outline-orange mx-2" %>
               </div>
-              <div class="d-flex justify-content-end mb-3">
+              <div class="d-flex justify-content-end mb-3 rwd-search-form">
                 <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, value: "you-report" %>            
 
                   <%= form.label :created_at, "報告日：", class: "mb-0" %>
-                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
 
                   <%= form.label :title, "件名：", class: "mb-0" %>
-                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
+                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box rwd-search-box" %>
 
                   <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
                   
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>
+                  <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
                 <% end %>
               </div>            
               <div class="table-header">
@@ -151,23 +151,23 @@
                 <!-- 全履歴の報告ボタン -->
                 <%= link_to "全履歴", user_project_reports_path(current_user, @project, @reports), class: "btn btn-outline-orange mx-2" %>
               </div>
-              <div class="d-flex justify-content-end mb-3">
+              <div class="d-flex justify-content-end mb-3 rwd-search-form">
                 <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, local: true do |form| %>
                   <%= form.hidden_field :search_type, value: "report" %>                
                   
                   <%= form.label :created_at, "報告日：", class: "mb-0" %>
-                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+                  <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
                   
                   <%= form.label :title, "件名：", class: "mb-0" %>
-                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box" %>
+                  <%= form.text_field :title, placeholder: "件名を入力", value: @search_params && @search_params[:title], class: "search-box rwd-search-box" %>
 
                   <%= form.label :sender_name, "報告者：", class: "mb-0" %>
-                  <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box" %>
+                  <%= form.text_field :sender_name, placeholder: "報告者を入力", value: @search_params && @search_params[:sender_name], class: "search-box rwd-search-box" %>
 
                   <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+                  <%= form.text_field :keywords, placeholder: "件名を入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
                   
-                  <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+                  <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>            
                 <% end %>
               </div>            
               <div class="table-header">
