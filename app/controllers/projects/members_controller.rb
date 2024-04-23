@@ -37,6 +37,11 @@ class Projects::MembersController < Projects::BaseProjectController
       else
         ProjectUser.member_expulsion_join(@project, @project.users.all.page(params[:page]).per(10))
       end
+
+    respond_to do |format| # リクエストスペック用のレスポンス指定
+      format.html # デフォルトのHTML形式
+      format.json { render json: @members } # JSON形式で返す
+    end
   end
 
   # プロジェクトメンバーをプロジェクトの集計から外す
