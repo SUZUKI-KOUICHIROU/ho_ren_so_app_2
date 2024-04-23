@@ -6,6 +6,12 @@
   margin: 2.5rem auto 5rem;
   width: 50%;
 }
+@media only screen and (max-width: 600px) {
+  .box-reprot-format {
+    width: 90%;
+  }
+}
+
 // 報告フォーマット編集フォーム全体の表示位置
 .box-reprot-format-edit,
 .box-message-format-new,
@@ -72,7 +78,7 @@
 
 .label-box {
   margin-right: 1%;
-  width: 50%;
+  width: 60%;
 }
 
 .label-box input[type="text"],
@@ -163,4 +169,50 @@
 
 #tooltipOn .btn:disabled {
   pointer-events: none;
+}
+
+.attached-img {
+  width: 100%;
+  height: 150px;
+}
+
+@media only screen and (max-width: 600px) {
+  // レスポンシブ対応：スマホ画面用のフォームレイアウト
+  .rwd-form {
+    max-width: 90%;
+    margin-left: 5%;
+  }
+  .attached-img {
+    width: 100%;
+    height: 100px;
+  }
+  .rwd-search-form {
+    justify-content: flex-start !important;
+    margin-bottom: 4rem !important;
+  }
+  .rwd-submit-btn {
+    margin-top: 0.25rem;
+  }
+  .rwd-search-box {
+    height: 3rem !important;
+    display: block;
+  }
+  .rwd-table-header {
+    margin-top: 3rem !important;
+  }
+  .rwd-report-edit-form {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .rwd-table-header {
+    overflow-x: auto;
+    width: 150%;
+  }
+  .rwd-table-body {
+    overflow-x: auto;
+    width: 150%;
+  }
+  .rwd-search-block {
+    padding-left: 0.5rem !important;
+  }
 }

@@ -2,7 +2,7 @@
   <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
 <% end %>
 
-<div class="col-6 offset-3 p-4">
+<div class="col-6 offset-3 pb-2 my-5 rwd-form">
   <div class="card">
     <div class="card-header card-header-radius">
       <%= @message.title %>
@@ -30,7 +30,7 @@
   <%= link_to '戻る', :back, class: "btn btn-light btn-outline-secontary col-2 " %>
 </div>
 
-<div class="col-6 offset-3 p-4">  
+<div class="col-6 offset-3 pb-2 my-5 rwd-form">  
   <!-- 返信一覧の表示 -->
   <% if @message_replies.size > 0 %>
     <%= render "/projects/message_replys/message_reply_list" %>
