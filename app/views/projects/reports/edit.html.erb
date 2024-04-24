@@ -5,7 +5,7 @@
   <p>プロジェクト：<%= @project.name %></p>
   <h1 class="text-center my-3">報告編集</h1>
   <%= form_with model: @report, url: user_project_report_path(current_user, @project, @report),method: :patch do |f| %>
-    <div class="base-background-color px-5 pt-5">
+    <div class="base-background-color px-5 pt-5 rwd-report-edit-form">
       <div class="report-form">
         <span class="report-item-title mb-2 font-weight-bold"><%= f.label  "報告日", class: "mb-0" %></span><span class="pl-2 font-weight-bold text-danger">必須</span>
         <%= f.select :report_day, {"#{l(@project.report_deadlines.last(2).last.day, format: :long)}": @project.report_deadlines.last(2).last.day, "#{l(@project.report_deadlines.last(2).first.day, format: :long)}": @project.report_deadlines.last(2).first.day}, { include_blank: false, selected: @project.report_deadlines.last(2).last.day}, {class: 'form-control'} %>
@@ -33,9 +33,9 @@
         <% end %>
         <%# レンダリング %>
         <div class="text-right mt-3 mr-4 pb-5">
-          <%= f.submit '変更', class: "btn btn-outline-orange col-2" %>
+          <%= f.submit '変更', class: "btn btn-outline-orange col-3" %>
           <div class="text-center">
-            <%= link_to '戻る', :back, class: "btn btn-light btn-outline-secontary col-2 " %>
+            <%= link_to '戻る', :back, class: "btn btn-light btn-outline-secontary col-3 " %>
           </div>
         </div>
     </div>
