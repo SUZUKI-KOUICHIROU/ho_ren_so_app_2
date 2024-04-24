@@ -6,17 +6,17 @@
       <!-- 今週の報告ボタン -->
       <%= link_to '今週の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'weekly'), remote: true, class: "btn btn-outline-orange mx-2" %>
     </div>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, value: "report" %>                
         
         <%= form.label :created_at, "報告日：", class: "mb-0" %>
-        <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+        <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
         
         <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
         
-        <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+        <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>            
       <% end %>
     </div>            
     <div class="table-header">
