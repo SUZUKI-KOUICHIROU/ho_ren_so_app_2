@@ -2,39 +2,23 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log]
 
-  # rubocopを一時的に無効にする。
-  # rubocop:disable Metrics/AbcSize
   def index
     set_project_and_members
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
-    @reports = @project.reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-    @you_reports = @project.reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-    @monthly_reports = Report.monthly_reports_for(@project)
-    @weekly_reports = Report.weekly_reports_for(@project)
+    monthly_reports
     if params[:report_type] == 'monthly'
-      @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      { reports: @reports, you_reports: @you_reports }
+      monthly_reports
     elsif params[:report_type] == 'weekly'
-      @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:page]).per(10)
-      { reports: @reports, you_reports: @you_reports }
+      weekly_reports
     end
-    if params[:search].present? and params[:search] != ""
-      @results = Report.search(report_search_params)
-      if @results.present?
-        @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
-      else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'
-        return
-      end
-      @reports = @project.reports.where.not(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
-      @you_reports = @project.reports.where(sender_id: @user.id).where(id: @report_ids).order(created_at: 'DESC').page(params[:page]).per(10)
+    reports_by_search
+    respond_to do |format|
+      format.html
+      format.js
     end
     render :index
   end
-  # rubocop:enable Metrics/AbcSize
 
   def show
     set_project_and_members
@@ -200,6 +184,15 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  # 報告履歴
+  def history
+    set_project_and_members
+    @report = Report.find(params[:id])
+    @report_history = all_reports_history_month
+    all_reports_history_month
+    reports_history_by_search
+  end
+
   private
 
   # フォーム新規登録並びに編集用/create
@@ -211,8 +204,53 @@ class Projects::ReportsController < Projects::BaseProjectController
       images: [])
   end
 
+  # 報告一覧デフォルト表示、今月の報告
+  def monthly_reports
+    @monthly_reports = Report.monthly_reports_for(@project)
+    @you_reports = @monthly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+    @reports = @monthly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+    @all_reports = @monthly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+  end
+
+  # 報告一覧、今週の報告
+  def weekly_reports
+    @weekly_reports = Report.weekly_reports_for(@project)
+    @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
+    @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
+    @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+  end
+
+  # 報告検索(報告一覧)
+  def reports_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Report.search(report_search_params)
+      if @results.present?
+        @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
+        @report_history = all_reports_history.where(id: @report_ids)
+        @you_reports = @you_reports.where(id: @report_ids)
+        @reports = @reports.where(id: @report_ids)
+        @all_reports = @all_reports.where(id: @report_ids)
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+      end
+    end
+  end
+
+  # 報告検索(報告履歴)
+  def reports_history_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Report.search(report_search_params)
+      if @results.present?
+        @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
+        @report_history = all_reports_history.where(id: @report_ids)
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+      end
+    end
+  end
+
   def report_search_params
-    params.fetch(:search, {}).permit(:title, :created_at, :sender_name, :keywords)
+    params.fetch(:search, {}).permit(:created_at, :keywords)
     # fetch(:search, {})と記述することで、検索フォームに値がない場合はnilを返し、エラーが起こらなくなる
     # ここでの:searchには、フォームから送られてくるparamsの値が入っている
   end
@@ -220,6 +258,24 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 報告日のみの検索に使用するパラメーター
   def search_params
     params.permit(:search)
+  end
+
+  # 全報告
+  def all_reports_history
+    @project.reports.all.order(created_at: 'DESC').page(params[:page]).per(30)
+  end
+
+  # 報告履歴の月検索
+  def all_reports_history_month
+    selected_month = params[:month]
+    if selected_month.present?
+      start_date = Date.parse("#{selected_month}-01")
+      end_date = start_date.end_of_month.end_of_day
+      reports = @project.reports.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:page]).per(30)
+    else
+      reports = all_reports_history
+    end
+    reports
   end
 
   # 昨日もしくは、送られた最終報告集計日から４週間を一週間ごとに配列に代入
