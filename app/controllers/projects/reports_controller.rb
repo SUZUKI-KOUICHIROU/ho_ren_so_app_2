@@ -1,6 +1,7 @@
 class Projects::ReportsController < Projects::BaseProjectController
+  require 'csv'
   before_action :project_authorization, only: %i[index show new edit create update destroy]
-  before_action :project_leader_user, only: %i[view_reports_log]
+  before_action :project_leader_user, only: %i[view_reports_log view_reports_log_month]
 
   def index
     set_project_and_members
@@ -189,8 +190,15 @@ class Projects::ReportsController < Projects::BaseProjectController
     set_project_and_members
     @report = Report.find(params[:id])
     @report_history = all_reports_history_month
+    @reports_by_search = report_search_params.to_h
     all_reports_history_month
     reports_history_by_search
+    respond_to do |format|
+      format.html
+      format.csv do |_csv|
+        send_reports_csv(@report_history)
+      end
+    end
   end
 
   private
@@ -276,6 +284,24 @@ class Projects::ReportsController < Projects::BaseProjectController
       reports = all_reports_history
     end
     reports
+  end
+
+  # CSVエクスポート
+  def send_reports_csv(reports)
+    bom = "\uFEFF"
+    csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+      column_names = %w(報告者 件名 報告日)
+      csv << column_names
+      reports.each do |report|
+        column_values = [
+          report.sender_name,
+          report.title,
+          report.created_at.strftime("%m月%d日 %H:%M"),
+        ]
+        csv << column_values
+      end
+    end
+    send_data(csv_data, filename: "報告履歴.csv")
   end
 
   # 昨日もしくは、送られた最終報告集計日から４週間を一週間ごとに配列に代入

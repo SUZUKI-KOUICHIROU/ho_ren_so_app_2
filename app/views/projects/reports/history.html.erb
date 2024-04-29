@@ -9,6 +9,15 @@
   <div class="d-flex justify-content-end mb-3">
     <%= link_to "報告一覧", user_project_reports_path, class: "btn btn-outline-orange" %>
   </div>
+  <div class="d-flex justify-content-start mb-3">
+    <% if params[:search].present? && params[:search] != "" %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv, search: @reports_by_search), class: "btn btn-outline-orange" %>
+    <% elsif params[:month].present? %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>
+    <% else %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv), class: "btn btn-outline-orange" %>
+    <% end %>
+  </div>
   <% if @report_history.present? %>
     <div class="d-flex justify-content-between mb-3">
       <div class="align-self-end">
