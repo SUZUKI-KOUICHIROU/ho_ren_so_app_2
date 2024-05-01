@@ -40,7 +40,13 @@ class Projects::MembersController < Projects::BaseProjectController
 
     respond_to do |format| # リクエストスペック用のレスポンス指定
       format.html # デフォルトのHTML形式
-      format.json { render json: @members } # JSON形式で返す
+      format.json { render json: { # JSON形式で返す
+        members: @members,
+        search_box: true,
+        delegates: @delegates,
+        report_frequency: @report_frequency,
+        project_user: @project_user
+      } }
     end
   end
 

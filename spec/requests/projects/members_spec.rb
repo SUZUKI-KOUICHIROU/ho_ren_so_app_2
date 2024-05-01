@@ -1,57 +1,87 @@
 require 'rails_helper'
 
 RSpec.describe "Projects::Members", type: :request do
-  describe "GET /users/:user_id/projects/:project_id/index" do
+  describe "GET /users/:user_id/projects/:project_id/index", as: :json do
     context "プロジェクトメンバーがメンバー一覧にアクセスした場合" do
       let(:user) { FactoryBot.create(:unique_user) }
       let(:project) { FactoryBot.create(:project) }
       let!(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
+
       before do
         sign_in user # Deviseでログインさせる事を前提として設定
       end
 
-      subject { get project_member_index_path(user, project) } # テスト対象のコードを実行
+      subject { get project_member_index_path(user, project), as: :json } # テスト対象のコードを実行
 
       it "HTTPリクエストに対し200レスポンスを返す" do
         subject
         expect(response).to have_http_status(200)
       end
 
-      it "プロジェクトメンバーの一覧が表示される" do
+      it "プロジェクトメンバーの一覧をJSON形式で返す" do
         subject
-        expect(response.body).to include(project_user.user.name)
+        json_response = JSON.parse(response.body)
+        expect(json_response["members"].length).to eq(1)
+      end
+
+      it "プロジェクトユーザーのデータを正確に返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expected_project_user = {
+          'id' => project_user.id,
+          'user_id' => project_user.user_id,
+          'project_id' => project_user.project_id,
+          'created_at' => project_user.created_at.as_json,
+          'updated_at' => project_user.updated_at.as_json,
+          'member_expulsion' => project_user.member_expulsion,
+          'reminder_days' => project_user.reminder_days,
+          'reminder_enabled' => project_user.reminder_enabled,
+          'report_reminder_time' => project_user.report_reminder_time.as_json,
+          'report_time' => project_user.report_time&.strftime('%H:%M:%S')
+        }
+        expect(json_response["project_user"]).to eq(expected_project_user)
       end
 
       it "検索ボックスが表示される" do
         subject
-        expect(response.body).to include("検索")
+        json_response = JSON.parse(response.body)
+        expect(json_response["search_box"]).to eq(true)
       end
 
       it "リーダー権限の委譲が取得される" do
         subject
-        expect(assigns(:delegates)).to eq(project.delegations)
+        json_response = JSON.parse(response.body)
+        expect(json_response["delegates"]).to eq(project.delegations)
       end
 
       it "報告頻度が取得される" do
         subject
-        expect(assigns(:report_frequency)).to eq(project.report_frequency)
+        json_response = JSON.parse(response.body)
+        expect(json_response["report_frequency"]).to eq(project.report_frequency)
       end
 
       it "プロジェクトユーザーが取得される" do
         subject
-        expect(assigns(:project_user)).to eq(project_user)
+        json_response = JSON.parse(response.body)
+        expect(json_response["project_user"]["id"]).to eq(project_user.id)
       end
 
       context "検索ボックスで検索した場合" do
         let(:search_keyword) { "テスト" }
 
-        it "検索キーワードにマッチするメンバーのみ表示される" do
+        it "検索キーワードにマッチするメンバーを返す" do
           matching_user = FactoryBot.create(:unique_user, name: "テストユーザー")
+          another_user = FactoryBot.create(:unique_user, name: "別のユーザー")
           FactoryBot.create(:project_user, user: matching_user, project: project)
+          FactoryBot.create(:project_user, user: another_user, project: project)
+          
           # 検索リクエストを送信
-          get project_member_index_path(user, project), params: { search: search_keyword }
-          # 検索キーワードにマッチするか確認
-          expect(response.body).to include(matching_user.name)
+          get project_member_index_path(user, project), params: { search: search_keyword }, as: :json
+          json_response = JSON.parse(response.body)
+          
+          # 検索結果が正しいかを確認
+          expect(json_response["members"].length).to eq(1)
+          expect(json_response["members"][0]["name"]).to eq(matching_user.name)
         end
       end
 
@@ -59,16 +89,18 @@ RSpec.describe "Projects::Members", type: :request do
         let!(:members) { create_list(:unique_user, 14) } # 14人のユーザーを追加作成
         let!(:project_users) { members.map { |member| create(:project_user, user: member, project: project) } } # それぞれをプロジェクトに加入させる
 
-        it "1ページ目には10人のメンバーが表示される" do
-          get project_member_index_path(user, project), params: { page: 1 }
+        it "1ページ目には10人のメンバーを返す" do
+          get project_member_index_path(user, project), params: { page: 1 }, as: :json
 
-          expect(assigns(:members).count).to eq(10)
+          json_response = JSON.parse(response.body)
+          expect(json_response["members"].length).to eq(10)
         end
 
-        it "2ページ目には残りの5人のメンバーが表示される" do
-          get project_member_index_path(user, project), params: { page: 2 }
+        it "2ページ目には残りの5人のメンバーを返す" do
+          get project_member_index_path(user, project), params: { page: 2 }, as: :json
 
-          expect(assigns(:members).count).to eq(5)
+          json_response = JSON.parse(response.body)
+          expect(json_response["members"].length).to eq(5)
         end
       end
     end
