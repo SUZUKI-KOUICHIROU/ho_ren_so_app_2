@@ -105,4 +105,84 @@ RSpec.describe "Projects::Members", type: :request do
       end
     end
   end
+
+  describe "POST /projects/members/send_reminder" do
+    context "リマインドメール送信設定のリクエストが有効な場合" do
+      let(:user) { FactoryBot.create(:unique_user) }
+      let(:project) { FactoryBot.create(:project) }
+      let(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
+      let(:member_id) { project_user.user_id }
+      let(:report_frequency) { 7 }
+      let(:reminder_days) { 1 }
+      let(:report_time) { "09:00:00" }
+
+      before do
+        sign_in user
+      end
+
+      subject do
+        post '/projects/members/send_reminder', params: {
+          user_id: user.id,
+          project_id: project.id,
+          member_id: member_id,
+          report_frequency: report_frequency,
+          reminder_days: reminder_days,
+          report_time: report_time
+        }, as: :json
+      end
+
+      it "リマインダーが設定される" do
+        subject
+        expect(project_user.reload.reminder_enabled).to eq(true)
+        expect(project_user.reminder_days).to eq(reminder_days)
+        expect(project_user.report_time.strftime('%H:%M:%S')).to eq(report_time)
+      end
+
+      it "成功200レスポンスを返す" do
+        subject
+        expect(response).to have_http_status(200)
+      end
+
+      it "成功JSONレスポンスを返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to eq(true)
+      end
+    end
+
+    context "リマインドメール送信設定のリクエストが無効な場合" do
+      let(:user) { FactoryBot.create(:unique_user) }
+      let(:project) { FactoryBot.create(:project) }
+      let(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
+      let(:member_id) { project_user.user_id }
+
+      before do
+        sign_in user
+        allow_any_instance_of(ProjectUser).to receive(:update!).and_raise(StandardError, "internal_server_error")
+      end
+
+      subject do
+        post '/projects/members/send_reminder', params: {
+          user_id: user.id,
+          project_id: project.id,
+          member_id: member_id,
+          report_frequency: nil,
+          reminder_days: nil,
+          report_time: "09:00:00"
+        }, as: :json
+      end
+
+      it "失敗500レスポンスを返す" do
+        subject
+        expect(response).to have_http_status(500)
+      end
+
+      it "失敗JSONレスポンスとinternal_server_errorエラーを返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to eq(false)
+        expect(json_response["error"]).to eq("internal_server_error")
+      end
+    end
+  end
 end

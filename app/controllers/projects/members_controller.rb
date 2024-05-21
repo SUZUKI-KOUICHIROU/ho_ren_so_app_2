@@ -140,6 +140,13 @@ class Projects::MembersController < Projects::BaseProjectController
   def find_user_and_project(user_id, project_id)
     user = User.find_by(id: user_id)
     project = Project.find_by(id: project_id)
+
+    # ユーザーまたはプロジェクトが見つからない場合はエラーレスポンスを返す
+    unless user && project
+      render json: { success: false, error: "ユーザーまたはプロジェクトが見つかりません" }, status: :not_found
+      return
+    end
+
     [user, project]
   end
 
