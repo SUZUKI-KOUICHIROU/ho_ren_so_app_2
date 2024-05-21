@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () =>{
-  document.querySelectorAll('menu-content html body')
-  .style.height = `${window.outerHeight}px`
-})
+  const menuContents = document.querySelectorAll('#menu-content');
+  menuContents.forEach(menuContent => {
+    menuContent.style.height = `${window.outerHeight}px`;
+  });
+});
