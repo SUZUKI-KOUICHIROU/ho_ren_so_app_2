@@ -107,8 +107,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 3. 設定情報を返す
     render json: { success: true }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
@@ -128,8 +126,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 3. 設定情報を返す
     render json: { success: true }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
@@ -142,10 +138,7 @@ class Projects::MembersController < Projects::BaseProjectController
     project = Project.find_by(id: project_id)
 
     # ユーザーまたはプロジェクトが見つからない場合はエラーレスポンスを返す
-    unless user && project
-      render json: { success: false, error: "ユーザーまたはプロジェクトが見つかりません" }, status: :not_found
-      return
-    end
+    raise StandardError, "ユーザーまたはプロジェクトが見つかりません。" unless user && project
 
     [user, project]
   end

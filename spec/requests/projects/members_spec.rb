@@ -166,8 +166,8 @@ RSpec.describe "Projects::Members", type: :request do
           user_id: user.id,
           project_id: project.id,
           member_id: member_id,
-          report_frequency: nil,
-          reminder_days: nil,
+          report_frequency: 1,
+          reminder_days: 7,
           report_time: "09:00:00"
         }, as: :json
       end

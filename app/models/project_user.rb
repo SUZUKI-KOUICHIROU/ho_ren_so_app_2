@@ -2,6 +2,8 @@ class ProjectUser < ApplicationRecord
   belongs_to :user
   belongs_to :project
 
+  validate :reminder_days_less_than_report_frequency, on: :send_reminder
+
   # プロジェクトメンバーそれぞれに報告集計メンバーの除外ステータスを追加する
   def self.member_expulsion_join(project, members)
     project_member_expulsions = project.project_users.all
@@ -105,5 +107,14 @@ class ProjectUser < ApplicationRecord
     # end
 
     # 【注意】別ファイルにて、Sidekiq＋RedisをDocker上で導入する実装が少なくとも必要。
+  end
+
+  private
+
+  # reminder_daysの値が「0以上report_frequency未満」であることを確認するバリデーション
+  def reminder_days_less_than_report_frequency
+    if reminder_days.present? && report_frequency.present? && (reminder_days < 0 || reminder_days >= report_frequency)
+      errors.add(:reminder_days, "リマインド指定日が選択肢として無効です。")
+    end
   end
 end
