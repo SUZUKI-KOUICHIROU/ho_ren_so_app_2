@@ -148,13 +148,123 @@ RSpec.describe "Projects::Members", type: :request do
         json_response = JSON.parse(response.body)
         expect(json_response["success"]).to eq(true)
       end
-    end
 
-    context "リマインドメール送信設定のリクエストが無効な場合" do
+    context "ユーザーまたはプロジェクトが見つからなかった場合" do
       let(:user) { FactoryBot.create(:unique_user) }
       let(:project) { FactoryBot.create(:project) }
       let(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
       let(:member_id) { project_user.user_id }
+      let(:report_frequency) { 7 }
+      let(:reminder_days) { 1 }
+      let(:report_time) { "09:00:00" }
+
+      context "ユーザーが存在しない場合" do
+        before do
+          sign_in user
+          allow(User).to receive(:find_by).with(id: user.id).and_return(nil)
+        end
+
+        subject do
+          post '/projects/members/send_reminder', params: {
+            user_id: user.id,
+            project_id: project.id,
+            member_id: member_id,
+            report_frequency: report_frequency,
+            reminder_days: reminder_days,
+            report_time: report_time
+          }, as: :json
+        end
+
+        it "失敗500レスポンスを返す" do
+          subject
+          expect(response).to have_http_status(500)
+        end
+
+        it "失敗JSONレスポンスとエラーメッセージを返す" do
+          subject
+          json_response = JSON.parse(response.body)
+          expect(json_response["success"]).to eq(false)
+          expect(json_response["error"]).to eq("ユーザーまたはプロジェクトが見つかりません。")
+        end
+      end
+
+      context "プロジェクトが存在しない場合" do
+        before do
+          sign_in user
+          allow(Project).to receive(:find_by).with(id: project.id).and_return(nil)
+        end
+
+        subject do
+          post '/projects/members/send_reminder', params: {
+            user_id: user.id,
+            project_id: project.id,
+            member_id: member_id,
+            report_frequency: report_frequency,
+            reminder_days: reminder_days,
+            report_time: report_time
+          }, as: :json
+        end
+
+        it "失敗500レスポンスを返す" do
+          subject
+          expect(response).to have_http_status(500)
+        end
+
+        it "失敗JSONレスポンスとエラーメッセージを返す" do
+          subject
+          json_response = JSON.parse(response.body)
+          expect(json_response["success"]).to eq(false)
+          expect(json_response["error"]).to eq("ユーザーまたはプロジェクトが見つかりません。")
+        end
+      end
+    end
+
+    context "process_report_reminderメソッド内でエラーが発生した場合" do
+      let(:user) { FactoryBot.create(:unique_user) }
+      let(:project) { FactoryBot.create(:project) }
+      let(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
+      let(:member_id) { project_user.user_id }
+      let(:report_frequency) { 7 }
+      let(:reminder_days) { 1 }
+      let(:report_time) { "09:00:00" }
+
+      before do
+        sign_in user
+        allow_any_instance_of(Projects::MembersController).to receive(:process_report_reminder).and_raise(StandardError, "processing_error")
+      end
+
+      subject do
+        post '/projects/members/send_reminder', params: {
+          user_id: user.id,
+          project_id: project.id,
+          member_id: member_id,
+          report_frequency: report_frequency,
+          reminder_days: reminder_days,
+          report_time: report_time
+        }, as: :json
+      end
+    
+      it "失敗500レスポンスを返す" do
+        subject
+        expect(response).to have_http_status(500)
+      end
+    
+      it "失敗JSONレスポンスとエラーメッセージを返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to eq(false)
+        expect(json_response["error"]).to eq("processing_error")
+      end
+    end
+
+    context "リマインドメール送信設定にその他の例外が発生した場合" do
+      let(:user) { FactoryBot.create(:unique_user) }
+      let(:project) { FactoryBot.create(:project) }
+      let(:project_user) { FactoryBot.create(:project_user, user: user, project: project) }
+      let(:member_id) { project_user.user_id }
+      let(:report_frequency) { 7 }
+      let(:reminder_days) { nil }
+      let(:report_time) { "09:00:00" }
 
       before do
         sign_in user
@@ -167,8 +277,8 @@ RSpec.describe "Projects::Members", type: :request do
           project_id: project.id,
           member_id: member_id,
           report_frequency: 1,
-          reminder_days: 7,
-          report_time: "09:00:00"
+          reminder_days: 8,
+          report_time: report_time
         }, as: :json
       end
 
