@@ -2,6 +2,8 @@ class ProjectUser < ApplicationRecord
   belongs_to :user
   belongs_to :project
 
+  #validates :reminder_days, presence: true, on: :send_reminder
+  #validates :report_time, presence: true, on: :send_reminder
   validate :reminder_days_less_than_report_frequency, on: :send_reminder
 
   # プロジェクトメンバーそれぞれに報告集計メンバーの除外ステータスを追加する
