@@ -63,7 +63,7 @@ class User < ApplicationRecord
               message: MESSAGE_WITH_INVALID_PASSWORD },
     on: :update
 
-  # 新規登録時にはパスワード確認も必須
+  # 新規登録時にはパスワード（確認用）も必須
   validates :password_confirmation,
     presence: true,
     length: { maximum: 30, minimum: 8 },
@@ -71,7 +71,7 @@ class User < ApplicationRecord
               message: MESSAGE_WITH_INVALID_PASSWORD },
     on: :create
 
-  # 編集時にはパスワード確認が空でない場合にバリデーションを適用
+  # 編集時にはパスワード（確認用）が空でない場合にバリデーションを適用
   validates :password_confirmation,
     allow_blank: true,
     length: { maximum: 30, minimum: 8 },
