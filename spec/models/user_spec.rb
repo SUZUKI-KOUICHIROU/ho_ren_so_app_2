@@ -157,4 +157,17 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'コールバックのテスト' do
+    it '保存する前にメールアドレスを小文字に変換する' do
+      user = build(:user, email: 'SAMPLE@EMAIL.COM')
+
+      # 保存前のemailが大文字であることを確認
+      expect(user.email).to eq('SAMPLE@EMAIL.COM')
+      user.save
+
+      # データベースに保存された後のemailが小文字に変換されていることを確認
+      expect(user.reload.email).to eq('sample@email.com')
+    end
+  end
 end
