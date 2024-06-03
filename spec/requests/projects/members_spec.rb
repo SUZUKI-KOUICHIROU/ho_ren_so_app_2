@@ -223,4 +223,96 @@ RSpec.describe "Projects::Members", type: :request do
       end
     end
   end
+
+  describe "POST /projects/members/reset_reminder" do
+    let(:user) { FactoryBot.create(:unique_user) }
+    let(:project) { FactoryBot.create(:project) }
+    let(:project_user) { FactoryBot.create(:project_user, user: user, project: project, reminder_enabled: true, reminder_days: 1, report_time: "09:00:00") }
+    let(:params) do
+      {
+        user_id: user.id,
+        project_id: project.id,
+        member_id: project_user.user_id
+      }
+    end
+
+    before do
+      sign_in user
+    end
+
+    subject do
+      post '/projects/members/reset_reminder', params: params, as: :json
+    end
+
+    context "リマインドメール送信設定リセットのリクエストが有効な場合" do
+      it "成功200レスポンスを返す" do
+        subject
+        expect(response).to have_http_status(200)
+      end
+
+      it "成功JSONレスポンスを返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to eq(true)
+      end
+
+      it "データベース上でproject_userのリマインダー設定がリセットされる" do
+        subject
+        expect(project_user.reload.reminder_enabled).to eq(false)
+        expect(project_user.reminder_days).to be_nil
+        expect(project_user.report_time).to be_nil
+        expect(project_user.report_reminder_time).to be_nil
+      end
+    end
+
+    context "ユーザーまたはプロジェクトが見つからない場合" do
+      shared_examples "ユーザーorプロジェクト不明エラー" do
+        it "失敗500レスポンスを返す" do
+          subject
+          expect(response).to have_http_status(500)
+        end
+
+        it "失敗JSONレスポンスと専用エラーメッセージを返す" do
+          subject
+          json_response = JSON.parse(response.body)
+          expect(json_response["success"]).to eq(false)
+          expect(json_response["error"]).to eq("ユーザーまたはプロジェクトが見つかりません。")
+        end
+      end
+
+      context "ユーザーが存在しない場合" do
+        before do
+          allow(User).to receive(:find_by).with(id: user.id).and_return(nil)
+        end
+
+        include_examples "ユーザーorプロジェクト不明エラー"
+      end
+
+      context "プロジェクトが存在しない場合" do
+        before do
+          allow(Project).to receive(:find_by).with(id: project.id).and_return(nil)
+        end
+
+        include_examples "ユーザーorプロジェクト不明エラー"
+      end
+    end
+
+    context "process_disable_reminderメソッド内でエラーが発生した場合" do
+      before do
+        allow_any_instance_of(Projects::MembersController).to receive(:process_disable_reminder).and_raise(StandardError, "processing_error")
+      end
+    
+      it "失敗500レスポンスを返す" do
+        subject
+        expect(response).to have_http_status(500)
+      end
+    
+      it "失敗JSONレスポンスとエラーメッセージを返す" do
+        subject
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to eq(false)
+        expect(json_response["error"]).to eq("processing_error")
+      end
+    end
+  end
 end
