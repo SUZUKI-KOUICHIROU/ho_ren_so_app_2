@@ -2,8 +2,8 @@ class ProjectUser < ApplicationRecord
   belongs_to :user
   belongs_to :project
 
-  #validates :reminder_days, presence: true, on: :send_reminder
-  #validates :report_time, presence: true, on: :send_reminder
+  validates :reminder_days, presence: true, on: :send_reminder
+  validates :report_time, presence: true, on: :send_reminder
   validate :reminder_days_less_than_report_frequency, on: :send_reminder
 
   # プロジェクトメンバーそれぞれに報告集計メンバーの除外ステータスを追加する
@@ -115,7 +115,7 @@ class ProjectUser < ApplicationRecord
 
   # reminder_daysの値が「0以上report_frequency未満」であることを確認するバリデーション
   def reminder_days_less_than_report_frequency
-    if reminder_days.present? && report_frequency.present? && (reminder_days < 0 || reminder_days >= report_frequency)
+    if reminder_days.present? && project.report_frequency.present? && (reminder_days < 0 || reminder_days >= project.report_frequency)
       errors.add(:reminder_days, "リマインド指定日が選択肢として無効です。")
     end
   end
