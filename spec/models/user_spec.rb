@@ -120,4 +120,17 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'send_invite_email メソッドのテスト' do
+    let(:user) { create(:user) }
+    let(:token) { '12345' }
+    let(:name) { 'テストユーザー' }
+    let(:password) { 'password' }
+
+    it '招待メールを送信する' do
+      expect(UserMailer).to receive(:invitation).with(user, token, name, password).and_call_original
+      expect_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now)
+      user.send_invite_email(token, name, password)
+    end
+  end
 end
