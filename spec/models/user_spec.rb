@@ -133,4 +133,28 @@ RSpec.describe User, type: :model do
       user.send_invite_email(token, name, password)
     end
   end
+
+  describe 'update_without_current_password メソッドのテスト' do
+    let(:user) { create(:user, password: "oldpassword", password_confirmation: "oldpassword") }
+
+    context 'ユーザー情報更新時、新しいメールアドレスを入力し、パスワードは未入力の場合' do
+      let(:params) { { email: 'new-address@email.com', current_password: 'oldpassword' } }
+
+      it 'パスワードは変わらず、メールアドレスのみ更新される' do
+        expect(user.update_without_current_password(params)).to be_truthy
+        expect(user.reload.email).to eq('new-address@email.com')
+      end
+    end
+
+    context 'パスワードとパスワード（確認用）が未入力の場合' do
+      let(:params) { { email: 'new-address@email.com', password: '', password_confirmation: '', current_password: 'oldpassword' } }
+
+      it 'パスワードは変わらず、メールアドレスのみ更新される' do
+        old_encrypted_password = user.encrypted_password
+        user.update_without_current_password(params)
+        expect(user.reload.email).to eq('new-address@email.com')
+        expect(user.encrypted_password).to eq(old_encrypted_password)
+      end
+    end
+  end
 end
