@@ -65,7 +65,7 @@ class Projects::BaseProjectController < Users::BaseUserController
   # 管理者ユーザーを許可
   def admin_user
     return if current_user.admin?
-    
+
     flash[:danger] = t('flash.not_admin')
     redirect_to root_path
   end
