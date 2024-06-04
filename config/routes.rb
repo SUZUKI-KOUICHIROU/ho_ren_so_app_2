@@ -90,6 +90,8 @@ Rails.application.routes.draw do
     post 'users/:user_id/project/:project_id/cancel_delegate/:delegate_id', to: 'members#cancel_delegate', as: :cancel_delegate # リーダー権限委譲リクエストのキャンセル
     post 'users/:user_id/project/:id/accept/:delegate_id', to: 'projects#accept_request', as: :accept_request # リーダー権限委譲に対する受認
     post 'users/:user_id/project/:id/disown/:delegate_id', to: 'projects#disown_request', as: :disown_request # リーダー権限委譲に対する辞退
+    get 'users/:user_id/setting', to: 'members#setting', as: :setting           # 設定ページ表示
+    patch 'users/:user_id/set_admin/:admin_id', to: 'members#set_admin', as: :set_admin   # 管理者権限変更
   end
 
   get 'index/index_switching', to: 'base#index_switching', as: :index_switching

@@ -1,6 +1,7 @@
 class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
   before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder reset_reminder]
+  before_action :admin_user, only: %i[setting set_admin]
   # before_action :project_leader_user, only: %i[index]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
@@ -123,6 +124,22 @@ class Projects::MembersController < Projects::BaseProjectController
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
 
+  # 設定ページ表示
+  def setting
+    @user = User.find(params[:user_id])
+    @users = User.all.order(:id)
+  end
+
+  # 管理者権限変更
+  def set_admin
+    @user = User.find(params[:admin_id])
+    if @user.update(admin_setting_params)
+      render json: { status: 'SUCCESS', message: 'Updated the User', data: @user }
+    else
+      render json: { status: 'ERROR', message: 'User not updated', data: @user.errors }
+    end
+  end
+
   private
 
   # ユーザーとプロジェクトを取得するメソッド（報告リマインド用）
@@ -181,5 +198,10 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 設定した project_user を返す
     project_user
+  end
+
+  # 管理者権限更新用パラメータ
+  def admin_setting_params
+    params.require(:user).permit(:admin)
   end
 end

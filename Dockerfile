@@ -9,6 +9,10 @@ RUN apt-get update \
     vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Node.jsとYarnのインストール
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && npm install -g yarn
+
 # 作業用のディレクトリを作成(存在しない場合は勝手に作成してくれる)
 WORKDIR /myproject
 # ホストのGemfile達をコンテナ内にコピー

@@ -61,4 +61,12 @@ class Projects::BaseProjectController < Users::BaseUserController
     flash[:danger] = 'リーダーではない為、権限がありません。'
     redirect_to user_project_path(@user, @project)
   end
+
+  # 管理者ユーザーを許可
+  def admin_user
+    return if current_user.admin?
+    
+    flash[:danger] = t('flash.not_admin')
+    redirect_to root_path
+  end
 end
