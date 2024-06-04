@@ -45,9 +45,8 @@ function preview_images(input) {
           // プレビュー画像の表示
           var img = document.createElement("img");
           img.src = e.target.result;
-          img.width = 150;
-          img.height = 150;
-          area.appendChild(img);
+          img.classList.add("attached-img");
+          area.appendChild(img);  
           // 取り消しボタンの表示
           var button = document.createElement("button");
           button.innerText = "×";

@@ -1,0 +1,128 @@
+<% provide(:title, '報告履歴') %>
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="card-box">
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
+  <h1 class="text-center">報告履歴</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "報告一覧", user_project_reports_path, class: "btn btn-outline-orange" %>
+  </div>
+  <div class="d-flex justify-content-start mb-3">
+    <% if params[:search].present? && params[:search] != "" %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv, search: @reports_by_search), class: "btn btn-outline-orange" %>
+    <% elsif params[:month].present? %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>
+    <% else %>
+      <%= link_to "csvエクスポート", history_user_project_report_path(format: :csv), class: "btn btn-outline-orange" %>
+    <% end %>
+  </div>
+  <% if @report_history.present? %>
+    <div class="d-flex justify-content-between mb-3">
+      <div class="align-self-end">
+        <%= form_with url: history_user_project_report_path(current_user, @project), method: :get, local: true do |f| %>
+          <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box" %>
+          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+        <% end %>
+      </div>
+      <div class="align-self-end">
+        <%= form_with scope: :search, url: history_user_project_report_path(current_user,@project), method: :get, local: true do |form| %>
+          <%= form.hidden_field :search_type, value: "all-report" %>
+          
+          <%= form.label :created_at, "報告日：", class: "mb-0" %>
+          <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+          
+          <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+          
+          <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+        <% end %>
+      </div>
+    </div>
+    <div class="table-header">
+      <% if current_user.id == @project.leader_id %>
+        <div class="subject-name col-md-3">
+          <%=@project.format.title%>
+        </div>
+        <div class="reported-date col-md-3">
+          報告日
+        </div>
+        <div class="report-confirmer col-md-3">
+          報告者
+        </div>
+        <div class="report_read col-md-2.5">
+          報告確認状況
+        </div>
+      <% else %>
+        <div class="subject-name col-md-4">
+          <%=@project.format.title%>
+        </div>
+        <div class="reported-date col-md-4">
+          報告日
+        </div>
+        <div class="report-confirmer col-md-4">
+          報告者
+        </div>
+      <% end %>
+    </div>
+    <div class="table-body">
+      <% line_num = 0%>
+      <% @report_history.each do |report|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_report_<%= report.id %>">
+          <% if current_user.id == @project.leader_id %>
+            <div class="subject-name col-md-3">
+              <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+            </div>
+            <div class="reported-date col-md-3">
+              <%= l(report.created_at, format: :long) %>
+            </div>
+            <div class="report-confirmer col-md-3">
+              <%= report.sender_name %>
+            </div>
+            <% if @user.id != report.user_id %>
+              <% if report.report_read_flag == true %>
+                <div class="report_read col-md-2.5">
+                  <p>既読</p>
+                </div>
+              <% else %>
+                <div class="report_read col-md-2.5 text-danger font-weight-bold" >
+                  <p>未読</p>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="report_read col-md-2.5">
+                <p>-</p>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="subject-name col-md-4">
+              <%= link_to report.title, user_project_report_path(@user, @project, report), class: "report-detail-link" %>
+            </div>
+            <div class="reported-date col-md-4">
+              <%= l(report.created_at, format: :long) %>
+            </div>
+            <div class="report-confirmer col-md-4">
+              <%= report.sender_name %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else @report_history.blank?%>
+    <div class="d-flex justify-content-end">
+      <P class="report-none">報告履歴がありません</P>
+    </div>
+  <% end %>
+  <div class="d-flex">
+    <% if @report_history.present?%>
+      <div class="paginate">
+        <%= paginate @report_history %>
+      </div>
+    <% end %>
+    <div class="ml-auto">
+      <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
