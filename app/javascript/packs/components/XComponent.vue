@@ -10,11 +10,14 @@
       <div v-for="user in usersInfo" :key="user.id">
         <div class="table-line">
           <div class="member-name">{{ user.name }}</div>
-          <div class="member-name">{{ user.admin ? '管理者' : '一般ユーザー' }}</div>  
-          <div class="project-member-action">
+          <div class="member-name">{{ user.admin ? ( userId.id == user.id ? '管理者（ログイン中）': '管理者') : '一般ユーザー' }}</div>  
+          <div class="project-member-action" v-if="userId.id != user.id">
             <span class="btn" :class="user.admin ? 'btn-success' : 'btn-danger'" @click="updateAdmin(userId.id, user.id, !user.admin)" >  
               {{ user.admin ? '一般ユーザーにする' : '管理者にする' }}
             </span>
+          </div>
+          <div class="project-member-action" v-else>
+            <!-- ログインユーザー本人の管理者権限は変更不可のため、ボタン非表示 -->
           </div>
         </div>
       </div>
