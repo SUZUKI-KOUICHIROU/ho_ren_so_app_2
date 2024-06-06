@@ -1,0 +1,12 @@
+<% provide(:title, 'メンバー一覧') %>
+
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
+<div id="app" data-user="<%= @user.to_json %>" data-users="<%= @users.to_json %>">
+  <!-- Vueコンポーネントはこの中にマウントされる -->
+</div>
+
+<%= javascript_pack_tag 'pages/setting_init' %>
+<%= stylesheet_pack_tag 'pages/setting_init' %>
