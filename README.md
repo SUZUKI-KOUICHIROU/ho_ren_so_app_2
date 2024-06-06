@@ -33,6 +33,9 @@ docker-compose run --rm app bundle install
 # yarn install
 docker-compose run --rm app yarn install
 
+# Vueコンポーネントのビルド
+docker-compose run --rm app bin/webpack
+
 # db:setup
 docker-compose run --rm app bin/rails db:setup
 

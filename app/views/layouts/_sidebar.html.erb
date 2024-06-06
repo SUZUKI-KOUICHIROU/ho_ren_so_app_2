@@ -23,6 +23,9 @@
     <% end %>
     <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
     <%= sidebar_link_item('全プロジェクト報告集計', all_project_reporting_rate_user_projects_path(current_user)) %>
+    <% if user.admin? %>
+      <%= sidebar_link_item('設定', setting_path(current_user), data: { turbolinks: false }) %>
+    <% end %>
   </div>
 </div>
 
@@ -47,4 +50,7 @@
   <% end %>
   <%= sidebar_link_item('プロジェクト一覧', user_projects_path(user.id)) %>
   <%= sidebar_link_item('全プロジェクト報告集計', all_project_reporting_rate_user_projects_path(current_user)) %>
+  <% if user.admin? %>
+    <%= sidebar_link_item('設定', setting_path(current_user), data: { turbolinks: false }) %>
+  <% end %>
 </div>
