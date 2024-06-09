@@ -32,12 +32,13 @@ class Projects::MembersController < Projects::BaseProjectController
     # プロジェクトユーザーの取得（報告リマインド設定表示用）
     @project_user = find_project_user(@project, @user.id)
 
-    @members =
-      if params[:search].present?
-        ProjectUser.member_expulsion_join(@project, @project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10))
-      else
-        ProjectUser.member_expulsion_join(@project, @project.users.all.page(params[:page]).per(10))
-      end
+    # プロジェクトメンバーの検索＆取得
+    @members = fetch_members(@project)
+
+    respond_to do |format| # リクエストスペック用のレスポンス指定
+      format.html # デフォルトのHTML形式
+      format.json { render_members_json } # JSON形式で返す
+    end
   end
 
   # プロジェクトメンバーをプロジェクトの集計から外す
@@ -97,8 +98,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 3. 設定情報を返す
     render json: { success: true }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
@@ -118,8 +117,6 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 3. 設定情報を返す
     render json: { success: true }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { success: false, error: e.message }, status: :not_found
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
@@ -142,10 +139,34 @@ class Projects::MembersController < Projects::BaseProjectController
 
   private
 
+  # プロジェクトメンバーを検索＆取得するメソッド（index用）
+  def fetch_members(project)
+    if params[:search].present?
+      ProjectUser.member_expulsion_join(project, project.users.where('name LIKE ?', "%#{params[:search]}%").page(params[:page]).per(10))
+    else
+      ProjectUser.member_expulsion_join(project, project.users.all.page(params[:page]).per(10))
+    end
+  end
+
+  # JSON 形式でメンバーの一覧をレンダリングするメソッド（index用）
+  def render_members_json
+    render json: {
+      members: @members,
+      search_box: true,
+      delegates: @delegates,
+      report_frequency: @report_frequency,
+      project_user: @project_user
+    }
+  end
+
   # ユーザーとプロジェクトを取得するメソッド（報告リマインド用）
   def find_user_and_project(user_id, project_id)
     user = User.find_by(id: user_id)
     project = Project.find_by(id: project_id)
+
+    # ユーザーまたはプロジェクトが見つからない場合はエラーレスポンスを返す
+    raise StandardError, "ユーザーまたはプロジェクトが見つかりません。" unless user && project
+
     [user, project]
   end
 
@@ -178,6 +199,8 @@ class Projects::MembersController < Projects::BaseProjectController
       # 設定した project_user を返す
       project_user
     end
+  rescue ActiveRecord::RecordInvalid => e
+    raise StandardError, e.message
   end
 
   # リマインダー設定の解除処理を実行するメソッド（報告リマインド用）
@@ -198,6 +221,8 @@ class Projects::MembersController < Projects::BaseProjectController
 
     # 設定した project_user を返す
     project_user
+  rescue ActiveRecord::RecordInvalid => e
+    raise StandardError, e.message
   end
 
   # 管理者権限更新用パラメータ
