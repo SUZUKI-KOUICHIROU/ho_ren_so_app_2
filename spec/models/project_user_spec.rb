@@ -9,6 +9,42 @@ RSpec.describe ProjectUser, type: :model do
     ActiveJob::Base.queue_adapter = :test
   end
 
+  describe 'バリデーションのテスト（send_reminderアクション時）' do
+    context '報告リマインドメール送信日時の登録' do
+      it '選択日数と選択時刻が正しく存在する場合、登録に成功する' do
+        project_user.reminder_days = project_user.project.report_frequency - 1
+        project_user.report_time = Time.zone.now.strftime('%H:%M:%S')
+        expect(project_user).to be_valid(:send_reminder)
+      end
+    end
+
+    context 'reminder_days（報告リマインド選択日数）' do
+      it 'nilの場合、登録できない' do
+        project_user.reminder_days = nil
+        expect(project_user).not_to be_valid(:send_reminder)
+      end
+
+      it '0未満の場合、登録できない' do
+        project_user.reminder_days = -1
+        expect(project_user).not_to be_valid(:send_reminder)
+        expect(project_user.errors[:reminder_days]).to include("リマインド指定日が選択肢として無効です。")
+      end
+
+      it 'report_frequency（報告頻度）以上の場合、登録できない' do
+        project_user.reminder_days = project_user.project.report_frequency
+        expect(project_user).not_to be_valid(:send_reminder)
+        expect(project_user.errors[:reminder_days]).to include("リマインド指定日が選択肢として無効です。")
+      end
+    end
+
+    context 'report_time（報告リマインド選択時刻）' do
+      it 'nilの場合、登録できない' do
+        project_user.report_time = nil
+        expect(project_user).not_to be_valid(:send_reminder)
+      end
+    end
+  end
+
   describe 'member_expulsion_joinメソッドのテスト' do
     context 'メンバーを集計対象から除外した場合' do
       it '除外したメンバーには除外ステータスが割り当てられる' do

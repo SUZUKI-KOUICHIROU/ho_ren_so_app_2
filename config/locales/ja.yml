@@ -3,6 +3,7 @@ ja:
     no_access_rights: 'アクセス権限がありません。'
     not_logined: 'ログインもしくはアカウント登録してください。'
     not_leader: 'リーダーではない為、権限がありません。'
+    not_admin: '管理者ではない為、権限がありません。'
   date:
     abbr_day_names:
     - 日
