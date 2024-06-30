@@ -7,6 +7,8 @@ RUN apt-get update \
     postgresql-client \
     nodejs \
     vim \
+    # Redisサーバーに接続してデバッグや管理を行う為のRedisコマンドラインツール
+    redis-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
