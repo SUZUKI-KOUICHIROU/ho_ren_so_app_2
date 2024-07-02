@@ -26,8 +26,8 @@ RSpec.describe User, type: :model do
       # データが期待通りに更新されたか検証
       expect(user.sign_in_count).to eq(2) # ログイン回数が期待通りに2回になっているか
       expect(user.last_sign_in_at.to_date).to eq(2.days.ago.to_date) # 最後のログイン時刻が2日前に設定された値であること
-      expect(user.current_sign_in_at.to_date).to eq(Date.today) # 現在のログイン時刻が今日であること
-      expect(user.last_sign_in_ip).to eq('192.168.1.1') # 
+      expect(user.current_sign_in_at.to_date).to eq(Time.zone.today) # 現在のログイン時刻が今日であること
+      expect(user.last_sign_in_ip).to eq('192.168.1.1')
       expect(user.current_sign_in_ip).to eq('192.168.1.3')
     end
   end

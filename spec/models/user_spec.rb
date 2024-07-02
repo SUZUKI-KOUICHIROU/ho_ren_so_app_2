@@ -27,10 +27,10 @@ RSpec.describe User, type: :model do
       end
 
       it "メールアドレスが100文字を超えると登録できない" do
-        expect(build(:user, email: 'a' * 101 + '@email.com')).to be_invalid
+        expect(build(:user, email: ('a' * 101) + '@email.com')).to be_invalid
       end
       it "メールアドレスが100文字以内であればバリデーションに通る" do
-        expect(build(:user, email: 'a' * 90 + '@email.com')).to be_valid
+        expect(build(:user, email: ('a' * 90) + '@email.com')).to be_valid
       end
 
       it "メールアドレスのフォーマットが不適切な場合、登録できない" do
@@ -92,7 +92,7 @@ RSpec.describe User, type: :model do
         expect(build(:user, password: 'password', password_confirmation: 'password')).to be_valid
       end
     end
-    
+
     context "user登録成功するテスト" do
       it "すべてのバリデージョンに通っていれば登録できる" do
         user = FactoryBot.build(:user)
