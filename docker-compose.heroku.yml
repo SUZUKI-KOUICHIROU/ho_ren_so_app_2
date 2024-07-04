@@ -4,7 +4,7 @@ services:
     # build = dockerイメージをビルドする時の設定
     build:
       context: .
-      dockerfile: "Dockerfile.heroku"
+      dockerfile: "Dockerfile.web"
     container_name: ho_ren_so_app
     # command = コンテナ起動時にコンテナ内で実行するコマンド（railsのサービスなのでrailsの起動コマンドを実行）
     # command: bash -c "rm -f tmp/pids/server.pid && ./bin/dev"
