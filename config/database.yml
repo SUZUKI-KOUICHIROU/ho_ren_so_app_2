@@ -65,5 +65,7 @@ test:
 
 production:
   <<: *default
+  database: ho_ren_so_db
   adapter: postgresql
   dencoding: unicode
+  url: <%= ENV['DATABASE_URL'] %>
