@@ -45,4 +45,9 @@ module ApplicationHelper
       'success'
     end
   end
+
+  # テキスト内のURLを自動的にリンクに変換する。また、改行を有効化する。
+  def format_text(text)
+    raw Rinku.auto_link(simple_format(text), :urls, 'target="_blank" rel="noopener noreferrer"')
+  end
 end

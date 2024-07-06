@@ -92,7 +92,7 @@ function changeForm() {
               <% end %>
           <% elsif !answer.value.blank? %>
             <div class="card-text ml-0">
-              <%= raw Rinku.auto_link(answer.value, :all, 'target="_blank"') %>
+              <%= format_text(answer.value) %>
             </div>
           <% else %>
             <div class="card-text ml-0">
