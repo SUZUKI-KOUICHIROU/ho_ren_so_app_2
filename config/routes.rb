@@ -44,7 +44,8 @@ Rails.application.routes.draw do
         end
         resources :counselings do
           member do
-            patch 'read'            
+            patch 'read'      
+            get 'history'      
           end
           resources :counseling_replys, only: %i[edit  create update destroy] do
             member do
