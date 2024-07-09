@@ -9,8 +9,15 @@ class Counseling < ApplicationRecord
   attribute :send_to_all
 
   validates :counseling_detail, presence: true
-  # validates :counseling_reply_flag, inclusion: [true, false]
   validate :no_check_become_invalid
+
+  scope :created_at, ->(created_at) {
+    where("created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo' BETWEEN ? AND ?", "#{created_at} 00:00:00", "#{created_at} 23:59:59")
+  }
+  
+  scope :keywords_like, ->(keywords) {
+    where('title LIKE ? OR sender_name LIKE ? OR counseling_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
+  }
 
   # ログインユーザー宛のメッセージを取得
   def self.my_counselings(user)
@@ -46,5 +53,12 @@ class Counseling < ApplicationRecord
       query = query.where("title LIKE :keyword OR counseling_detail LIKE :keyword", keyword: keyword)
     end
     query
+  end
+
+  # 月次連絡を取得する
+  def self.monthly_counselings_for(project)
+    start_of_month = Time.zone.now.beginning_of_month
+    end_of_month = Time.zone.now.end_of_month
+    where(project: project, created_at: start_of_month..end_of_month)
   end
 end

@@ -1,0 +1,81 @@
+<% provide(:title, '相談履歴') %>
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar', locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="mt-3 mr-4 ml-4">
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
+  <h1 class="text-center">相談履歴</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "相談一覧", user_project_counselings_path, class: "btn btn-outline-orange" %>
+  </div>
+  <div class="d-flex justify-content-between mb-3">
+    <%= form_with scope: :search, url: user_project_counselings_path(current_user,@project), method: :get, remote: true do |form| %>
+      <%= form.hidden_field :search_type, :value => "counseling" %>
+      
+      <%= form.label :created_at, "相談受信日：", class: "mb-0" %>
+      <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>                 
+      <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+      <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+    
+      <%= form.submit "検索", class: "btn btn-outline-orange" %>
+    <% end %>
+    <div class="align-self-end">
+      <%= form_with url: user_project_reports_view_reports_log_month_path(current_user, @project, display: @display), method: :get, local: true do |f| %>
+        <%= f.month_field :date, use_month_numbers: true, discard_day: true, value: @month_field_value, class: "search-box" %>
+        <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+      <% end %>
+    </div>
+    <div class="align-self-end">
+      <%#= link_to "⇦前月", history_user_project_counseling_path(current_user, @project, display: @display, date: @first_day.prev_month), class: "btn btn-outline-orange mr-1" %>
+      <%#= link_to "次月⇨", history_user_project_counseling_path(current_user, @project, display: @display, date: @first_day.next_month), class: "btn btn-outline-orange" %>
+    </div>
+  </div>
+  <div class="table-header">
+    <div class="counseling-date">
+      相談日
+    </div>
+    <div class="subject-name">
+      件名
+    </div>      
+    <div class="counseling-person">
+      相談者
+    </div>
+    <div class="counseling-person">
+      送信相手
+    </div>
+    <div class="counseling-action">
+      相談確認者/相談未確認者
+    </div>
+  </div>
+  <div class="table-body">
+    <% line_num = 0%>
+    <%
+=begin%>
+ <%# @you_send_counselings.each do |counseling|%>
+      <% line_num += 1%>
+      <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+        <div class="counseling-date">
+          <%= l(counseling.created_at, format: :long) %>
+        </div>
+        <div class="subject-name">
+          <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+        </div>
+        <div class="counseling-person">
+          <%= counseling.sender_name %>
+        </div>
+        <div class="counseling-person">                     
+            <%= get_counseling_recipients(counseling.id, @members) %>
+        </div>
+        <div class="counseling-action">                      
+          <%= counseling.checked_members.count %>人/
+          <% count = @recipient_count[counseling.id] %>
+          <%= "#{count}人" if count.present? %>
+        </div>         
+      </div>
+    <% end %> 
+<%
+=end%>
+  </div>    
+</div>
+Footer
