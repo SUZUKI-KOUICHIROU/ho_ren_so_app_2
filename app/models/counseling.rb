@@ -8,6 +8,7 @@ class Counseling < ApplicationRecord
 
   attribute :send_to_all
 
+  validates :title, presence: true, length: { maximum: 30 }
   validates :counseling_detail, presence: true
   # validates :counseling_reply_flag, inclusion: [true, false]
   validate :no_check_become_invalid
