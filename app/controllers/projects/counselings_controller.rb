@@ -215,4 +215,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def count_recipients(counselings)
-   
+    @recipient_count = {}
+    counselings.each do |counseling|
+      @recipient_count[counseling.id] = counseling.counseling_confirmers.count
+    end
+  end
+end
