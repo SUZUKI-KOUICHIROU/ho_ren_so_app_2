@@ -1,6 +1,6 @@
 <div class="reply-text">
   <!-- 返信本文 -->
-  <p><%= reply.reply_content %></p>
+  <p><%= format_text(reply.reply_content) %></p>
 </div>
 <!-- 添付画像 -->
 <% if reply.images.count > 0 %>

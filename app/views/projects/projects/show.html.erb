@@ -21,7 +21,7 @@
       <% end %>
       
       <div class="text-secondary">概要</div>
-      <p class="card-text"><%= @project.description %></p>
+      <div class="card-text"><%= format_text(@project.description) %></div>
     
       <div class="text-secondary">リーダー</div>
       <p class="card-text"><%= User.find(@project.leader_id).name %></p>
