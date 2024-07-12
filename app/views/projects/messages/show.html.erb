@@ -9,7 +9,7 @@
     </div>
     <div class="container p-4 card-body">
       <h3 class="font-weight-bold message-title-box m-3 d-inline">内容</h3>
-      <div class="card-text"><%= simple_format(@message.message_detail) %></div>
+      <div class="card-text"><%= format_text(@message.message_detail) %></div>
       <h3 class="font-weight-bold message-title-box m-3 d-inline">連絡重要度</h3>
       <div class="card-text"><%= simple_format(@message.importance) %></div>
       <!-- 添付画像の表示 -->
