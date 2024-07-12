@@ -138,7 +138,7 @@ class Projects::ReportsController < Projects::BaseProjectController
         ["rate_week#{@n}".to_sym, "#{one_week_reports_rate}%"]
       end
       overall_reporting_rate_array = [[:overall_reporting_rate, "#{overall_report_rate_calc(@four_weeks_report_rate_array)}%"]]
-      link_status = project_mender_or_admin?(@user, project)
+      link_status = project_leader?(@user, project)
       project_date_array = [[:project_name, project.name], [:id, project.id], [:created_at, project.created_at], [:link_on, link_status]]
       project_array = report_rate_for_each_four_weeks + project_date_array + overall_reporting_rate_array
       project_array.to_h
@@ -329,9 +329,9 @@ class Projects::ReportsController < Projects::BaseProjectController
     return (project_four_weeks_reports_size.quo(7 * members.size).to_f * 100).floor
   end
 
-  # プロジェクトメンバーかスタッフかを判断する
-  def project_mender_or_admin?(user, project)
-    if user.project_users.find_by(project_id: project.id).present? || user.admin
+  # プロジェクトリーダーかを判断する
+  def project_leader?(current_user, project)
+    if current_user.id == project.leader_id
       return true
     else
       return false
