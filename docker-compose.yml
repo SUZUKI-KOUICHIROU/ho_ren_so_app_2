@@ -27,6 +27,18 @@ services:
     # (stdin_open,tty) = コンテナ内でデバックできるようにする
     stdin_open: true
     tty: true
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/myproject
+    depends_on:
+      - db
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
   db:
     image: postgres
     container_name: ho_ren_so_db
@@ -43,6 +55,7 @@ services:
     image: selenium/standalone-chrome:latest
     ports:
       - 4444:4444
+
   redis:
     # (image: redis) = db:と環境を統一して常に最新バージョンを使用
     # (image: redis:6.2) = db:と統一ぜず安定バージョンに固定する際はこの記述へ要変更
@@ -54,6 +67,7 @@ services:
       - redis-data:/data
     # (restart: always) = コンテナ停止時に自動で再起動するためのオプション
     restart: always
+
 volumes:
   postgres-data:
   redis-data:
