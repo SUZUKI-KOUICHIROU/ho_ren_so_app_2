@@ -1,5 +1,10 @@
-<% if flash.now[:danger].present? %>
-  alert('<%= flash.now[:danger] %>');
+<% if flash.now[:danger] %>
+  $("#flash-messages").html('<div class="alert alert-danger"><%= j flash.now[:danger] %></div>');
+  setTimeout(function() {
+    $(".alert-danger").hide("fast", function() { // フラッシュメッセージを非表示
+      $(this).remove(); // 非表示後に要素をDOMから削除
+    });
+  }, 5000); // 5000ミリ秒（5秒）後に非表示
 <% end %>
 $("#you-addressee-messages-container").html("<%= escape_javascript(render partial: 'projects/messages/you_addressee_messages', locals: { messages: @you_addressee_messages }) %>");
 $("#you-send-messages-container").html("<%= escape_javascript(render partial: 'projects/messages/you_send_messages', locals: { messages: @you_send_messages }) %>");

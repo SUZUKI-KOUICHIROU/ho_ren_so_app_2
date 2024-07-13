@@ -46,17 +46,36 @@ class User < ApplicationRecord
   # VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[!-~]{6,}+\z/.freeze 'パスワードに小大英字記号を含ませる正規表現'
   VALID_PASSWORD_REGEX = /\A[a-z0-9]+\z/.freeze # 半角英数
   MESSAGE_WITH_INVALID_PASSWORD = 'は半角英数（英字は小文字のみ）で入力して下さい'
+
+  # 新規登録時にはすべてのバリデーションを適用
+  validates :password,
+    presence: true,
+    length: { maximum: 30, minimum: 8 },
+    format: { with: VALID_PASSWORD_REGEX,
+              message: MESSAGE_WITH_INVALID_PASSWORD },
+    on: :create
+
+  # 編集時にはパスワードが空でない場合にバリデーションを適用
   validates :password,
     allow_blank: true,
+    length: { maximum: 30, minimum: 8 },
+    format: { with: VALID_PASSWORD_REGEX,
+              message: MESSAGE_WITH_INVALID_PASSWORD },
+    on: :update
+
+  # 新規登録時にはパスワード（確認用）も必須
+  validates :password_confirmation,
     presence: true,
     length: { maximum: 30, minimum: 8 },
     format: { with: VALID_PASSWORD_REGEX,
-              message: MESSAGE_WITH_INVALID_PASSWORD }
+              message: MESSAGE_WITH_INVALID_PASSWORD },
+    on: :create
 
+  # 編集時にはパスワード（確認用）が空でない場合にバリデーションを適用
   validates :password_confirmation,
     allow_blank: true,
-    presence: true,
     length: { maximum: 30, minimum: 8 },
     format: { with: VALID_PASSWORD_REGEX,
-              message: MESSAGE_WITH_INVALID_PASSWORD }
+              message: MESSAGE_WITH_INVALID_PASSWORD },
+    on: :update
 end
