@@ -9,5 +9,6 @@ FactoryBot.define do
     report_day { Date.current }
     created_at { Date.current }
     updated_at { Date.current }
+    report_read_flag { false }
   end
 end
