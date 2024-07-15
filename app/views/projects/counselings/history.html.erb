@@ -9,6 +9,17 @@
   <div class="d-flex justify-content-end mb-3">
     <%= link_to "相談一覧", user_project_counselings_path, class: "btn btn-outline-orange" %>
   </div>
+
+  <div class="d-flex justify-content-start mb-3">
+    <% if params[:search].present? && params[:search] != "" %>
+      <%= link_to "csvエクスポート", history_user_project_counseling_path(format: :csv,  search: @counseling_by_search ), class: "btn btn-outline-orange" %>
+    <% elsif params[:month].present? %>
+      <%= link_to "csvエクスポート", history_user_project_counseling_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>    
+    <% else %>    
+      <%= link_to "csvエクスポート", history_user_project_counseling_path(format: :csv), class: "btn btn-outline-orange"  %>
+    <% end %>
+  </div>
+
   <div class="d-flex justify-content-between mb-3">
     <%= form_with scope: :search, url: user_project_counselings_path(current_user,@project), method: :get, remote: true do |form| %>
       <%= form.hidden_field :search_type, :value => "counseling" %>
@@ -58,8 +69,11 @@
         <div class="counseling-date">
           <%= l(counseling.created_at, format: :long) %>
         </div>
-        <div class="subject-name">
-          <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+        <% if counseling.sender_id == current_user.id || counseling.counseling_confirmers.exists?(counseling_confirmer_id: current_user.id) %>
+        <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+<% else %>
+<%= counseling.title %>
+<% end %> 
         </div>
         <div class="counseling-person">
           <%= counseling.sender_name %>
@@ -78,4 +92,3 @@
 =end%>
   </div>    
 </div>
-Footer

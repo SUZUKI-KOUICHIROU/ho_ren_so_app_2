@@ -1,15 +1,19 @@
+# app/models/counseling.rb
+
 class Counseling < ApplicationRecord
   belongs_to :project
+  belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'  # Assuming sender is a User and 'sender_id' is the foreign key
+
   has_many :counseling_confirmers, dependent: :destroy
   has_many :counseling_replies, dependent: :destroy
   has_many_attached :images, dependent: :destroy
 
   attr_accessor :send_to
 
-  attribute :send_to_all
+  attribute :send_to_all, :boolean
 
   validates :counseling_detail, presence: true
-  validate :no_check_become_invalid
+  validate :validate_send_to_presence
 
   scope :created_at, ->(created_at) {
     where("created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo' BETWEEN ? AND ?", "#{created_at} 00:00:00", "#{created_at} 23:59:59")
@@ -32,16 +36,13 @@ class Counseling < ApplicationRecord
 
   # 確認者を抽出
   def checked_members
-    buf = counseling_confirmers.where(counseling_confirmation_flag: true).select('counseling_confirmer_id')
-    User.where(id: buf)
+    counseling_confirmers.where(counseling_confirmation_flag: true).map(&:user)
   end
 
-  # 送信相手を一名以上選択しているか。
-  def no_check_become_invalid
-    unless send_to_all
-      if send_to.nil?
-        errors.add "", "送信相手を選択してください。"
-      end
+  # 送信相手を一名以上選択しているかを確認するバリデーション
+  def validate_send_to_presence
+    if !send_to_all && send_to.blank?
+      errors.add(:send_to, "送信相手を選択してください。")
     end
   end
 
@@ -55,7 +56,7 @@ class Counseling < ApplicationRecord
     query
   end
 
-  # 月次連絡を取得する
+  # 月次相談を取得する
   def self.monthly_counselings_for(project)
     start_of_month = Time.zone.now.beginning_of_month
     end_of_month = Time.zone.now.end_of_month

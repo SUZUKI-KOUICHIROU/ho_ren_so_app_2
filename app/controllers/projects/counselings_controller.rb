@@ -1,3 +1,5 @@
+# app/controllers/projects/counselings_controller.rb
+
 class Projects::CounselingsController < Projects::BaseProjectController
   require 'csv'
 
@@ -16,6 +18,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
       format.html
       format.js
     end
+    render :index
   end
 
   def show
@@ -57,21 +60,31 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def create
+    set_project_and_members
+    unless params[:counseling][:images].nil?
+      set_enable_images(params[:counseling][:image_enable], params[:counseling][:images])
+    end
     @counseling = @project.counselings.new(counseling_params)
     @counseling.sender_id = current_user.id
     @counseling.sender_name = current_user.name
-    handle_counseling_sending
+    if @counseling.save
+      handle_counseling_sending
+      flash[:success] = "相談を送信しました。"
+      redirect_to user_project_counselings_path(@user, @project)
+    else
+      render :new
+    end
   end
 
   def update
     @counseling = @project.counselings.find(params[:id])
-    if update_counseling_and_confirmers
+    if @counseling.update(counseling_params)
       send_edited_notification_emails
       flash[:success] = "相談内容を更新しました。"
-      redirect_to user_project_counselings_path
+      redirect_to user_project_counseling_path(@user, @project, @counseling)
     else
-      flash[:danger] = "送信相手を選択してください。"
-      render action: :edit
+      flash[:danger] = "相談の更新に失敗しました。"
+      render :edit
     end
   end
 
@@ -108,37 +121,31 @@ class Projects::CounselingsController < Projects::BaseProjectController
     end
   end
 
-  def update_counseling_and_confirmers
-    if @counseling.update(counseling_params)
-      @counseling.counseling_confirmers.destroy_all
-      send_to_all? ? create_confirmers_for_all_members : create_confirmers_from_send_to
-      true
+  def handle_counseling_sending
+    if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
+      # Send notification to all users
+      @project.users.each do |member|
+        CounselingMailer.notification(member, @counseling).deliver_now
+      end
     else
-      false
+      # Send notification to selected users
+      @counseling.send_to.each do |recipient_id|
+        recipient = User.find(recipient_id)
+        CounselingMailer.notification(recipient, @counseling).deliver_now
+      end
     end
   end
 
-  def send_to_all?
-    ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
-  end
-
-  def create_confirmers_for_all_members
-    @members.each { |member| create_confirmer(member.id) }
-  end
-
-  def create_confirmers_from_send_to
-    @counseling.send_to.each { |t| create_confirmer(t) }
-  end
-
-  def create_confirmer(confirmer_id)
-    @counseling.counseling_confirmers.create(counseling_confirmer_id: confirmer_id)
-  end
-
   def send_edited_notification_emails
-    recipients = @counseling.send_to_all ? @members : @counseling.send_to
-    recipients.each do |recipient|
-      recipient = recipient.is_a?(User) ? recipient : User.find(recipient)
-      CounselingMailer.notification_edited(recipient, @counseling, @project).deliver_now
+    if ActiveRecord::Type::Boolean.new.cast(params[:counseling][:send_to_all])
+      @project.users.each do |member|
+        CounselingMailer.notification_edited(member, @counseling).deliver_now
+      end
+    else
+      @counseling.send_to.each do |recipient_id|
+        recipient = User.find(recipient_id)
+        CounselingMailer.notification_edited(recipient, @counseling).deliver_now
+      end
     end
   end
 
@@ -160,7 +167,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def send_counselings_csv(counselings)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
-      column_names = %w(送信者名 タイトル 送信日 受信者 重用度)
+      column_names = %w(送信者名 タイトル 送信日 受信者)
       csv << column_names
       counselings.each do |counseling|
         recipient_names = view_context.get_counseling_recipients(counseling.id, @members)
@@ -169,7 +176,6 @@ class Projects::CounselingsController < Projects::BaseProjectController
           counseling.title,
           counseling.created_at.strftime("%m月%d日 %H:%M"),
           recipient_names,
-          counseling.importance,
         ]
         csv << column_values
       end
