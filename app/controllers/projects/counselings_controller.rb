@@ -188,7 +188,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def you_addressee_counselings
-    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
+    you_addressee_counseling_ids = .where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
     Counseling.monthly_counselings_for(@project)
               .where(id: you_addressee_counseling_ids)
               .order(created_at: 'DESC')

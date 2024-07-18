@@ -1,33 +1,26 @@
 <% provide(:title, '相談一覧') %>
 
 <%= content_for :side_menu do %>
-  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+  <%= render partial: 'layouts/sidebar', locals: { user: @user, project: @project } %>
 <% end %>
 
-<div id="flash-messages">
-  <% flash.each do |key, message| %>
-    <div class="alert alert-<%= key %>"><%= message %></div>
-  <% end %>
-</div>
-
-<div class="card-box">  
-  <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
-
+<div class="card-box">
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">相談一覧</h1>
-
   <div class="d-flex justify-content-end mb-3">
     <%= link_to "相談履歴", history_user_project_counseling_path(id: @project.id, project_id: @project.id, user_id: current_user.id), class: "btn btn-outline-orange" %>
   </div>
-
-
   <div class="card">
     <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+      <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
         <li class="nav-item">
-        <a class="text-white active" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow"  role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなた宛の相談 ▼</a>
+          <a class="text-white" id="you-addressee-tab" data-toggle="tab" href="#you-addressee" target="_blank" rel="external nofollow" role="tab" aria-controls="you-addressee" aria-selected="true">▼ あなたへの相談 ▼</a>
         </li>
         <li class="nav-item">
-          <a class="text-white" id="counseling-tab" data-toggle="tab" href="#counseling" target="_blank" rel="external nofollow"  role="tab" aria-controls="counseling" aria-selected="false">▼ 全メンバーの相談 ▼</a>
+          <a class="text-white" id="you-send-tab" data-toggle="tab" href="#you-send" target="_blank" rel="external nofollow" role="tab" aria-controls="you-send" aria-selected="false">▼ あなたが送った相談 ▼</a>
+        </li>
+        <li class="nav-item">
+          <a class="text-white" id="counseling-tab" data-toggle="tab" href="#counseling" target="_blank" rel="external nofollow" role="tab" aria-controls="counseling" aria-selected="false">▼ 全相談 ▼</a>
         </li>
       </ul>
     </div>
@@ -39,7 +32,13 @@
             <%= render partial: 'projects/counselings/you_addressee_counselings', locals: { counselings: @you_addressee_counselings } %>
           </div>
         </div>
-        <!-- 全メンバーの連絡 -->
+        <!-- あなたが送った相談一覧 -->
+        <div class="tab-pane fade" id="you-send" role="tabpanel" aria-labelledby="you-send-tab">
+          <div id="you-send-counselings-container">
+            <%= render partial: 'projects/counselings/you_send_counselings', locals: { counselings: @you_send_counselings } %>
+          </div>
+        </div>
+        <!-- 全メンバーの相談 -->
         <div class="tab-pane fade" id="counseling" role="tabpanel" aria-labelledby="counseling-tab">
           <div id="counselings-container">
             <%= render partial: 'projects/counselings/all_counselings', locals: { counselings: @counselings } %>
