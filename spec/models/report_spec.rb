@@ -33,4 +33,21 @@ RSpec.describe Report, type: :model do
       end
     end
   end
+
+  describe '報告検索' do
+    let(:search_params) { { created_at: '2024-07-01', keywords: 'example' } }
+    it '検索が空で実行された場合、全報告を表示する' do
+      expect(Report.search({})).to eq(Report.all)
+    end
+
+    it '検索した日付があれば、その日付の報告を表示する' do
+      expect(Report).to receive(:created_at).with(search_params[:created_at]).and_call_original
+      Report.search(search_params)
+    end
+
+    it '検索したキーワードを含む報告があれば、その報告を表示する' do
+      expect(Report).to receive(:keywords_like).with(search_params[:keywords]).and_call_original
+      Report.search(search_params)
+    end
+  end
 end
