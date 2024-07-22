@@ -2,6 +2,8 @@ class Projects::ReportsController < Projects::BaseProjectController
   require 'csv'
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log view_reports_log_month]
+  before_action :set_report, only: %i[edit update destroy]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     set_project_and_members
@@ -202,6 +204,17 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   private
+
+  def set_report
+    @report = Report.find(params[:id])
+  end
+
+  def authorize_user!
+    unless current_user.id == @report.id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to root_path
+    end
+  end
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
