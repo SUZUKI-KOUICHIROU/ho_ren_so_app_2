@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Counseling, type: :model do
-  subject(:message) { FactoryBot.build(:message) }
+  subject(:counseling) { FactoryBot.build(:counseling) }
 
   describe 'counselingの登録' do
     context '相談の送信' do
