@@ -234,7 +234,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:success] = "連絡内容を更新し、送信しました。"
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
-      flash[:danger] = "送信相手を選択してください。"
+      log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
       render :edit
     end
   end
