@@ -1,10 +1,14 @@
 ja:
   activerecord:
     models:
+      message: 連絡
       counseling: 相談
     attributes:
+        message:
+          title: 件名
+          message_detail: 連絡内容
+          send_to: 送信相手
         counseling:
           title: 件名
           counseling_detail: 相談内容
           send_to: 送信相手
-          
