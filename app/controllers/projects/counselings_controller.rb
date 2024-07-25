@@ -70,6 +70,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
         redirect_to user_project_path current_user, params[:project_id]
       else
         log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        render :new
       end
     else
       # TO ALLが選択されていない時
@@ -84,6 +85,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
         redirect_to user_project_path current_user, params[:project_id]
       else
         log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        render :new
       end
     end
   end
@@ -134,7 +136,6 @@ class Projects::CounselingsController < Projects::BaseProjectController
     if @counseling.errors.full_messages.present? # counselingのerrorが存在する時
       flash[:danger] = @counseling.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
     end
-    render action: :new
   end
 
   def counseling_search_params
