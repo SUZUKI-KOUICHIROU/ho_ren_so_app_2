@@ -114,7 +114,6 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
-
   # 全員の連絡
   def all_messages
     Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)

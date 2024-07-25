@@ -11,7 +11,6 @@ class Message < ApplicationRecord
   validates :message_detail, presence: true, length: { maximum: 500 }
   # validate :no_check_become_invalid
   validate :send_to_must_be_present, unless: :send_to_all? # ｵﾘｼﾞﾅﾙﾊﾞﾘﾃﾞｰｼｮﾝ:送信先の存在が必要ﾒｿｯﾄﾞ 全員送信を選択している時はｽｷｯﾌﾟ
- 
 
   def set_importance(importance, recipients)
     self.importance = importance
