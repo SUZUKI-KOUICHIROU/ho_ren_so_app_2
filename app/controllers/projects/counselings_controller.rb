@@ -69,7 +69,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
       else
-        log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
         render :new
       end
     else
@@ -84,7 +84,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
       else
-        log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
         render :new
       end
     end
@@ -101,8 +101,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
       flash[:success] = "相談内容を更新しました。"
       redirect_to user_project_counselings_path
     else
-      flash[:danger] = "送信相手を選択してください。"
-      render action: :edit
+      log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+      render :edit
     end
   end
 
@@ -132,7 +132,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all, images: [])
   end
 
-  def log_and_render_errors # ｴﾗｰを表示
+  def log_errors # ｴﾗｰを表示
     if @counseling.errors.full_messages.present? # counselingのerrorが存在する時
       flash[:danger] = @counseling.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
     end
