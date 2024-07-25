@@ -108,6 +108,14 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   private
 
+  def log_and_render_errors # ｴﾗｰを表示
+    if @message.errors.full_messages.present? # messageのerrorが存在する時
+      flash[:danger] = @message.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
+    end
+    render action: :new
+  end
+
+
   # 全員の連絡
   def all_messages
     Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)
@@ -202,8 +210,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:success] = "連絡内容を送信しました."
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
-      flash[:danger] = "送信相手を選択してください."
-      render action: :new
+      log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
     end
   end
 
