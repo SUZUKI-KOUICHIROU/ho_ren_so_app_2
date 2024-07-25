@@ -112,7 +112,6 @@ class Projects::MessagesController < Projects::BaseProjectController
     if @message.errors.full_messages.present? # messageのerrorが存在する時
       flash[:danger] = @message.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
     end
-    render action: :new
   end
 
 
@@ -211,6 +210,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
       log_and_render_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+      render :new
     end
   end
 
