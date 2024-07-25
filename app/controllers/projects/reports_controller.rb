@@ -210,7 +210,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   def authorize_user!
-    unless current_user.id == @report.id
+    unless current_user.id == @report.user_id
       flash[:alert] = "アクセス権限がありません"
       redirect_to root_path
     end
