@@ -3,14 +3,15 @@ class Message < ApplicationRecord
   has_many :message_confirmers, dependent: :destroy
   has_many :message_replies, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-
   attr_accessor :send_to
 
   attribute :send_to_all # , default: false
 
   validates :title, presence: true, length: { maximum: 30 }
   validates :message_detail, presence: true, length: { maximum: 500 }
-  validate :no_check_become_invalid
+  # validate :no_check_become_invalid
+  validate :send_to_must_be_present, unless: :send_to_all? # ｵﾘｼﾞﾅﾙﾊﾞﾘﾃﾞｰｼｮﾝ:送信先の存在が必要ﾒｿｯﾄﾞ 全員送信を選択している時はｽｷｯﾌﾟ
+ 
 
   def set_importance(importance, recipients)
     self.importance = importance
@@ -41,13 +42,13 @@ class Message < ApplicationRecord
 
   # 送信相手にTO ALLを選択していない場合
   # 送信相手を一名以上選択しているか。
-  def no_check_become_invalid
-    unless send_to_all
-      if send_to.nil?
-        errors.add "", "送信相手を選択してください。"
-      end
-    end
-  end
+  # def no_check_become_invalid
+  #   unless send_to_all
+  #     if send_to.nil?
+  #       errors.add "", "送信相手を選択してください。"
+  #     end
+  #   end
+  # end
 
   # 月次連絡を取得する
   def self.monthly_messages_for(project)
@@ -80,7 +81,21 @@ class Message < ApplicationRecord
     where('title LIKE ? OR sender_name LIKE ? OR message_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
   }
 
+  def send_to_all?
+    ActiveRecord::Type::Boolean.new.cast(send_to_all)
+    # ActiveRecordの型ｷｬｽﾃｨﾝｸﾞ（型変換）を扱うｸﾗｽ
+    # cast 引数をﾌﾞｰﾙ値に変換
+    # このﾒｿｯﾄﾞは、send_to_all属性の値をﾌﾞｰﾙ値に変換して返す。
+    # send_to_all属性が文字列や数値などの形式で保存されている場合でも、ﾌﾞｰﾙ値として扱えるようにする
+  end
+
   private
+
+  def send_to_must_be_present # 送信先の存在が必要ﾒｿｯﾄﾞ
+    if send_to.blank? # 送信先がない、空の場合
+      errors.add(:send_to, "を選択してください") # 送信先を選択してくださいのｴﾗｰﾒｯｾｰｼﾞを追加
+    end
+  end
 
   def send_slack_notification(title, message_detail)
     client = Slack::Web::Client.new
