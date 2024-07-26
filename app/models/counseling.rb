@@ -10,7 +10,6 @@ class Counseling < ApplicationRecord
   validates :title, presence: true, length: { maximum: 30 }
   validates :counseling_detail, presence: true, length: { maximum: 500 }
   # validates :counseling_reply_flag, inclusion: [true, false]
-  # validate :no_check_become_invalid
   validate :send_to_must_be_present, unless: :send_to_all? # ｵﾘｼﾞﾅﾙﾊﾞﾘﾃﾞｰｼｮﾝ:送信先の存在が必要ﾒｿｯﾄﾞ 全員送信を選択している時はｽｷｯﾌﾟ
 
   # ログインユーザー宛のメッセージを取得
@@ -29,15 +28,6 @@ class Counseling < ApplicationRecord
     buf = counseling_confirmers.where(counseling_confirmation_flag: true).select('counseling_confirmer_id')
     User.where(id: buf)
   end
-
-  # # 送信相手を一名以上選択しているか。
-  # def no_check_become_invalid
-  #   unless send_to_all
-  #     if send_to.nil?
-  #       errors.add "", "送信相手を選択してください。"
-  #     end
-  #   end
-  # end
 
   # 検索機能
   def self.search(search_params)
