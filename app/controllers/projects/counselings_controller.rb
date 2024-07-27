@@ -1,5 +1,6 @@
 class Projects::CounselingsController < Projects::BaseProjectController
   before_action :project_authorization
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     set_project_and_members
@@ -69,8 +70,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
       else
-        flash[:danger] = "送信相手を選択してください。"
-        render action: :new
+        log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        render :new
       end
     else
       # TO ALLが選択されていない時
@@ -84,8 +85,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
         flash[:success] = "相談内容を送信しました。"
         redirect_to user_project_path current_user, params[:project_id]
       else
-        flash[:danger] = "送信相手を選択してください。"
-        render action: :new
+        log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+        render :new
       end
     end
   end
@@ -101,8 +102,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
       flash[:success] = "相談内容を更新しました。"
       redirect_to user_project_counselings_path
     else
-      flash[:danger] = "送信相手を選択してください。"
-      render action: :edit
+      log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+      render :edit
     end
   end
 
@@ -130,6 +131,21 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all, images: [])
+  end
+
+  def log_errors # ｴﾗｰを表示
+    if @counseling.errors.full_messages.present? # counselingのerrorが存在する時
+      flash[:danger] = @counseling.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
+    end
+  end
+
+  def authorize_user!
+    counseling = @project.counselings.find(params[:id])
+    unless current_user.id == counseling.sender_id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to user_project_counselings_path(@user, @project)
+      # redirect先をrootとするとﾘﾀﾞｲﾚｸﾄﾙｰﾌﾟ発生するため相談一覧とした
+    end
   end
 
   def counseling_search_params

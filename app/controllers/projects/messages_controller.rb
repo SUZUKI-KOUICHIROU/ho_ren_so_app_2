@@ -3,6 +3,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   require 'csv'
   before_action :project_authorization
   before_action :my_message, only: %i[show]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     @user = User.find(params[:user_id])
@@ -108,6 +109,20 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   private
 
+  def authorize_user!
+    message = @project.messages.find(params[:id])
+    unless current_user.id == message.sender_id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to user_project_messages_path(@user, @project)
+    end
+  end
+
+  def log_errors # ｴﾗｰを表示
+    if @message.errors.full_messages.present? # messageのerrorが存在する時
+      flash[:danger] = @message.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
+    end
+  end
+
   # 全員の連絡
   def all_messages
     Message.monthly_messages_for(@project).order(created_at: 'DESC').page(params[:messages_page]).per(5)
@@ -202,8 +217,8 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:success] = "連絡内容を送信しました."
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
-      flash[:danger] = "送信相手を選択してください."
-      render action: :new
+      log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
+      render :new
     end
   end
 
@@ -227,7 +242,7 @@ class Projects::MessagesController < Projects::BaseProjectController
       flash[:success] = "連絡内容を更新し、送信しました。"
       redirect_to user_project_messages_path(current_user, params[:project_id])
     else
-      flash[:danger] = "送信相手を選択してください。"
+      log_errors # ｴﾗｰを表示するﾒｿｯﾄﾞ
       render :edit
     end
   end
