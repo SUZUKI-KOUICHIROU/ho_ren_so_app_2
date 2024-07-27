@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         resources :messages do
           member do
             patch 'read'
+          end
+          collection do
             get 'history'
           end
           resources :message_replys, only: %i[edit create update destroy] do
