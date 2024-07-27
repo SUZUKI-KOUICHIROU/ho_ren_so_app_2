@@ -3,6 +3,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   require 'csv'
   before_action :project_authorization
   before_action :my_message, only: %i[show]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     @user = User.find(params[:user_id])
@@ -107,6 +108,14 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   private
+
+  def authorize_user!
+    message = @project.messages.find(params[:id])
+    unless current_user.id == message.sender_id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to user_project_messages_path(@user, @project)
+    end
+  end
 
   def log_errors # ｴﾗｰを表示
     if @message.errors.full_messages.present? # messageのerrorが存在する時

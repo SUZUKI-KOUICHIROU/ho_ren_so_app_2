@@ -1,5 +1,6 @@
 class Projects::CounselingsController < Projects::BaseProjectController
   before_action :project_authorization
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     set_project_and_members
@@ -135,6 +136,15 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def log_errors # ｴﾗｰを表示
     if @counseling.errors.full_messages.present? # counselingのerrorが存在する時
       flash[:danger] = @counseling.errors.full_messages.join(", ") # ｴﾗｰのﾒｯｾｰｼﾞを表示 複数ある時は連結して表示
+    end
+  end
+
+  def authorize_user!
+    counseling = @project.counselings.find(params[:id])
+    unless current_user.id == counseling.sender_id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to user_project_counselings_path(@user, @project)
+      # redirect先をrootとするとﾘﾀﾞｲﾚｸﾄﾙｰﾌﾟ発生するため相談一覧とした
     end
   end
 
