@@ -12,23 +12,23 @@
   </div>
   <div class="d-flex justify-content-start mb-3">
     <% if params[:search].present? && params[:search] != "" %>
-      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv,  search: @messages_by_search ), class: "btn btn-outline-orange" %>
+      <%= link_to "csvエクスポート", history_user_project_messages_path(format: :csv,  search: @messages_by_search ), class: "btn btn-outline-orange" %>
     <% elsif params[:month].present? %>
-      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>    
+      <%= link_to "csvエクスポート", history_user_project_messages_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>    
     <% else %>    
-      <%= link_to "csvエクスポート", history_user_project_message_path(format: :csv), class: "btn btn-outline-orange"  %>
+      <%= link_to "csvエクスポート", history_user_project_messages_path(format: :csv), class: "btn btn-outline-orange"  %>
     <% end %>
   </div>
   <% if @messages_history.present? %>  
     <div class="d-flex justify-content-between mb-3 rwd-search-form">
       <div class="align-self-end">
-        <%= form_with url: history_user_project_message_path(current_user, @project), method: :get, local: true do |f| %>
+        <%= form_with url: history_user_project_messages_path(current_user, @project), method: :get, local: true do |f| %>
           <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box rwd-search-box" %>
           <%= f.submit "選択した月を表示", class: "btn btn-outline-orange rwd-submit-btn" %>
         <% end %>
       </div>
       <div class="align-self-end rwd-search-block">    
-        <%= form_with scope: :search, url: history_user_project_message_path(current_user,@project), method: :get, local: true do |form| %>
+        <%= form_with scope: :search, url: history_user_project_messages_path(current_user,@project), method: :get, local: true do |form| %>
           <%= form.hidden_field :search_type, :value => "message" %>
           
           <%= form.label :created_at, "連絡受信日：", class: "mb-0" %>
