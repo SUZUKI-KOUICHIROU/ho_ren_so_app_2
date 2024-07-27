@@ -89,7 +89,9 @@
       <% end %>
     </div>
   <% else @messages_history.blank?%>
-    <P>連絡履歴がありません。</P>
+    <div class="d-flex justify-content-end">
+      <P class="report-none">連絡履歴がありません</P>
+    </div>
   <% end %>
   <div class="d-flex">
     <% if @messages_history.present?%>
