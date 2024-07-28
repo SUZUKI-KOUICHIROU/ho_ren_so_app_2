@@ -25,5 +25,12 @@ RSpec.describe Report, type: :model do
         expect(build(:report, sender_name: '')).to be_invalid
       end
     end
+
+    context 'report_read_flagカラム' do
+      it '報告作成時、報告確認状況(report_read_flag)が未読(false)になる' do
+        report = FactoryBot.build(:report)
+        expect(report.report_read_flag).to eq(false)
+      end
+    end
   end
 end

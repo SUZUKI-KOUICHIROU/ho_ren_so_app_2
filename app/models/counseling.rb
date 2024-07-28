@@ -7,21 +7,14 @@ class Counseling < ApplicationRecord
   has_many :counseling_confirmers, dependent: :destroy
   has_many :counseling_replies, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-
   attr_accessor :send_to
 
   attribute :send_to_all, :boolean
 
-  validates :counseling_detail, presence: true
-  validate :validate_send_to_presence
-
-  scope :created_at, ->(created_at) {
-    where("created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo' BETWEEN ? AND ?", "#{created_at} 00:00:00", "#{created_at} 23:59:59")
-  }
-  
-  scope :keywords_like, ->(keywords) {
-    where('title LIKE ? OR sender_name LIKE ? OR counseling_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
-  }
+  validates :title, presence: true, length: { maximum: 30 }
+  validates :counseling_detail, presence: true, length: { maximum: 500 }
+  # validates :counseling_reply_flag, inclusion: [true, false]
+  validate :send_to_must_be_present, unless: :send_to_all? # ｵﾘｼﾞﾅﾙﾊﾞﾘﾃﾞｰｼｮﾝ:送信先の存在が必要ﾒｿｯﾄﾞ 全員送信を選択している時はｽｷｯﾌﾟ
 
   # ログインユーザー宛のメッセージを取得
   def self.my_counselings(user)
@@ -39,13 +32,6 @@ class Counseling < ApplicationRecord
     counseling_confirmers.where(counseling_confirmation_flag: true).map(&:user)
   end
 
-  # 送信相手を一名以上選択しているかを確認するバリデーション
-  def validate_send_to_presence
-    if !send_to_all && send_to.blank?
-      errors.add(:send_to, "送信相手を選択してください。")
-    end
-  end
-
   # 検索機能
   def self.search(search_params)
     query = all
@@ -56,10 +42,19 @@ class Counseling < ApplicationRecord
     query
   end
 
-  # 月次相談を取得する
-  def self.monthly_counselings_for(project)
-    start_of_month = Time.zone.now.beginning_of_month
-    end_of_month = Time.zone.now.end_of_month
-    where(project: project, created_at: start_of_month..end_of_month)
+  def send_to_all?
+    ActiveRecord::Type::Boolean.new.cast(send_to_all)
+    # ActiveRecordの型ｷｬｽﾃｨﾝｸﾞ（型変換）を扱うｸﾗｽ
+    # cast 引数をﾌﾞｰﾙ値に変換
+    # このﾒｿｯﾄﾞは、send_to_all属性の値をﾌﾞｰﾙ値に変換して返す。
+    # send_to_all属性が文字列や数値などの形式で保存されている場合でも、ﾌﾞｰﾙ値として扱えるようにする
+  end
+
+  private
+
+  def send_to_must_be_present # 送信先の存在が必要ﾒｿｯﾄﾞ
+    if send_to.blank? # 送信先がない、空の場合
+      errors.add(:send_to, "を選択してください") # 送信先を選択してくださいのｴﾗｰﾒｯｾｰｼﾞを追加
+    end
   end
 end

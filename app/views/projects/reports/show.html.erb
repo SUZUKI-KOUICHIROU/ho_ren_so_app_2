@@ -92,7 +92,7 @@ function changeForm() {
               <% end %>
           <% elsif !answer.value.blank? %>
             <div class="card-text ml-0">
-              <%= raw Rinku.auto_link(answer.value, :all, 'target="_blank"') %>
+              <%= format_text(answer.value) %>
             </div>
           <% else %>
             <div class="card-text ml-0">
@@ -104,7 +104,7 @@ function changeForm() {
         <!-- 添付画像の表示 -->
         <%= render "/projects/images/show_image", object: @report %>
 
-        <% if current_user == @user %>
+        <% if current_user == @user && current_user.id == @report.user_id %>
           <div class="text-right mr-4">
             <%= link_to "編集", edit_user_project_report_path(@user, @project, @report), class: "btn btn-light btn-outline-orange col-3" %>
           </div>
