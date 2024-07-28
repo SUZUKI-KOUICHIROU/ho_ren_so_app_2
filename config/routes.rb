@@ -60,6 +60,8 @@ Rails.application.routes.draw do
           member do
             post 'reject'
             post 'resubmitted'
+          end
+          collection do
             get 'history'
           end
           resources :report_replys, only: %i[edit  create update destroy] do
