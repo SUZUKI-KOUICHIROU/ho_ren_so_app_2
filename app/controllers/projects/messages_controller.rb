@@ -87,10 +87,6 @@ class Projects::MessagesController < Projects::BaseProjectController
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
     @message = @project.messages
-    if @message.empty? # URL直打ち対策で定義したもの
-      flash[:alert] = "指定されたものは存在しません"
-      return redirect_to action: :index
-    end
     @messages_history = all_messages_history_month
     @messages_by_search = message_search_params.to_h
     count_recipients(@messages_history)
