@@ -6,6 +6,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def index
     set_project_and_members
+    @reports_all = @project.reports
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     monthly_reports
