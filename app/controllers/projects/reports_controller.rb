@@ -189,7 +189,11 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 報告履歴
   def history
     set_project_and_members
-    @report = Report.find(params[:id])
+    @report = @project.reports
+    if @report.empty? # URL直打ち対策で定義したもの
+      flash[:alert] = "指定されたものは存在しません"
+      return redirect_to action: :index
+    end
     @report_history = all_reports_history_month
     @reports_by_search = report_search_params.to_h
     all_reports_history_month
