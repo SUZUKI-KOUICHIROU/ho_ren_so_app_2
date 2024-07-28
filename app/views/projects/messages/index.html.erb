@@ -13,9 +13,11 @@
 <div class="card-box">  
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
   <h1 class="text-center">連絡一覧</h1>
+  <% unless @messages.blank? %>
   <div class="d-flex justify-content-end mb-3">
-    <%= link_to "連絡履歴", history_user_project_message_path(id: @project.id, project_id: @project.id, user_id: current_user.id), class: "btn btn-outline-orange" %>
+    <%= link_to "連絡履歴", history_user_project_messages_path(user_id: current_user, project_id: @project.id), class: "btn btn-outline-orange" %>
   </div>
+  <% end %>
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
