@@ -76,7 +76,7 @@ class ProjectUser < ApplicationRecord
         # 再計算後の指定日時が過去の場合、さらに報告頻度日後へと再々設定
         if reminder_datetime < Time.current
           recalculated_next_report_date += report_frequency.days
-          
+
           # 指定日時を再々計算＆再々設定
           reminder_datetime = calculate_reminder_datetime(reminder_days, report_time, recalculated_next_report_date)
         end
@@ -87,7 +87,7 @@ class ProjectUser < ApplicationRecord
 
       # 2度目以降の指定日時を計算＆設定
       next_reminder_datetime = reminder_datetime + report_frequency.days
-      
+
       # 2度目以降～1ヶ月間の継続的なメール送信ジョブをキューに追加
       while next_reminder_datetime < 1.month.from_now
         ReminderJob.set(wait_until: next_reminder_datetime).perform_later(project_id, member_id, reminder_days, report_time)
@@ -103,7 +103,7 @@ class ProjectUser < ApplicationRecord
   def dequeue_report_reminder(project_id, member_id)
     # Sidekiqのスケジュールセット取得。スケジュールされた全てのジョブが含まれる。
     scheduled_set = Sidekiq::ScheduledSet.new
-    
+
     # 全てのジョブの中から対象のジョブのみを削除
     scheduled_set.each do |job|
       if (job.args.first["arguments"][ReminderJob::ARG_PROJECT_ID_INDEX] == project_id) &&

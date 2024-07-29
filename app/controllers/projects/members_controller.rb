@@ -209,7 +209,7 @@ class Projects::MembersController < Projects::BaseProjectController
     return unless project_user
 
     # リマインダージョブをキューから削除
-    project_user.dequeue_report_reminder(project.id, member_id) 
+    project_user.dequeue_report_reminder(project.id, member_id)
 
     # リマインダーの設定情報を解除
     project_user.update!(
