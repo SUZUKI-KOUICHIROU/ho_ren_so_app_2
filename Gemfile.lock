@@ -90,6 +90,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.10)
+    connection_pool (2.4.1)
     crass (1.0.6)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -316,6 +317,10 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (5.2.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.22.2)
+      connection_pool
     regexp_parser (2.5.0)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -404,6 +409,10 @@ GEM
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
     sexp_processor (4.16.1)
+    sidekiq (6.5.5)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.5.0)
     slack-ruby-client (1.0.0)
       faraday (>= 1.0)
       faraday_middleware
@@ -517,6 +526,7 @@ DEPENDENCIES
   rails (~> 5.2.6)
   rails-controller-testing
   rails-i18n
+  redis
   rinku
   rolify
   rounding
@@ -531,6 +541,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   selenium-webdriver
   shoulda-matchers!
+  sidekiq
   slack-ruby-client
   spring
   spring-commands-rspec

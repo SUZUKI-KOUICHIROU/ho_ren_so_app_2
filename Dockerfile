@@ -7,6 +7,7 @@ RUN apt-get update \
     postgresql-client \
     nodejs \
     vim \
+    redis-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
