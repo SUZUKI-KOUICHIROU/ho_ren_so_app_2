@@ -2,9 +2,11 @@ class Projects::ReportsController < Projects::BaseProjectController
   require 'csv'
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log view_reports_log_month]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
     set_project_and_members
+    @reports_all = @project.reports
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     monthly_reports
@@ -188,7 +190,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 報告履歴
   def history
     set_project_and_members
-    @report = Report.find(params[:id])
+    @report = @project.reports
     @report_history = all_reports_history_month
     @reports_by_search = report_search_params.to_h
     all_reports_history_month
@@ -202,6 +204,14 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   private
+
+  def authorize_user!
+    @report = Report.find(params[:id])
+    unless current_user.id == @report.user_id
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to root_path
+    end
+  end
 
   # フォーム新規登録並びに編集用/create
   def create_reports_params
