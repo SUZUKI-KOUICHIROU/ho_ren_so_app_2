@@ -155,8 +155,45 @@ RSpec.describe ProjectUser, type: :model do
   end
 
   describe 'dequeue_report_reminderメソッドのテスト' do
-    it 'キューからジョブが削除される（メソッド未実装につきテスト保留中＆実装後は要・修正）' do
-      expect { project_user.dequeue_report_reminder }.not_to raise_error
+    include DebugHelper
+    let(:project_id) { 1 }
+    let(:member_id) { 2 }
+    let(:other_project_id)  { 7 }
+    let(:other_member_id) { 8 }
+    let(:scheduled_set) { Sidekiq::ScheduledSet.new } # Sidekiqでスケジュールされたジョブセット
+
+    before do
+      # リマインドのリセット処理では、Sidekiqのクラスメソッドを使用しているため、testアダプタでは検証できない。
+      # そのため、キューアダプタをSidekiqに指定する。
+      ActiveJob::Base.queue_adapter = :sidekiq
+
+      # ジョブの初期化（全ジョブをクリア）
+      scheduled_set.clear
+    end
+
+    it 'キューからジョブが削除される' do
+      # ジョブの追加
+      ReminderJob.set(wait_until: 1.hour.from_now).perform_later(project_id, member_id)             # ジョブ1
+      ReminderJob.set(wait_until: 1.hour.from_now).perform_later(other_project_id, other_member_id) # ジョブ2
+      # ジョブ追加後のジョブ一覧をコンソールに表示
+      puts ">>> #{scheduled_set.size}個のジョブを追加"
+      disp_job_info(scheduled_set)
+
+      # ジョブ1の削除
+      project_user.dequeue_report_reminder(project_id, member_id)
+      # ジョブの数が2個⇨1個になることを確認
+      expect(scheduled_set.size).to eq(1)
+      # 対象ジョブ削除後のジョブ一覧をコンソールに表示
+      puts ">>> 引数が[#{project_id},#{member_id}]のジョブを削除"
+      disp_job_info(scheduled_set)
+
+      # ジョブ2の削除
+      project_user.dequeue_report_reminder(other_project_id, other_member_id)
+      # ジョブの数が1個⇨0個になることを確認
+      expect(scheduled_set.size).to eq(0)
+      # 対象ジョブ削除後のジョブ一覧をコンソールに表示
+      puts ">>> 引数が[#{other_project_id},#{other_member_id}]のジョブを削除"
+      disp_job_info(scheduled_set)
     end
   end
 end

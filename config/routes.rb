@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   # トップページのパスを指定(static_pages/static_pages#new)
@@ -114,5 +116,8 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
+
+  # Sidekiqダッシュボードをマウント
+  mount Sidekiq::Web => '/sidekiq'
 
 end
