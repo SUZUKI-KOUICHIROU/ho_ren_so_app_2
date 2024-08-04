@@ -92,6 +92,9 @@ class Projects::ReportsController < Projects::BaseProjectController
         res = Answer.find(answer[:id])
         if res.question_type == 'check_box'
           if answer[:array_value].nil?
+            if res.array_value.nil?
+              res.array_value = []
+            end
             res.array_value.clear
             res.save!
           end
