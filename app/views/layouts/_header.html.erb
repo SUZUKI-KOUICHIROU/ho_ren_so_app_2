@@ -1,10 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light header shadow bg-white rounded justify-content-center">
   <%= link_to "Horenso_App", root_path, class: "h1 mb-1" %>
-  <% flash.each do |key, value| %>
-    <% if key != :search_error %>
-      <%= content_tag(:a, value, class: "alert alert-#{bootstrap_alert(key)} mb-0 ml-3") %>
+    <% unless flash_message_displayed? %>
+      <% flash.each do |key, value| %>
+        <% if key != :search_error %>
+          <%= content_tag(:a, value, class: "alert alert-#{bootstrap_alert(key)} mb-0 ml-3") %>
+        <% end %>
+      <% end %>
+      <% flash_message_displayed! %>
     <% end %>
-  <% end %>
   <% if user_signed_in? %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
