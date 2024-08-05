@@ -4,8 +4,11 @@
 <% end %>
 
 <div id="flash-messages">
-  <% flash.each do |key, message| %>
-    <div class="alert alert-<%= key %>"><%= message %></div>
+  <% unless flash_message_displayed? %>
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= key %>"><%= message %></div>
+    <% end %>
+    <% flash_message_displayed! %>
   <% end %>
 </div>
 

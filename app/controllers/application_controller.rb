@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
+  before_action :reset_flash_message_displayed
 
   def store_user_location!
     store_location_for(:user, request.fullpath)
@@ -26,5 +27,11 @@ class ApplicationController < ActionController::Base
   def extract_counseling_id_from_path(path)
     match = path.match(/counselings\/(\d+)/)
     match[1] if match
+  end
+
+  private
+
+  def reset_flash_message_displayed
+    session[:flash_message_displayed] = false # ﾌﾗｯｼｭﾒｯｾｰｼﾞをﾘｾｯﾄ
   end
 end
