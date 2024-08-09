@@ -6,6 +6,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   def index
     set_project_and_members
+    @reports_all = @project.reports
     @first_question = @project.questions.first
     @report_label_name = @first_question.send(@first_question.form_table_type).label_name
     monthly_reports
@@ -91,6 +92,9 @@ class Projects::ReportsController < Projects::BaseProjectController
         res = Answer.find(answer[:id])
         if res.question_type == 'check_box'
           if answer[:array_value].nil?
+            if res.array_value.nil?
+              res.array_value = []
+            end
             res.array_value.clear
             res.save!
           end
@@ -189,7 +193,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 報告履歴
   def history
     set_project_and_members
-    @report = Report.find(params[:id])
+    @report = @project.reports
     @report_history = all_reports_history_month
     @reports_by_search = report_search_params.to_h
     all_reports_history_month

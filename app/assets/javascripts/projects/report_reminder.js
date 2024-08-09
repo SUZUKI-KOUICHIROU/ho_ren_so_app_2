@@ -52,7 +52,7 @@ $(document).on('turbolinks:load', function(){
           },
           success: function(data) {
             // 成功時の処理
-            alert("報告リマインドの設定をリセットしました。\n\n【注意】\n既に完了済の設定は 1ヶ月間 解除されません。");
+            alert("報告リマインドの設定をリセットしました。");
           },
           error: function() {
             // エラー時の処理

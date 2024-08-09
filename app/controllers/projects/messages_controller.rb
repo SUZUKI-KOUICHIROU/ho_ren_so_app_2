@@ -86,7 +86,7 @@ class Projects::MessagesController < Projects::BaseProjectController
   def history
     @user = User.find(params[:user_id])
     @project = Project.find(params[:project_id])
-    @message = Message.find(params[:id])
+    @message = @project.messages
     @messages_history = all_messages_history_month
     @messages_by_search = message_search_params.to_h
     count_recipients(@messages_history)

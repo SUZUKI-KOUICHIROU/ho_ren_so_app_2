@@ -49,6 +49,14 @@ module ApplicationHelper
   # テキスト内のURLを自動的にリンクに変換する。また、改行を有効化する。
   def format_text(text)
     link_text = Rinku.auto_link(simple_format(text), :urls, 'target="_blank" rel="noopener noreferrer"')
-    sanitize(link_text, tags: %w(a p br), attributes: %w(href target rel))        # サニタイズして必要なタグと属性を許可
+    sanitize(link_text, tags: %w(a p br), attributes: %w(href target rel)) # サニタイズして必要なタグと属性を許可
+  end
+
+  def flash_message_displayed!
+    session[:flash_message_displayed] = true # flash_messageが表示されている場合trueになる
+  end
+
+  def flash_message_displayed?
+    session[:flash_message_displayed] # true or falseを保持しているが初期は定義していないためfalse
   end
 end

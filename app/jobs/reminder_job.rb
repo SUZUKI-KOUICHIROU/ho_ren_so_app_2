@@ -1,6 +1,12 @@
 class ReminderJob < ApplicationJob
   queue_as :default
 
+  # ジョブ引数のインデックス定義
+  ARG_PROJECT_ID_INDEX    = 0
+  ARG_MEMBER_ID_INDEX     = 1
+  ARG_REMINDER_DAYS_INDEX = 2
+  ARG_REPORT_TIME_INDEX   = 3
+
   # 報告リマインドメールを送信する処理
   def perform(project_id, member_id, reminder_days, report_time)
     project_user = ProjectUser.find(member_id)

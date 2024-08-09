@@ -4,6 +4,17 @@
   <%= render partial: 'layouts/sidebar', locals: { user: @user, project: @project } %>
 <% end %>
 
+
+<div id="flash-messages">
+  <% unless flash_message_displayed? %>
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= key %>"><%= message %></div>
+    <% end %>
+    <% flash_message_displayed! %>
+  <% end %>
+</div>
+
+
 <div class="card-box">
   <p class="project-name-text">プロジェクト：<%= @project.name %></p>
   <h1 class="text-center">相談一覧</h1>

@@ -100,15 +100,17 @@ class ProjectUser < ApplicationRecord
   end
 
   # 報告リマインドメール送信ジョブをキューから削除するメソッド
-  def dequeue_report_reminder # （考察：実装時には queue_report_reminder と同じ引数を要する可能性アリ）
-    # キューから削除する処理を追加
+  def dequeue_report_reminder(project_id, member_id)
+    # Sidekiqのスケジュールセット取得。スケジュールされた全てのジョブが含まれる。
+    scheduled_set = Sidekiq::ScheduledSet.new
 
-    # （考察：Sidekiq＋Redisを導入後、例えば以下のような記述になる可能性アリ）
-    # Sidekiq::ScheduledSet.new.each do |job|
-    #   job.delete if job.args.include?(self.id)
-    # end
-
-    # 【注意】別ファイルにて、Sidekiq＋RedisをDocker上で導入する実装が少なくとも必要。
+    # 全てのジョブの中から対象のジョブのみを削除
+    scheduled_set.each do |job|
+      if (job.args.first["arguments"][ReminderJob::ARG_PROJECT_ID_INDEX] == project_id) &&
+         (job.args.first["arguments"][ReminderJob::ARG_MEMBER_ID_INDEX] == member_id)
+        job.delete
+      end
+    end
   end
 
   private

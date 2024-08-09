@@ -97,9 +97,7 @@
       <% end %>
     </div>
   <% else @all_reports.blank?%>
-    <div class="d-flex justify-content-end">
-      <P class="report-none">全メンバーの報告履歴がありません</P>
-    </div>
+      <P>全メンバーの報告履歴がありません。</P>
   <% end %>
   <div class="d-flex">
     <% if @all_reports.present?%>
