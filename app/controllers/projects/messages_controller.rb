@@ -12,12 +12,18 @@ class Projects::MessagesController < Projects::BaseProjectController
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
     count_recipients(@messages)
-    messages_by_search
-    respond_to do |format|
+    
+    @messages_by_search = messages_by_search
+
+     @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
+
+    respond_to do |format|  
       format.html
       format.js
+      format.csv do |csv|
+        send_messages_csv(@messages_by_search)
+      end
     end
-    render :index
   end
 
   def show
@@ -181,14 +187,31 @@ class Projects::MessagesController < Projects::BaseProjectController
         @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
+
+         # 検索結果をセッションに保存
+      session[:search_message_ids] = @message_ids
+
+        return @messages  # 正しい結果を明示的に返す
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+        session.delete(:search_message_ids) # セッションをクリア
+        return []  # 結果がない場合は空の配列を返す
       end
+    elsif session[:search_message_ids].present?
+      # セッションから検索結果を取得
+      @messages = all_messages.where(id: session[:search_message_ids])
+      return @messages
+    else
+      []
     end
   end
 
   def message_search_params
-    params.fetch(:search, {}).permit(:created_at, :keywords)
+    if params[:search].is_a?(ActionController::Parameters)
+      params.fetch(:search, {}).permit(:created_at, :keywords)
+    else
+      {}
+    end
   end
 
   def message_params
