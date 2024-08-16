@@ -14,14 +14,22 @@ class Projects::MessagesController < Projects::BaseProjectController
     count_recipients(@messages)
     
     @messages_by_search = messages_by_search
-
-     @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
+    @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
 
     respond_to do |format|  
       format.html
       format.js
       format.csv do |csv|
-        send_messages_csv(@messages_by_search)
+        case params[:csv_type]
+        when "all_messages"
+          send_messages_csv(@messages)
+        when "you_addressee_messages"
+          send_messages_csv(@you_addressee_messages)
+        when "you_send_messages"
+          send_messages_csv(@you_send_messages)
+        when
+          send_messages_csv(@messages_by_search)
+        end
       end
     end
   end
