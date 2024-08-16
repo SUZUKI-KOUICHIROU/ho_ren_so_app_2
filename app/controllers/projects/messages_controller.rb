@@ -12,14 +12,13 @@ class Projects::MessagesController < Projects::BaseProjectController
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
     count_recipients(@messages)
-    
     @messages_by_search = messages_by_search
     @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
 
-    respond_to do |format|  
+    respond_to do |format|
       format.html
       format.js
-      format.csv do |csv|
+      format.csv do
         case params[:csv_type]
         when "all_messages"
           send_messages_csv(@messages)
@@ -27,8 +26,11 @@ class Projects::MessagesController < Projects::BaseProjectController
           send_messages_csv(@you_addressee_messages)
         when "you_send_messages"
           send_messages_csv(@you_send_messages)
-        when
+        when "search_results"
           send_messages_csv(@messages_by_search)
+        else
+          # デフォルトのケース（何も該当しない場合）
+          send_messages_csv([])
         end
       end
     end
@@ -195,23 +197,23 @@ class Projects::MessagesController < Projects::BaseProjectController
         @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
-
-         # 検索結果をセッションに保存
-      session[:search_message_ids] = @message_ids
-
-        return @messages  # 正しい結果を明示的に返す
+        session[:search_message_ids] = @message_ids # 検索結果をセッションに保存
+        return @messages # 正しい結果を明示的に返す
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
-        session.delete(:search_message_ids) # セッションをクリア
-        return []  # 結果がない場合は空の配列を返す
+        handle_no_results
       end
     elsif session[:search_message_ids].present?
-      # セッションから検索結果を取得
-      @messages = all_messages.where(id: session[:search_message_ids])
+      @messages = all_messages.where(id: session[:search_message_ids]) # セッションから検索結果を取得
       return @messages
     else
       []
     end
+  end
+
+  def handle_no_results
+    flash.now[:danger] = '検索結果が見つかりませんでした。'
+    session.delete(:search_message_ids)
+    []
   end
 
   def message_search_params
