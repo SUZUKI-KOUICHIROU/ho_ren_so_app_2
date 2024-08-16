@@ -21,6 +21,11 @@
     <%= link_to "連絡履歴", history_user_project_messages_path(user_id: current_user, project_id: @project.id), class: "btn btn-outline-orange" %>
   </div>
   <% end %>
+
+  <% if @messages_by_search.present? %>
+  <%= link_to "csvエクスポート", user_project_messages_path(format: :csv, search: params[:search]), class: "btn btn-outline-orange" %>
+  <% end %>
+
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
