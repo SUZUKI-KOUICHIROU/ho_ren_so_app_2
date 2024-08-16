@@ -1,5 +1,6 @@
 <div class="box-you-send-index">
   <% if @you_send_messages.present? %>
+       <%= link_to "あなたが送った連絡をCSVエクスポート", user_project_messages_path(params.permit(:user_id, :project_id).merge(format: :csv, csv_type: "you_send_messages")), class: "btn btn-outline-orange" %>
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_messages_path(current_user,@project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "you-send" %>
