@@ -22,9 +22,11 @@
   </div>
   <% end %>
 
+<div class="d-flex justify-content-start mb-3">
   <% if @messages_by_search.present? %>
-  <%= link_to "csvエクスポート", user_project_messages_path(format: :csv, search: params[:search]), class: "btn btn-outline-orange" %>
+  <%= link_to "検索結果csvエクスポート", user_project_messages_path(format: :csv, search: params[:search]), class: "btn btn-outline-orange" %>
   <% end %>
+</div>
 
   <div class="card">
     <div class="card-header">
