@@ -22,12 +22,6 @@
   </div>
   <% end %>
 
-<div class="d-flex justify-content-start mb-3">
-  <% if @messages_by_search.present? %>
-  <%= link_to "検索結果csvエクスポート", user_project_messages_path(format: :csv, csv_type: "search_results"), class: "btn btn-outline-orange" %>
-  <% end %>
-</div>
-
   <div class="card">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
