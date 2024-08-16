@@ -14,25 +14,12 @@ class Projects::MessagesController < Projects::BaseProjectController
     count_recipients(@messages)
     @messages_by_search = messages_by_search
     @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
-
+    @you_addressee_messages_by_search = @you_addressee_messages.where(id: session[:search_message_ids]) if session[:search_message_ids].present?
+    @you_send_messages_by_search = @you_send_messages.where(id: session[:search_message_ids]) if session[:search_message_ids].present?
     respond_to do |format|
       format.html
       format.js
-      format.csv do
-        case params[:csv_type]
-        when "all_messages"
-          send_messages_csv(@messages)
-        when "you_addressee_messages"
-          send_messages_csv(@you_addressee_messages)
-        when "you_send_messages"
-          send_messages_csv(@you_send_messages)
-        when "search_results"
-          send_messages_csv(@messages_by_search)
-        else
-          # デフォルトのケース（何も該当しない場合）
-          send_messages_csv([])
-        end
-      end
+      format.csv { handle_csv_request }
     end
   end
 
@@ -124,6 +111,19 @@ class Projects::MessagesController < Projects::BaseProjectController
   end
 
   private
+
+  def handle_csv_request
+    case params[:csv_type]
+    when "all_messages"
+      send_messages_csv(@messages_by_search)
+    when "you_addressee_messages"
+      send_messages_csv(@you_addressee_messages_by_search)
+    when "you_send_messages"
+      send_messages_csv(@you_send_messages_by_search)
+    else
+      send_messages_csv([]) # デフォルトのケース（何も該当しない場合）
+    end
+  end
 
   def authorize_user!
     message = @project.messages.find(params[:id])
