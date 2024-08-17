@@ -254,6 +254,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # 報告検索(報告一覧)
   def reports_by_search
+    clear_session_if_needed
     if params[:search].present? and params[:search] != ""
       @results = Report.search(report_search_params)
       if @results.present?
@@ -262,19 +263,35 @@ class Projects::ReportsController < Projects::BaseProjectController
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
-
-        # 検索結果の報告IDをセッションに保存
-        session[:you_report_ids] = @you_reports.pluck(:id)
-        session[:other_report_ids] = @reports.pluck(:id)
-        session[:all_report_ids] = @all_reports.pluck(:id)
+        session_save
       else
-        @report_history = @you_reports = @reports = @all_reports = Report.none
-        session[:you_report_ids] = []
-        session[:other_report_ids] = []
-        session[:all_report_ids] = []
-        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+        handle_no_results
       end
     end
+  end
+
+  # 検索条件が変更された場合のみ、セッションをクリアする
+  def clear_session_if_needed
+    if params[:search].present? && params[:search] != session[:previous_search]
+      session[:you_report_ids] = nil
+      session[:other_report_ids] = nil
+      session[:all_report_ids] = nil
+    end
+  end
+
+  # 検索結果の報告IDをセッションに保存
+  def session_save
+    session[:you_report_ids] = @you_reports.pluck(:id)
+    session[:other_report_ids] = @reports.pluck(:id)
+    session[:all_report_ids] = @all_reports.pluck(:id)
+  end
+
+  def handle_no_results
+    @report_history = @you_reports = @reports = @all_reports = Report.none
+    session[:you_report_ids] = []
+    session[:other_report_ids] = []
+    session[:all_report_ids] = []
+    flash.now[:danger] = '検索結果が見つかりませんでした。'
   end
 
   # 報告検索(報告履歴)
@@ -321,15 +338,7 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # CSVエクスポート
   def send_reports_csv(reports)
-    # セッションに保存された検索結果がある場合、それを使用する
-    case params[:csv_type]
-    when "you_reports"
-      reports = reports.where(id: session[:you_report_ids]) if session[:you_report_ids].present?
-    when "other_reports"
-      reports = reports.where(id: session[:other_report_ids]) if session[:other_report_ids].present?
-    when "all_reports"
-      reports = reports.where(id: session[:all_report_ids]) if session[:all_report_ids].present?
-    end
+    reports = filter_reports_by_csv_type(reports)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
       column_names = %w(報告者 件名 報告日)
@@ -344,6 +353,18 @@ class Projects::ReportsController < Projects::BaseProjectController
       end
     end
     send_data(csv_data, filename: "報告履歴.csv")
+  end
+
+  def filter_reports_by_csv_type(reports)
+    case params[:csv_type]
+    when "you_reports"
+      reports = reports.where(id: session[:you_report_ids]) if session[:you_report_ids].present?
+    when "other_reports"
+      reports = reports.where(id: session[:other_report_ids]) if session[:other_report_ids].present?
+    when "all_reports"
+      reports = reports.where(id: session[:all_report_ids]) if session[:all_report_ids].present?
+    end
+    reports # フィルタリングされた結果を返す リファクタリングしたため必要
   end
 
   # 昨日もしくは、送られた最終報告集計日から４週間を一週間ごとに配列に代入
