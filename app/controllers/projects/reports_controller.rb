@@ -19,8 +19,19 @@ class Projects::ReportsController < Projects::BaseProjectController
     respond_to do |format|
       format.html
       format.js
+      format.csv do
+        case params[:csv_type]
+        when "you_reports"
+          send_reports_csv(@you_reports)
+        when "other_reports"
+          send_reports_csv(@reports)
+        when "all_reports"
+          send_reports_csv(@all_reports)
+        else
+          send_reports_csv([])
+        end
+      end
     end
-    render :index
   end
 
   def show
