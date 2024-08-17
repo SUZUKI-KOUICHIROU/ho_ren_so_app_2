@@ -262,7 +262,16 @@ class Projects::ReportsController < Projects::BaseProjectController
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
+
+        # 検索結果の報告IDをセッションに保存
+        session[:you_report_ids] = @you_reports.pluck(:id)
+        session[:other_report_ids] = @reports.pluck(:id)
+        session[:all_report_ids] = @all_reports.pluck(:id)
       else
+        @report_history = @you_reports = @reports = @all_reports = Report.none
+        session[:you_report_ids] = []
+        session[:other_report_ids] = []
+        session[:all_report_ids] = []
         flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
       end
     end
@@ -312,6 +321,15 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # CSVエクスポート
   def send_reports_csv(reports)
+    # セッションに保存された検索結果がある場合、それを使用する
+    case params[:csv_type]
+    when "you_reports"
+      reports = reports.where(id: session[:you_report_ids]) if session[:you_report_ids].present?
+    when "other_reports"
+      reports = reports.where(id: session[:other_report_ids]) if session[:other_report_ids].present?
+    when "all_reports"
+      reports = reports.where(id: session[:all_report_ids]) if session[:all_report_ids].present?
+    end
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
       column_names = %w(報告者 件名 報告日)
