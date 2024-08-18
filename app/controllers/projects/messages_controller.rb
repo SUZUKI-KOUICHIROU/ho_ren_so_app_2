@@ -12,10 +12,7 @@ class Projects::MessagesController < Projects::BaseProjectController
     @you_addressee_messages = you_addressee_messages
     @you_send_messages = you_send_messages
     count_recipients(@messages)
-    @messages_by_search = messages_by_search
-    @messages_by_search ||= []  # nil または不正な値の場合、空の配列を設定
-    @you_addressee_messages_by_search = @you_addressee_messages.where(id: session[:search_message_ids]) if session[:search_message_ids].present?
-    @you_send_messages_by_search = @you_send_messages.where(id: session[:search_message_ids]) if session[:search_message_ids].present?
+    messages_by_search
     respond_to do |format|
       format.html
       format.js
@@ -115,11 +112,11 @@ class Projects::MessagesController < Projects::BaseProjectController
   def handle_csv_request
     case params[:csv_type]
     when "all_messages"
-      send_messages_csv(@messages_by_search)
+      send_messages_csv(@messages)
     when "you_addressee_messages"
-      send_messages_csv(@you_addressee_messages_by_search)
+      send_messages_csv(@you_addressee_messages)
     when "you_send_messages"
-      send_messages_csv(@you_send_messages_by_search)
+      send_messages_csv(@you_send_messages)
     else
       send_messages_csv([]) # デフォルトのケース（何も該当しない場合）
     end
@@ -189,6 +186,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   # 連絡検索
   def messages_by_search
+    clear_session_if_needed
     if params[:search].present? && params[:search] != ""
       @results = Message.search(message_search_params)
       if @results.present?
@@ -197,31 +195,40 @@ class Projects::MessagesController < Projects::BaseProjectController
         @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
-        session[:search_message_ids] = @message_ids # 検索結果をセッションに保存
-        return @messages # 正しい結果を明示的に返す
+        session[:previous_search] = params[:search] # 検索条件をセッションに保存
+        session_save
       else
         handle_no_results
       end
-    elsif session[:search_message_ids].present?
-      @messages = all_messages.where(id: session[:search_message_ids]) # セッションから検索結果を取得
-      return @messages
-    else
-      []
     end
   end
 
+# 検索条件が変更された場合のみ、セッションをクリアする
+def clear_session_if_needed
+  if params[:search].present? && params[:search] != session[:previous_search]
+    session[:you_message_ids] = nil
+    session[:you_addressee_message_ids] = nil
+    session[:all_message_ids] = nil
+  end
+end
+
+# 検索結果の報告IDをセッションに保存
+def session_save
+  session[:you_message_ids] = @you_send_messages.pluck(:id)
+  session[:you_addressee_message_ids] = @you_addressee_messages.pluck(:id)
+  session[:all_message_ids] = @messages.pluck(:id)
+end
+
   def handle_no_results
+    @messages_history = @you_send_messages = @you_addressee_messages = @messages = Report.none
+    session[:you_message_ids] = []
+    session[:you_addressee_message_ids] = []
+    session[:all_message_ids] = []
     flash.now[:danger] = '検索結果が見つかりませんでした。'
-    session.delete(:search_message_ids)
-    []
   end
 
   def message_search_params
-    if params[:search].is_a?(ActionController::Parameters)
       params.fetch(:search, {}).permit(:created_at, :keywords)
-    else
-      {}
-    end
   end
 
   def message_params
@@ -282,6 +289,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   # CSVエクスポート
   def send_messages_csv(messages)
+    messages = filter_messages_by_csv_type(messages)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
       column_names = %w(送信者名 タイトル 送信日 受信者 重用度)
@@ -300,4 +308,17 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
     send_data(csv_data, filename: "連絡一覧.csv")
   end
+
+  def filter_messages_by_csv_type(messages)
+    case params[:csv_type]
+    when "you_send_messages"
+      messages = messages.where(id: session[:you_message_ids]) if session[:you_message_ids].present?
+    when "you_addressee_messages"
+      messages = messages.where(id: session[:you_addressee_message_ids]) if session[:you_addressee_message_ids].present?
+    when "all_messages"
+      messages = messages.where(id: session[:all_message_ids]) if session[:all_message_ids].present?
+    end
+    messages # フィルタリングされた結果を返す リファクタリングしたため必要
+  end
+
 end
