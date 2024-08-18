@@ -203,21 +203,21 @@ class Projects::MessagesController < Projects::BaseProjectController
     end
   end
 
-# 検索条件が変更された場合のみ、セッションをクリアする
-def clear_session_if_needed
-  if params[:search].present? && params[:search] != session[:previous_search]
-    session[:you_message_ids] = nil
-    session[:you_addressee_message_ids] = nil
-    session[:all_message_ids] = nil
+  # 検索条件が変更された場合のみ、セッションをクリアする
+  def clear_session_if_needed
+    if params[:search].present? && params[:search] != session[:previous_search]
+      session[:you_message_ids] = nil
+      session[:you_addressee_message_ids] = nil
+      session[:all_message_ids] = nil
+    end
   end
-end
 
-# 検索結果の報告IDをセッションに保存
-def session_save
-  session[:you_message_ids] = @you_send_messages.pluck(:id)
-  session[:you_addressee_message_ids] = @you_addressee_messages.pluck(:id)
-  session[:all_message_ids] = @messages.pluck(:id)
-end
+  # 検索結果の報告IDをセッションに保存
+  def session_save
+    session[:you_message_ids] = @you_send_messages.pluck(:id)
+    session[:you_addressee_message_ids] = @you_addressee_messages.pluck(:id)
+    session[:all_message_ids] = @messages.pluck(:id)
+  end
 
   def handle_no_results
     @messages_history = @you_send_messages = @you_addressee_messages = @messages = Report.none
@@ -228,7 +228,7 @@ end
   end
 
   def message_search_params
-      params.fetch(:search, {}).permit(:created_at, :keywords)
+    params.fetch(:search, {}).permit(:created_at, :keywords)
   end
 
   def message_params
@@ -320,5 +320,4 @@ end
     end
     messages # フィルタリングされた結果を返す リファクタリングしたため必要
   end
-
 end
