@@ -263,6 +263,7 @@ class Projects::ReportsController < Projects::BaseProjectController
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
+        session[:previous_search] = params[:search] # 検索条件をセッションに保存
         session_save
       else
         handle_no_results
