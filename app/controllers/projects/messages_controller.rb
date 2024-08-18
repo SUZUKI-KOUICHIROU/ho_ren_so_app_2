@@ -16,8 +16,8 @@ class Projects::MessagesController < Projects::BaseProjectController
     respond_to do |format|
       format.html
       format.js
+      format.csv { handle_csv_request }
     end
-    render :index
   end
 
   def show
@@ -109,6 +109,19 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   private
 
+  def handle_csv_request
+    case params[:csv_type]
+    when "all_messages"
+      send_messages_csv(@messages)
+    when "you_addressee_messages"
+      send_messages_csv(@you_addressee_messages)
+    when "you_send_messages"
+      send_messages_csv(@you_send_messages)
+    else
+      send_messages_csv([]) # デフォルトのケース（何も該当しない場合）
+    end
+  end
+
   def authorize_user!
     message = @project.messages.find(params[:id])
     unless current_user.id == message.sender_id
@@ -173,6 +186,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   # 連絡検索
   def messages_by_search
+    clear_session_if_needed
     if params[:search].present? && params[:search] != ""
       @results = Message.search(message_search_params)
       if @results.present?
@@ -181,10 +195,36 @@ class Projects::MessagesController < Projects::BaseProjectController
         @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
+        session[:previous_search] = params[:search] # 検索条件をセッションに保存
+        session_save
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+        handle_no_results
       end
     end
+  end
+
+  # 検索条件が変更された場合のみ、セッションをクリアする
+  def clear_session_if_needed
+    if params[:search].present? && params[:search] != session[:previous_search]
+      session[:you_message_ids] = nil
+      session[:you_addressee_message_ids] = nil
+      session[:all_message_ids] = nil
+    end
+  end
+
+  # 検索結果の報告IDをセッションに保存
+  def session_save
+    session[:you_message_ids] = @you_send_messages.pluck(:id)
+    session[:you_addressee_message_ids] = @you_addressee_messages.pluck(:id)
+    session[:all_message_ids] = @messages.pluck(:id)
+  end
+
+  def handle_no_results
+    @messages_history = @you_send_messages = @you_addressee_messages = @messages = Report.none
+    session[:you_message_ids] = []
+    session[:you_addressee_message_ids] = []
+    session[:all_message_ids] = []
+    flash.now[:danger] = '検索結果が見つかりませんでした。'
   end
 
   def message_search_params
@@ -249,6 +289,7 @@ class Projects::MessagesController < Projects::BaseProjectController
 
   # CSVエクスポート
   def send_messages_csv(messages)
+    messages = filter_messages_by_csv_type(messages)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
       column_names = %w(送信者名 タイトル 送信日 受信者 重用度)
@@ -266,5 +307,17 @@ class Projects::MessagesController < Projects::BaseProjectController
       end
     end
     send_data(csv_data, filename: "連絡一覧.csv")
+  end
+
+  def filter_messages_by_csv_type(messages)
+    case params[:csv_type]
+    when "you_send_messages"
+      messages = messages.where(id: session[:you_message_ids]) if session[:you_message_ids].present?
+    when "you_addressee_messages"
+      messages = messages.where(id: session[:you_addressee_message_ids]) if session[:you_addressee_message_ids].present?
+    when "all_messages"
+      messages = messages.where(id: session[:all_message_ids]) if session[:all_message_ids].present?
+    end
+    messages # フィルタリングされた結果を返す リファクタリングしたため必要
   end
 end
