@@ -255,7 +255,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   # 報告検索(報告一覧)
   def reports_by_search
     clear_session_if_needed
-    if params[:search].present? and params[:search] != ""
+    if params[:search].present?
       @results = Report.search(report_search_params)
       if @results.present?
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
