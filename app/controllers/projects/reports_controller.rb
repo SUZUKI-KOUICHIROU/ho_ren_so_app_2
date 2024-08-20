@@ -3,7 +3,8 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log view_reports_log_month]
   before_action :authorize_user!, only: %i[edit update destroy]
-
+  before_action :clear_session_if_referer, except: [:index] # indexのみ適用外
+  
   def index
     set_project_and_members
     @reports_all = @project.reports
@@ -254,11 +255,12 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # 報告検索(報告一覧)
   def reports_by_search
-    clear_session_if_needed
+    clear_session_if_search # 検索条件が変更された場合セッションをクリア
     if params[:search].present?
       @results = Report.search(report_search_params)
       if @results.present?
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
+        
         @report_history = all_reports_history.where(id: @report_ids)
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
@@ -271,13 +273,25 @@ class Projects::ReportsController < Projects::BaseProjectController
     end
   end
 
-  # 検索条件が変更された場合のみ、セッションをクリアする
-  def clear_session_if_needed
-    if params[:search].present? && params[:search] != session[:previous_search]
-      session[:you_report_ids] = nil
-      session[:other_report_ids] = nil
-      session[:all_report_ids] = nil
+  # 画面が変わった場合にセッションをクリア
+  def clear_session_if_referer
+    if request.referer.present? && URI(request.referer.to_s).path != request.path # 遷移前のURLが存在し空じゃない
+      clear_session
     end
+  end
+
+  # 検索条件が変更された場合セッションをクリア
+  def clear_session_if_search
+    if params[:search].present? && params[:search] != session[:previous_search]
+      clear_session
+    end
+  end
+
+  # セッションをクリアする共通メソッド
+  def clear_session
+    session[:you_report_ids] = nil
+    session[:other_report_ids] = nil
+    session[:all_report_ids] = nil
   end
 
   # 検索結果の報告IDをセッションに保存
