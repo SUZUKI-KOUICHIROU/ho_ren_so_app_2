@@ -3,8 +3,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :project_authorization, only: %i[index show new edit create update destroy]
   before_action :project_leader_user, only: %i[view_reports_log view_reports_log_month]
   before_action :authorize_user!, only: %i[edit update destroy]
-  before_action :clear_session_if_referer, except: [:index] # indexのみ適用外
-  
+
   def index
     set_project_and_members
     @reports_all = @project.reports
@@ -16,22 +15,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     elsif params[:report_type] == 'weekly'
       weekly_reports
     end
+    # セッションにページネーション後のIDリストを保存
+    save_report_ids_to_session
     reports_by_search
     respond_to do |format|
       format.html
       format.js
-      format.csv do
-        case params[:csv_type]
-        when "you_reports"
-          send_reports_csv(@you_reports)
-        when "other_reports"
-          send_reports_csv(@reports)
-        when "all_reports"
-          send_reports_csv(@all_reports)
-        else
-          send_reports_csv([])
-        end
-      end
+      format.csv { index_export_csv }
     end
   end
 
@@ -202,6 +192,26 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  # CSVエクスポート専用のアクション
+  def export_csv
+    case params[:csv_type]
+    when "you_reports"
+      report_ids = session[:you_report_ids]
+    when "other_reports"
+      report_ids = session[:other_report_ids]
+    when "all_reports"
+      report_ids = session[:all_report_ids]
+    else
+      report_ids = []
+    end
+    if report_ids.present?
+      reports = Report.where(id: report_ids)
+      send_reports_csv(reports)
+    else
+      send_reports_csv([])
+    end
+  end
+
   # 報告履歴
   def history
     set_project_and_members
@@ -219,6 +229,25 @@ class Projects::ReportsController < Projects::BaseProjectController
   end
 
   private
+
+  def save_report_ids_to_session
+    session[:you_report_ids] = @you_reports.pluck(:id) if @you_reports.present?
+    session[:other_report_ids] = @reports.pluck(:id) if @reports.present?
+    session[:all_report_ids] = @all_reports.pluck(:id) if @all_reports.present?
+  end
+
+  def index_export_csv
+    case params[:csv_type]
+    when "you_reports"
+      send_reports_csv(session[:you_report_ids])
+    when "other_reports"
+      send_reports_csv(session[:other_report_ids])
+    when "all_reports"
+      send_reports_csv(session[:all_report_ids])
+    else
+      send_reports_csv([])
+    end
+  end
 
   def authorize_user!
     @report = Report.find(params[:id])
@@ -260,7 +289,6 @@ class Projects::ReportsController < Projects::BaseProjectController
       @results = Report.search(report_search_params)
       if @results.present?
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
-        
         @report_history = all_reports_history.where(id: @report_ids)
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
@@ -270,13 +298,6 @@ class Projects::ReportsController < Projects::BaseProjectController
       else
         handle_no_results
       end
-    end
-  end
-
-  # 画面が変わった場合にセッションをクリア
-  def clear_session_if_referer
-    if request.referer.present? && URI(request.referer.to_s).path != request.path # 遷移前のURLが存在し空じゃない
-      clear_session
     end
   end
 
@@ -353,7 +374,6 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # CSVエクスポート
   def send_reports_csv(reports)
-    reports = filter_reports_by_csv_type(reports)
     bom = "\uFEFF"
     csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
       column_names = %w(報告者 件名 報告日)
@@ -368,18 +388,6 @@ class Projects::ReportsController < Projects::BaseProjectController
       end
     end
     send_data(csv_data, filename: "報告履歴.csv")
-  end
-
-  def filter_reports_by_csv_type(reports)
-    case params[:csv_type]
-    when "you_reports"
-      reports = reports.where(id: session[:you_report_ids]) if session[:you_report_ids].present?
-    when "other_reports"
-      reports = reports.where(id: session[:other_report_ids]) if session[:other_report_ids].present?
-    when "all_reports"
-      reports = reports.where(id: session[:all_report_ids]) if session[:all_report_ids].present?
-    end
-    reports # フィルタリングされた結果を返す リファクタリングしたため必要
   end
 
   # 昨日もしくは、送られた最終報告集計日から４週間を一週間ごとに配列に代入
