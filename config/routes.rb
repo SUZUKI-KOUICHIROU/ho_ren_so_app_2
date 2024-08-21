@@ -64,7 +64,7 @@ Rails.application.routes.draw do
             post 'resubmitted'
           end
           collection do
-            get :export_csv
+            get 'export_csv'
             get 'history'
           end
           resources :report_replys, only: %i[edit  create update destroy] do
