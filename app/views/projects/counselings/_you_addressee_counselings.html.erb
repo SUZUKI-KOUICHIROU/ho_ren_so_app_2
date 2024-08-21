@@ -1,5 +1,6 @@
 <div class="box-you-addressee-index">
   <% if @you_addressee_counselings.present? %>
+    <%= link_to "あなた宛の相談のCSVエクスポート", export_csv_user_project_counselings_path(format: :csv, csv_type: 'you_addressee_counselings'), method: :get, class: "btn btn-outline-orange m-2" %>
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "you-addressee" %>
