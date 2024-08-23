@@ -242,10 +242,16 @@ class Projects::CounselingsController < Projects::BaseProjectController
       @results = Counseling.search(counseling_search_params)
       if @results.present?
         @counseling_ids = @results.pluck(:id).uniq
+        # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
+        you_addressee_counselings = @project.counselings
+                                            .where(id: @counseling_ids & CounselingConfirmer
+                                            .where(counseling_confirmer_id: @user.id)
+                                            .pluck(:counseling_id)).order(created_at: 'DESC')
+        all_counselings = @project.counselings.where(id: @counseling_ids).order(created_at: 'DESC')
+        session_save(you_addressee_counselings, all_counselings) # 検索結果の相談IDをｾｯｼｮﾝに保存
         @counselings = @counselings.where(id: @counseling_ids) if @counselings
         @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
         session[:previous_search] = params[:search] # 検索条件をｾｯｼｮﾝに保存
-        session_save
       else
         handle_no_results
       end
@@ -265,10 +271,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
     session[:all_counseling_ids] = nil
   end
 
-  # 検索結果の相談IDをｾｯｼｮﾝに保存
-  def session_save
-    session[:you_addressee_counseling_ids] = @you_addressee_counselings.pluck(:id)
-    session[:all_counseling_ids] = @counselings.pluck(:id)
+  # 検索結果の相談IDをｾｯｼｮﾝに保存 ｲﾝｽﾀﾝｽ変数使用すると検索が機能しなくなるため引数指定
+  def session_save(you_addressee_counselings, all_counselings)
+    session[:you_addressee_counseling_ids] = you_addressee_counselings.pluck(:id)
+    session[:all_counseling_ids] = all_counselings.pluck(:id)
   end
 
   def handle_no_results
