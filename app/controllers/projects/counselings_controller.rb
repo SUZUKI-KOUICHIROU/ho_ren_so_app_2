@@ -147,8 +147,9 @@ class Projects::CounselingsController < Projects::BaseProjectController
   private
 
   def save_counseling_ids_to_session
-    session[:you_addressee_counseling_ids] = @you_addressee_counselings.pluck(:id) if @you_addressee_counselings.present?
-    session[:all_counseling_ids] = @counselings.pluck(:id) if @counselings.present?
+    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
+    session[:you_addressee_counseling_ids] = @project.counselings.where(id: you_addressee_counseling_ids).pluck(:id)
+    session[:all_counseling_ids] = @project.counselings.pluck(:id)
   end
 
   def index_export_csv
