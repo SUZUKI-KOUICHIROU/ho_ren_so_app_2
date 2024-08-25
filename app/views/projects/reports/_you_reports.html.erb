@@ -3,9 +3,9 @@
     <%= link_to "あなたの報告のCSVエクスポート", export_csv_user_project_reports_path(format: :csv, csv_type: 'you_reports'), method: :get, class: "btn btn-outline-orange m-2" %>
     <div class="d-flex justify-content-start mb-3">
       <!-- 今月の報告ボタン -->
-      <%= link_to '今月の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'monthly'), remote: true, class: "btn btn-outline-orange mx-2" %>
+      <%= link_to '今月の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'monthly'), remote: true, class: "btn btn-outline-orange mx-2", method: :get, data: { params: { report_type: 'monthly' }.to_query } %>
       <!-- 今週の報告ボタン -->
-      <%= link_to '今週の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'weekly'), remote: true, class: "btn btn-outline-orange mx-2" %>
+      <%= link_to '今週の報告', user_project_reports_path(user_id: current_user, project_id: @project.id, report_type: 'weekly'), remote: true, class: "btn btn-outline-orange mx-2", method: :get, data: { params: { report_type: 'weekly' }.to_query } %>
     </div>
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_reports_path(current_user,@project), method: :get, remote: true do |form| %>
