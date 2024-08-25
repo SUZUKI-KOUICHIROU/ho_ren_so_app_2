@@ -310,8 +310,12 @@ class Projects::ReportsController < Projects::BaseProjectController
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
+        # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
+        you_reports_full = Report.where(id: @report_ids, sender_id: @user.id).order(created_at: 'DESC')
+        reports_full = Report.where(id: @report_ids).where.not(sender_id: @user.id).order(created_at: 'DESC')
+        all_reports_full = Report.where(id: @report_ids).order(created_at: 'DESC')
+        session_save(you_reports_full, reports_full, all_reports_full) # 検索結果の報告IDをｾｯｼｮﾝに保存
         session[:previous_search] = params[:search] # 検索条件をセッションに保存
-        session_save
       else
         handle_no_results
       end
@@ -332,11 +336,11 @@ class Projects::ReportsController < Projects::BaseProjectController
     session[:all_report_ids] = nil
   end
 
-  # 検索結果の報告IDをセッションに保存
-  def session_save
-    session[:you_report_ids] = @you_reports.pluck(:id)
-    session[:other_report_ids] = @reports.pluck(:id)
-    session[:all_report_ids] = @all_reports.pluck(:id)
+  # 検索結果の相談IDをｾｯｼｮﾝに保存
+  def session_save(you_reports_full, reports_full, all_reports_full)
+    session[:you_report_ids] = you_reports_full.pluck(:id)
+    session[:other_report_ids] = reports_full.pluck(:id)
+    session[:all_report_ids] = all_reports_full.pluck(:id)
   end
 
   def handle_no_results
