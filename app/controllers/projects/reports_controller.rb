@@ -16,7 +16,6 @@ class Projects::ReportsController < Projects::BaseProjectController
     elsif params[:report_type] == 'weekly'
       weekly_reports
     end
-    # セッションにページネーション後のIDリストを保存
     save_report_ids_to_session
     reports_by_search
     respond_to do |format|
@@ -231,25 +230,6 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   private
 
-  def save_report_ids_to_session
-    session[:you_report_ids] = @you_reports.pluck(:id) if @you_reports.present?
-    session[:other_report_ids] = @reports.pluck(:id) if @reports.present?
-    session[:all_report_ids] = @all_reports.pluck(:id) if @all_reports.present?
-  end
-
-  def index_export_csv
-    case params[:csv_type]
-    when "you_reports"
-      send_reports_csv(session[:you_report_ids])
-    when "other_reports"
-      send_reports_csv(session[:other_report_ids])
-    when "all_reports"
-      send_reports_csv(session[:all_report_ids])
-    else
-      send_reports_csv([])
-    end
-  end
-
   def authorize_user!
     @report = Report.find(params[:id])
     unless current_user.id == @report.user_id
@@ -281,6 +261,42 @@ class Projects::ReportsController < Projects::BaseProjectController
     @you_reports = @weekly_reports.where(sender_id: @user.id).order(created_at: 'DESC').page(params[:you_reports_page]).per(10)
     @reports = @weekly_reports.where.not(sender_id: @user.id).order(created_at: 'DESC').page(params[:reports_page]).per(10)
     @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
+  end
+
+  def save_report_ids_to_session
+  # report_typeに基づいて適切なレポートを取得
+  case params[:report_type]
+  when 'monthly'
+    all_reports = @monthly_reports
+  when 'weekly'
+    all_reports = @weekly_reports
+  else
+    all_reports = @monthly_reports # デフォルトを月次レポートに設定（または適切なデフォルトに変更）
+  end
+  # ページネーションを無視してすべてのIDを取得
+  you_report_ids = all_reports.where(sender_id: @user.id).pluck(:id)
+  other_report_ids = all_reports.where.not(sender_id: @user.id).pluck(:id)
+  all_report_ids = all_reports.pluck(:id)
+
+  # セッションに保存（データがなくても空の配列を保存）
+  session[:you_report_ids] = you_report_ids
+  session[:other_report_ids] = other_report_ids
+  session[:all_report_ids] = all_report_ids
+  end
+
+  def index_export_csv
+    # セッションに保存された全データのIDを基にデータを取得
+    reports = case params[:csv_type]
+              when "you_reports"
+                Report.where(id: session[:you_report_ids]).order(created_at: 'DESC')
+              when "other_reports"
+                Report.where(id: session[:other_report_ids]).order(created_at: 'DESC')
+              when "all_reports"
+                Report.where(id: session[:all_report_ids]).order(created_at: 'DESC')
+              else
+                []
+              end
+    send_reports_csv(reports)
   end
 
   # 報告検索(報告一覧)
