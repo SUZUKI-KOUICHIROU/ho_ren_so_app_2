@@ -5,6 +5,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
+    clear_session # 一覧画面に戻ってきた際ｾｯｼｮﾝｸﾘｱする
     set_project_and_members
     @reports_all = @project.reports
     @first_question = @project.questions.first
@@ -15,12 +16,13 @@ class Projects::ReportsController < Projects::BaseProjectController
     elsif params[:report_type] == 'weekly'
       weekly_reports
     end
+    save_report_ids_to_session
     reports_by_search
     respond_to do |format|
       format.html
       format.js
+      format.csv { index_export_csv }
     end
-    render :index
   end
 
   def show
@@ -190,6 +192,26 @@ class Projects::ReportsController < Projects::BaseProjectController
     @questions = @project.questions.where(using_flag: true)
   end
 
+  # CSVエクスポート専用のアクション
+  def export_csv
+    case params[:csv_type]
+    when "you_reports"
+      report_ids = session[:you_report_ids]
+    when "other_reports"
+      report_ids = session[:other_report_ids]
+    when "all_reports"
+      report_ids = session[:all_report_ids]
+    else
+      report_ids = []
+    end
+    if report_ids.present?
+      reports = Report.where(id: report_ids)
+      send_reports_csv(reports)
+    else
+      send_reports_csv([])
+    end
+  end
+
   # 報告履歴
   def history
     set_project_and_members
@@ -241,9 +263,43 @@ class Projects::ReportsController < Projects::BaseProjectController
     @all_reports = @weekly_reports.all.order(created_at: 'DESC').page(params[:all_reports_page]).per(10)
   end
 
+  def save_report_ids_to_session
+    # report_typeに基づいて適切なレポートを取得
+    case params[:report_type]
+    when 'weekly'
+      all_reports = @weekly_reports
+    else
+      all_reports = @monthly_reports # デフォルトを月次レポートに設定
+    end
+    # ページネーションを無視してすべてのIDを取得
+    you_report_ids = all_reports.where(sender_id: @user.id).pluck(:id)
+    other_report_ids = all_reports.where.not(sender_id: @user.id).pluck(:id)
+    all_report_ids = all_reports.pluck(:id)
+    # セッションに保存（データがなくても空の配列を保存）
+    session[:you_report_ids] = you_report_ids
+    session[:other_report_ids] = other_report_ids
+    session[:all_report_ids] = all_report_ids
+  end
+
+  def index_export_csv
+    # セッションに保存された全データのIDを基にデータを取得
+    reports = case params[:csv_type]
+              when "you_reports"
+                Report.where(id: session[:you_report_ids]).order(created_at: 'DESC')
+              when "other_reports"
+                Report.where(id: session[:other_report_ids]).order(created_at: 'DESC')
+              when "all_reports"
+                Report.where(id: session[:all_report_ids]).order(created_at: 'DESC')
+              else
+                []
+              end
+    send_reports_csv(reports)
+  end
+
   # 報告検索(報告一覧)
   def reports_by_search
-    if params[:search].present? and params[:search] != ""
+    clear_session_if_search # 検索条件が変更された場合セッションをクリア
+    if params[:search].present?
       @results = Report.search(report_search_params)
       if @results.present?
         @report_ids = @results.pluck(:id).uniq || @results.pluck(:report_id).uniq
@@ -251,10 +307,49 @@ class Projects::ReportsController < Projects::BaseProjectController
         @you_reports = @you_reports.where(id: @report_ids)
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
+        fetch_full_reports # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
+        session_save(@you_reports_full, @reports_full, @all_reports_full) # 検索結果の報告IDをｾｯｼｮﾝに保存
+        session[:previous_search] = params[:search] # 検索条件をセッションに保存
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+        handle_no_results
       end
     end
+  end
+
+  # 検索条件が変更された場合セッションをクリア
+  def clear_session_if_search
+    if params[:search].present? && params[:search] != session[:previous_search]
+      clear_session
+    end
+  end
+
+  # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
+  def fetch_full_reports
+    @you_reports_full = Report.where(id: @report_ids, sender_id: @user.id).order(created_at: 'DESC')
+    @reports_full = Report.where(id: @report_ids).where.not(sender_id: @user.id).order(created_at: 'DESC')
+    @all_reports_full = Report.where(id: @report_ids).order(created_at: 'DESC')
+  end
+
+  # セッションをクリアする共通メソッド
+  def clear_session
+    session[:you_report_ids] = nil
+    session[:other_report_ids] = nil
+    session[:all_report_ids] = nil
+  end
+
+  # 検索結果の相談IDをｾｯｼｮﾝに保存
+  def session_save(you_reports_full, reports_full, all_reports_full)
+    session[:you_report_ids] = you_reports_full.pluck(:id)
+    session[:other_report_ids] = reports_full.pluck(:id)
+    session[:all_report_ids] = all_reports_full.pluck(:id)
+  end
+
+  def handle_no_results
+    @report_history = @you_reports = @reports = @all_reports = Report.none
+    session[:you_report_ids] = []
+    session[:other_report_ids] = []
+    session[:all_report_ids] = []
+    flash.now[:danger] = '検索結果が見つかりませんでした。'
   end
 
   # 報告検索(報告履歴)
