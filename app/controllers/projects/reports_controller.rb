@@ -308,7 +308,7 @@ class Projects::ReportsController < Projects::BaseProjectController
         @reports = @reports.where(id: @report_ids)
         @all_reports = @all_reports.where(id: @report_ids)
         fetch_full_reports # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
-        session_save(you_reports_full, reports_full, all_reports_full) # 検索結果の報告IDをｾｯｼｮﾝに保存
+        session_save(@you_reports_full, @reports_full, @all_reports_full) # 検索結果の報告IDをｾｯｼｮﾝに保存
         session[:previous_search] = params[:search] # 検索条件をセッションに保存
       else
         handle_no_results
@@ -325,9 +325,9 @@ class Projects::ReportsController < Projects::BaseProjectController
 
   # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
   def fetch_full_reports
-    you_reports_full = Report.where(id: @report_ids, sender_id: @user.id).order(created_at: 'DESC')
-    reports_full = Report.where(id: @report_ids).where.not(sender_id: @user.id).order(created_at: 'DESC')
-    all_reports_full = Report.where(id: @report_ids).order(created_at: 'DESC')
+    @you_reports_full = Report.where(id: @report_ids, sender_id: @user.id).order(created_at: 'DESC')
+    @reports_full = Report.where(id: @report_ids).where.not(sender_id: @user.id).order(created_at: 'DESC')
+    @all_reports_full = Report.where(id: @report_ids).order(created_at: 'DESC')
   end
 
   # セッションをクリアする共通メソッド
