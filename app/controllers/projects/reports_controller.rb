@@ -5,7 +5,7 @@ class Projects::ReportsController < Projects::BaseProjectController
   before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
-    clear_session # 一覧画面に戻ってきた際ｾｯｼｮﾝｸﾘｱする
+    # clear_session # 一覧画面に戻ってきた際ｾｯｼｮﾝｸﾘｱする
     set_project_and_members
     @reports_all = @project.reports
     @first_question = @project.questions.first
