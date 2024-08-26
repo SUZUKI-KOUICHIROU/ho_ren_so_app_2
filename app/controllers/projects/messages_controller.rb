@@ -138,12 +138,20 @@ class Projects::MessagesController < Projects::BaseProjectController
   def save_message_ids_to_session
     # あなたが送った連絡
     you_send_message_ids = Message.where(sender_id: current_user.id).pluck(:id)
-    session[:you_send_message_ids] = Message.monthly_messages_for(@project).where(id: you_send_message_ids).order(created_at: 'DESC').pluck(:id)
+    session[:you_send_message_ids] = Message.monthly_messages_for(@project)
+                                            .where(id: you_send_message_ids)
+                                            .order(created_at: 'DESC')
+                                            .pluck(:id)
     # あなたへの連絡
     you_addressee_message_ids = MessageConfirmer.where(message_confirmer_id: @user.id).pluck(:message_id)
-    session[:you_addressee_message_ids] = Message.monthly_messages_for(@project).where(id: you_addressee_message_ids).order(created_at: 'DESC').pluck(:id)
+    session[:you_addressee_message_ids] = Message.monthly_messages_for(@project)
+                                                 .where(id: you_addressee_message_ids)
+                                                 .order(created_at: 'DESC')
+                                                 .pluck(:id)
     # 全員の連絡
-    session[:all_message_ids] = Message.monthly_messages_for(@project).order(created_at: 'DESC').pluck(:id)
+    session[:all_message_ids] = Message.monthly_messages_for(@project)
+                                       .order(created_at: 'DESC')
+                                       .pluck(:id)
   end
 
   def index_export_csv
@@ -226,12 +234,13 @@ class Projects::MessagesController < Projects::BaseProjectController
       @results = Message.search(message_search_params)
       if @results.present?
         @message_ids = @results.pluck(:id).uniq
+        # ビューで使用するページネーションされたデータ
         @messages = all_messages.where(id: @message_ids)
         @messages_history = all_messages_history.where(id: @message_ids)
         @you_addressee_messages = you_addressee_messages.where(id: @message_ids)
         @you_send_messages = you_send_messages.where(id: @message_ids)
         session[:previous_search] = params[:search] # 検索条件をセッションに保存
-        session_save
+        session_save_all_results(@message_ids) # 全検索結果のIDをセッションに保存
       else
         handle_no_results
       end
@@ -252,11 +261,20 @@ class Projects::MessagesController < Projects::BaseProjectController
     session[:all_message_ids] = nil
   end
 
-  # 検索結果の報告IDをセッションに保存
-  def session_save
-    session[:you_send_message_ids] = @you_send_messages.pluck(:id)
-    session[:you_addressee_message_ids] = @you_addressee_messages.pluck(:id)
-    session[:all_message_ids] = @messages.pluck(:id)
+  # 全ての検索結果のIDをセッションに保存
+  def session_save_all_results(message_ids)
+    # ページネーションなしで全てのデータを取得
+    session[:you_send_message_ids] = Message.monthly_messages_for(@project)
+                                            .where(sender_id: current_user.id, id: message_ids)
+                                            .pluck(:id)
+    message_confirmer_ids = MessageConfirmer.where(message_confirmer_id: @user.id).select(:message_id)
+    session[:you_addressee_message_ids] = Message.monthly_messages_for(@project)
+                                                 .where(id: message_confirmer_ids)
+                                                 .where(id: message_ids)
+                                                 .pluck(:id)
+    session[:all_message_ids] = Message.monthly_messages_for(@project)
+                                       .where(id: message_ids)
+                                       .pluck(:id)
   end
 
   def handle_no_results
