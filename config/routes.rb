@@ -50,6 +50,9 @@ Rails.application.routes.draw do
           member do
             patch 'read'            
           end
+          collection do
+            get 'export_csv'
+          end
           resources :counseling_replys, only: %i[edit  create update destroy] do
             member do
               get 'cancel'

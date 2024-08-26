@@ -1,8 +1,10 @@
 class Projects::CounselingsController < Projects::BaseProjectController
+  require 'csv'
   before_action :project_authorization
   before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
+    clear_session # 一覧画面に戻ってきた際ｾｯｼｮﾝをｸﾘｱするため追加
     set_project_and_members
     @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:counselings_page]).per(5)
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
@@ -11,14 +13,12 @@ class Projects::CounselingsController < Projects::BaseProjectController
                                          .order(created_at: 'DESC')
                                          .page(params[:you_addressee_counselings_page])
                                          .per(5)
-    respond_to do |format|
-      format.html
-      format.js
-    end
+    save_counseling_ids_to_session
     counselings_by_search
     respond_to do |format|
       format.html
       format.js
+      format.csv { index_export_csv }
     end
   end
 
@@ -127,7 +127,41 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @checked_members = @counseling.checked_members
   end
 
+  def export_csv
+    case params[:csv_type]
+    when "you_addressee_counselings"
+      counseling_ids = session[:you_addressee_counseling_ids]
+    when "all_counselings"
+      counseling_ids = session[:all_counseling_ids]
+    else
+      counseling_ids = []
+    end
+    if counseling_ids.present?
+      counselings = Counseling.where(id: counseling_ids)
+      send_counselings_csv(counselings)
+    else
+      send_counselings_csv([])
+    end
+  end
+
   private
+
+  def save_counseling_ids_to_session
+    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
+    session[:you_addressee_counseling_ids] = @project.counselings.where(id: you_addressee_counseling_ids).pluck(:id)
+    session[:all_counseling_ids] = @project.counselings.pluck(:id)
+  end
+
+  def index_export_csv
+    case params[:csv_type]
+    when "you_addressee_counselings"
+      send_counselings_csv(session[:you_addressee_counseling_ids])
+    when "all_counselings"
+      send_counselings_csv(session[:all_counseling_ids])
+    else
+      send_counselings_csv([])
+    end
+  end
 
   def counseling_params
     params.require(:counseling).permit(:counseling_detail, :title, { send_to: [] }, :send_to_all, images: [])
@@ -203,16 +237,68 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def counselings_by_search
-    if params[:search].present? and params[:search] != ""
+    clear_session_if_search
+    if params[:search].present?
       @results = Counseling.search(counseling_search_params)
       if @results.present?
         @counseling_ids = @results.pluck(:id).uniq
+        # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
+        you_addressee_counselings = @project.counselings
+                                            .where(id: @counseling_ids & CounselingConfirmer
+                                            .where(counseling_confirmer_id: @user.id)
+                                            .pluck(:counseling_id)).order(created_at: 'DESC')
+        all_counselings = @project.counselings.where(id: @counseling_ids).order(created_at: 'DESC')
+        session_save(you_addressee_counselings, all_counselings) # 検索結果の相談IDをｾｯｼｮﾝに保存
+        @counselings = @counselings.where(id: @counseling_ids) if @counselings
+        @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
+        session[:previous_search] = params[:search] # 検索条件をｾｯｼｮﾝに保存
       else
-        flash.now[:danger] = '検索結果が見つかりませんでした。'
-        return
+        handle_no_results
       end
-      @counselings = @counselings.where(id: @counseling_ids) if @counselings
-      @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
     end
+  end
+
+  # 検索条件が変更された場合ｾｯｼｮﾝをｸﾘｱ
+  def clear_session_if_search
+    if params[:search].present? && params[:search] != session[:previous_search]
+      clear_session
+    end
+  end
+
+  # ｾｯｼｮﾝをｸﾘｱする共通ﾒｿｯﾄﾞ
+  def clear_session
+    session[:you_addressee_counseling_ids] = nil
+    session[:all_counseling_ids] = nil
+  end
+
+  # 検索結果の相談IDをｾｯｼｮﾝに保存 ｲﾝｽﾀﾝｽ変数使用すると検索が機能しなくなるため引数指定
+  def session_save(you_addressee_counselings, all_counselings)
+    session[:you_addressee_counseling_ids] = you_addressee_counselings.pluck(:id)
+    session[:all_counseling_ids] = all_counselings.pluck(:id)
+  end
+
+  def handle_no_results
+    @you_addressee_counselings = @counselings = Counseling.none
+    session[:you_addressee_counseling_ids] = []
+    session[:all_counseling_ids] = []
+    flash[:danger] = '検索結果が見つかりませんでした。'
+  end
+
+  # CSVｴｸｽﾎﾟｰﾄ
+  def send_counselings_csv(counselings)
+    bom = "\uFEFF"
+    csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+      column_names = %w(相談者 件名 相談日)
+      csv << column_names
+      counselings.each do |counseling|
+        column_values = [
+          counseling.sender_name,
+          counseling.title,
+          counseling.created_at.strftime("%m月%d日 %H:%M"),
+        ]
+        csv << column_values
+      end
+    end
+    send_data(csv_data, filename: "相談履歴.csv")
   end
 end
