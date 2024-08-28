@@ -36,6 +36,7 @@ Rails.application.routes.draw do
             patch 'read'
           end
           collection do
+            get 'export_csv'
             get 'history'
           end
           resources :message_replys, only: %i[edit create update destroy] do
