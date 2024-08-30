@@ -40,7 +40,7 @@ class Counseling < ApplicationRecord
     if search_params[:keywords].present?
       query = query.keywords_like(search_params[:keywords])
     end
-    
+
     query
   end
 

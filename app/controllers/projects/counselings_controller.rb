@@ -348,5 +348,4 @@ class Projects::CounselingsController < Projects::BaseProjectController
     end
     send_data(csv_data, filename: "相談履歴.csv")
   end
-
 end
