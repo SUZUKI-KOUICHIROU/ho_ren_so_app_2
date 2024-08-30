@@ -53,6 +53,7 @@ Rails.application.routes.draw do
           end
           collection do
             get 'export_csv'
+            get 'history'
           end
           resources :counseling_replys, only: %i[edit  create update destroy] do
             member do

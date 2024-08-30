@@ -1,0 +1,86 @@
+<% provide(:title, '相談履歴') %>
+<%= content_for :side_menu do %>
+  <%= render partial: 'layouts/sidebar' , locals: { user: @user, project: @project } %>
+<% end %>
+
+<div class="card-box">
+  <p class="project-name-text">プロジェクト：<%= @project.name %></p>  
+  <h1 class="text-center">相談履歴</h1>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to "相談一覧", user_project_counselings_path, class: "btn btn-outline-orange" %>
+  </div>
+  <div class="d-flex justify-content-start mb-3">
+    <% if params[:search].present? && params[:search] != "" %>
+      <%= link_to "csvエクスポート", history_user_project_counselings_path(format: :csv, search: @counselings_by_search), class: "btn btn-outline-orange" %>
+    <% elsif params[:month].present? %>
+      <%= link_to "csvエクスポート", history_user_project_counselings_path(format: :csv, month: params[:month]), class: "btn btn-outline-orange" %>
+    <% else %>
+      <%= link_to "csvエクスポート", history_user_project_counselings_path(format: :csv), class: "btn btn-outline-orange" %>
+    <% end %>
+  </div>
+  <% if @counseling_history.present? %>
+    <div class="d-flex justify-content-between mb-3">
+      <div class="align-self-end">
+        <%= form_with url: history_user_project_counselings_path(current_user, @project), method: :get, local: true do |f| %>
+          <%= f.month_field :month, use_month_numbers: true, discard_day: true, value: @month, class: "search-box" %>
+          <%= f.submit "選択した月を表示", class: "btn btn-outline-orange" %>
+        <% end %>
+      </div>
+      <div class="align-self-end">
+        <%= form_with scope: :search, url: history_user_project_counselings_path(current_user,@project), method: :get, local: true do |form| %>
+          <%= form.hidden_field :search_type, value: "counseling" %>
+          
+          <%= form.label :created_at, "相談日：", class: "mb-0" %>
+          <%= form.date_field :created_at, placeholder: "相談日を入力", value: @search_params && @search_params[:created_at], class: "search-box" %>
+          
+          <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+          <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box" %>
+          
+          <%= form.submit "検索", class: "btn btn-outline-orange" %>            
+        <% end %>
+      </div>
+    </div>
+    <div class="table-header">
+      <div class="subject-name col-md-4">
+        <%=@project.format.title%>
+      </div>
+      <div class="counseling-date col-md-4">
+        相談日
+      </div>
+      <div class="counseling-person col-md-4">
+        相談者
+      </div>
+    </div>
+    <div class="table-body">
+      <% line_num = 0%>
+      <% @counseling_history.each do |counseling|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>" id="you_counseling_<%= counseling.id %>">    
+          <div class="subject-name col-md-4">
+            <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+          </div>
+          <div class="counseling-date col-md-4">
+            <%= l(counseling.created_at, format: :long) %>
+          </div>
+          <div class="counseling-person col-md-4">
+            <%= counseling.sender_name %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else @counseling_history.blank?%>
+    <div class="d-flex justify-content-end">
+      <P class="counseling-none">相談履歴がありません</P>
+    </div>
+  <% end %>
+  <div class="d-flex">
+    <% if @counseling_history.present?%>
+      <div class="paginate">
+        <%= paginate @counseling_history %>
+      </div>
+    <% end %>
+    <div class="ml-auto">
+      <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
