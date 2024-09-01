@@ -306,7 +306,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
       @results = Counseling.search(counseling_search_params)
       if @results.present?
         @counseling_ids = @results.pluck(:id).uniq || @results.pluck(:counseling_id).uniq
-        @counseling_history = 11
+        @counseling_history = all_counselings_history.where(id: @counseling_ids)
       else
         flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
       end
