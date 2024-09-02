@@ -144,6 +144,22 @@ class Projects::CounselingsController < Projects::BaseProjectController
     end
   end
 
+  # 相談履歴
+  def history
+    set_project_and_members
+    @counseling = @project.counselings
+    @counseling_history = all_counselings_history_month
+    @counselings_by_search = counseling_search_params.to_h
+    all_counselings_history_month
+    counselings_history_by_search
+    respond_to do |format|
+      format.html
+      format.csv do |_csv|
+        send_counselings_csv(@counseling_history)
+      end
+    end
+  end
+
   private
 
   def save_counseling_ids_to_session
@@ -282,6 +298,37 @@ class Projects::CounselingsController < Projects::BaseProjectController
     session[:you_addressee_counseling_ids] = []
     session[:all_counseling_ids] = []
     flash[:danger] = '検索結果が見つかりませんでした。'
+  end
+
+  # 相談検索(相談履歴)
+  def counselings_history_by_search
+    if params[:search].present? and params[:search] != ""
+      @results = Counseling.search(counseling_search_params)
+      if @results.present?
+        @counseling_ids = @results.pluck(:id).uniq || @results.pluck(:counseling_id).uniq
+        @counseling_history = all_counselings_history.where(id: @counseling_ids)
+      else
+        flash.now[:danger] = '検索結果が見つかりませんでした。' if @results.blank?
+      end
+    end
+  end
+
+  # 全相談
+  def all_counselings_history
+    @project.counselings.all.order(created_at: 'DESC').page(params[:page]).per(30)
+  end
+
+  # 相談履歴の月検索
+  def all_counselings_history_month
+    selected_month = params[:month]
+    if selected_month.present?
+      start_date = Date.parse("#{selected_month}-01")
+      end_date = start_date.end_of_month.end_of_day
+      counselings = @project.counselings.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:page]).per(30)
+    else
+      counselings = all_counselings_history
+    end
+    counselings
   end
 
   # CSVｴｸｽﾎﾟｰﾄ
