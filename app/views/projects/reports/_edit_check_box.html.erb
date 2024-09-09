@@ -1,5 +1,4 @@
 <div class="report-form">
-  <% Rails.logger.debug "Check Box - Question ID: #{question&.id}, Using Flag: #{question&.using_flag}, Answer Question ID: #{answer&.question_id}" %>
   <% if question.present? && question.using_flag && question.check_box.present? %>
     <!-- check_boxが存在し、かつ有効な場合の処理 -->
     <span class="report-item-title mb-2 font-weight-bold"><%= question.check_box.label_name %></span>
