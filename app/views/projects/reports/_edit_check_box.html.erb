@@ -1,6 +1,7 @@
 <div class="report-form">
-  <% if question.present? && question.check_box.present? %>
-    <!-- check_boxが存在する場合の処理 -->
+  <% Rails.logger.debug "Check Box - Question ID: #{question&.id}, Using Flag: #{question&.using_flag}, Answer Question ID: #{answer&.question_id}" %>
+  <% if question.present? && question.using_flag && question.check_box.present? %>
+    <!-- check_boxが存在し、かつ有効な場合の処理 -->
     <span class="report-item-title mb-2 font-weight-bold"><%= question.check_box.label_name %></span>
     <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
     <br>
@@ -17,20 +18,6 @@
       <% end %>
     <% end %>
   <% else %>
-    <!-- check_boxが存在しない場合（削除された質問など）の処理 -->
-    <span class="report-item-title mb-2 font-weight-bold"><%= answer.question_name %></span>
-    <span class="pl-2 font-weight-bold text-danger">※削除された質問です。この項目は削除されます。</span>
-    <br>
-    <% if answer.array_value.count != 0 %>
-      <% answer.array_value.each do |buf| %>
-        <div class="card-text ml-0 test">
-          <%= buf %>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="card-text ml-0">
-        回答なし
-      </div>
-    <% end %>
+     <!-- questionまたはcheck_boxが存在しない場合や無効の場合は表示しない -->
   <% end %>
 </div>
