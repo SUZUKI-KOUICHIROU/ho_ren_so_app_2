@@ -55,7 +55,8 @@ class Projects::ReportsController < Projects::BaseProjectController
     @report = Report.includes(:answers).find(params[:id])
     @user = User.find(@report.user_id)
     @questions = @project.questions.where(using_flag: true).order(:id)
-    @answers = @report.answers.order(:id)
+    # 有効な質問に関連する回答のみ取得
+    @answers = @report.answers.joins(:question).where(questions: { id: @questions.map(&:id) }).order(:id)
   end
 
   # rubocopを一時的に無効にする。
