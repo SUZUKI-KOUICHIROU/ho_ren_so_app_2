@@ -7,14 +7,42 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository \
+          "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        sudo apt-get update
+        sudo apt-get install -y docker-ce
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        sudo usermod -aG docker $USER
+        docker --version
+
+    - name: Install Docker Compose
+      run: |
+        echo "Installing docker-compose"
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose --version
+        echo "docker-compose installed"
+
     - name: Setup docker
       shell: bash
       run: |
-        # イメージのビルド
+        echo "Building image"
         docker-compose build
-        # データベースの作成
+        echo "Creating database"
         docker-compose run app bin/rails db:create
       env:
         RAILS_ENV: test
@@ -22,5 +50,7 @@ jobs:
     - name: Run Test
       shell: bash
       run:  |
+        echo "Running Rubocop"
         docker-compose run --rm app bundle exec rubocop
+        echo "Running RSpec"
         docker-compose run --rm app bundle exec rspec

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
+  before_action :reset_flash_message_displayed
 
   def store_user_location!
     store_location_for(:user, request.fullpath)
@@ -31,5 +32,11 @@ class ApplicationController < ActionController::Base
   # ログアウト後のリダイレクト先を指定
   def after_sign_out_path_for(*)
     new_user_session_path
+  end
+  
+  private
+
+  def reset_flash_message_displayed
+    session[:flash_message_displayed] = false # ﾌﾗｯｼｭﾒｯｾｰｼﾞをﾘｾｯﾄ
   end
 end

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
             patch 'read'
           end
           collection do
+            get 'export_csv'
             get 'history'
           end
           resources :message_replys, only: %i[edit create update destroy] do
@@ -41,6 +42,10 @@ Rails.application.routes.draw do
         resources :counselings do
           member do
             patch 'read'            
+          end
+          collection do
+            get 'export_csv'
+            get 'history'
           end
           resources :counseling_replys, only: %i[edit  create update destroy] do
             member do
@@ -56,6 +61,7 @@ Rails.application.routes.draw do
             post 'resubmitted'
           end
           collection do
+            get 'export_csv'
             get 'history'
           end
           resources :report_replys, only: %i[edit  create update destroy] do
@@ -109,7 +115,12 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  # Sidekiqダッシュボードをマウント
-  mount Sidekiq::Web => '/sidekiq'
+  # 管理者ユーザーのみ、Sidekiqダッシュボードにアクセス可能とする
+  authenticate :user, lambda { |u| u.admin? } do
+    # Sidekiqダッシュボードをマウント
+    mount Sidekiq::Web => '/sidekiq'
+  end
+  # 管理者以外がSidekiqダッシュボードにアクセスした場合は、rootへリダイレクトする
+  get '/sidekiq', to: redirect('/')
 
 end

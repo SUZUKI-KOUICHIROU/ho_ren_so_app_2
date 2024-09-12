@@ -1,5 +1,6 @@
 <div class="box-counseling-index">
   <% if @counselings.present? %>
+    <%= link_to "全メンバーの相談のCSVエクスポート", export_csv_user_project_counselings_path(format: :csv, csv_type: 'all_counselings'), method: :get, class: "btn btn-outline-orange m-2" %>
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "counseling" %>
@@ -13,7 +14,7 @@
         件名
       </div>
       <div class="counseling-date">
-        連絡日
+        相談日
       </div>
       <div class="counseling-person">
         相談者
