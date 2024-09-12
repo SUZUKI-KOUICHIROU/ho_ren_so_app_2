@@ -1,0 +1,195 @@
+// topイメージの背景
+.top-background {
+  background-image: url('backimage.jpeg');
+  background-size: cover; /* 画像を全体にフィットさせる */
+  background-position: center; /* 画像を中央に配置する */
+  background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */  
+}
+// topイメージ内のリスト表示
+.top-list {
+  display: flex;
+  // Topイメージ内のリストのコンテンツ
+  .top-list-contents {
+    margin-top: 100px;
+    margin-right: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    color: #fff;
+    border-radius: 999px;
+    border: 5px solid orange;
+  }
+}
+// topイメージ内の文字（大）
+.top-char-l {
+  margin-bottom: 20px;
+  font-size: 3.5rem;
+  font-weight: bold;
+  font-style: italic;
+  line-height: 1.28;
+  color: #333;
+  letter-spacing: 2px;
+  font-family: 'Montserrat', sans-serif;
+}
+// topイメージ内の文字（小）
+.top-char-s{
+  font-size:1.5rem;
+  font-weight: bold;
+}
+// topイメージ内のボタン
+.btn-top-orange {
+  font-size: 1.5rem;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding:30px;
+  color: $base-sub-color;
+  background-color: $base-color;
+  border: 2px solid $base-color;
+  text-decoration: none
+}
+// topイメージ内のボタン（ホバー時）
+.btn-top-orange:hover {
+  color: $base-color;
+  border: 2px solid $base-color;
+  background-color: $base-sub-color;
+}
+// topイメージ内の画像
+.top-image {
+  margin-top:100px;
+  width: 100%;
+}
+// 中央コンテンツのタイトル
+.center-cont-title {
+  margin-top: 100px;
+  font-size:3rem;
+  font-weight: bold;
+  text-align: center;
+  color: #777;
+}
+// 中央コンテンツの本文
+.center-cont-char {
+  margin-bottom: 50px;
+  font-size:1.5rem;
+  text-align: center;
+}
+// 左右コンテンツのエリア
+.hzn-cont-area {
+  margin-bottom: 30px;
+  padding: 30px;
+  background-color: #fff0e0;
+  border-radius: 20px;
+  border: 5px solid #fff0e0;
+}
+// 左右コンテンツのタイトル
+.hzn-cont-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: left;
+  color: #777;
+  vertical-align: top;
+}
+// 左右コンテンツの本文
+.hzn-cont-char {
+  font-size:1.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+// 左右コンテンツの画像
+.hzn-cont-image {
+  width: 100%;
+}
+// 帯エリアの背景
+.band-area-background{
+  margin-top: 100px;
+  padding: 75px;
+  background-color: orange;
+}
+// 帯エリアのタイトル
+.band-area-title{
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+// 帯エリアの文字
+.band-area-char{
+  color: #fff;
+  font-size:1rem;
+  text-align: center;
+}
+// 帯エリア内のボタン
+.btn-band-orange {
+  font-size: 1.5rem;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding:30px;
+  color: $base-color;
+  background-color: $base-sub-color;
+  border: 2px solid $base-sub-color;
+  text-decoration: none
+}
+// 帯エリア内のボタン（ホバー時）
+.btn-band-orange:hover {
+  color: $base-sub-color;
+  border: 2px solid $base-sub-color;
+  background-color: $base-color;
+}
+// 機能説明エリアの背景
+.func_area_background {
+  padding: 30px;
+  background-color: #fff8f0;
+  border-radius: 20px;
+  border: 3px solid #fff;
+}
+// 機能説明エリアのタイトル
+.func_area_title {
+  color: orange;
+  font-size: 2rem;
+  font-weight: bold;
+}
+// 機能説明エリアの文字
+.func_area_char {
+  font-size: 1.5rem;
+}
+// 機能補足の背景
+.func_sub_area {
+  background-color: #efefef;
+}
+// topヘッダーメニュー一覧
+.header-nav_list {
+  display: flex;
+  align-items: center;
+}
+// topヘッダーメニュー項目
+.header-nav_item{
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #555;
+  font-weight: bold;
+}
+// topヘッダーメニュー位置調整用
+.header-nav-pos{
+  margin: auto 1.5rem;
+}
+// フッター背景
+.footer-background {
+  background-color: orange;
+  padding: 20px;
+  margin-top: 50px;
+}
+// フッタータイトル
+.footer-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+}
+// フッター本文
+.footer-char {
+  color: #ffffff;
+  font-size: 1rem;
+  text-align: center;
+}

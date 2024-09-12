@@ -27,4 +27,9 @@ class ApplicationController < ActionController::Base
     match = path.match(/counselings\/(\d+)/)
     match[1] if match
   end
+
+  # ログアウト後のリダイレクト先を指定
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
 end

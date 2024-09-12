@@ -1,0 +1,238 @@
+<!-- トップ画面 -->
+<div class="top-background">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <!-- 左側のコンテンツ -->
+        <div class="top-list">
+          <div class="top-list-contents">報告</div>
+          <div class="top-list-contents">連絡</div>
+          <div class="top-list-contents">相談</div>
+        </div>
+        <div class="top-char-l">
+          報連相を円滑に行う<br/>
+          Report-Link
+        </div>
+        <div class="top-char-s">
+          報連相を効率的かつ効果的に行うための<br/>
+          ビジネスツールです。
+        </div>
+        <%= link_to "今すぐ試してみる", new_user_session_path, class: "btn col-6 btn-top-orange" %>
+      
+      </div>
+      <div class="col-md-6 col-12">
+        <!-- 右側のコンテンツ -->
+        <%= image_tag 'pc_image.png', class: "top-image" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Report-Linkの特徴 -->
+<div class="body-background" id="top-features">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="center-cont-title">
+          Report-Link の特徴
+          <%= image_tag 'horenso.jpg'%>
+        </div>        
+        <div class="center-cont-char">
+          Report-Link は、業務内の日報や質問の管理を効率化し、<br/>
+          過去の投稿を容易に参照できるようにするツールです。
+        </div>
+      </div>
+    </div>
+    <div class="row  hzn-cont-area">
+      <div class="col-md-6 col-12">
+        <!-- 左側のコンテンツ -->
+        <%= image_tag 'business1.jpeg', class: "hzn-cont-image" %>
+      </div>
+      <div class="col-md-6 col-12">
+        <!-- 右側のコンテンツ -->
+        <div class="hzn-cont-title">
+          ☑️ 投稿内容の永続的な保存
+        </div>
+        <div class="hzn-cont-char">
+          全ての投稿内容を、閲覧制限なしで永続的に保存し、いつでも参照可能にします。
+        </div>
+      </div>
+    </div>
+    <div class="row  hzn-cont-area">
+      <div class="col-md-6 col-12">
+        <!-- 左側のコンテンツ -->
+        <div class="hzn-cont-title">
+          ☑️ 投稿率の自動集計
+        </div>
+        <div class="hzn-cont-char">
+          日報の投稿率を自動的に集計し、管理者やチームリーダーがリアルタイムで把握できるようにします。
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <!-- 右側のコンテンツ -->
+        <%= image_tag 'business2.jpeg', class: "hzn-cont-image" %>
+      </div>
+    </div>
+    <div class="row hzn-cont-area">
+      <div class="col-md-6 col-12">
+        <!-- 左側のコンテンツ -->
+        <%= image_tag 'business3.jpeg', class: "hzn-cont-image" %>
+      </div>
+      <div class="col-md-6 col-12">
+        <!-- 右側のコンテンツ -->
+        <div class="hzn-cont-title">
+          ☑️ コミュニケーションの効率化
+        </div>
+        <div class="hzn-cont-char">
+          日報や質問の投稿や参照を容易にし、コミュニケーションの効率化を図ります。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Report-Linkの体験 -->
+<div class="band-area-background">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="band-area-title">
+          Report-Link を体験してみませんか？
+        </div>
+        <div class="band-area-char">
+          <%= link_to "今すぐ試してみる", new_user_session_path, class: "btn col-6 btn-band-orange" %>
+        </div>        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Report-Linkの主要画面 -->
+<div class="body-background" id="top-function-list">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="center-cont-title">
+          Report-Link の主要画面
+        </div>
+        <div class="center-cont-char">
+          <br/>業務上の報告・連絡・相談を行う上で必要とする機能を精査し、<br/>
+          シンプルで使いやすいシステムに仕上げました。
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 左側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　プロジェクトの登録
+        </div>
+        <div class="func_area_char">
+          プロジェクトを登録し、プロジェクト毎に報告・連絡・相談を管理します。
+          日報など、用途に合わせて『報告日』の設定も可能です。
+        </div>
+        <br/><%= image_tag 'func_new_project.png', class: "hzn-cont-image" %>
+      </div>
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 右側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　報告・連絡・相談の投稿
+        </div>
+        <div class="func_area_char">
+          報告・連絡・相談を投稿し、メンバー間で共有します。
+          各投稿に対して、返信コメントを付与できます。
+        </div>
+        <br/><%= image_tag 'func_new_report.jpeg', class: "hzn-cont-image" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 左側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　報告の通知・既読機能
+        </div>
+        <div class="func_area_char">
+          投稿した報告は、送信先に指定したメンバーに通知されます。
+          自分が投稿した報告は、未読・既読のステータスが確認可能です。          
+        </div>
+        <br/><%= image_tag 'func_project_index.png', class: "hzn-cont-image" %>
+      </div>
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 右側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　報告集計
+        </div>
+        <div class="func_area_char">
+          プロジェクトメンバーの報告の投稿率を確認できます。
+          週単位、一ヶ月単位での集計が可能で、集計グラフも表示できます。
+        </div>
+        <br/><%= image_tag 'func_report_totalling.png', class: "hzn-cont-image" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 左側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　報告フォーマットの編集
+        </div>
+        <div class="func_area_char">
+          プロジェクトの内容に合わせて、報告フォーマットを自由にカスタマイズできます。
+        </div>
+        <br/><%= image_tag 'func_edit_format.png', class: "hzn-cont-image" %>
+      </div>
+      <div class="col-md-6 col-12 func_area_background">
+        <!-- 右側のコンテンツ -->
+        <div class="func_area_title">
+          ◉　報告リマインド機能
+        </div>
+        <div class="func_area_char">
+          報告投稿を促すリマインドを設定できます。指定した日時にメールにて通知されます。
+        </div>
+        <br/><%= image_tag 'func_report_remind.png', class: "hzn-cont-image" %>
+      </div>
+    </div>
+    
+    <!-- 機能補足 -->
+    <div class="row func_sub_area">
+      その他にも便利な拡張機能の数々を実装しています<br/>
+      アーカイブ機能 / CSVエクスポート / Slack連携 など
+    </div> 
+  </div>
+</div>
+<!-- ご利用の流れ -->
+<div class="band-area-background"  id="top-usage-flow">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="band-area-title">
+          ご利用の流れ
+        </div>
+        <div class="band-area-char">
+          <%= link_to "アカウント作成はこちら", new_user_session_path, class: "btn col-6 btn-band-orange" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 操作方法 -->
+<div class="body-background" id="top-how-to-ope">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="center-cont-title">
+          操作方法
+        </div>
+        <div class="center-cont-char">
+          アプリ操作方法は以下の動画から確認できます。<br/>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/S8Pua5zaAxQ?si=-VfE-nxb_8BSuwwX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- フッター -->
+<div class="footer-background">
+  <div class="footer-title">
+    Report-Link
+  </div>
+  <div class="footer-char">
+     © 2024 Horenso Dev Team
+  </div>
+</div>

@@ -87,8 +87,8 @@ class Message < ApplicationRecord
 
   def send_slack_notification(title, message_detail)
     client = Slack::Web::Client.new
-    # channel = "#Horenso_App" # 参照資料には記述されていたがrubocopで不要と警告が出た為コメントアウトとする。
+    # channel = "#Report-Link" # 参照資料には記述されていたがrubocopで不要と警告が出た為コメントアウトとする。
     message = "重要度「高」の連絡が届いています。 \n送信者: #{self.sender_name}\n件名: #{title}\n連絡内容: #{message_detail}"
-    client.chat_postMessage(channel: '#horenso_app通知', text: message)
+    client.chat_postMessage(channel: '#Report-Link通知', text: message)
   end
 end
