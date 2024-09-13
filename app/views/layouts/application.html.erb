@@ -8,22 +8,37 @@
     <%= javascript_include_tag 'application','data-turbolinks-track': 'reload' %>
     <%= render 'layouts/shim' %>
   </head>
-  <%= render 'layouts/header' %>
-  <body>
-    <%# サイドバーとページのバランス調整用 %>
-    <main>
-      <div class="d-flex">
-        <% if user_signed_in? %>
-          <%= yield(:side_menu) if block_given? %>
-        <% end %>
-        <%# サイドバーとページのバランス調整用 %>
-        <div class="page">
-          <%= yield %>
-        </div>
-      </div>
-    </main>
-    <footer>
-      <div class="col-6 offset-3"><%= debug(params) if Rails.env.development? %></div>
-    </footer>
-  </body>
+
+  <% if controller_name == 'static_pages' %>
+    <!-- Top画面のレイアウト -->
+    <%= render 'layouts/header_top' %>
+    <body>
+      <main>
+        <%= yield %>
+      </main>
+      <footer>
+        <div class="col-6 offset-3"></div>
+      </footer>
+    </body>
+  <% else %>
+    <!-- Top画面以外のページレイアウト -->
+    <%= render 'layouts/header' %>
+    <body>
+      <%# サイドバーとページのバランス調整用 %>
+      <main>
+        <div class="d-flex">
+          <% if user_signed_in? %>
+            <%= yield(:side_menu) if block_given? %>
+          <% end %>
+          <%# サイドバーとページのバランス調整用 %>
+          <div class="page">
+            <%= yield %>
+          </div>
+        </div>      
+      </main>
+      <footer>
+        <div class="col-6 offset-3"><%= debug(params) if Rails.env.development? %></div>
+      </footer>
+    </body>
+  <% end %>
 </html>

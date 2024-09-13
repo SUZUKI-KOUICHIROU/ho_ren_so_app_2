@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg navbar-light header shadow bg-white rounded justify-content-center">
+  <%= link_to image_tag('header_logo.png'), root_path, class: "h1 mb-1" %>
+  <div class="collapse navbar-collapse justify-content-end">
+    <ul class="header-nav_list">
+      <%= link_to "特徴", "#top-features", class: "header-nav_item" %>　
+      <%= link_to "機能一覧", "#top-function-list", class: "header-nav_item" %>　
+      <%= link_to "ご利用の流れ", "#top-usage-flow", class: "header-nav_item" %>　
+      <%= link_to "操作方法", "#top-how-to-ope", class: "header-nav_item" %>　
+    </ul>
+  </div>
+  <%= link_to "ログイン", new_user_session_path, class: "btn btn-outline-orange header-nav-pos" %>
+</nav>

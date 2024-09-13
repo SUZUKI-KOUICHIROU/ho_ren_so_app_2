@@ -29,6 +29,11 @@ class ApplicationController < ActionController::Base
     match[1] if match
   end
 
+  # ログアウト後のリダイレクト先を指定
+  def after_sign_out_path_for(*)
+    new_user_session_path
+  end
+
   private
 
   def reset_flash_message_displayed
