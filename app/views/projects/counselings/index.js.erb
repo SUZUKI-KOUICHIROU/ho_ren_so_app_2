@@ -1,5 +1,10 @@
 <% if flash.now[:danger] %>
   $("#flash-messages").html('<div class="alert alert-danger"><%= j flash.now[:danger] %></div>');
+  setTimeout(function() {
+    $(".alert-danger").hide("fast", function() { // フラッシュメッセージを非表示
+      $(this).remove(); // 非表示後に要素をDOMから削除
+    });
+  }, 5000); // 5000ミリ秒（5秒）後に非表示
 <% end %>
 
 $("#you-addressee-counselings-container").html("<%= escape_javascript(render partial: 'projects/counselings/you_addressee_counselings', locals: { messages: @you_addressee_counselings }) %>");

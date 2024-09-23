@@ -297,7 +297,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @you_addressee_counselings = @counselings = Counseling.none
     session[:you_addressee_counseling_ids] = []
     session[:all_counseling_ids] = []
-    flash[:danger] = '検索結果が見つかりませんでした。'
+    flash.now[:danger] = '検索結果が見つかりませんでした。'
   end
 
   # 相談検索(相談履歴)
