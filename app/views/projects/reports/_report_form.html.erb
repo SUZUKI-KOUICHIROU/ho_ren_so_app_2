@@ -70,8 +70,8 @@
           <% check_option = question.check_box.check_box_option_strings %>
           <span class="report-item-title mb-2 font-weight-bold"><%= af.label :array_value, "#{question.send(question.form_table_type).label_name}", class: "mb-0" %></span>
           <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %><br>
-          <%= af.collection_check_boxes(:array_value, check_option, :option_string, :option_string, {prompt: "選択してください", include_hidden: false}, { required: question.required }) do |c| %>
-            <% c.label(class: "check-label") { c.check_box(class: "check-button") + c.text } %>
+          <%= af.collection_check_boxes(:array_value, check_option, :option_string, :option_string, {prompt: "選択してください", include_hidden: false}) do |c| %>
+            <% c.label(class: "check-label") { c.check_box(class: "check-box-option") + c.text } %>
           <% end %>
         </div>
       <% end %>

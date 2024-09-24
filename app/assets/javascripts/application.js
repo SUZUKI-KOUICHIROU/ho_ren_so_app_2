@@ -20,3 +20,4 @@
 //= require_tree .
 //= require chartkick
 //= require Chart.bundle
+//= require reports/check_box_validation
