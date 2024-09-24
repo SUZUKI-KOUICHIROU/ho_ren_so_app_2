@@ -30,7 +30,7 @@ class Counseling < ApplicationRecord
   end
 
   # 月次相談を取得する
-  def self.monthly_couselings_for(project)
+  def self.monthly_counselings_for(project)
     start_of_month = Time.zone.now.beginning_of_month
     end_of_month = Time.zone.now.end_of_month
     Counseling.where(project: project, created_at: start_of_month..end_of_month)
