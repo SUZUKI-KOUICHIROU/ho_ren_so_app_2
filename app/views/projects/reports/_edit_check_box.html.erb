@@ -6,13 +6,8 @@
     <br>
     <%= f.fields_for :answers, answer do |m| %>
       <% question.check_box.check_box_option_strings.each do |box| %>
-        <% boolExists = if answer.array_value.present? 
-                          answer.array_value.include? box.option_string
-                        else
-                          false
-                        end
-                      %>
-        <%= m.check_box :array_value, {multiple: true, include_hidden: false, checked: boolExists, required: question.required}, box[:option_string] %>
+        <% boolExists = answer.array_value.try(:include?, box.option_string) || false %>
+        <%= m.check_box :array_value, {multiple: true, include_hidden: false, checked: boolExists, class: 'check-box-option'}, box[:option_string] %>
         <%= box.option_string %>
       <% end %>
     <% end %>
