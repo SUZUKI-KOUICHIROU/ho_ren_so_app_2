@@ -97,7 +97,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   
-  host = 'horenso-app.fly.dev'
+  # host：デプロイしたアプリのドメイン 
+  host = 'report-link-c3b0ff4a2961.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
   config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {
@@ -105,8 +106,8 @@ Rails.application.configure do
     :address => "smtp.gmail.com",
     :port => 587,
     :domain => 'gmail.com',
-    :user_name => ENV["GOOGLE_MAIL_ADDRESS"],
-    :password => ENV["GOOGLE_MAILER_PASSWORD"],
+    :user_name => ENV["GOOGLE_MAIL_ADDRESS"],   # GOOGLE_MAIL_ADDRESS: ホスト（送信元）として使用するGmailアドレス
+    :password => ENV["GOOGLE_MAILER_PASSWORD"], # GOOGLE_MAILER_PASSWORD: Gmailアカウントのアプリパスワード 
     :authentication => :plain,
   }
 end
