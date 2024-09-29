@@ -21,6 +21,8 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  # If you are running a production environment locally, enable the following:
+  # config.public_file_server_enabled = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = Uglifier.new(harmony: true)
@@ -95,7 +97,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   
-  host = 'horenso-app.fly.dev'
+  # host：デプロイしたアプリのドメイン 
+  host = 'report-link-c3b0ff4a2961.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
   config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {
@@ -103,8 +106,8 @@ Rails.application.configure do
     :address => "smtp.gmail.com",
     :port => 587,
     :domain => 'gmail.com',
-    :user_name => ENV["GOOGLE_MAIL_ADDRESS"],
-    :password => ENV["GOOGLE_MAILER_PASSWORD"],
+    :user_name => ENV["GOOGLE_MAIL_ADDRESS"],   # GOOGLE_MAIL_ADDRESS: ホスト（送信元）として使用するGmailアドレス
+    :password => ENV["GOOGLE_MAILER_PASSWORD"], # GOOGLE_MAILER_PASSWORD: Gmailアカウントのアプリパスワード 
     :authentication => :plain,
   }
 end
