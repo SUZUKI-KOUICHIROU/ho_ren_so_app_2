@@ -161,8 +161,13 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def save_counseling_ids_to_session
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    session[:you_addressee_counseling_ids] = @project.counselings.where(id: you_addressee_counseling_ids).pluck(:id)
-    session[:all_counseling_ids] = @project.counselings.pluck(:id)
+    session[:you_addressee_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                                       .where(id: you_addressee_counseling_ids)
+                                                       .order(created_at: 'DESC')
+                                                       .pluck(:id)
+    session[:all_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                             .order(created_at: 'DESC')
+                                             .pluck(:id)
   end
 
   def index_export_csv
