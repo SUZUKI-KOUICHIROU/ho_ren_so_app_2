@@ -197,7 +197,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   # 全員の相談
   def all_counselings
-    Counseling.monthly_counseilngs_for(@project).order(created_at: 'DESC').page(params[:counselings_page]).per(5)
+    Counseling.monthly_counselings_for(@project).order(created_at: 'DESC').page(params[:counselings_page]).per(5)
   end
 
   # あなたへの相談
