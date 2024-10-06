@@ -10,6 +10,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
     @project = Project.find(params[:project_id])
     @counselings = all_counselings
     @you_addressee_counselings = you_addressee_counselings
+    @you_send_counselings = you_send_counselings
     save_counseling_ids_to_session
     counselings_by_search
     respond_to do |format|
@@ -210,6 +211,13 @@ class Projects::CounselingsController < Projects::BaseProjectController
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
     Counseling.monthly_counselings_for(@project).where(id: you_addressee_counseling_ids).order(created_at: 'DESC')
               .page(params[:you_addressee_counselings_page]).per(5)
+  end
+
+  # あなたが送った相談
+  def you_send_counselings
+    you_send_counseling_ids = Counseling.where(sender_id: current_user.id).pluck(:id)
+    Counseling.monthly_counselings_for(@project).where(id: you_send_counseling_ids).order(created_at: 'DESC')
+              .page(params[:you_send_counselings_page]).per(5)
   end
 
   def counseling_search_params

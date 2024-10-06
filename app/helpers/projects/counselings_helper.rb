@@ -12,6 +12,7 @@ module Projects::CounselingsHelper
   def counseling_page(tab)
     page = {
       'you-addressee' => 'you_addressee_counselings_page',
+      'you-send' => 'you_send_counselings_page',
       'counseling' => 'counselings_page'
     }
     page[tab]
