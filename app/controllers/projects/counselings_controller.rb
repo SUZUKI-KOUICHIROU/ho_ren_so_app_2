@@ -6,13 +6,10 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def index
     clear_session # 一覧画面に戻ってきた際ｾｯｼｮﾝをｸﾘｱするため追加
     set_project_and_members
-    @counselings = @project.counselings.all.order(created_at: 'DESC').page(params[:counselings_page]).per(5)
-    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    @you_addressee_counselings = @project.counselings
-                                         .where(id: you_addressee_counseling_ids)
-                                         .order(created_at: 'DESC')
-                                         .page(params[:you_addressee_counselings_page])
-                                         .per(5)
+    @user = User.find(params[:user_id])
+    @project = Project.find(params[:project_id])
+    @counselings = all_counselings
+    @you_addressee_counselings = you_addressee_counselings
     save_counseling_ids_to_session
     counselings_by_search
     respond_to do |format|
@@ -164,8 +161,13 @@ class Projects::CounselingsController < Projects::BaseProjectController
 
   def save_counseling_ids_to_session
     you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
-    session[:you_addressee_counseling_ids] = @project.counselings.where(id: you_addressee_counseling_ids).pluck(:id)
-    session[:all_counseling_ids] = @project.counselings.pluck(:id)
+    session[:you_addressee_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                                       .where(id: you_addressee_counseling_ids)
+                                                       .order(created_at: 'DESC')
+                                                       .pluck(:id)
+    session[:all_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                             .order(created_at: 'DESC')
+                                             .pluck(:id)
   end
 
   def index_export_csv
@@ -196,6 +198,18 @@ class Projects::CounselingsController < Projects::BaseProjectController
       redirect_to user_project_counselings_path(@user, @project)
       # redirect先をrootとするとﾘﾀﾞｲﾚｸﾄﾙｰﾌﾟ発生するため相談一覧とした
     end
+  end
+
+  # 全員の相談
+  def all_counselings
+    Counseling.monthly_counselings_for(@project).order(created_at: 'DESC').page(params[:counselings_page]).per(5)
+  end
+
+  # あなたへの相談
+  def you_addressee_counselings
+    you_addressee_counseling_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).pluck(:counseling_id)
+    Counseling.monthly_counselings_for(@project).where(id: you_addressee_counseling_ids).order(created_at: 'DESC')
+              .page(params[:you_addressee_counselings_page]).per(5)
   end
 
   def counseling_search_params
