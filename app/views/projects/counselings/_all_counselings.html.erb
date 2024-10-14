@@ -4,8 +4,10 @@
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
         <%= form.hidden_field :search_type, :value => "counseling" %>
-        <%= form.label :keywords, "件名・内容検索：", class: "mb-0" %>
-        <%= form.text_field :keywords, placeholder: "キーワードを入力", class: "search-box rwd-search-box" %>
+        <%= form.label :created_at, "相談受信日：", class: "mb-0" %>
+        <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
+        <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
         <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
       <% end %>    
     </div>

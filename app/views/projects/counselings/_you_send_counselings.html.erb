@@ -1,0 +1,64 @@
+<div class="box-counseling-index">
+  <% if @you_send_counselings.present? %>
+    <%# <%= link_to "あなたが送った相談のCSVエクスポート", export_csv_user_project_counselings_path(format: :csv, csv_type: 'you_send_counselings'), method: :get, class: "btn btn-outline-orange m-2" %>
+    <div class="d-flex justify-content-end mb-3 rwd-search-form">
+      <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
+        <%= form.hidden_field :search_type, :value => "you-send" %>
+        <%= form.label :created_at, "相談送信日：", class: "mb-0" %>
+        <%= form.date_field :created_at, placeholder: "送信日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>                 
+        <%= form.label :keywords, "キーワード：", class: "mb-0" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
+        <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
+      <% end %>    
+    </div>
+    <div class="table-header">
+      <div class="subject-name">
+        件名
+      </div>
+      <div class="counseling-date">
+        相談日
+      </div>
+      <div class="counseling-person">
+        送信相手
+      </div>
+      <div class="counseling-action">
+        アクション
+      </div>
+    </div>
+    <div class="table-body">
+      <% line_num = 0%>
+      <% @you_send_counselings.each do |counseling|%>
+        <% line_num += 1%>
+        <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
+          <div class="subject-name">
+            <%= link_to counseling.title, user_project_counseling_path(@user, @project, counseling), class: "counseling-detail-link" %>
+          </div>
+          <div class="counseling-date">
+            <%= l(counseling.created_at, format: :long) %>
+          </div>
+          <div class="counseling-person">
+              <%= get_counseling_recipients(counseling.id, @members) %>
+          </div>
+          <div class="counseling-action">
+            <% if counseling.sender_id == current_user.id %>
+              <%= link_to "編集", edit_user_project_counseling_path(@user, @project, counseling), class: "btn btn-outline-orange" %>
+              <%= link_to "削除", user_project_counseling_path(@user, @project, counseling), method: :delete, data: { confirm: "投稿された相談を削除してよろしいですか？" }, class: "btn btn-danger" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else @you_send_counselings.blank?%>
+    <P>相談履歴がありません。</P>
+  <% end %>
+  <div class="d-flex">
+    <% if @you_send_counselings.present?%>
+      <div class="paginate">
+        <%= paginate @you_send_counselings, param_name: counseling_page('you-send'), remote: true %>
+      </div>
+    <% end %>
+    <div class="ml-auto">
+      <%= link_to "戻る", :back, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>

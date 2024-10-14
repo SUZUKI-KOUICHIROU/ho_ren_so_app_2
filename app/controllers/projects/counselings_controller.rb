@@ -166,6 +166,11 @@ class Projects::CounselingsController < Projects::BaseProjectController
                                                        .where(id: you_addressee_counseling_ids)
                                                        .order(created_at: 'DESC')
                                                        .pluck(:id)
+    you_send_counseling_ids = Counseling.where(sender_id: current_user.id).pluck(:id)
+    session[:you_send_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                                  .where(id: you_send_counseling_ids)
+                                                  .order(created_at: 'DESC')
+                                                  .pluck(:id)
     session[:all_counseling_ids] = Counseling.monthly_counselings_for(@project)
                                              .order(created_at: 'DESC')
                                              .pluck(:id)
@@ -221,13 +226,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   end
 
   def counseling_search_params
-    if params[:search].is_a?(ActionController::Parameters)
-      params.require(:search).permit(:created_at, :keywords)
-    elsif params[:search].is_a?(String)
-      { keywords: params[:search] }
-    else
-      {}
-    end
+    params.fetch(:search, {}).permit(:created_at, :keywords)
   end
 
   def update_counseling_and_confirmers
@@ -280,16 +279,12 @@ class Projects::CounselingsController < Projects::BaseProjectController
       @results = Counseling.search(counseling_search_params)
       if @results.present?
         @counseling_ids = @results.pluck(:id).uniq
-        # ﾍﾟｰｼﾞﾈｰｼｮﾝを無視して全ﾃﾞｰﾀを取得
-        you_addressee_counselings = @project.counselings
-                                            .where(id: @counseling_ids & CounselingConfirmer
-                                            .where(counseling_confirmer_id: @user.id)
-                                            .pluck(:counseling_id)).order(created_at: 'DESC')
-        all_counselings = @project.counselings.where(id: @counseling_ids).order(created_at: 'DESC')
-        session_save(you_addressee_counselings, all_counselings) # 検索結果の相談IDをｾｯｼｮﾝに保存
-        @counselings = @counselings.where(id: @counseling_ids) if @counselings
-        @you_addressee_counselings = @you_addressee_counselings.where(id: @counseling_ids) if @you_addressee_counselings
+        # ビューで使用するページネーションされたデータ
+        @counselings = all_counselings.where(id: @counseling_ids)
+        @you_addressee_counselings = you_addressee_counselings.where(id: @counseling_ids)
+        @you_send_counselings = you_send_counselings.where(id: @counseling_ids)
         session[:previous_search] = params[:search] # 検索条件をｾｯｼｮﾝに保存
+        session_save_all_results(@counseling_ids) # 全検索結果のIDをｾｯｼｮﾝに保存
       else
         handle_no_results
       end
@@ -306,18 +301,30 @@ class Projects::CounselingsController < Projects::BaseProjectController
   # ｾｯｼｮﾝをｸﾘｱする共通ﾒｿｯﾄﾞ
   def clear_session
     session[:you_addressee_counseling_ids] = nil
+    session[:you_send_counseling_ids] = nil
     session[:all_counseling_ids] = nil
   end
 
-  # 検索結果の相談IDをｾｯｼｮﾝに保存 ｲﾝｽﾀﾝｽ変数使用すると検索が機能しなくなるため引数指定
-  def session_save(you_addressee_counselings, all_counselings)
-    session[:you_addressee_counseling_ids] = you_addressee_counselings.pluck(:id)
-    session[:all_counseling_ids] = all_counselings.pluck(:id)
+  # 全ての検索結果のIDをセッションに保存
+  def session_save_all_results(counseling_ids)
+    # ページネーションなしで全てのデータを取得
+    counseling_confirmer_ids = CounselingConfirmer.where(counseling_confirmer_id: @user.id).select(:counseling_id)
+    session[:you_addressee_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                                       .where(id: counseling_confirmer_ids)
+                                                       .where(id: counseling_ids)
+                                                       .pluck(:id)
+    session[:you_send_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                                  .where(sender_id: current_user.id, id: counseling_ids)
+                                                  .pluck(:id)
+    session[:all_counseling_ids] = Counseling.monthly_counselings_for(@project)
+                                             .where(id: counseling_ids)
+                                             .pluck(:id)
   end
 
   def handle_no_results
-    @you_addressee_counselings = @counselings = Counseling.none
+    @you_addressee_counselings = @you_send_counselings = @counselings = Counseling.none
     session[:you_addressee_counseling_ids] = []
+    session[:you_send_counseling_ids] = []
     session[:all_counseling_ids] = []
     flash.now[:danger] = '検索結果が見つかりませんでした。'
   end
