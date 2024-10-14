@@ -129,6 +129,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
     case params[:csv_type]
     when "you_addressee_counselings"
       counseling_ids = session[:you_addressee_counseling_ids]
+    when "you_send_counselings"
+      counseling_ids = session[:you_send_counseling_ids]
     when "all_counselings"
       counseling_ids = session[:all_counseling_ids]
     else
@@ -180,6 +182,8 @@ class Projects::CounselingsController < Projects::BaseProjectController
     case params[:csv_type]
     when "you_addressee_counselings"
       send_counselings_csv(session[:you_addressee_counseling_ids])
+    when "you_send_counselings"
+      send_counselings_csv(session[:you_send_counseling_ids])
     when "all_counselings"
       send_counselings_csv(session[:all_counseling_ids])
     else
