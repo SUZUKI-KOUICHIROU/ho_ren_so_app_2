@@ -355,7 +355,7 @@ class Projects::CounselingsController < Projects::BaseProjectController
   def all_counselings_history_month
     selected_month = params[:month]
     if selected_month.present?
-      start_date = Date.parse("#{selected_month}-01")
+      start_date = Time.zone.parse("#{selected_month}-01").beginning_of_day
       end_date = start_date.end_of_month.end_of_day
       counselings = @project.counselings.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:page]).per(30)
     else
