@@ -38,24 +38,24 @@ class Counseling < ApplicationRecord
 
   # 検索機能
   def self.search(search_params)
-    query = all
+    counselings = all
 
     if search_params[:created_at].present?
-      query = query.created_at(search_params[:created_at])
+      counselings = counselings.created_at(search_params[:created_at])
     end
 
     if search_params[:keywords].present?
-      query = query.keywords_like(search_params[:keywords])
+      counselings = counselings.keywords_like(search_params[:keywords])
     end
 
-    query
+    counselings
   end
 
   scope :created_at, ->(created_at) {
     where("created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo' BETWEEN ? AND ?", "#{created_at} 00:00:00", "#{created_at} 23:59:59")
   }
   scope :keywords_like, ->(keywords) {
-    where('title LIKE :keyword OR sender_name LIKE :keyword OR counseling_detail LIKE :keyword', keyword: "%#{keywords}%")
+    where('title LIKE ? OR sender_name LIKE ? OR counseling_detail LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
   }
 
   def send_to_all?
