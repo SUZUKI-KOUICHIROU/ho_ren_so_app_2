@@ -1,11 +1,11 @@
 <div class="box-counseling-index">
-  <% if @counselings.present? %>
-    <%= link_to "全メンバーの相談のCSVエクスポート", export_csv_user_project_counselings_path(format: :csv, csv_type: 'all_counselings'), method: :get, class: "btn btn-outline-orange m-2" %>
+  <% if @you_send_counselings.present? %>
+    <%= link_to "あなたが送った相談のCSVエクスポート", export_csv_user_project_counselings_path(format: :csv, csv_type: 'you_send_counselings'), method: :get, class: "btn btn-outline-orange m-2" %>
     <div class="d-flex justify-content-end mb-3 rwd-search-form">
       <%= form_with scope: :search, url: user_project_counselings_path(current_user, @project), method: :get, remote: true do |form| %>
-        <%= form.hidden_field :search_type, :value => "counseling" %>
-        <%= form.label :created_at, "相談受信日：", class: "mb-0" %>
-        <%= form.date_field :created_at, placeholder: "受信日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
+        <%= form.hidden_field :search_type, :value => "you-send" %>
+        <%= form.label :created_at, "相談送信日：", class: "mb-0" %>
+        <%= form.date_field :created_at, placeholder: "送信日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>                 
         <%= form.label :keywords, "キーワード：", class: "mb-0" %>
         <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
         <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>
@@ -19,7 +19,7 @@
         相談日
       </div>
       <div class="counseling-person">
-        相談者
+        送信相手
       </div>
       <div class="counseling-action">
         アクション
@@ -27,7 +27,7 @@
     </div>
     <div class="table-body">
       <% line_num = 0%>
-      <% @counselings.each do |counseling|%>
+      <% @you_send_counselings.each do |counseling|%>
         <% line_num += 1%>
         <div class="table-line", data-project-index-line-num="<%="#{line_num}"%>">
           <div class="subject-name">
@@ -37,7 +37,7 @@
             <%= l(counseling.created_at, format: :long) %>
           </div>
           <div class="counseling-person">
-              <%= counseling.sender_name %>
+              <%= get_counseling_recipients(counseling.id, @members) %>
           </div>
           <div class="counseling-action">
             <% if counseling.sender_id == current_user.id %>
@@ -48,13 +48,13 @@
         </div>
       <% end %>
     </div>
-  <% else @counselings.blank?%>
+  <% else @you_send_counselings.blank?%>
     <P>相談履歴がありません。</P>
   <% end %>
   <div class="d-flex">
-    <% if @counselings.present?%>
+    <% if @you_send_counselings.present?%>
       <div class="paginate">
-        <%= paginate @counselings, param_name: counseling_page('counseling'), remote: true %>
+        <%= paginate @you_send_counselings, param_name: counseling_page('you-send'), remote: true %>
       </div>
     <% end %>
     <div class="ml-auto">
