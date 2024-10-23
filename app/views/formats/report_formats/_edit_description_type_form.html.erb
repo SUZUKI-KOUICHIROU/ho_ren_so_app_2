@@ -32,7 +32,7 @@
         <div class="label-select-box">
           <div class="label-box ml-3">
             <%= ftf.label :label_name, "項目名：", class: 'font-weight-bold' %>
-            <%= ftf.text_field :label_name, class: 'form-control', required: true %>
+            <%= ftf.text_field :label_name, class: 'form-control', placeholder: "最大30文字", maxlength: 30, required: true %>
             <%= ftf.label :field_type, "フォームの種類:" %>
             <%= ftf.hidden_field :field_type %>
               <% case question.form_table_type %>
