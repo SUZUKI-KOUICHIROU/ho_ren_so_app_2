@@ -386,9 +386,10 @@ class Projects::ReportsController < Projects::BaseProjectController
   def all_reports_history_month
     selected_month = params[:month]
     if selected_month.present?
-      start_date = Date.parse("#{selected_month}-01")
-      end_date = start_date.end_of_month.end_of_day
+      start_date = Time.zone.parse("#{selected_month}-01").beginning_of_day # select月の1日0時0分00秒
+      end_date = start_date.end_of_month.end_of_day # 上記の末日の23時59分00秒
       reports = @project.reports.where(created_at: start_date..end_date).order(created_at: 'DESC').page(params[:page]).per(30)
+      # created_atが始まり～終わりまでをcreated_atが降順で30件表示
     else
       reports = all_reports_history
     end
