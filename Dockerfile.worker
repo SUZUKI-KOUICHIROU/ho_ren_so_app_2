@@ -1,0 +1,66 @@
+FROM --platform=linux/x86_64 ruby:2.6.3
+# 起動させるためのパッケージを取得
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    # `build-essential`は開発に必須のビルドツールを提供しているパッケージ
+    build-essential \
+    postgresql-client \
+    nodejs \
+    vim \
+    redis-tools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.jsとYarnのインストール
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && npm install -g yarn
+
+# 作業用のディレクトリを作成(存在しない場合は勝手に作成してくれる)
+WORKDIR /myproject
+
+# 本番環境の設定
+# BUNDLE_DEPLOYMENT： デプロイモードの有効有無。
+#                    bundlerは、Gemfile.lockを参照してgemをインストールし、Gemfile.lockとGemfileが不一致だとエラーを出力。
+# BUNDLE_PATH: Gemのインストールパスの指定。
+# BUNDLE_WITHOUT: 本番環境で不要なGemの指定。
+# RAILS_ENV: Railsの動作モードの指定。「本番環境」に設定する。
+ENV BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development:test" \
+    RAILS_ENV="production"
+
+# ホストのGemfile達をコンテナ内にコピー
+ADD Gemfile /myproject/Gemfile
+ADD Gemfile.lock /myproject/Gemfile.lock
+RUN gem install bundler -v 2.4.22
+RUN gem update --system 3.2.3
+RUN bundle install -j4 && \
+    bundle exec bootsnap precompile --gemfile && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
+
+#既存railsプロジェクトをコンテナ内にコピー
+ADD . /myproject
+
+# 起動時間短縮のために、bootsnapをプリコンパイルする
+RUN bundle exec bootsnap precompile app/ lib/
+
+# アセットのプリコンパイルとキャッシュの削除
+# プリコンパイル時、secret_key_baseにダミー値を渡して、ビルドが不必要に止まらないようにする。
+RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile \
+ && yarn cache clean \
+ && rm -rf node_modules tmp/cache
+
+# デプロイ時のオプション
+# RAILS_LOG_TO_STDOUT: Railsのログ出力先を標準出力に設定。（※これ設定しないとherokuにログが出ない）
+# RAILS_SERVE_STATIC_FILES: Railsがpublicフォルダ内の静的ファイルを提供するよう設定。
+ENV RAILS_LOG_TO_STDOUT="1" \
+    RAILS_SERVE_STATIC_FILES="true"
+
+# entrypoint.shをコピーし、実行権限を与える
+COPY entrypoint.sh /usr/bin/
+# chmodコマンドはファイルやディレクトリに権限設定するコマンド。`+`は後に記述した権限を付加する。`x`は実行権限。
+# つまり今回は全てのユーザに該当ファイルの実行権限を付与する。
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+# `EXPOSE <ポート>`はコンテナ実行時に<ポート>にリッスンするよう命令するコマンド。
+EXPOSE 3000
+CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
