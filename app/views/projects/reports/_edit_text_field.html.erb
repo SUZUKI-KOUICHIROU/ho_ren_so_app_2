@@ -4,7 +4,7 @@
     <span class="report-item-title mb-2 font-weight-bold"><%= question.text_field.label_name %></span>
     <% if question.required %><span class="pl-2 font-weight-bold text-danger">必須</span><% end %>
     <%= f.fields_for :answers, answer do |m| %>
-      <div><%= m.text_field :value, class: "form-control", required: question.required %></div>
+      <div><%= m.text_field :value, class: "form-control", required: question.required , placeholder: "最大30文字", maxlength: 30 %></div>
     <% end %>
   <% else %>
     <!-- questionまたはtext_fieldが存在しない場合や無効な場合は表示しない -->
