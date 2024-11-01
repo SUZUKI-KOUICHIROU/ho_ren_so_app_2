@@ -8,7 +8,7 @@
       <div class="label-select-box">
         <div class="label-box">
           <%= ftf.label :label_name, "項目名", class: "form-control-label report-item-title" %>
-          <%= ftf.text_field :label_name, class: "form-control", required: true %>
+          <%= ftf.text_field :label_name, class: "form-control", placeholder: "最大30文字", maxlength: 30, required: true %>
         </div>
         <div class="select-box mt-3">
           <%= ftf.label :field_type, "フォームの種類" %>

@@ -39,7 +39,7 @@
       <div class="label-select-box">
         <div class="label-box">
           <%= ftf.label :label_name, "項目名：", class: 'ml-3 font-weight-bold' %>
-          <%= ftf.text_field :label_name, class: 'form-control ml-3', required: true %>
+          <%= ftf.text_field :label_name, class: 'form-control ml-3', placeholder: "最大30文字", maxlength: 30, required: true %>
           <%= ftf.label :field_type, "フォームの種類", class: 'ml-3' %>
           <% case question.form_table_type %>
               <% when 'radio_button'%>

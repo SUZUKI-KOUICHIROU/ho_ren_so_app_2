@@ -9,7 +9,7 @@
       <a class='option-symbol'>&#x25BF;</a>
     <% end %>
     <%= osf.hidden_field :id %>
-    <%= osf.text_field :option_string, class: 'form-control', required: true %>
+    <%= osf.text_field :option_string, class: 'form-control', required: true, placeholder: "最大30文字", maxlength: 30 %>
     <%= osf.hidden_field :_destroy, :value => false %>
     <%= link_to '✖︎', "#", class: 'remove-field' %>
   </div>
