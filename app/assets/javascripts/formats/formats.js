@@ -57,7 +57,7 @@ $(document).on('turbolinks:load', function(){
       // index差し替え用のinput要素(text_field)を生成する関数(text_field用)
       function buildOptionTextField(form_table_type_value, option_index) {
         const option_input_html =
-        `<input class="form-control format-form-style" required="required" "type="text" value=""
+        `<input class="form-control format-form-style" required="required" type="text" placeholder="最大30文字" maxlength="30" value=""
         name="question[${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
         id="question_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
         return option_input_html;
@@ -135,7 +135,7 @@ $(document).on('turbolinks:load', function(){
         // index差し替え用のinput要素(text_field)を生成する関数(text_field用)
         function buildOptionTextField(form_table_type_value, option_index, question_id) {
           const option_input_html =
-          `<input class="form-control format-form-style" required="required" "type="text" value=""
+          `<input class="form-control format-form-style" required="required" type="text" placeholder="最大30文字" maxlength="30" value=""
           name="[question_attributes][${question_id}][${form_table_type_value}_attributes][${form_table_type_value}_option_strings_attributes][${option_index}][option_string]"
           id="_question_attributes_${question_id}_${form_table_type_value}_attributes_${form_table_type_value}_option_strings_attributes_${option_index}_option_string">`;
           return option_input_html;

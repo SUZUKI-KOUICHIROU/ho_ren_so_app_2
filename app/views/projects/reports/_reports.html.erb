@@ -15,7 +15,7 @@
         <%= form.date_field :created_at, placeholder: "報告日を入力", value: @search_params && @search_params[:created_at], class: "search-box rwd-search-box" %>
         
         <%= form.label :keywords, "キーワード：", class: "mb-0" %>
-        <%= form.text_field :keywords, placeholder: "キーワードを入力", value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
+        <%= form.text_field :keywords, placeholder: "キーワードを入力", maxlength: 30, value: @search_params && @search_params[:keywords], class: "search-box rwd-search-box" %>
         
         <%= form.submit "検索", class: "btn btn-outline-orange rwd-submit-btn" %>            
       <% end %>
