@@ -98,7 +98,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   
   # host：デプロイしたアプリのドメイン 
-  host = 'report-link-c3b0ff4a2961.herokuapp.com'
+  host = ENV["HOST_URL"]
   # config.action_mailer.default_url_options = { host: host }
   config.action_mailer.default_url_options = { protocol: 'https',host: host}
   ActionMailer::Base.smtp_settings = {

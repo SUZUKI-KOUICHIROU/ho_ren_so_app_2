@@ -221,7 +221,7 @@
         </div>
         <div class="center-cont-char">
           アプリ操作方法は以下の動画から確認できます。<br/>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/S8Pua5zaAxQ?si=-VfE-nxb_8BSuwwX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe width="560" height="315" src="<%= ENV['APP_INTRO_VIDEO_URL'] || 'https://www.youtube.com/embed/S8Pua5zaAxQ?si=-VfE-nxb_8BSuwwX' %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
     </div>
