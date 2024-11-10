@@ -46,6 +46,7 @@ gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '5.4.3'
 gem 'whenever', require: false
+gem 'aws-sdk-s3'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
