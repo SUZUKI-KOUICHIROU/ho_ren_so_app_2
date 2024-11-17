@@ -6,6 +6,7 @@ ruby '2.6.3'
 gem 'actionmailer'
 gem 'activejob'
 gem 'activesupport'
+gem 'aws-sdk-s3'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.6.2'
@@ -46,7 +47,6 @@ gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '5.4.3'
 gem 'whenever', require: false
-gem 'aws-sdk-s3'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
