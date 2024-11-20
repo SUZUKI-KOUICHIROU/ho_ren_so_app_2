@@ -6,7 +6,6 @@ ruby '2.6.3'
 gem 'actionmailer'
 gem 'activejob'
 gem 'activesupport'
-gem 'aws-sdk-s3'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 4.6.2'
@@ -90,7 +89,7 @@ end
 
 group :production do
   gem 'pg', '0.20.0'
-
+  gem 'aws-sdk-s3'
   gem "dockerfile-rails", ">= 1.6", :group => :development
 
   gem "net-imap", "~> 0.3.7", :require => false
