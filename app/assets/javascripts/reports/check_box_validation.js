@@ -1,22 +1,29 @@
 document.addEventListener('turbolinks:load', function() {
-  // チェックボックスのinputタグを取得
-  const checkBoxElements = Array.from(document.getElementsByClassName("check-box-option"));
-  const errorMessage = "1つ以上の選択肢を選択してください。";
+  // 各質問グループごとにバリデーションを設定
+  const questionGroups = document.querySelectorAll('.question-group');
 
-  checkBoxElements.forEach(m => {
-    // エラーメッセージを、カスタムなものに変更
-    m.setCustomValidity(errorMessage);
+  questionGroups.forEach(group => {
+    // 各グループ内のチェックボックスを取得
+    const checkBoxElements = group.querySelectorAll('.check-box-option');
+    const errorMessage = "1つ以上の選択肢を選択してください。";
 
-    // 各チェックボックスのチェックのオン・オフ時に、以下の処理が実行されるようにする
-    m.addEventListener("change", () => {
-      // 1つ以上チェックがされているかどうかを判定
-      const isCheckedAtLeastOne = document.querySelector(".check-box-option:checked") !== null;
+    // グループ内の各チェックボックスに対して処理
+    checkBoxElements.forEach(checkbox => {
+      // 各チェックボックスにrequiredを明示的に設定
+      checkbox.required = true;
+      checkbox.setCustomValidity(errorMessage);
 
-      // 1つもチェックがされていなかったら、すべてのチェックボックスを required にする
-      // 加えて、エラーメッセージも変更する
-      checkBoxElements.forEach(n => {
-        n.required = !isCheckedAtLeastOne;
-        n.setCustomValidity(isCheckedAtLeastOne ? "" : errorMessage);
+      // チェックボックスの変更イベント
+      checkbox.addEventListener("change", () => {
+        // 同じグループ内で1つ以上チェックされているか確認
+        const isCheckedAtLeastOne = 
+          group.querySelector(".check-box-option:checked") !== null;
+
+        // グループ内の各チェックボックスのrequiredとエラーメッセージを更新
+        checkBoxElements.forEach(cb => {
+          cb.required = !isCheckedAtLeastOne;
+          cb.setCustomValidity(isCheckedAtLeastOne ? "" : errorMessage);
+        });
       });
     });
   });
