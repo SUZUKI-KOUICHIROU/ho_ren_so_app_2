@@ -91,6 +91,7 @@ group :production do
   gem 'aws-sdk-s3'
   gem "dockerfile-rails", ">= 1.6", :group => :development
   gem 'pg', '0.20.0'
+  gem 'platform-api'
 
   gem "net-imap", "~> 0.3.7", :require => false
   gem "net-pop", "~> 0.1.2", :require => false
