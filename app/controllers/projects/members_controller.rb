@@ -47,11 +47,8 @@ class Projects::MembersController < Projects::BaseProjectController
     project = Project.find(params[:project_id])
     project_user = ProjectUser.find_by(project_id: project.id, user_id: user.id)
     if project.leader_id != user.id
-      if project_user.member_expulsion
-        project_user.update(member_expulsion: false)
-        flash[:success] = "#{user.name}さんを報告集計に戻しました。"
-      else
-        project_user.update(member_expulsion: true)
+      unless project_user.member_expulsion
+        project_user.destroy
         flash[:success] = "#{user.name}さんを報告集計から外しました。"
       end
     else
