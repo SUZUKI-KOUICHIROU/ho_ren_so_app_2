@@ -48,14 +48,19 @@
                     <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                   </div>
                   <div class="form-group reminder-setting">
+                    <span class="badge badge-pill badge-danger">リマインド設定済：設定時刻に通知メールが届きます</span><br/>
                     <!--報告リマインドの日にち選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
                     <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>"></select>
                     <label for="reminderDays<%= member.id %>">の</label>
                     <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用／設定済の場合）-->
-                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                    <div class="time-input-container">
+                      <input type="time" step="1800" class="form-control no-time-picker" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                    </div>
+                    
                     <label for="timeInput<%= member.id %>">に</label>
                     <!--選択した報告リマインド日時の設定ボタン（プロジェクトメンバー用／設定済の場合）-->
                     <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                    <br/><small class="annotation">※ リマインド通知は、30分単位で設定可能です。</small>
                   </div>
                 <% else %>
                   <div class="custom-control custom-switch">
@@ -63,16 +68,20 @@
                     <!-- 報告リマインド用のオンオフ切替スイッチ（プロジェクトメンバー用／未設定の場合） -->
                     <input type="checkbox" class="custom-control-input" id="customSwitch<%= member.id %>" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">
                     <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
-                  </div>
-                    <div class="form-group reminder-setting" style="display: none;">
+                  </div>                 
+                  <div class="form-group reminder-setting" style="display: none;">
+                    <span class="badge badge-pill badge-info">リマインド未設定</span><br/>
                     <!--報告リマインドの日にち選択ドロップダウン（プロジェクトメンバー用／未設定の場合）-->
                     <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
                     <label for="reminderDays<%= member.id %>">の</label>
                     <!--報告リマインドの時刻選択ドロップダウン（プロジェクトメンバー用／未設定の場合）-->
-                    <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                    <div class="time-input-container">
+                      <input type="time" step="1800" class="form-control no-time-picker" id="timeInput<%= member.id %>" name="report_time" disabled>
+                    </div>                    
                     <label for="timeInput<%= member.id %>">に</label>
                     <!--選択した報告リマインド日時の設定ボタン（プロジェクトメンバー用／未設定の場合）-->
                     <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                    <br/><small class="annotation">※ リマインド通知は、30分単位で設定可能です。</small>
                   </div>
                 <% end %>
               </div>
@@ -87,14 +96,18 @@
                       <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                     </div>
                     <div class="form-group reminder-setting">
+                      <span class="badge badge-pill badge-danger">リマインド設定済：設定時刻に通知メールが届きます</span><br/>
                       <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
                       <select class="form-control" id="reminderDays<%= member.id %>" data-selected-days="<%= @project_user.reminder_days %>"></select>
                       <label for="reminderDays<%= member.id %>">の</label>
                       <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用／設定済の場合）-->
-                      <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                      <div class="time-input-container">
+                        <input type="time" step="1800" class="form-control no-time-picker" id="timeInput<%= member.id %>" name="report_time" value="<%= @project_user.reminder_enabled ? @project_user.report_time.strftime('%H:%M') : '' %>">
+                      </div>
                       <label for="timeInput<%= member.id %>">に</label>
                       <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用／設定済の場合）-->
                       <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                      <br/><small class="annotation">※ リマインド通知は、30分単位で設定可能です。</small>
                     </div>
                   <% else %>
                     <div class="custom-control custom-switch">
@@ -104,14 +117,18 @@
                       <label class="custom-control-label" for="customSwitch<%= member.id %>"></label>
                     </div>
                     <div class="form-group reminder-setting" style="display: none;">
+                      <span class="badge badge-pill badge-info">リマインド未設定</span><br/>
                       <!--報告リマインドの日にち選択ドロップダウン（プロジェクトリーダー用／未設定の場合）-->
                       <select class="form-control" id="reminderDays<%= member.id %>" disabled></select>
                       <label for="reminderDays<%= member.id %>">の</label>
                       <!--報告リマインドの時刻選択ドロップダウン（プロジェクトリーダー用／未設定の場合）-->
-                      <input type="time" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                      <div class="time-input-container">
+                        <input type="time" step="1800" class="form-control" id="timeInput<%= member.id %>" name="report_time" disabled>
+                      </div>                      
                       <label for="timeInput<%= member.id %>">に</label>
                       <!--選択した報告リマインド日時の設定ボタン（プロジェクトリーダー用／未設定の場合）-->
                       <button type="button" class="btn btn-success btn-sm set-reminder" data-member-id="<%= member.id %>" data-user-id="<%= @user.id %>" data-project-id="<%= @project.id %>">設定</button>
+                      <br/><small class="annotation">※ リマインド通知は、30分単位で設定可能です。</small>
                     </div>
                   <% end %>
                 <% end %>

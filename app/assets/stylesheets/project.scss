@@ -123,6 +123,45 @@
   display: inline-block;
 }
 
+////////// カスタム時間入力のスタイル //////////
+.time-input-container {
+  position: relative;
+  display: inline-block;
+}
+
+////////// 報告リマインドの時刻設定フォーム：デフォルトの時計アイコンを非表示にする //////////
+.time-input-container input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+////////// カスタムアイコンの矢印表示 - 入力欄内に収める //////////
+.time-input-container::after {
+  content: "⇅";
+  position: absolute;
+  right: calc(0.75rem + 2px);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+  color: #777;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+////////// 入力欄自体のスタイル //////////
+.time-input-container input[type="time"] {
+  padding-right: calc(0.75rem + 2px);
+}
+
+////////// 注釈コメント用のスタイル //////////
+.annotation {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
 ////////// 検索のtext_fieldのデザイン //////////
 .search-box {
   border-style: none;
