@@ -133,9 +133,7 @@
                   <% end %>
                 <% end %>
                 <% unless @project.leader_id == member.id %>
-                  <% if member.member_expulsion %>
-                    <%= link_to "プロジェクトへ戻す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーへ戻そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
-                  <% else %>
+                  <% unless member.member_expulsion %>
                     <%= link_to "プロジェクトから外す", project_member_destroy_path(@user.id, @project.id, member_id: member.id), method: :delete, data: { confirm: "#{member.name}さんをメンバーから外そうとしています。\nよろしいですか？" }, class: "btn btn-danger" %>
                   <% end %>
                   <% delegate = @delegates.find_by(user_from: @user.id, user_to: member.id, is_valid: true) %>
