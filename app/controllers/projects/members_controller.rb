@@ -49,7 +49,7 @@ class Projects::MembersController < Projects::BaseProjectController
     if project.leader_id != user.id
       unless project_user.member_expulsion
         project_user.destroy
-        flash[:success] = "#{user.name}さんを報告集計から外しました。"
+        flash[:success] = "#{user.name}さんをプロジェクトから外しました。"
       end
     else
       flash[:success] = "リーダーはメンバーから外せません"
