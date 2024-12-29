@@ -35,6 +35,18 @@ RSpec.describe "Projectモデルのテスト", type: :model do
       it "report_frequencyがなければ登録できない" do
         expect(build(:project, report_frequency: nil)).to be_invalid
       end
+      it "report_frequencyが1未満は登録できない" do
+        expect(build(:project, report_frequency: 0)).to be_invalid
+      end
+      it "report_frequencyが1以上は登録できる" do
+        expect(build(:project, report_frequency: 1)).to be_valid
+      end
+      it "report_frequencyが31以下は登録できる" do
+        expect(build(:project, report_frequency: 31)).to be_valid
+      end
+      it "report_frequencyが32以上は登録できない" do
+        expect(build(:project, report_frequency: 32)).to be_invalid
+      end
     end
     context "next_report_date(次回報告日)" do
       it "next_report_dateがなければ登録できない" do
