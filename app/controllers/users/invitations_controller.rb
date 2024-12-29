@@ -2,6 +2,7 @@ class Users::InvitationsController < BaseController
   # before_action :get_user,         only: [:edit, :update]
   # before_action :valid_user,       only: [:edit, :update]
   # before_action :check_expiration, only: [:edit, :update]
+  before_action :authenticate_user!
   before_action :project_leader_user
 
   def new
