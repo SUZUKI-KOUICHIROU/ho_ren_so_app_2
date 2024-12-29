@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  rescue_from ActionController::InvalidAuthenticityToken do |exception|
+  rescue_from ActionController::InvalidAuthenticityToken do |_exception|
     redirect_to new_user_session_path, alert: 'セッションが切れました。再度ログインしてください。'
   end
 
