@@ -19,7 +19,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, length: { maximum: 20 }
   validates :description, presence: true, length: { maximum: 200 }
   validates :leader_id, presence: true
-  validates :report_frequency, presence: true
+  validates :report_frequency, presence: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 31 }
   validates :next_report_date, presence: true
   validates :reported_flag, inclusion: [true, false]
 
