@@ -2,7 +2,7 @@ class Projects::MembersController < Projects::BaseProjectController
   skip_before_action :correct_user, only: %i[join]
   before_action :project_authorization, only: %i[index destroy delegate cancel_delegate send_reminder reset_reminder]
   before_action :admin_user, only: %i[setting set_admin]
-  # before_action :project_leader_user, only: %i[index]
+  before_action :project_leader_user, only: %i[destroy delegate cancel_delegate]
 
   # プロジェクトへの参加アクション（招待メールに張付リンククリック時アクション）
   def join
@@ -41,7 +41,7 @@ class Projects::MembersController < Projects::BaseProjectController
     end
   end
 
-  # プロジェクトメンバーをプロジェクトの集計から外す
+  # プロジェクトメンバーをプロジェクトから外す
   def destroy
     user = User.find(params[:member_id])
     project = Project.find(params[:project_id])
