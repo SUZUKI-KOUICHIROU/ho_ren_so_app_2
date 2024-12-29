@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  rescue_from ActionController::InvalidAuthenticityToken do |exception|
+    redirect_to new_user_session_path, alert: 'セッションが切れました。再度ログインしてください。'
+  end
+
   before_action :store_user_location!, if: :storable_location?
   before_action :reset_flash_message_displayed
 
