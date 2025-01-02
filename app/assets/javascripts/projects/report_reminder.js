@@ -38,6 +38,9 @@ $(document).on('turbolinks:load', function(){
         var timeInput = $(this).closest('.project-member-action').find('.form-control[type="time"]');
         timeInput.val('');  // デフォルトの選択をクリア
 
+        // リマインドの設定状態（未設定・設定済）を表示するラベルの取得
+        var reminderBadge = $(this).closest('.project-member-action').find('.badge');
+
         // 設定をリセットするAjaxリクエストを送信
         $.ajax({
           url: '/projects/members/reset_reminder',
@@ -53,6 +56,11 @@ $(document).on('turbolinks:load', function(){
           success: function(data) {
             // 成功時の処理
             alert("報告リマインドの設定をリセットしました。");
+
+            // リマインドのラベルを「未設定」に変更
+            reminderBadge.text('リマインド未設定')
+                          .removeClass('badge-danger')
+                          .addClass('badge-info');
           },
           error: function() {
             // エラー時の処理
@@ -137,7 +145,7 @@ $(document).on('turbolinks:load', function(){
       // ユーザーIDとプロジェクトIDを取得
       var userId = $(this).data('user-id');
       var projectId = $(this).data('project-id');
-      
+               
       // 報告頻度（report-frequency）の値を取得
       var reportFrequency = $(this).closest('.project-member-action').data('report-frequency');
 
@@ -147,6 +155,9 @@ $(document).on('turbolinks:load', function(){
       // 選択した時刻（report_time）の値を設定
       var timeInput = $(this).closest('.project-member-action').find('.form-control[type="time"]');
       var reportTime = timeInput.val();
+
+      // リマインドの設定状態（未設定・設定済）を表示するラベルの取得
+      var reminderBadge = $(this).parent().find('.badge');
   
       // 報告リマインドを設定するAjaxリクエストを送信
       $.ajax({
@@ -168,12 +179,49 @@ $(document).on('turbolinks:load', function(){
         success: function(data) {
           // 成功時の処理
           alert("報告リマインドの設定が完了しました。\n\n設定は 1ヶ月間 有効です。");
+          
+          // リマインドのラベルを「設定済」に変更
+          reminderBadge.text('リマインド設定済：設定時刻に通知メールが届きます')
+                        .removeClass('badge-info')
+                        .addClass('badge-danger');
         },
         error: function() {
           // エラー時の処理
           alert("報告リマインドの設定でエラーが発生しました。\n\n設定には日時の選択が両方とも必要です。");
         }
       });
+    });
+  });
+
+  // 報告リマインドの設定時刻を「00分・30分」に補正する処理（※　00分・30分のみ許可する）
+  $(function($) {
+    $('input[type="time"].no-time-picker').on('change', function(e) {
+      
+      const timeValue = $(this).val();
+      
+      if (timeValue) {
+          // 時刻を時と分に分解
+          let [hours, minutes] = timeValue.split(':');
+          
+          // 分を00または30に調整
+          let adjustedMinutes;
+          if (minutes < 15) {
+              adjustedMinutes = '00';
+          } else if (minutes < 45) {
+              adjustedMinutes = '30';
+          } else {
+              adjustedMinutes = '00';
+              // 時を1時間進める（23時の場合は00時に）
+              hours = parseInt(hours);
+              hours = (hours + 1) % 24;
+          }
+          
+          // 時刻を2桁にフォーマット
+          const formattedHours = hours.toString().padStart(2, '0');
+          
+          // 調整された時刻をセット
+          $(this).val(`${formattedHours}:${adjustedMinutes}`);
+      }
     });
   });
 });
