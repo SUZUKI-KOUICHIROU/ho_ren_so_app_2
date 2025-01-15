@@ -1,4 +1,5 @@
 class Formats::BaseFormatController < BaseController
+  before_action :authenticate_user!
   before_action :project_leader_user
 
   private

@@ -123,6 +123,7 @@ Rails/HelperInstanceVariable:
 # Offense count: 43
 Rails/I18nLocaleTexts:
   Exclude:
+    - 'app/controllers/application_controller.rb'
     - 'app/controllers/admin_users/admin_user_base_controller.rb'
     - 'app/controllers/formats/base_format_controller.rb'
     - 'app/controllers/formats/report_formats_controller.rb'
