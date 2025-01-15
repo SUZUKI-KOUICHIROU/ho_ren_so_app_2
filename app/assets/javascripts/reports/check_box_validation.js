@@ -28,7 +28,7 @@ document.addEventListener('turbolinks:load', function () {
       checkBoxElements.forEach(m => {
 
         // チェックボックスにエラーメッセージを設定
-        m.setCustomValidity("1つ以上の選択肢を選択してください。");
+        m.setCustomValidity("1つ以上を選択してください。");
 
         // ﾁｪｯｸﾎﾞｯｸｽ状態が変わった時に1つ以上のﾁｪｯｸがあるか確認
         m.addEventListener('change', () => {
@@ -40,7 +40,7 @@ document.addEventListener('turbolinks:load', function () {
             // isCheckedAtLeastOneがtureなら左辺はfalseとなる=requiredが解除される
             n.required = !isCheckedAtLeastOne;
             // 選択されていない場合requiredを有効化しﾒｯｾｰｼﾞ表示
-            n.setCustomValidity(isCheckedAtLeastOne ? "" : "1つ以上の選択肢を選択してください。");
+            n.setCustomValidity(isCheckedAtLeastOne ? "" : "1つ以上を選択してください。");
           });
         });
       });
@@ -50,7 +50,7 @@ document.addEventListener('turbolinks:load', function () {
       const isCheckedAtLeastOne = checkBoxElements.some(checkbox => checkbox.checked);
       checkBoxElements.forEach(n => {
         n.required = !isCheckedAtLeastOne;
-        n.setCustomValidity(isCheckedAtLeastOne ? "" : "1つ以上の選択肢を選択してください。");
+        n.setCustomValidity(isCheckedAtLeastOne ? "" : "1つ以上を選択してください。");
       });
     });
   }, 100); // 100ms の遅延

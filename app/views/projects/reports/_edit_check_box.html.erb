@@ -1,4 +1,4 @@
-<div class="report-form">
+<div class="report-form" data-required="<%= question.required %>" data-question-id="<%= question.id %>">
   <% if question.present? && question.using_flag && question.check_box.present? %>
     <!-- check_boxが存在し、かつ有効な場合の処理 -->
     <span class="report-item-title mb-2 font-weight-bold"><%= question.check_box.label_name %></span>
@@ -7,7 +7,7 @@
     <%= f.fields_for :answers, answer do |m| %>
       <% question.check_box.check_box_option_strings.each do |box| %>
         <% boolExists = answer.array_value.try(:include?, box.option_string) || false %>
-        <%= m.check_box :array_value, {multiple: true, include_hidden: false, checked: boolExists, class: 'check-box-option'}, box[:option_string] %>
+        <%= m.check_box :array_value, {multiple: true, include_hidden: false, checked: boolExists, class: 'check-box-option', data: { question_id: question.id }}, box[:option_string] %>
         <%= box.option_string %>
       <% end %>
     <% end %>
